@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+	<script>
+	function closeModal()
+	{
+		var modal = document.getElementById('modal');
+		modal.setAttribute("class","modal");
+	}
+
+	function openModal()
+	{
+		var modal = document.getElementById('modal');
+		modal.setAttribute("class","modal is-active");
+	}
+	</script>
+</head
+
+<body>
+	<button onclick="openModal();">Open</button>
+	<div class="modal" id="modal">
+	  <div class="modal-background"></div>
+	  <div class="modal-card">
+	    <header class="modal-card-head">
+	      <p class="modal-card-title">Aviso</p>
+	      <button class="delete" aria-label="close" onclick="closeModal();"></button>
+	    </header>
+	    <section class="modal-card-body">
+	      <!-- Content ... -->
+	    </section>
+	    <footer class="modal-card-foot">
+	      <button class="button is-success">Save changes</button>
+	      <button class="button">Cancel</button>
+	    </footer>
+	  </div>
+	</div>
+<div ng-app="myApp" ng-controller="myCtrl">
+<button  ng-click="increase()">Increase</button>
+<h1>Valor {{counter}}</h1>
+</div>
+
+<script>
+var app = angular.module('myApp', []);
+app.controller('myCtrl', function($scope) {
+	$scope.counter=0;
+    $scope.increase = function()
+	{
+		if($scope.counter < 5)
+		{
+		$scope.counter = $scope.counter +1;
+		}
+	}
+});
+</script>
+
+<p>Change the name inside the input field, and you will see the name in the header changes accordingly.</p>
+
+</body>
+</html>

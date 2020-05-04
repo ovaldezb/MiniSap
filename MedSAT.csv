@@ -1,0 +1,2419 @@
+"CLAVE","DESCRIPCION","UNIDAD","DESCAP"
+18,Tambor de cincuenta y cinco galones (EUA),,TAMBOR DE CINCUENTA Y CINCO GALONES (EUA)
+19,Camión cisterna,,CAMION CISTERNA
+26,Tonelada real,,TONELADA REAL
+29,Libra por mil pies cuadrados,Lb / kft?,LIBRA POR MIL PIES CUADRADOS
+30,Día de potencia de caballos por tonelada métrica de aire seco,,DIA DE POTENCIA DE CABALLOS POR TONELADA METRICA DE AIRE SECO
+31,Pescar,,PESCAR
+32,Kilogramo por tonelada métrica seca del aire,,KILOGRAMO POR TONELADA METRICA SECA DEL AIRE
+36,Pie cúbico por minuto por pie cuadrado,Ft2 / (min / ft2),PIE CUBICO POR MINUTO POR PIE CUADRADO
+44,Bolsa a granel de quinientos kilos,,BOLSA A GRANEL DE QUINIENTOS KILOS
+45,Bolsa a granel de trescientos kilos,,BOLSA A GRANEL DE TRESCIENTOS KILOS
+46,Bolsa a granel de cincuenta libras,,BOLSA A GRANEL DE CINCUENTA LIBRAS
+47,Bolso de cincuenta libras,,BOLSO DE CINCUENTA LIBRAS
+48,Carga masiva,,CARGA MASIVA
+53,Kilogramo teórico,,KILOGRAMO TEORICO
+54,Tonelada teórica (UK),,TONELADA TEORICA (UK)
+62,Por ciento por 1000 horas,,POR CIENTO POR 1000 HORAS
+63,Tasa de fracaso en el tiempo,,TASA DE FRACASO EN EL TIEMPO
+64,"Libra por pulgada cuadrada, calibre",,"LIBRA POR PULGADA CUADRADA, CALIBRE"
+66,Oersted,Oe,OERSTED
+69,Escala específica de prueba,,ESCALA ESPECIFICA DE PRUEBA
+71,Voltios amperios por libra,,VOLTIOS AMPERIOS POR LIBRA
+72,Vatio por libra,,VATIO POR LIBRA
+73,Amperios por centímetro,,AMPERIOS POR CENTIMETRO
+76,Gauá,Gs,GAUá
+77,Kilogauá,Ks,KILOGAUá
+84,Kilopound-force por pulgada cuadrada,Klbf/in2,KILOPOUND-FORCE POR PULGADA CUADRADA
+90,Saybold segundo universal,,SAYBOLD SEGUNDO UNIVERSAL
+92,Calorías por centímetro cúbico,,CALORIAS POR CENTIMETRO CUBICO
+93,Calorías por gramo,Cal / g,CALORIAS POR GRAMO
+94,Unidad de curl,,UNIDAD DE CURL
+95,Veinte mil galones,,VEINTE MIL GALONES
+96,Diez mil galones (US),,DIEZ MIL GALONES (US)
+97,Diez kilos de tambor,,DIEZ KILOS DE TAMBOR
+98,Quince kilos de tambor,,QUINCE KILOS DE TAMBOR
+05,Ascensor,,ASCENSOR
+06,Pequeño aerosol,,PEQUENO AEROSOL
+08,Montón de calor,,MONTON DE CALOR
+10,Grupos,,GRUPOS
+11,Equipos,,EQUIPOS
+13,Raciones,,RACIONES
+14,Shot,,SHOT
+15,"Palo, medida militar.",,"PALO, MEDIDA MILITAR."
+16,Tambor de 115 kilogramos,,TAMBOR DE 115 KILOGRAMOS
+17,Tambor de cien libras,,TAMBOR DE CIEN LIBRAS
+1A,Milla de carros,,MILLA DE CARROS
+1B,Recuento de automóviles,,RECUENTO DE AUTOMOVILES
+1C,Conteo de locomotoras,,CONTEO DE LOCOMOTORAS
+1D,Caboose count,,CABOOSE COUNT
+1E,Coche vacío,,COCHE VACIO
+1F,Milla de tren,,MILLA DE TREN
+1G,Galón del uso del combustible (los EUA),,GALON DEL USO DEL COMBUSTIBLE (LOS EUA)
+1H,Milla de caboose,,MILLA DE CABOOSE
+1I,Tipo de interés fijo,,TIPO DE INTERES FIJO
+1J,Tonelada milla,,TONELADA MILLA
+1K,Milla locomotora,,MILLA LOCOMOTORA
+1L,Recuento total de automóviles,,RECUENTO TOTAL DE AUTOMOVILES
+1M,Milla total del coche,,MILLA TOTAL DEL COCHE
+1X,Cuarto de milla,,CUARTO DE MILLA
+20,Contenedores de veinte pies,,CONTENEDORES DE VEINTE PIES
+21,Contenedor de cuarenta pies,,CONTENEDOR DE CUARENTA PIES
+22,Decilitro por gramo,dl/g,DECILITRO POR GRAMO
+23,Gramo por centímetro cúbico,g/cm3,GRAMO POR CENTIMETRO CUBICO
+24,Libra teórica,,LIBRA TEORICA
+25,Gramo por centímetro cuadrado,g/cm2,GRAMO POR CENTIMETRO CUADRADO
+27,Tonelada teórica,,TONELADA TEORICA
+28,Kilogramo por metro cuadrado,kg/m2,KILOGRAMO POR METRO CUADRADO
+2A,Radián por segundo,rad/s,RADIAN POR SEGUNDO
+2B,Radián por segundo cuadrado,    rad/s?,RADIAN POR SEGUNDO CUADRADO
+2C,Roentgen,R,ROENTGEN
+2G,Voltios CA,V,VOLTIOS CA
+2H,Voltios CD,V,VOLTIOS CD
+2I,Unidad térmica británica (tabla internacional) por hora,    BtuIT/h,UNIDAD TERMICA BRITANICA (TABLA INTERNACIONAL) POR HORA
+2J,Centímetro cúbico por segundo,cm3/s,CENTIMETRO CUBICO POR SEGUNDO
+2K,Pie cúbico por hora,ft?/h,PIE CUBICO POR HORA
+2L,Pie cúbico por minuto,    ft?/min,PIE CUBICO POR MINUTO
+2M,Centímetro por segundo,cm/s,CENTIMETRO POR SEGUNDO
+2N,Decibel,dB,DECIBEL
+2P,Kilobyte,kbyte,KILOBYTE
+2Q,Kilobecquerel,kBq,KILOBECQUEREL
+2R,Kilocurie,kCi,KILOCURIE
+2U,Megagramo,Mg,MEGAGRAMO
+2V,Megagrama por hora,    Mg / h,MEGAGRAMA POR HORA
+2X,Metro por minuto,m/min,METRO POR MINUTO
+2Y,Milliroentgen,mR,MILLIROENTGEN
+2Z,Milivoltio,mV,MILIVOLTIO
+33,Kilopascal por grtr,kPa/m/g,KILOPASCAL POR GRTR
+34,Kilopascal por milimetro,kPa/mm,KILOPASCAL POR MILIMETRO
+35,Milimetro por un segundo centimetro cuadrado,ml/(cm2/s),MILIMETRO POR UN SEGUNDO CENTIMETRO CUADRADO
+37,Onza por pie cuadrado,     oz/ft?,ONZA POR PIE CUADRADO
+38,"Onzas por pie cuadrado por 0,01 pulgadas",  oz/(ft?/cin),"ONZAS POR PIE CUADRADO POR 0,01 PULGADAS"
+3B,Megajoule, MJ,MEGAJOULE
+3C,Manmonth,,MANMONTH
+3E,Libra por libra de producto,,LIBRA POR LIBRA DE PRODUCTO
+3G,Libra por pieza de producto,,LIBRA POR PIEZA DE PRODUCTO
+3H,Kilogramo por kilogramo de producto,,KILOGRAMO POR KILOGRAMO DE PRODUCTO
+3I,Kilogramo por pedazo de producto,,KILOGRAMO POR PEDAZO DE PRODUCTO
+40,Mililitro por segundo,ml/s,MILILITRO POR SEGUNDO
+41,Mililitro por minuto,     ml/min,MILILITRO POR MINUTO
+4B,Gorra,,GORRA
+4C,Centistokes, cSt,CENTISTOKES
+4E,Veinte pack,,VEINTE PACK
+4G,Microlitro, Ál,MICROLITRO
+4H,Micra, Ám,MICRA
+4K,Miliamperio, mA,MILIAMPERIO
+4L,Megabyte,Mbyte,MEGABYTE
+4M,Miligramo por hora,mg/h,MILIGRAMO POR HORA
+4N,Megabequerel, MBq,MEGABEQUEREL
+4O,Microfaradio, ÁF,MICROFARADIO
+4P,Newton por metro, N/m,NEWTON POR METRO
+4Q,Onza pulgada,oz/in,ONZA PULGADA
+4R,Onza pie,ozÀft,ONZA PIE
+4T,Picofaradio, pF,PICOFARADIO
+4U,Libra por hora,lb/h,LIBRA POR HORA
+4W,Tonelada (EUA) por hora,   ton (US) /h,TONELADA (EUA) POR HORA
+4X,Kilolitro por hora,kl/h,KILOLITRO POR HORA
+56,Sitas,,SITAS
+57,Malla,,MALLA
+58, kilogramo neto,,KILOGRAMO NETO
+59,Parte por millón, ppm,PARTE POR MILLON
+5A,Barril por minuto, barrel (US)/min,BARRIL POR MINUTO
+5B,Batch,,BATCH
+5C,Galón (US) por mil,,GALON (US) POR MIL
+5E,Mmscf/day,,MMSCF/DAY
+5F,Libra por mil,,LIBRA POR MIL
+5G,bomba,,BOMBA
+5H,Escenario,,ESCENARIO
+5I,Pies cúbicos estándar, Std,PIES CUBICOS ESTANDAR
+5J,Caballos de potencia hidráulica,,CABALLOS DE POTENCIA HIDRAULICA
+5K,Contar por minuto,,CONTAR POR MINUTO
+5P,Nivel sísmico,,NIVEL SISMICO
+5Q,Línea sísmica,,LINEA SISMICA
+60,Tanto por ciento en peso,,TANTO POR CIENTO EN PESO
+61,Parte por mil millones (EUA), ppb,PARTE POR MIL MILLONES (EUA)
+74,Milipascal, mPa,MILIPASCAL
+77,Mili-pulgada, mil,MILI-PULGADA
+80,Libra por pulgada cuadrado absoluta,     lb/in?,LIBRA POR PULGADA CUADRADO ABSOLUTA
+81,Henry,  H,HENRY
+85,Pie libra-fuerza,     ftÀlbf,PIE LIBRA-FUERZA
+87,Libra por pie cúbico,     lb/ft?,LIBRA POR PIE CUBICO
+89,Poise,  P,POISE
+91,Stokes, St,STOKES
+A1,15 ? C calorías,    Cal $ _ $,15 ? C CALORIAS
+A10,Amperio por metro cuadrado por joule segundo,A/m2/(J/s),AMPERIO POR METRO CUADRADO POR JOULE SEGUNDO
+A11,Ángstrom,,ANGSTROM
+A12,Unidad astronómica,ua,UNIDAD ASTRONOMICA
+A13,Attojoule,aJ,ATTOJOULE
+A14,Barn,b,BARN
+A15,Barn por electrovoltio,b/eV,BARN POR ELECTROVOLTIO
+A16,Barn por electrovoltio,b/(sr/eV),BARN POR ELECTROVOLTIO
+A17,Barn por esteroradian,b/sr,BARN POR ESTERORADIAN
+A18,Becquerel por kilogramo,Bq/kg,BECQUEREL POR KILOGRAMO
+A19,Becquerel por metro cúbico,Bq/m3,BECQUEREL POR METRO CUBICO
+A2,Amperio por centímetro,A/cm,AMPERIO POR CENTIMETRO
+A20,Unidad térmica británica (tabla internacional) por segundo pie cuadrado grado rankine.,BtuIT/(s/ft2/°R),UNIDAD TERMICA BRITANICA (TABLA INTERNACIONAL) POR SEGUNDO PIE CUADRADO GRADO RANKINE.
+A21,Unidad térmica británica (tabla internacional) por libra grado rankine,  Btu/IT(lb/°R),UNIDAD TERMICA BRITANICA (TABLA INTERNACIONAL) POR LIBRA GRADO RANKINE
+A22,Unidad térmica británica (tabla internacional) por segundo pie grado rankine, BtuIT/(s/ft/°R),UNIDAD TERMICA BRITANICA (TABLA INTERNACIONAL) POR SEGUNDO PIE GRADO RANKINE
+A23,Unidad térmica británica (tabla internacional) por hora pie cuadrado grado rankine.,BtuIT/(h/ft2/°R),UNIDAD TERMICA BRITANICA (TABLA INTERNACIONAL) POR HORA PIE CUADRADO GRADO RANKINE.
+A24,Candela por metro cuadrado,cd/m2,CANDELA POR METRO CUADRADO
+A25,Caballo de vapor, CV,CABALLO DE VAPOR
+A26,Culombio metro, CÀm,CULOMBIO METRO
+A27,Culombio metro cuadrado por voltio,     CÀm2/V,CULOMBIO METRO CUADRADO POR VOLTIO
+A28,Culombio por centímetro cúbico,C/cm3,CULOMBIO POR CENTIMETRO CUBICO
+A29,Culombio por metro cúbico,C/m?,CULOMBIO POR METRO CUBICO
+A3,Amperio por milímetro,A/mm,AMPERIO POR MILIMETRO
+A30,Culombio por milimetro cúbico,C/mm?,CULOMBIO POR MILIMETRO CUBICO
+A31,Culombio por kilogramo-segundo,    C/(kg/s),CULOMBIO POR KILOGRAMO-SEGUNDO
+A32,Culombio por Mol,C/mol,CULOMBIO POR MOL
+A33,Culombio por centímetro cuadrado,C/cm?,CULOMBIO POR CENTIMETRO CUADRADO
+A34,Culombio por metro cuadrado,C/m?,CULOMBIO POR METRO CUADRADO
+A35,Culombio por milímetro cuadrado,C/mm?,CULOMBIO POR MILIMETRO CUADRADO
+A36,Centimetro cúbico por Mol,     cm?/mol,CENTIMETRO CUBICO POR MOL
+A37,Decimetro cuadrado por Mol,     dm?/mol,DECIMETRO CUADRADO POR MOL
+A38,Cubic pooulo p,m?/C,CUBIC POOULO P
+A39,Metro cúbico por kilogramo,m?/kg,METRO CUBICO POR KILOGRAMO
+A4,Amperio por centímetro cuadrado,A/cm?,AMPERIO POR CENTIMETRO CUADRADO
+A40,Metro cubbico por Mol,     m?/mol,METRO CUBBICO POR MOL
+A41,Amperio por metro cuadrado,A/m?,AMPERIO POR METRO CUADRADO
+A42,Curie por kilogramo,Ci/kg,CURIE POR KILOGRAMO
+A43,Tonelaje de peso muerto, dwt,TONELAJE DE PESO MUERTO
+A44,Decalitro, dal,DECALITRO
+A45,Decámetro, dam,DECAMETRO
+A47,Decitex,  dtex (g/10km),DECITEX
+A48,Grado rankine, ?R,GRADO RANKINE
+A49,Negador,  den (g/9 km),NEGADOR
+A5,Amperio metro cuadrado,AÀm?,AMPERIO METRO CUADRADO
+A50,Dyne segundo por centímetro cúbico,  Dyn s / cm2,DYNE SEGUNDO POR CENTIMETRO CUBICO
+A51,Dyne segundo por centímetro,  Dyn s / cm,DYNE SEGUNDO POR CENTIMETRO
+A52,Dyne segundo por centímetro a la quinta potencia,  Dyn s / cm2,DYNE SEGUNDO POR CENTIMETRO A LA QUINTA POTENCIA
+A53,Electrónvoltio,eV,ELECTRONVOLTIO
+A54,Electrovoltio por metro,eV/m,ELECTROVOLTIO POR METRO
+A55,Electrovoltio por metro cuadrado,eV/m2,ELECTROVOLTIO POR METRO CUADRADO
+A56,Electrovoltio metro cuadrado por kilogramo,    eVÀm?/kg,ELECTROVOLTIO METRO CUADRADO POR KILOGRAMO
+A57,Ergio,ergio,ERGIO
+A58,Erg por centímetro,    Erg / cm,ERG POR CENTIMETRO
+A59,La cobertura de nubes 8-parte,,LA COBERTURA DE NUBES 8-PARTE
+A6,Amperio por metro cuadrado Kelvin cuadrado,    A/(m?ÀK?),AMPERIO POR METRO CUADRADO KELVIN CUADRADO
+A60,Erg por centímetro cúbico,    Erg / cm?,ERG POR CENTIMETRO CUBICO
+A61,Erg por gramo,     Erg / g,ERG POR GRAMO
+A62,Erg por segundo gramo,   Erg / g À s,ERG POR SEGUNDO GRAMO
+A63,Erg por segundo,Ergs,ERG POR SEGUNDO
+A64,Erg por segundo centímetro cuadrado, Erg / (s À cm?),ERG POR SEGUNDO CENTIMETRO CUADRADO
+A65,Erg por centímetro cuadrado segundo, Erg / (cm? À s),ERG POR CENTIMETRO CUADRADO SEGUNDO
+A66,Erg centímetro cuadrado,    Erg À cm?,ERG CENTIMETRO CUADRADO
+A67,Erg centímetro cuadrado por gramo,  Erg À cm? / g,ERG CENTIMETRO CUADRADO POR GRAMO
+A68,Exajoule, EJ,EXAJOULE
+A69,Faradio por metro, F/m,FARADIO POR METRO
+A7,Amperio por milímetro cuadrado,A/mm?,AMPERIO POR MILIMETRO CUADRADO
+A70,Femtojoule, fJ,FEMTOJOULE
+A71,Femtómetro, fm,FEMTOMETRO
+A73,Pie por segundo al cuadrado,ft/s?,PIE POR SEGUNDO AL CUADRADO
+A74,Pie libra-fuerza por segundo,    ftÀlbf/s,PIE LIBRA-FUERZA POR SEGUNDO
+A75,Tonelada de carga,,TONELADA DE CARGA
+A76,Galón, Gal,GALON
+A77,Gauáian CGS (Centímetro-Gram-Segundo sistema) unidad de desplazamiento,,GAUáIAN CGS (CENTIMETRO-GRAM-SEGUNDO SISTEMA) UNIDAD DE DESPLAZAMIENTO
+A78,Gauáiano CGS (Centímetro-Gram-Segundo sistema) unidad de corriente eléctrica,,GAUáIANO CGS (CENTIMETRO-GRAM-SEGUNDO SISTEMA) UNIDAD DE CORRIENTE ELECTRICA
+A79,Gauáian CGS (Centímetro-Gram-Segundo sistema) unidad de carga eléctrica,,GAUáIAN CGS (CENTIMETRO-GRAM-SEGUNDO SISTEMA) UNIDAD DE CARGA ELECTRICA
+A8,Amperio segundo, AÀs,AMPERIO SEGUNDO
+A80,Gauáiano CGS (Centímetro-Gram-Segundo sistema) unidad de la fuerza del campo eléctrico,,GAUáIANO CGS (CENTIMETRO-GRAM-SEGUNDO SISTEMA) UNIDAD DE LA FUERZA DEL CAMPO ELECTRICO
+A81,Gauáian CGS (Centímetro-Gram-Segundo sistema) unidad de polarización eléctrica,,GAUáIAN CGS (CENTIMETRO-GRAM-SEGUNDO SISTEMA) UNIDAD DE POLARIZACION ELECTRICA
+A82,Gauáiano CGS (Centímetro-Gram-Segundo sistema) unidad de potencial eléctrico,,GAUáIANO CGS (CENTIMETRO-GRAM-SEGUNDO SISTEMA) UNIDAD DE POTENCIAL ELECTRICO
+A83,Gauáian CGS (Centímetro-Gram-Segundo sistema) unidad de magnetización,,GAUáIAN CGS (CENTIMETRO-GRAM-SEGUNDO SISTEMA) UNIDAD DE MAGNETIZACION
+A84,GigaCulombio por metro cúbico,GC/m?,GIGACULOMBIO POR METRO CUBICO
+A85,Gigaelectrónvoltio, GeV,GIGAELECTRONVOLTIO
+A86,Gigahertz, GHz,GIGAHERTZ
+A87,GigaOhm, G?,GIGAOHM
+A88,GigaOhm metro,G?Àm,GIGAOHM METRO
+A89,Gigapascal, GPa,GIGAPASCAL
+A9,Tarífa,,TARIFA
+A90,Gigawatt, GW,GIGAWATT
+A91,Grado centesimal, gon,GRADO CENTESIMAL
+A93,Gramo por metro cúbico,g/m?,GRAMO POR METRO CUBICO
+A94,Gramo por Mol,g/mol,GRAMO POR MOL
+A95,Gray, Gy,GRAY
+A96,Gray por segundo,Gy/s,GRAY POR SEGUNDO
+A97,Hectopascal, hPa,HECTOPASCAL
+A98,Henry por metro, H/m,HENRY POR METRO
+A99,Bit, bit,BIT
+AA,Balón,,BALON
+AB,Paquete a granel, pk,PAQUETE A GRANEL
+ACR,Acre,acre,ACRE
+ACT,Actividad,,ACTIVIDAD
+AD,Byte,byte,BYTE
+AE,Amperio por metro, A/m,AMPERIO POR METRO
+AH,Minuto adicional,,MINUTO ADICIONAL
+AI,Minuto y medio por llamada,,MINUTO Y MEDIO POR LLAMADA
+AJ,policía,,POLICIA
+AK,Braza, fth,BRAZA
+AL,Línea de acceso,,LINEA DE ACCESO
+AMH,Amperio hora, AÀh,AMPERIO HORA
+AMP,Amperio,  A,AMPERIO
+ANN,Año,  y,ANO
+AP,Libra de aluminio solamente,,LIBRA DE ALUMINIO SOLAMENTE
+APZ,Onza troy u onza farmacéutica,tr oz,ONZA TROY U ONZA FARMACEUTICA
+AQ,Unidad del factir anti-hemofilico.,,UNIDAD DEL FACTIR ANTI-HEMOFILICO.
+AR,supositorio,,SUPOSITORIO
+ARE,Are, un,ARE
+AS,Variedad,,VARIEDAD
+ASM,Grado alcohólico en masa,,GRADO ALCOHOLICO EN MASA
+ASU,Grado alcohólico volumétrico,,GRADO ALCOHOLICO VOLUMETRICO
+ATM,Atmósfera estándar, atm,ATMOSFERA ESTANDAR
+ATT,Atmósfera técnica,  a,ATMOSFERA TECNICA
+AW,Relleno de polvo en viales,,RELLENO DE POLVO EN VIALES
+AWG,Calibre de alambre americano, AWG,CALIBRE DE ALAMBRE AMERICANO
+AY,Montaje,,MONTAJE
+AZ,Unidad térmica británica (tabla internacional) por libra,    BtuIT/lb,UNIDAD TERMICA BRITANICA (TABLA INTERNACIONAL) POR LIBRA
+B0,Btu por pie cúbico,    BTU / ft?,BTU POR PIE CUBICO
+B1,Barril (EUA) por día,  barrelá(US)/d,BARRIL (EUA) POR DIA
+B10,Bits por segundo,bit/s,BITS POR SEGUNDO
+B11,Joule por kilogramo kelvin,    J/(kgÀK),JOULE POR KILOGRAMO KELVIN
+B12,Joule por metro, J/m,JOULE POR METRO
+B13,Joule por metro cuadrado,J/m?,JOULE POR METRO CUADRADO
+B14,Joule por metro a la cuarta potencia,J/m?,JOULE POR METRO A LA CUARTA POTENCIA
+B15,Juole por Mol,J/mol,JUOLE POR MOL
+B16,Juoule por Mol kelvin,    J/(molÀK),JUOULE POR MOL KELVIN
+B17,Crédito,,CREDITO
+B18,Segundos joule, JÀs,SEGUNDOS JOULE
+B19,Dígito,,DIGITO
+B2,litera,,LITERA
+B20,Joule metro cuadrado por kologramo,     JÀm?/kg,JOULE METRO CUADRADO POR KOLOGRAMO
+B21,Kelvin por watt, K/W,KELVIN POR WATT
+B22,Kiloamperio, kA,KILOAMPERIO
+B23,Kiloamperio por metro cuadrado,kA/m?,KILOAMPERIO POR METRO CUADRADO
+B24,Kiloamperio por metro,kA/m,KILOAMPERIO POR METRO
+B25,Kilobecquerel por metrocúbico,     kBq/kg,KILOBECQUEREL POR METROCUBICO
+B26,KiloCulombio, kC,KILOCULOMBIO
+B27,KiloCulombio por metro cúbico,kC/m?,KILOCULOMBIO POR METRO CUBICO
+B28,KiloCulombio por metro cuadrado,kC/m?,KILOCULOMBIO POR METRO CUADRADO
+B29,Kiloelectrónvoltio, keV,KILOELECTRONVOLTIO
+B3,Libra de bateo,,LIBRA DE BATEO
+B30,Gibibit,Gibit,GIBIBIT
+B31,Kilogramo metro por segundo,     kgÀm/s,KILOGRAMO METRO POR SEGUNDO
+B32,Kilogramo metro cuadrado,kgÀm?,KILOGRAMO METRO CUADRADO
+B33,Kilogramo metro cuadrado por segundo,     kgÀm?/s,KILOGRAMO METRO CUADRADO POR SEGUNDO
+B34,Kilogramo por decímetro cúbico,     kg/dm?,KILOGRAMO POR DECIMETRO CUBICO
+B35,Kilogramo por litro,  kg/l or kg/L,KILOGRAMO POR LITRO
+B36,Calorías (termoquímicas) por gramo,   caláthá/ g,CALORIAS (TERMOQUIMICAS) POR GRAMO
+B37,Kilogramo de fuerza, Kgf,KILOGRAMO DE FUERZA
+B38,Kilogramo-metro de la fuerza,     Kgf À m,KILOGRAMO-METRO DE LA FUERZA
+B39,Kilogramo-fuerza del metro por segundo,   Kgf À m / s,KILOGRAMO-FUERZA DEL METRO POR SEGUNDO
+B4,"Barril, unidad imperial",,"BARRIL, UNIDAD IMPERIAL"
+B40,Kilogramo de fuerza por metro cuadrado,    Kgf / m?,KILOGRAMO DE FUERZA POR METRO CUADRADO
+B41,Kilojoule por kelvin,kJ/K,KILOJOULE POR KELVIN
+B42,Kilojoule por kilogramo,kJ/kg,KILOJOULE POR KILOGRAMO
+B43,Kilojoule por kilogramo kelvin,    kJ/(kgÀK),KILOJOULE POR KILOGRAMO KELVIN
+B44,Kilojoule por Mol,     kJ/mol,KILOJOULE POR MOL
+B45,KiloMol,kmol,KILOMOL
+B46,KiloMol por metro cúbico,     kmol/m?,KILOMOL POR METRO CUBICO
+B47,Kilonewton, kN,KILONEWTON
+B48,Kilonewton metro,kNÀm,KILONEWTON METRO
+B49,KiloOhm, k?,KILOOHM
+B5,palanquilla,,PALANQUILLA
+B50,KiloOhm metro,k?Àm,KILOOHM METRO
+B51,KiloLibra, Kp,KILOLIBRA
+B52,Kilosegundo, ks,KILOSEGUNDO
+B53,Kilosiemens, kS,KILOSIEMENS
+B54,Kilosiemens por metro,kS/m,KILOSIEMENS POR METRO
+B55,Kilovoltio por metro,kV/m,KILOVOLTIO POR METRO
+B56,Kiloweber por metro,kWb/m,KILOWEBER POR METRO
+B57,Año luz, ly,ANO LUZ
+B58,Litro por Mol,l/mol,LITRO POR MOL
+B59,Lumen hora,lmÀh,LUMEN HORA
+B6,Bollo,,BOLLO
+B60,Lumen por metro cuadrado,lm/m?,LUMEN POR METRO CUADRADO
+B61,Luminosidad por watt,lm/W,LUMINOSIDAD POR WATT
+B62,Lumen segundo,lmÀs,LUMEN SEGUNDO
+B63,Hora de luz,lxÀh,HORA DE LUZ
+B64,Segundo de luz,lxÀs,SEGUNDO DE LUZ
+B65,Maxwell, Mx,MAXWELL
+B66,Megaamperio por metro cuadrado,MA/m?,MEGAAMPERIO POR METRO CUADRADO
+B67,Megabecquerel por kilogramo,     MBq/kg,MEGABECQUEREL POR KILOGRAMO
+B68,Gigabit,Gbit,GIGABIT
+B69,MegaCulombio por metro cúbico,MC/m?,MEGACULOMBIO POR METRO CUBICO
+B7,Ciclo,,CICLO
+B70,MegaCulombio por metro cuadrado,MC/m?,MEGACULOMBIO POR METRO CUADRADO
+B71,Megaelectrónvoltio, MeV,MEGAELECTRONVOLTIO
+B72,Megagramo por metro cúbico,Mg/m?,MEGAGRAMO POR METRO CUBICO
+B73,Meganewton, MN,MEGANEWTON
+B74,Meganewton metro,MNÀm,MEGANEWTON METRO
+B75,MegaOhm, M?,MEGAOHM
+B76,MegaOhm metro,M?Àm,MEGAOHM METRO
+B77,Megasiemens por metro,MS/m,MEGASIEMENS POR METRO
+B78,Megavoltio, MV,MEGAVOLTIO
+B79,Megavoltio por metro,MV/m,MEGAVOLTIO POR METRO
+B8,Joule por metro cúbico,J/m?,JOULE POR METRO CUBICO
+B80,Gigabit por segundo,     Gbit/s,GIGABIT POR SEGUNDO
+B81,"Reciprocidad del metro cuadrado, reciprocidad del segundo",m??/s,"RECIPROCIDAD DEL METRO CUADRADO, RECIPROCIDAD DEL SEGUNDO"
+B82,Pulgadas por pie lineal,,PULGADAS POR PIE LINEAL
+B83,Metro a la cuarta potencia, m?,METRO A LA CUARTA POTENCIA
+B84,Microamperio, ÁA,MICROAMPERIO
+B85,Microbar,Ábar,MICROBAR
+B86,MicroCulombio, ÁC,MICROCULOMBIO
+B87,MicroCulombio por metro cúbico,ÁC/m?,MICROCULOMBIO POR METRO CUBICO
+B88,MicroCulombio por metro cuadrado,ÁC/m?,MICROCULOMBIO POR METRO CUADRADO
+B89,Microfaradio por metro,ÁF/m,MICROFARADIO POR METRO
+B9,Batt,,BATT
+B90,Microhenry, ÁH,MICROHENRY
+B91,Microhenry por metro,ÁH/m,MICROHENRY POR METRO
+B92,Micronewton, ÁN,MICRONEWTON
+B93,Micronewton metro,ÁNÀm,MICRONEWTON METRO
+B94,Micro Ohm, Á?,MICRO OHM
+B95,MicroOhm metro,Á?Àm,MICROOHM METRO
+B96,Micropascal, ÁPa,MICROPASCAL
+B97,Microrradián,Árad,MICRORRADIAN
+B98,Microsegundo, Ás,MICROSEGUNDO
+B99,Microsiemens, ÁS,MICROSIEMENS
+BAR,Bar [unidad de presión], bar,BAR [UNIDAD DE PRESION]
+BB,Caja base,,CAJA BASE
+BFT,Tablero de pies, fbm,TABLERO DE PIES
+BH,Cepillo,,CEPILLO
+BHP,Potencia al freno, BHP,POTENCIA AL FRENO
+BIL,Billon,,BILLON
+BLD,Barril seco (EUA),    bbl (US),BARRIL SECO (EUA)
+BLL,Barril (EUA),   barrel (US),BARRIL (EUA)
+BP,Tabledo de cien pies,,TABLEDO DE CIEN PIES
+BPM,Latidos por minuto, BPM,LATIDOS POR MINUTO
+BQL,Becquerel, Bq,BECQUEREL
+BTU,Unidad térmica británica (tabla internacional),BtuIT,UNIDAD TERMICA BRITANICA (TABLA INTERNACIONAL)
+BUA,Bushel (EUA),     bu (US),BUSHEL (EUA)
+BUI,Bushel (UK),   bushel (UK),BUSHEL (UK)
+BW,Peso base,,PESO BASE
+BZ,Millones de BTUs,,MILLONES DE BTUS
+C0,Llamada,,LLAMADA
+C1,Libra de producto compuesto (peso total),,LIBRA DE PRODUCTO COMPUESTO (PESO TOTAL)
+C10,Milifaradio, mF,MILIFARADIO
+C11,Miligalón,mGal,MILIGALON
+C12,Miligramo por metro,mg/m,MILIGRAMO POR METRO
+C13,MilliGray, mGy,MILLIGRAY
+C14,Milihenry, mH,MILIHENRY
+C15,Milijoule, mJ,MILIJOULE
+C16,Milímetro por segundo,mm/s,MILIMETRO POR SEGUNDO
+C17,Milímetro cuadrado por segundo,mm?/s,MILIMETRO CUADRADO POR SEGUNDO
+C18,MiliMol,mmol,MILIMOL
+C19,Mol por kilogramo,     mol/kg,MOL POR KILOGRAMO
+C2,Carset,,CARSET
+C20,Milinewton, mN,MILINEWTON
+C21,Kibibit,Kibit,KIBIBIT
+C22,Milinewton por metro,mN/m,MILINEWTON POR METRO
+C23,MiliOhm metro,m?Àm,MILIOHM METRO
+C24,Milipascal segundo,mPaÀs,MILIPASCAL SEGUNDO
+C25,Milirradián,mrad,MILIRRADIAN
+C26,Milisegundo, ms,MILISEGUNDO
+C27,Milisiemens, mS,MILISIEMENS
+C28,MilliSievert, mSv,MILLISIEVERT
+C29,Militesla, mT,MILITESLA
+C3,Microvoltios por metro,ÁV/m,MICROVOLTIOS POR METRO
+C30,Milivoltio por metro,mV/m,MILIVOLTIO POR METRO
+C31,Miliwatt, mW,MILIWATT
+C32,Miliwatt por metro cuadrado,mW/m?,MILIWATT POR METRO CUADRADO
+C33,Miliweber, mWb,MILIWEBER
+C34,Mol, mol,MOL
+C35,Mol por decimetro cúbico,     mol/dm?,MOL POR DECIMETRO CUBICO
+C36,Mol por metro cúbico,     mol/m?,MOL POR METRO CUBICO
+C37,Kilobits,kbit,KILOBITS
+C38,Mol por litro,mol/l,MOL POR LITRO
+C39,Nanoamperio, nA,NANOAMPERIO
+C4,partido de carga,,PARTIDO DE CARGA
+C40,NanoCulombio, nC,NANOCULOMBIO
+C41,Nanofaradio, nF,NANOFARADIO
+C42,Nanofaradio por metro,nF/m,NANOFARADIO POR METRO
+C43,Nanohenry, nH,NANOHENRY
+C44,Nanohenry por metro,nH/m,NANOHENRY POR METRO
+C45,Nanómetro, nm,NANOMETRO
+C46,NanoOhm metro,n?Àm,NANOOHM METRO
+C47,Nanosegundo, ns,NANOSEGUNDO
+C48,Nanotesla, nT,NANOTESLA
+C49,Nanowatt, nW,NANOWATT
+C5,Costo,,COSTO
+C50,Neperio, Np,NEPERIO
+C51,Neperio por segundo,Np/s,NEPERIO POR SEGUNDO
+C52,Picómetro, pm,PICOMETRO
+C53,Newton metro segundo,NÀmÀs,NEWTON METRO SEGUNDO
+C54,Newton metro cuadrado por kilogramo cuadrado,    NÀm?/kg?,NEWTON METRO CUADRADO POR KILOGRAMO CUADRADO
+C55,Newton por metro cuadrado,N/m?,NEWTON POR METRO CUADRADO
+C56,Newton por milimetro cuadrado,N/mm?,NEWTON POR MILIMETRO CUADRADO
+C57,Newton segundo, NÀs,NEWTON SEGUNDO
+C58,Segundos newton por metro,NÀs/m,SEGUNDOS NEWTON POR METRO
+C59,Octava,,OCTAVA
+C6,celda,,CELDA
+C60,Ohm centímetro,?Àcm,OHM CENTIMETRO
+C61,Ohm metro, ?Àm,OHM METRO
+C62,Uno,  1,UNO
+C63,Pársec, pc,PARSEC
+C64,Pascal por kelvin,Pa/K,PASCAL POR KELVIN
+C65,Pascal segundo,PaÀs,PASCAL SEGUNDO
+C66,Segundos pascal por metro cúbico,     PaÀs/m?,SEGUNDOS PASCAL POR METRO CUBICO
+C67,Segundos pascal por metro,     PaÀ s/m,SEGUNDOS PASCAL POR METRO
+C68,Petajoule, PJ,PETAJOULE
+C69,Phon,,PHON
+C7,Centipoise, cP,CENTIPOISE
+C70,Picoamperio, pA,PICOAMPERIO
+C71,PicoCulombio, pC,PICOCULOMBIO
+C72,Picofaradio por metro,pF/m,PICOFARADIO POR METRO
+C73,Picohenry, pH,PICOHENRY
+C74,Kilobits por segundo,     kbit/s,KILOBITS POR SEGUNDO
+C75,Picowatt, pW,PICOWATT
+C76,Picowatt  por metro cuadrado,pW/m?,PICOWATT  POR METRO CUADRADO
+C77,Calibre de libra,,CALIBRE DE LIBRA
+C78,Libra fuerza, lbf,LIBRA FUERZA
+C79,Kilovoltios horas amperios,kVAh,KILOVOLTIOS HORAS AMPERIOS
+C8,MilliCulombio por kilogramo,mC/kg,MILLICULOMBIO POR KILOGRAMO
+C80,Rad, rad,RAD
+C81,Radián, rad,RADIAN
+C82,Radianmetro cuadrado por Mol,   radÀm?/mol,RADIANMETRO CUADRADO POR MOL
+C83,Rradian metro cuadrado por kilogramo,    radÀm?/kg,RRADIAN METRO CUADRADO POR KILOGRAMO
+C84,Radían por metro,rad/m,RADIAN POR METRO
+C85,Reciprocidad ?mstrong, ???,RECIPROCIDAD AMSTRONG
+C86,Reciprocidad del metro cúbico, m??,RECIPROCIDAD DEL METRO CUBICO
+C87,Reciprocidad metro cúbico por segundo,m??/s,RECIPROCIDAD METRO CUBICO POR SEGUNDO
+C88,Recíproco joule por metro cúbico,     eV??/m?,RECIPROCO JOULE POR METRO CUBICO
+C89,Henry recíproco, H??,HENRY RECIPROCO
+C9,Grupo bobinas,,GRUPO BOBINAS
+C90,Recíproco Henry,     J??/m?,RECIPROCO HENRY
+C91,Recíprocidad de kelvin ó kelvin a la potencia menos 1, K??,RECIPROCIDAD DE KELVIN O KELVIN A LA POTENCIA MENOS 1
+C92,Reciprocidad Metro, m??,RECIPROCIDAD METRO
+C93,Reciprocidad Metro cuadrado, m??,RECIPROCIDAD METRO CUADRADO
+C94,Reciprocidad Minuto,min??,RECIPROCIDAD MINUTO
+C95,Reciprocidad Mol,mol??,RECIPROCIDAD MOL
+C96,Reciprocidad Pascal o pascal a la potencia menos 1,Pa??,RECIPROCIDAD PASCAL O PASCAL A LA POTENCIA MENOS 1
+C97,Reciprocidad Segundo, s??,RECIPROCIDAD SEGUNDO
+C98,Segundo recíproco por metro cúbico,S $ ^ {1} $ / m $ ? $,SEGUNDO RECIPROCO POR METRO CUBICO
+C99,Reciprocidad Segundo por metro cuadrado,     s??/m?,RECIPROCIDAD SEGUNDO POR METRO CUADRADO
+CCT,Capacidad de carga en toneladas métricas,,CAPACIDAD DE CARGA EN TONELADAS METRICAS
+CDL,Candela, cd,CANDELA
+CE,Cada mes,,CADA MES
+CEL,Grados celsius, ?C,GRADOS CELSIUS
+CEN,Centenar,,CENTENAR
+CG,Tarjeta,,TARJETA
+CGM,Centígramo, cg,CENTIGRAMO
+CK,Conector,,CONECTOR
+CKG,Culombio por kilogramo,C/kg,CULOMBIO POR KILOGRAMO
+CLF,Cientos de hojas,,CIENTOS DE HOJAS
+CLT,Centilitro, cl,CENTILITRO
+CMK,Centímetro cuadrado, cm?,CENTIMETRO CUADRADO
+CMQ,Centímetro cúbico, cm?,CENTIMETRO CUBICO
+CMT,Centímetro, cm,CENTIMETRO
+CNP,Cientos de paquetes,,CIENTOS DE PAQUETES
+CNT,Cental (UK),,CENTAL (UK)
+COU,Culombio,  C,CULOMBIO
+CTG,Contenido en gramos,,CONTENIDO EN GRAMOS
+CTM,Quilatage métrico,,QUILATAGE METRICO
+CTN,Tonelada de contenido (métrica),,TONELADA DE CONTENIDO (METRICA)
+CUR,Curie, Ci,CURIE
+CWA,Hundred pound,    cwt (US),HUNDRED POUND
+CWI,Hundredweight,    cwt (UK),HUNDREDWEIGHT
+CZ,Combo,,COMBO
+D03,Kilovatio hora por hora,     kWÀh/h,KILOVATIO HORA POR HORA
+D04,Lot [unidad de peso],,LOT [UNIDAD DE PESO]
+D1,Segundo recíproco por estereorradián,     s??/sr,SEGUNDO RECIPROCO POR ESTEREORRADIAN
+D10,Siemens por metro, S/m,SIEMENS POR METRO
+D11,Mebibit,Mibit,MEBIBIT
+D12,Siemens metro cuadrado por Mol,    SÀm?/mol,SIEMENS METRO CUADRADO POR MOL
+D13,Sievert, Sv,SIEVERT
+D14,Yarda mil lineal,,YARDA MIL LINEAL
+D15,Sone,,SONE
+D16,Centimetro cuadrado por erg,     cm?/erg,CENTIMETRO CUADRADO POR ERG
+D17,Centimetro cuadrado por esteroradian erg,  cm?/(srÀerg),CENTIMETRO CUADRADO POR ESTERORADIAN ERG
+D18,Metro kelvin, mÀK,METRO KELVIN
+D19,Metro cuadrado kelvin por watt.,     m?ÀK/W,METRO CUADRADO KELVIN POR WATT.
+D2,Segundo recíproco por estereorradián metro cuadrado,   s??/(srÀm?),SEGUNDO RECIPROCO POR ESTEREORRADIAN METRO CUADRADO
+D20,Metro cuadrado por joule,m?/J,METRO CUADRADO POR JOULE
+D21,Metro cuadrado por kilogramo,m?/kg,METRO CUADRADO POR KILOGRAMO
+D22,Metro cuadrado por Mol,     m?/mol,METRO CUADRADO POR MOL
+D23,Gramo pluma (proteína),,GRAMO PLUMA (PROTEINA)
+D24,Metro cuadrado por esteroradian,m?/sr,METRO CUADRADO POR ESTERORADIAN
+D25,Metro cuadrado por esteroradian joule,    m?/(srÀJ),METRO CUADRADO POR ESTERORADIAN JOULE
+D26,Metro cuadrado por voltiosegundo,    m?/(VÀs),METRO CUADRADO POR VOLTIOSEGUNDO
+D27,Estereorradían, sr,ESTEREORRADIAN
+D28,sifón,,SIFON
+D29,Terahertz, THz,TERAHERTZ
+D30,Terajoule, TJ,TERAJOULE
+D31,Terawatt, TW,TERAWATT
+D32,Terawatt hora,TWÀh,TERAWATT HORA
+D33,Tesla,  T,TESLA
+D34,Tex,   tex (g/km),TEX
+D35,Calorías (termoquímicas),?ácal,CALORIAS (TERMOQUIMICAS)
+D36,Megabit,Mbit,MEGABIT
+D37,Calorías (termoquímicas) por gramo de kelvin, ?ácalá/ (g À K),CALORIAS (TERMOQUIMICAS) POR GRAMO DE KELVIN
+D38,Calorías (termoquímicas) por segundo centímetro kelvin,?ácalá/ (s À cm À K),CALORIAS (TERMOQUIMICAS) POR SEGUNDO CENTIMETRO KELVIN
+D39,Calorías (termoquímicas) por segundo centímetro cuadrado kelvin,?ácalá/ (s À cm? À K),CALORIAS (TERMOQUIMICAS) POR SEGUNDO CENTIMETRO CUADRADO KELVIN
+D40,Mil litros,,MIL LITROS
+D41,Tonelada por metro cúbico,t/m?,TONELADA POR METRO CUBICO
+D42,Año tropical,  y (tropical),ANO TROPICAL
+D43,Unidad de masa atómica unificada,  u,UNIDAD DE MASA ATOMICA UNIFICADA
+D44,Var, var,VAR
+D45,Voltio cuadrado por kelvin cuadrado,V?/K?,VOLTIO CUADRADO POR KELVIN CUADRADO
+D46,Voltioio-amperio, VÀA,VOLTIOIO-AMPERIO
+D47,Voltio por centímetro,V/cm,VOLTIO POR CENTIMETRO
+D48,Voltio por Kelvin, V/K,VOLTIO POR KELVIN
+D49,Millivoltio por Kelvin,mV/K,MILLIVOLTIO POR KELVIN
+D5,Kilogramo por centímetro cuadrado,     kg/cm?,KILOGRAMO POR CENTIMETRO CUADRADO
+D50,Voltio por metro, V/m,VOLTIO POR METRO
+D51,Voltio por milímetro,V/mm,VOLTIO POR MILIMETRO
+D52,Watt por kelvin, W/K,WATT POR KELVIN
+D53,Watt por metro kelvin,     W/(mÀK),WATT POR METRO KELVIN
+D54,Watt por metro cuadrado,W/m?,WATT POR METRO CUADRADO
+D55,Watt por metro cuadrado kelvin,    W/(m?ÀK),WATT POR METRO CUADRADO KELVIN
+D56,Watt por metro cuadrado kelvin a la cuarta potencia,    W/(m?ÀK?),WATT POR METRO CUADRADO KELVIN A LA CUARTA POTENCIA
+D57,Watt por estereorradián,W/sr,WATT POR ESTEREORRADIAN
+D58,Watt por estereorradián metro cuadrado,    W/(srÀm?),WATT POR ESTEREORRADIAN METRO CUADRADO
+D59,Weber por metro,Wb/m,WEBER POR METRO
+D6,Roentgen por segundo, R/s,ROENTGEN POR SEGUNDO
+D60,Weber por milímetro,Wb/mm,WEBER POR MILIMETRO
+D61,Minuto [unidad de ángulo],  ',MINUTO [UNIDAD DE ANGULO]
+D62,Segundo [unidad de ángulo],"        """,SEGUNDO [UNIDAD DE ANGULO]
+D63,Libro,,LIBRO
+D64,bloquear,,BLOQUEAR
+D65,Redondo,,REDONDO
+D66,casete,,CASETE
+D67,Dólar por hora,,DOLAR POR HORA
+D68,Número de palabras,,NUMERO DE PALABRAS
+D69,Pulgada a la cuarta potencia, in?,PULGADA A LA CUARTA POTENCIA
+D7,Sandwich,,SANDWICH
+D70,Calorías (tabla internacional),     CaláTI,CALORIAS (TABLA INTERNACIONAL)
+D71,Calorías (tabla internacional) por segundo centímetro kelvin,caláTIá/ (s À cm À K),CALORIAS (TABLA INTERNACIONAL) POR SEGUNDO CENTIMETRO KELVIN
+D72,Calorías (tabla internacional) por segundo centímetro cuadrado kelvin,CaláTIá/ (s À cm? À K),CALORIAS (TABLA INTERNACIONAL) POR SEGUNDO CENTIMETRO CUADRADO KELVIN
+D73,Joule metro cuadrado,JÀm?,JOULE METRO CUADRADO
+D74,Kilogramo por Mol,     kg/mol,KILOGRAMO POR MOL
+D75,Calorías (tabla internacional) por gramo,   caláITá/ g,CALORIAS (TABLA INTERNACIONAL) POR GRAMO
+D76,Calorías (tabla internacional) por gramo de kelvin,caláITá/ (g À K),CALORIAS (TABLA INTERNACIONAL) POR GRAMO DE KELVIN
+D77,MegaCulombio, MC,MEGACULOMBIO
+D78,Megajoule por segundo,MJ/s,MEGAJOULE POR SEGUNDO
+D79,Viga,,VIGA
+D8,Draize score,,DRAIZE SCORE
+D80,Microwatt, ÁW,MICROWATT
+D81,Microtesla, ÁT,MICROTESLA
+D82,Microvoltio, ÁV,MICROVOLTIO
+D83,Milinewton metro,mNÀm,MILINEWTON METRO
+D85,Microwatt por metro cuadrado,ÁW/m?,MICROWATT POR METRO CUADRADO
+D86,MiliCulombio, mC,MILICULOMBIO
+D87,MiliMol por kilogramo,     mmol/kg,MILIMOL POR KILOGRAMO
+D88,MiliCulombio por metro cúbico,mC/m?,MILICULOMBIO POR METRO CUBICO
+D89,MiliCulombio por metro cuadrado,mC/m?,MILICULOMBIO POR METRO CUADRADO
+D9,Dyne por centímetro cuadrado,    Dyn / cm?,DYNE POR CENTIMETRO CUADRADO
+D90,Metro cúbico (neta),,METRO CUBICO (NETA)
+D91,Rem, rem,REM
+D92,banda,,BANDA
+D93,Segundo por metro cúbico,s/m?,SEGUNDO POR METRO CUBICO
+D94,Segundo por metro cúbico Radian,   s/(radÀm?),SEGUNDO POR METRO CUBICO RADIAN
+D95,Joule por gramo, J/g,JOULE POR GRAMO
+D96,Libra bruta,,LIBRA BRUTA
+D98,Libra masiva,,LIBRA MASIVA
+D99,manga,,MANGA
+DAA,Decar, daa,DECAR
+DAD,Decena de días,,DECENA DE DIAS
+DAY,Día,  d,DIA
+DB,Libra seca,,LIBRA SECA
+DC,Disco (disco),,DISCO (DISCO)
+DD,Grado [unidad de ángulo],  ?,GRADO [UNIDAD DE ANGULO]
+DE,Acuerdo,,ACUERDO
+DEC,Década,,DECADA
+DG,Decigramo, dg,DECIGRAMO
+DI,dispensador,,DISPENSADOR
+DJ,Decagramo, dag,DECAGRAMO
+DLT,Decilitro, dl,DECILITRO
+DMA,Decámetro cúbico,dam?,DECAMETRO CUBICO
+DMK,Decímetro cuadrado, dm?,DECIMETRO CUADRADO
+DMO,Kiloliter norma,,KILOLITER NORMA
+DMQ,Decímetro cúbico, dm?,DECIMETRO CUBICO
+DMT,Decímetro, dm,DECIMETRO
+DN,Decinewton metro,dNÀm,DECINEWTON METRO
+DPC,Docenas de piezas,,DOCENAS DE PIEZAS
+DPR,Docenas de pares,,DOCENAS DE PARES
+DPT,Peso de desplazamiento,,PESO DE DESPLAZAMIENTO
+DQ,registro de datos,,REGISTRO DE DATOS
+DRA,Dram (EUA),,DRAM (EUA)
+DRI,Dram (UK),,DRAM (UK)
+DRL,Docena de rodillos,,DOCENA DE RODILLOS
+DRM,Drachm (UK),,DRACHM (UK)
+DS,monitor,,MONITOR
+DT,Tonelada seca,,TONELADA SECA
+DTN,Decitonelada métrica,    dt or dtn,DECITONELADA METRICA
+DU,dina, Dyn,DINA
+DWT,Pennyweight,,PENNYWEIGHT
+Dx,Dyne por centímetro,    Dyn / cm,DYNE POR CENTIMETRO
+DY,Libro de directorio,,LIBRO DE DIRECTORIO
+DZN,Docena, DOZ,DOCENA
+DZP,Docena de paquete,,DOCENA DE PAQUETE
+E01,Newton por centímetro cuadrado,N/cm?,NEWTON POR CENTIMETRO CUADRADO
+E07,Megawatt hora por hora,     MWÀh/h,MEGAWATT HORA POR HORA
+E08,Megavatios por hertz,MW/Hz,MEGAVATIOS POR HERTZ
+E09,Miliamperio hora,mAÀh,MILIAMPERIO HORA
+E10,Día de grado,     deg da,DIA DE GRADO
+E11,Gigacalorie,,GIGACALORIE
+E12,Mille,,MILLE
+E14,Kilocaloría (tabla internacional),     kcalIT,KILOCALORIA (TABLA INTERNACIONAL)
+E15,Kilocaloría (termoquímica) por hora,    kcalth/h,KILOCALORIA (TERMOQUIMICA) POR HORA
+E16,Millón de btu (ti) por hora,     BtuIT/h,MILLON DE BTU (TI) POR HORA
+E17,Pie cúbico por segundo,ft?/s,PIE CUBICO POR SEGUNDO
+E18,Tonelada por hora, t/h,TONELADA POR HORA
+E19,Ping,,PING
+E20,Megabit por segundo,     Mbit/s,MEGABIT POR SEGUNDO
+E21,Shares,,SHARES
+E22,Tue,,TUE
+E23,Neumático,,NEUMATICO
+E25,Unidad activa,,UNIDAD ACTIVA
+E27,Dosis,,DOSIS
+E28,Tonelada seca de aire,,TONELADA SECA DE AIRE
+E3,remolque,,REMOLQUE
+E30,Hebra,,HEBRA
+E31,Metro cuadrado por litro,m?/l,METRO CUADRADO POR LITRO
+E32,Litros por hora, l/h,LITROS POR HORA
+E33,Por mil pies,,POR MIL PIES
+E34,Gigabyte,Gbyte,GIGABYTE
+E35,Terabyte,Tbyte,TERABYTE
+E36,Petabyte,Pbyte,PETABYTE
+E37,Pixel,,PIXEL
+E38,Megapíxeles,,MEGAPIXELES
+E39,Puntos por pulgada, dpi,PUNTOS POR PULGADA
+E4,Kilo bruto,,KILO BRUTO
+E40,Parte por cien mil,ppht,PARTE POR CIEN MIL
+E41,Kilogramo-fuerza por milímetro cuadrado,    kgfÀm/cm?,KILOGRAMO-FUERZA POR MILIMETRO CUADRADO
+E42,Kilogramo-fuerza por centímetro cuadrado,     kgf/cm?,KILOGRAMO-FUERZA POR CENTIMETRO CUADRADO
+E43,Joule por centímetro cuadrado,J/cm?,JOULE POR CENTIMETRO CUADRADO
+E44,Metros kilogramo-fuerza por centímetro cuadrado,    kgfÀm/cm?,METROS KILOGRAMO-FUERZA POR CENTIMETRO CUADRADO
+E45,MiliOhm, m?,MILIOHM
+E46,Kilovatio hora por metro cúbico,     kWÀh/m?,KILOVATIO HORA POR METRO CUBICO
+E47,Kilovatio hora por kelvin,     kWÀh/K,KILOVATIO HORA POR KELVIN
+E48,Unidad de servicio,,UNIDAD DE SERVICIO
+E49,Día de trabajo,,DIA DE TRABAJO
+E5,Tonelada métrica larga,,TONELADA METRICA LARGA
+E50,Unidad de cuenta,,UNIDAD DE CUENTA
+E51,Trabajo,,TRABAJO
+E52,Run foot,,RUN FOOT
+E53,Prueba,,PRUEBA
+E54,Viaje,,VIAJE
+E55,Utilizar,,UTILIZAR
+E56,Bien,,BIEN
+E57,Zona,,ZONA
+E58,Exabit por segundo,     Ebit/s,EXABIT POR SEGUNDO
+E59,Exbibyte,     Eibyte,EXBIBYTE
+E60,Pebibyte,     Pibyte,PEBIBYTE
+E61,Tebibyte,     Tibyte,TEBIBYTE
+E62,Gibibyte,     Gibyte,GIBIBYTE
+E63,Mebibyte,     Mibyte,MEBIBYTE
+E64,Kibibyte,     Kibyte,KIBIBYTE
+E65,Exbibit por metro,     Eibit/m,EXBIBIT POR METRO
+E66,Exbibit por metro cuadrado,    Eibit/m?,EXBIBIT POR METRO CUADRADO
+E67,Exbibit por metro cúbico,    Eibit/m?,EXBIBIT POR METRO CUBICO
+E68,Gigabyte por segundo,     Gbyte/s,GIGABYTE POR SEGUNDO
+E69,Gibibit por metro,     Gibit/m,GIBIBIT POR METRO
+E70,Gibibit por metro cuadrado,    Gibit/m?,GIBIBIT POR METRO CUADRADO
+E71,Gibibit por metro cúbico,    Gibit/m?,GIBIBIT POR METRO CUBICO
+E72,Kibibit por metro,     Kibit/m,KIBIBIT POR METRO
+E73,Kibibit por metro cuadrado,    Kibit/m?,KIBIBIT POR METRO CUADRADO
+E74,Kikibit por metro cúbico.,    Kibit/m?,KIKIBIT POR METRO CUBICO.
+E75,Mebbit por metro.,     Mibit/m,MEBBIT POR METRO.
+E76,Mebbitt por metro cuadrado.,    Mibit/m?,MEBBITT POR METRO CUADRADO.
+E77,Mebbit por metro cúbico.,    Mibit/m?,MEBBIT POR METRO CUBICO.
+E78,Petabit,Pbit,PETABIT
+E79,Pebibit por segundo.,     Pbit/s,PEBIBIT POR SEGUNDO.
+E80,Pebibit por metro.,     Pibit/m,PEBIBIT POR METRO.
+E81,Pebibit por metro cuadrado.,    Pibit/m?,PEBIBIT POR METRO CUADRADO.
+E82,Pebibit por metro cúbico.,    Pibit/m?,PEBIBIT POR METRO CUBICO.
+E83,Tebibit.,Tbit,TEBIBIT.
+E84,Tebibit por segundo,     Tbit/s,TEBIBIT POR SEGUNDO
+E85,Tebibit por metro.,     Tibit/m,TEBIBIT POR METRO.
+E86,Tebibit por metro cúbico.,    Tibit/m?,TEBIBIT POR METRO CUBICO.
+E87,Tebibit por metro cuadrado,    Tibit/m?,TEBIBIT POR METRO CUADRADO
+E88,Bit por metro,bit/m,BIT POR METRO
+E89,Bit por metro cuadrado,     bit/m?,BIT POR METRO CUADRADO
+E90,Centímetro recíproco,cm??,CENTIMETRO RECIPROCO
+E91,Día recíproco, d??,DIA RECIPROCO
+E92,Decímetro cúbico por hora,dm?/h,DECIMETRO CUBICO POR HORA
+E93,Kilogramo por hora,kg/h,KILOGRAMO POR HORA
+E94,KiloMol por segundo,     kmol/s,KILOMOL POR SEGUNDO
+E95,Mol por segundo,mol/s,MOL POR SEGUNDO
+E96,Grado por segundo, ?/s,GRADO POR SEGUNDO
+E97,Mililitro por gadro celsius metro,    mm/(?CÀm),MILILITRO POR GADRO CELSIUS METRO
+E98,Grado celsius por kelvin,?C/K,GRADO CELSIUS POR KELVIN
+E99,Hectopascal por bar,     hPa/bar,HECTOPASCAL POR BAR
+EA,Elemento,,ELEMENTO
+EB,Casilla de correo electrónico,,CASILLA DE CORREO ELECTRONICO
+EP,Paquete de once,,PAQUETE DE ONCE
+EQ,Galón equivalente,,GALON EQUIVALENTE
+F01,Bit por metro cúbico,     bit/m?,BIT POR METRO CUBICO
+F02,Kelvin por kelvin, K/K,KELVIN POR KELVIN
+F03,Kilopascal por bar,     kPa/bar,KILOPASCAL POR BAR
+F04,Milibar por bar,    mbar/bar,MILIBAR POR BAR
+F05,Megapascal por bar,     MPa/bar,MEGAPASCAL POR BAR
+F06,Poise por bar,P/bar,POISE POR BAR
+F07,Pascal por bar,     Pa/bar,PASCAL POR BAR
+F08,Miliamperio por pulgada,mA/in,MILIAMPERIO POR PULGADA
+F1,Mil pies cúbicos por día,,MIL PIES CUBICOS POR DIA
+F10,Kelvin por hora, K/h,KELVIN POR HORA
+F11,Kelvin por minuto,K/min,KELVIN POR MINUTO
+F12,Kelvin por segundo, K/s,KELVIN POR SEGUNDO
+F13,Slug,slug,SLUG
+F14,Gramo por kelvin, g/K,GRAMO POR KELVIN
+F15,Kilogramo por kelvin,kg/K,KILOGRAMO POR KELVIN
+F16,Miligramo por kelvin,mg/K,MILIGRAMO POR KELVIN
+F17,Libra fuerza por pie,     lbf/ft,LIBRA FUERZA POR PIE
+F18,Kilogramo centímetro cuadrado,     kgÀcm?,KILOGRAMO CENTIMETRO CUADRADO
+F19,Kilogramo milimetro cuadrado,     kgÀmm?,KILOGRAMO MILIMETRO CUADRADO
+F20,Libra pulgada cuadrada,     lbÀin?,LIBRA PULGADA CUADRADA
+F21,Libra fuerza pulgada,     lbfÀin,LIBRA FUERZA PULGADA
+F22,Libra fuerza por pie entre amperio,    lbfÀft/A,LIBRA FUERZA POR PIE ENTRE AMPERIO
+F23,Gramo por decímetro cúbico,g/dm?,GRAMO POR DECIMETRO CUBICO
+F24,Kilogramo por kiloMol,     kg/kmol,KILOGRAMO POR KILOMOL
+F25,Gramo por hertz,g/Hz,GRAMO POR HERTZ
+F26,Gramo por día, g/d,GRAMO POR DIA
+F27,Gramo por hora, g/h,GRAMO POR HORA
+F28,Gramo por minuto,g/min,GRAMO POR MINUTO
+F29,Gramo por segundo, g/s,GRAMO POR SEGUNDO
+F30,Kilogramo por día,kg/d,KILOGRAMO POR DIA
+F31,Kilogramo por minuto,     kg/min,KILOGRAMO POR MINUTO
+F32,Miligramo por dia,mg/d,MILIGRAMO POR DIA
+F33,Miligramo por minuto,     mg/min,MILIGRAMO POR MINUTO
+F34,Miligramo por segundo,mg/s,MILIGRAMO POR SEGUNDO
+F35,Gramo por día kelvin,     g/(dÀK),GRAMO POR DIA KELVIN
+F36,Gramo por hora kelvin,     g/(hÀK),GRAMO POR HORA KELVIN
+F37,Gramo por minuto kelvin,    g/(minÀK),GRAMO POR MINUTO KELVIN
+F38,Gramo por segundo kelvin,     g/(sÀK),GRAMO POR SEGUNDO KELVIN
+F39,Kilogramo por día kelvin,    kg/(dÀK),KILOGRAMO POR DIA KELVIN
+F40,Kilogramo por hora kelvin,    kg/(hÀK),KILOGRAMO POR HORA KELVIN
+F41,Kilogramo por minuto kelvin,   kg/(minÀK),KILOGRAMO POR MINUTO KELVIN
+F42,Kilogramo por segundo kelvin,    kg/(sÀK),KILOGRAMO POR SEGUNDO KELVIN
+F43,Miligramo por día kelvin,    mg/(dÀK),MILIGRAMO POR DIA KELVIN
+F44,Miligramo por hora kelvin,    mg/(hÀK),MILIGRAMO POR HORA KELVIN
+F45,Miligramo por minuto kelvin,   mg/(minÀK),MILIGRAMO POR MINUTO KELVIN
+F46,Miligramo por segundo kelvin,    mg/(sÀK),MILIGRAMO POR SEGUNDO KELVIN
+F47,Newton por milímetro,N/mm,NEWTON POR MILIMETRO
+F48,Libra fuerza por pulgada,     lbf/in,LIBRA FUERZA POR PULGADA
+F49,Rod (Unidad de distancia),     rd (US),ROD (UNIDAD DE DISTANCIA)
+F50,Micrómetro por kelvin,Ám/K,MICROMETRO POR KELVIN
+F51,Centímetro por kelvin,cm/K,CENTIMETRO POR KELVIN
+F52,Metro por kelvin, m/K,METRO POR KELVIN
+F53,Mililitro por kelvin,mm/K,MILILITRO POR KELVIN
+F54,MiliOhm por metro,m?/m,MILIOHM POR METRO
+F55,Ohm por milla (milla estatal),?/mi,OHM POR MILLA (MILLA ESTATAL)
+F56,Ohm por kilómetro,?/km,OHM POR KILOMETRO
+F57,Miliamperio por libra-fuerza por pulgada cuadrada,  mA/(lbf/in?),MILIAMPERIO POR LIBRA-FUERZA POR PULGADA CUADRADA
+F58,Bar recíproco,1/bar,BAR RECIPROCO
+F59,Miliamperio por bar,     mA/bar,MILIAMPERIO POR BAR
+F60,Grado celsius por bar,     ?C/bar,GRADO CELSIUS POR BAR
+F61,Kelvin por bar,K/bar,KELVIN POR BAR
+F62,Gramo por día bar,    g/(dÀbar),GRAMO POR DIA BAR
+F63,Gramo por hora bar,    g/(hÀbar),GRAMO POR HORA BAR
+F64,Gramo por minuto bar,   g/(minÀbar),GRAMO POR MINUTO BAR
+F65,Gramo por segundo bar,    g/(sÀbar),GRAMO POR SEGUNDO BAR
+F66,Kililogramo por día bar,   kg/(dÀbar),KILILOGRAMO POR DIA BAR
+F67,Kilogramo por hora bar,   kg/(hÀbar),KILOGRAMO POR HORA BAR
+F68,Kilogramo por minuto bar,  kg/(minÀbar),KILOGRAMO POR MINUTO BAR
+F69,Kilogramo por segundo bar,   kg/(sÀbar),KILOGRAMO POR SEGUNDO BAR
+F70,Miligramo por día bar,   mg/(dÀbar),MILIGRAMO POR DIA BAR
+F71,Miligramo por hora bar,   mg/(hÀbar),MILIGRAMO POR HORA BAR
+F72,Miligramo por minuto bar,  mg/(minÀbar),MILIGRAMO POR MINUTO BAR
+F73,Miligramo por segundo bar,   mg/(sÀbar),MILIGRAMO POR SEGUNDO BAR
+F74,Gramo por bar,g/bar,GRAMO POR BAR
+F75,Miligramo por bar,     mg/bar,MILIGRAMO POR BAR
+F76,Miliamperio por milímetro,mA/mm,MILIAMPERIO POR MILIMETRO
+F77,Pascal segundo por kelvin,     Pa.s/K,PASCAL SEGUNDO POR KELVIN
+F78,Pulgada de agua,inH?O,PULGADA DE AGUA
+F79,Pulgada de mercurio,inHg,PULGADA DE MERCURIO
+F80,Caballos de fuerza de agua,,CABALLOS DE FUERZA DE AGUA
+F81,Bar por kelvin,bar/K,BAR POR KELVIN
+F82,Hectopascal por kelvin,hPa/K,HECTOPASCAL POR KELVIN
+F83,Kilopascal por kelvin,kPa/K,KILOPASCAL POR KELVIN
+F84,Milibar por kelvin,     mbar/K,MILIBAR POR KELVIN
+F85,Megapascal por kelvin,MPa/K,MEGAPASCAL POR KELVIN
+F86,Poise por kelvin, P/K,POISE POR KELVIN
+F87,Voltio por litro minuto,    V/(lÀmin),VOLTIO POR LITRO MINUTO
+F88,Newton centímetro,NÀcm,NEWTON CENTIMETRO
+F89,Newton metro por grados,Nm/?,NEWTON METRO POR GRADOS
+F9,Fibra por centímetro cúbico de aire,,FIBRA POR CENTIMETRO CUBICO DE AIRE
+F90,Newton metro por amperio,NÀm/A,NEWTON METRO POR AMPERIO
+F91,Bar litro por segundo,     barÀl/s,BAR LITRO POR SEGUNDO
+F92,Bar metro cúbico por segundo,    barÀm?/s,BAR METRO CUBICO POR SEGUNDO
+F93,Hectopascal litro por segundo,     hPaÀl/s,HECTOPASCAL LITRO POR SEGUNDO
+F94,Hectopascal metro cúbico por segundo,    hPaÀm?/s,HECTOPASCAL METRO CUBICO POR SEGUNDO
+F95,Milibar litro por segundo,    mbarÀl/s,MILIBAR LITRO POR SEGUNDO
+F96,Milibar metro cúbico por segundo,    mbarÀm?/s,MILIBAR METRO CUBICO POR SEGUNDO
+F97,Megapascal litro por segundo,     MPaÀl/s,MEGAPASCAL LITRO POR SEGUNDO
+F98,Megapascal metro cúbico por segundo,    MPaÀm?/s,MEGAPASCAL METRO CUBICO POR SEGUNDO
+F99,Pascal litro por segundo,     PaÀl/s,PASCAL LITRO POR SEGUNDO
+FAH,Grado fahrenheit, ?F,GRADO FAHRENHEIT
+FAR,Farad,  F,FARAD
+FB,campo,,CAMPO
+FBM,Medidor de fibra,,MEDIDOR DE FIBRA
+FC,Mil pies cúbicos,kft?,MIL PIES CUBICOS
+FD,Millones de partículas por pie cúbico,,MILLONES DE PARTICULAS POR PIE CUBICO
+FE,Pie de pista,,PIE DE PISTA
+FF,Cien metros cúbicos,,CIEN METROS CUBICOS
+FG,Parche transdérmico,,PARCHE TRANSDERMICO
+FH,MicroMol,Ámol,MICROMOL
+FIT,Fallas en el tiempo, FIT,FALLAS EN EL TIEMPO
+FL,Flake ton,,FLAKE TON
+FM,Millones de pies cúbicos,Mft?,MILLONES DE PIES CUBICOS
+FOT,Pie, ft,PIE
+FP,Libra por pie cuadrado,     lb/ft?,LIBRA POR PIE CUADRADO
+FR,Pie por minuto,     ft/min,PIE POR MINUTO
+FS,Pie por segundo,ft/s,PIE POR SEGUNDO
+FTK,Pie cuadrado, ft?,PIE CUADRADO
+FTQ,Pie cúbico, ft?,PIE CUBICO
+G01,Pascal metro cúbico por segundo,     PaÀm?/s,PASCAL METRO CUBICO POR SEGUNDO
+G04,Centímetro por bar,     cm/bar,CENTIMETRO POR BAR
+G05,Metro por bar,m/bar,METRO POR BAR
+G06,Milímetro por bar,     mm/bar,MILIMETRO POR BAR
+G08,Pulgada cuadrada por segundo,in?/s,PULGADA CUADRADA POR SEGUNDO
+G09,Metro cuadrado por segundo kelvin,    m?/(sÀK),METRO CUADRADO POR SEGUNDO KELVIN
+G10,Stokes por kelvin,St/K,STOKES POR KELVIN
+G11,Gramo por centímetro cúbico bar,   g/(cm?Àbar),GRAMO POR CENTIMETRO CUBICO BAR
+G12,Gramo por decímetro cúbico bar,   g/(dm?Àbar),GRAMO POR DECIMETRO CUBICO BAR
+G13,Gramo por litro bar,    g/(lÀbar),GRAMO POR LITRO BAR
+G14,Gramo por metro cúbico bar,   g/(m?Àbar),GRAMO POR METRO CUBICO BAR
+G15,Gramo por mililitro bar,   g/(mlÀbar),GRAMO POR MILILITRO BAR
+G16,Kilogramo por centímetro cúbico bar,  kg/(cm?Àbar),KILOGRAMO POR CENTIMETRO CUBICO BAR
+G17,Kilogramo por litro bar,   kg/(lÀbar),KILOGRAMO POR LITRO BAR
+G18,Kilogramo por metro cúbico bar,   kg/(m?Àbar),KILOGRAMO POR METRO CUBICO BAR
+G19,Newton metro por kilogramo,     NÀm/kg,NEWTON METRO POR KILOGRAMO
+G2,Galón (EUA) por minuto,  gal (US) /min,GALON (EUA) POR MINUTO
+G20,Libra-fuerza pie por libra,    lbfÀft/lb,LIBRA-FUERZA PIE POR LIBRA
+G21,Taza (unidad de volumen),    cup (US),TAZA (UNIDAD DE VOLUMEN)
+G23,Peck,     pk (US),PECK
+G24,Cucharada (estados unidos), tablespoon (US),CUCHARADA (ESTADOS UNIDOS)
+G25,Cucharilla (estados unidos),  teaspoon (US),CUCHARILLA (ESTADOS UNIDOS)
+G26,Estere, st,ESTERE
+G27,Centímetro cúbico por kelvin,cm?/K,CENTIMETRO CUBICO POR KELVIN
+G28,Litro por kelvin, l/K,LITRO POR KELVIN
+G29,Metro cúbico por kelvin,m?/K,METRO CUBICO POR KELVIN
+G3,Galón (RU) por minuto,  gal (UK) /min,GALON (RU) POR MINUTO
+G30,Mililitro por klevin,ml/K,MILILITRO POR KLEVIN
+G31,Kilogramo por centímetro cúbico,     kg/cm?,KILOGRAMO POR CENTIMETRO CUBICO
+G32,Onza (avoirdupois) por yarda cúbica,     oz/yd?,ONZA (AVOIRDUPOIS) POR YARDA CUBICA
+G33,Gramo por centímetro cúbico kelvin,    g/(cm?ÀK),GRAMO POR CENTIMETRO CUBICO KELVIN
+G34,Gramo por decímetro cúbico kelvin,    g/(dm?ÀK),GRAMO POR DECIMETRO CUBICO KELVIN
+G35,Gramo por litro kelvin,     g/(lÀK),GRAMO POR LITRO KELVIN
+G36,Gramo por metro cúbico kelvin,    g/(m?ÀK),GRAMO POR METRO CUBICO KELVIN
+G37,Gramo por mililitro kelvin,    g/(mlÀK),GRAMO POR MILILITRO KELVIN
+G38,Kilogramo por centímetro cúbico kelvin,   kg/(cm?ÀK),KILOGRAMO POR CENTIMETRO CUBICO KELVIN
+G39,Kilogramo por litro kelvin,    kg/(lÀK),KILOGRAMO POR LITRO KELVIN
+G40,Kilogramo por metro cúbico kelvin,    kg/(m?ÀK),KILOGRAMO POR METRO CUBICO KELVIN
+G41,Metro cuadrado por segundo bar,   m?/(sÀbar),METRO CUADRADO POR SEGUNDO BAR
+G42,Microsiemens por centímetro,ÁS/cm,MICROSIEMENS POR CENTIMETRO
+G43,Microsiemens por metro,ÁS/m,MICROSIEMENS POR METRO
+G44,Nanosiemens por centímetro,nS/cm,NANOSIEMENS POR CENTIMETRO
+G45,Nanosiemens por metro,nS/m,NANOSIEMENS POR METRO
+G46,Stokes por bar,     St/bar,STOKES POR BAR
+G47,Centímetro cúbico por día,cm?/d,CENTIMETRO CUBICO POR DIA
+G48,Centímetro cúbico por hora,cm?/h,CENTIMETRO CUBICO POR HORA
+G49,Centímetro cúbico por minuto,     cm?/min,CENTIMETRO CUBICO POR MINUTO
+G50,Galón por hora,gal/h,GALON POR HORA
+G51,Litro por segundo, l/s,LITRO POR SEGUNDO
+G52,Metro cúbico por día,m?/d,METRO CUBICO POR DIA
+G53,Metro cúbico por minuto,     m?/min,METRO CUBICO POR MINUTO
+G54,Mililitro por día,ml/d,MILILITRO POR DIA
+G55,Mililitro por hora,ml/h,MILILITRO POR HORA
+G56,Pulgada cúbica por hora,in?/h,PULGADA CUBICA POR HORA
+G57,Pulgada cúbica por minuto,     in?/min,PULGADA CUBICA POR MINUTO
+G58,Pulgada cúbica por segundo,in?/s,PULGADA CUBICA POR SEGUNDO
+G59,Miliamperio por litro minuto,   mA/(lÀmin),MILIAMPERIO POR LITRO MINUTO
+G60,Voltio por bar,V/bar,VOLTIO POR BAR
+G61,Centímetro cúbico por día kelvin,    cm?/(dÀK),CENTIMETRO CUBICO POR DIA KELVIN
+G62,Centímetro cúbico por hora kelvin,    cm?/(hÀK),CENTIMETRO CUBICO POR HORA KELVIN
+G63,Centímetro cúbico por minuto kelvin,   cm?/(minÀK),CENTIMETRO CUBICO POR MINUTO KELVIN
+G64,Centímetro cúbico por segundo kelvin,    cm?/(sÀK),CENTIMETRO CUBICO POR SEGUNDO KELVIN
+G65,Litro por día kelvin,     l/(dÀK),LITRO POR DIA KELVIN
+G66,Litro por hora kelvin,     l/(hÀK),LITRO POR HORA KELVIN
+G67,Litro por minuto kelvin,    l/(minÀK),LITRO POR MINUTO KELVIN
+G68,Litro por segundo kelvin,     l/(sÀK),LITRO POR SEGUNDO KELVIN
+G69,Metro cúbico por día kelvin,    m?/(dÀK),METRO CUBICO POR DIA KELVIN
+G7,Hoja de microficha,,HOJA DE MICROFICHA
+G70,Metro cúbico por hora kelvin,    m?/(hÀK),METRO CUBICO POR HORA KELVIN
+G71,Metro cúbico por minuto kelvin,   m?/(minÀK),METRO CUBICO POR MINUTO KELVIN
+G72,Metro cúbico por segundo kelvin,    m?/(sÀK),METRO CUBICO POR SEGUNDO KELVIN
+G73,Mililitro por día kelvin,    ml/(dÀK),MILILITRO POR DIA KELVIN
+G74,Mililitro por hora kelvin,    ml/(hÀK),MILILITRO POR HORA KELVIN
+G75,Mililitro por minuto kelvin,   ml/(minÀK),MILILITRO POR MINUTO KELVIN
+G76,Mililitro por segundo kelvin,    ml/(sÀK),MILILITRO POR SEGUNDO KELVIN
+G77,Milímetro a la cuarta potencia, mm?,MILIMETRO A LA CUARTA POTENCIA
+G78,Centímetro cúbico por día bar,   cm?/(dÀbar),CENTIMETRO CUBICO POR DIA BAR
+G79,Centímetro cúbico por hora bar,   cm?/(hÀbar),CENTIMETRO CUBICO POR HORA BAR
+G80,Centímetro cúbico por minuto bar,  cm?/(minÀbar),CENTIMETRO CUBICO POR MINUTO BAR
+G81,Centímetro cúbico por segundo bar,   cm?/(sÀbar),CENTIMETRO CUBICO POR SEGUNDO BAR
+G82,Litro por día bar,    l/(dÀbar),LITRO POR DIA BAR
+G83,Litro por hora bar,    l/(hÀbar),LITRO POR HORA BAR
+G84,Litro por minuto bar,   l/(minÀbar),LITRO POR MINUTO BAR
+G85,Litro por segundo bar,    l/(sÀbar),LITRO POR SEGUNDO BAR
+G86,Metro cúbico por día bar,   m?/(dÀbar),METRO CUBICO POR DIA BAR
+G87,Metro cúbico por hora bar,   m?/(hÀbar),METRO CUBICO POR HORA BAR
+G88,Metro cúbico por minuto bar,  m?/(minÀbar),METRO CUBICO POR MINUTO BAR
+G89,Metro cúbico por segundo bar,   m?/(sÀbar),METRO CUBICO POR SEGUNDO BAR
+G90,Mililitro por día bar,   ml/(dÀbar),MILILITRO POR DIA BAR
+G91,Mililitro por hora bar,   ml/(hÀbar),MILILITRO POR HORA BAR
+G92,Mililitro por minuto bar,  ml/(minÀbar),MILILITRO POR MINUTO BAR
+G93,Mililitro por segundo bar,   ml/(sÀbar),MILILITRO POR SEGUNDO BAR
+G94,Centímetro cúbico por bar,     cm?/bar,CENTIMETRO CUBICO POR BAR
+G95,Litro por bar,l/bar,LITRO POR BAR
+G96,Metro cúbico por bar,     m?/bar,METRO CUBICO POR BAR
+G97,Mililitro por bar,     ml/bar,MILILITRO POR BAR
+G98,Micro henry por kiloOhm,ÁH/k?,MICRO HENRY POR KILOOHM
+G99,Micro henry por Ohm,ÁH/?,MICRO HENRY POR OHM
+GB,Galón (EUA) por día,   gal (US)/d,GALON (EUA) POR DIA
+GBQ,Gigabecquerel, GBq,GIGABECQUEREL
+GC,Gramo por 100 gramos,,GRAMO POR 100 GRAMOS
+Gd,Barril bruto,,BARRIL BRUTO
+GDW,"Gramo, peso seco",,"GRAMO, PESO SECO"
+GE,Libra por galón (EUA),   lb/gal (US),LIBRA POR GALON (EUA)
+GF,Gramo por metro (gramo por 100 centímetros), g/m,GRAMO POR METRO (GRAMO POR 100 CENTIMETROS)
+GFI,Gramo de isótopo fisible,     gi F/S,GRAMO DE ISOTOPO FISIBLE
+GGR,Grandioso,,GRANDIOSO
+GH,Medio galón (US),,MEDIO GALON (US)
+GIA,Gill (us),     gi (US),GILL (US)
+GIC,"Gramo, incluido el contenedor",,"GRAMO, INCLUIDO EL CONTENEDOR"
+GII,Gill (uk),     gi (UK),GILL (UK)
+GIP,"Grama, incluido el embalaje interior",,"GRAMA, INCLUIDO EL EMBALAJE INTERIOR"
+GJ,Gramo por mililitro,g/ml,GRAMO POR MILILITRO
+GK,Gramo por kilogramo,,GRAMO POR KILOGRAMO
+GL,Gramo por litro, g/l,GRAMO POR LITRO
+GLD,Galón seco (EUA),  dry gal (US),GALON SECO (EUA)
+GLI,Galón (UK),    gal (UK),GALON (UK)
+GLL,Galón (EUA),    gal (US),GALON (EUA)
+GM,Gramo por metro cuadrado,g/m?,GRAMO POR METRO CUADRADO
+GN,Galón bruto,,GALON BRUTO
+GO,Miligramo por metro cuadrado,mg/m?,MILIGRAMO POR METRO CUADRADO
+GP,Miligramo por metro cúbico,mg/m?,MILIGRAMO POR METRO CUBICO
+GQ,Microgramo por metro cúbico,Ág/m?,MICROGRAMO POR METRO CUBICO
+GRM,Gramo,  g,GRAMO
+GRN,Grano, gr,GRANO
+GRO,Groá, gr,GROá
+GT,Tonelada bruta,,TONELADA BRUTA
+GV,Gigajoule, GJ,GIGAJOULE
+GW,Galón por mil pies cúbicos,,GALON POR MIL PIES CUBICOS
+GWH,Gigawatt hora,GWÀh,GIGAWATT HORA
+GY,Patio grueso,,PATIO GRUESO
+GZ,Sistema de calibración,,SISTEMA DE CALIBRACION
+H03,Henry por kiloOhm,H/k?,HENRY POR KILOOHM
+H04,Henry por Ohm, H/?,HENRY POR OHM
+H05,Milihenry por kiloOhm,mH/k?,MILIHENRY POR KILOOHM
+H06,Milihenry por Ohm,mH/?,MILIHENRY POR OHM
+H07,Pascal segundo por bar,    PaÀs/bar,PASCAL SEGUNDO POR BAR
+H08,Microbequerel, ÁBq,MICROBEQUEREL
+H09,Año recíproco, 1/y,ANO RECIPROCO
+H1,Media página - electrónica,,MEDIA PAGINA - ELECTRONICA
+H10,Hora recíproca, 1/h,HORA RECIPROCA
+H11,Mes recíproco,1/mo,MES RECIPROCO
+H12,Grado celsius por hora,?C/h,GRADO CELSIUS POR HORA
+H13,Grado celsius por minuto,     ?C/min,GRADO CELSIUS POR MINUTO
+H14,Grado celsius por segundo,?C/s,GRADO CELSIUS POR SEGUNDO
+H15,Centímetro cudrado por gramo,cm?/g,CENTIMETRO CUDRADO POR GRAMO
+H16,Decámetro cuadrado,dam?,DECAMETRO CUADRADO
+H18,Hectómetro cuadrado, hm?,HECTOMETRO CUADRADO
+H19,Hectómetro cúbico, hm?,HECTOMETRO CUBICO
+H2,Medio litro,,MEDIO LITRO
+H20,Kilómetro cúbico, km?,KILOMETRO CUBICO
+H21,Blanco,,BLANCO
+H22,Voltio pulgada cuadrada por libra fuerza,   V/(lbf/in?),VOLTIO PULGADA CUADRADA POR LIBRA FUERZA
+H23,Voltio por pulgada,V/in,VOLTIO POR PULGADA
+H24,Voltio por microsegundo,V/Ás,VOLTIO POR MICROSEGUNDO
+H25,Por ciento por kelvin, %/K,POR CIENTO POR KELVIN
+H26,Ohm por metro, ?/m,OHM POR METRO
+H27,Grado por metro, ?/m,GRADO POR METRO
+H28,Microfaradio por kilómetro,ÁF/km,MICROFARADIO POR KILOMETRO
+H29,Microgramo por litro,Ág/l,MICROGRAMO POR LITRO
+H30,Micrómetro cuadrado, Ám?,MICROMETRO CUADRADO
+H31,Amperio por kilogramo,A/kg,AMPERIO POR KILOGRAMO
+H32,Amperio cuadrado segundo,A?Às,AMPERIO CUADRADO SEGUNDO
+H33,Faradio por kilómetro,F/km,FARADIO POR KILOMETRO
+H34,Hertz metro,HzÀm,HERTZ METRO
+H35,Kelvin metro por watt,KÀm/W,KELVIN METRO POR WATT
+H36,MegaOhm por kilómetro,M?/km,MEGAOHM POR KILOMETRO
+H37,MegaOhm por metro,M?/m,MEGAOHM POR METRO
+H38,Megaamperio, MA,MEGAAMPERIO
+H39,Megahertz kilómetro,     MHzÀkm,MEGAHERTZ KILOMETRO
+H40,Newton por amperio, N/A,NEWTON POR AMPERIO
+H41,Newton metro watts elevado a la potencia menos 0.5,    NÀmÀW????,NEWTON METRO WATTS ELEVADO A LA POTENCIA MENOS 0.5
+H42,Pascal por metro,Pa/m,PASCAL POR METRO
+H43,Siemens por centímetro,S/cm,SIEMENS POR CENTIMETRO
+H44,TeraOhm, T?,TERAOHM
+H45,Voltio segundo por metro,VÀs/m,VOLTIO SEGUNDO POR METRO
+H46,Voltio por segundo, V/s,VOLTIO POR SEGUNDO
+H47,Watt por metro cúbico,W/m?,WATT POR METRO CUBICO
+H48,Attofarad, aF,ATTOFARAD
+H49,Centímetro por hora,cm/h,CENTIMETRO POR HORA
+H50,Reciprocidad del centimetro cúbico,cm??,RECIPROCIDAD DEL CENTIMETRO CUBICO
+H51,Decibel per kilometro,dB/km,DECIBEL PER KILOMETRO
+H52,Decibel per metro,dB/m,DECIBEL PER METRO
+H53,Kilogramo por bar,     kg/bar,KILOGRAMO POR BAR
+H54,Kilogramo por decímetro cúbico kelvin,   (kg/dm?)/K,KILOGRAMO POR DECIMETRO CUBICO KELVIN
+H55,Kilogramo por decímetro cúbico bar,  (kg/dm?)/bar,KILOGRAMO POR DECIMETRO CUBICO BAR
+H56,Kilogramo por metro cuadrado segundo,    kg/(m?Às),KILOGRAMO POR METRO CUADRADO SEGUNDO
+H57,Pulgada por dos pi por radián,  in/revolution,PULGADA POR DOS PI POR RADIAN
+H58,Metro por voltio segundo,     m/(VÀs),METRO POR VOLTIO SEGUNDO
+H59,Metro cuadrado por newton,m?/N,METRO CUADRADO POR NEWTON
+H60,Metro cúbico por metro cúbico,m?/m?,METRO CUBICO POR METRO CUBICO
+H61,Milisiemens por centímetro,mS/cm,MILISIEMENS POR CENTIMETRO
+H62,Milivoltio por minuto,     mV/min,MILIVOLTIO POR MINUTO
+H63,Miligramo por centímetro cuadrado,     mg/cm?,MILIGRAMO POR CENTIMETRO CUADRADO
+H64,Miligramo por gramo,mg/g,MILIGRAMO POR GRAMO
+H65,Mililitro por metro cúbico,ml/m?,MILILITRO POR METRO CUBICO
+H66,Milímetro por año,mm/y,MILIMETRO POR ANO
+H67,Milímetro por hora,mm/h,MILIMETRO POR HORA
+H68,MiliMol por gram,     mmol/g,MILIMOL POR GRAM
+H69,Picopascal por kilometro,     pPa/km,PICOPASCAL POR KILOMETRO
+H70,Picosegundo, ps,PICOSEGUNDO
+H71,Por ciento al mes,%/mo,POR CIENTO AL MES
+H72,Por ciento por hectobar,     %/hbar,POR CIENTO POR HECTOBAR
+H73,Por ciento por decakelvin,%/daK,POR CIENTO POR DECAKELVIN
+H74,Watt por metro, W/m,WATT POR METRO
+H75,Decapascal,daPa,DECAPASCAL
+H76,Gramo por milímetro,g/mm,GRAMO POR MILIMETRO
+H77,Anchura del módulo, MW,ANCHURA DEL MODULO
+H78,Centímetro convencional de agua,  Cm H $ ? $ O,CENTIMETRO CONVENCIONAL DE AGUA
+H79,Escala francesa, Fg,ESCALA FRANCESA
+H80,Unidad de bastidor,     U or RU,UNIDAD DE BASTIDOR
+H81,Milímetro por minuto,     mm/min,MILIMETRO POR MINUTO
+H82,Punto grande, bp,PUNTO GRANDE
+H83,Litro por kilogramo,l/kg,LITRO POR KILOGRAMO
+H84,Gramos milímetro,gÀmm,GRAMOS MILIMETRO
+H85,Semana recíproca,1/wk,SEMANA RECIPROCA
+H87,Pieza,,PIEZA
+H88,MegaOhm kilómetro,M?Àkm,MEGAOHM KILOMETRO
+H89,Por ciento por Ohmio, %/?,POR CIENTO POR OHMIO
+H90,Porcentaje por grado, %/?,PORCENTAJE POR GRADO
+H91,Por ciento por cada diez mil,     %/10000,POR CIENTO POR CADA DIEZ MIL
+H92,Ciento por cien mil,    %/100000,CIENTO POR CIEN MIL
+H93,Porcentaje por cien,%/100,PORCENTAJE POR CIEN
+H94,Por ciento por mil,     %/1000,POR CIENTO POR MIL
+H95,Por ciento por voltio, %/V,POR CIENTO POR VOLTIO
+H96,Tanto por ciento por bar,%/bar,TANTO POR CIENTO POR BAR
+H98,Por ciento por pulgada,%/in,POR CIENTO POR PULGADA
+H99,Por ciento por metro, %/m,POR CIENTO POR METRO
+HA,Madeja,,MADEJA
+HAR,hectárea,    decir ah,HECTAREA
+HBA,Hectobar,hbar,HECTOBAR
+HBX,Ciento de cajas,,CIENTO DE CAJAS
+HC,Conteo en cientos,,CONTEO EN CIENTOS
+HD,Media docena,,MEDIA DOCENA
+HDW,"Cien kilogramos, peso seco",,"CIEN KILOGRAMOS, PESO SECO"
+HE,Centésima de un quilate,,CENTESIMA DE UN QUILATE
+HEA,Cabeza,,CABEZA
+HF,Cien pies,,CIEN PIES
+HGM,Héctogramo, hg,HECTOGRAMO
+HH,Cien pies cúbicos,,CIEN PIES CUBICOS
+HI,Cien hojas,,CIEN HOJAS
+HIU,Unidad internacional de cien,,UNIDAD INTERNACIONAL DE CIEN
+HJ,Potencia métrica,   Hp métrico,POTENCIA METRICA
+HK,Cien kilogramos,,CIEN KILOGRAMOS
+HKM,"Cien kilogramos, masa neta",,"CIEN KILOGRAMOS, MASA NETA"
+HL,Cien pies (lineal),,CIEN PIES (LINEAL)
+HLT,Hectolitro, hl,HECTOLITRO
+HM,Milla por hora (milla estatal),     mile/h,MILLA POR HORA (MILLA ESTATAL)
+HMQ,Millones de metros cúbicos, Mm?,MILLONES DE METROS CUBICOS
+HMT,Hectómetro, hm,HECTOMETRO
+HN,Milímetro convencional de mercurio,Mm Hg,MILIMETRO CONVENCIONAL DE MERCURIO
+HO,Cien onzas troy,,CIEN ONZAS TROY
+HP,Milímetro convencional de agua,  Mm H $ ? $ O,MILIMETRO CONVENCIONAL DE AGUA
+HPA,Hectolitro de alcohol puro,,HECTOLITRO DE ALCOHOL PURO
+HS,Cien pies cuadrados,,CIEN PIES CUADRADOS
+HT,media hora,,MEDIA HORA
+HTZ,Hertz, Hz,HERTZ
+HUR,Hora,  h,HORA
+HY,Cien yardas,,CIEN YARDAS
+IA,Pulgada libra,inÀlb,PULGADA LIBRA
+IC,Contar por pulgada,,CONTAR POR PULGADA
+IE,Personas,,PERSONAS
+IF,Pulgadas de agua,,PULGADAS DE AGUA
+II,Columna pulgada,,COLUMNA PULGADA
+IM,Impresión,,IMPRESION
+INH,Pulgada, in,PULGADA
+INK,Pulgada cuadrada, in?,PULGADA CUADRADA
+INQ,Pulgada cúbica, in?,PULGADA CUBICA
+IP,póliza de seguros,,POLIZA DE SEGUROS
+ISD,Grado internacional de azúcar,,GRADO INTERNACIONAL DE AZUCAR
+IT,Recuento por centímetro,,RECUENTO POR CENTIMETRO
+IU,Pulgada por segundo,in/s,PULGADA POR SEGUNDO
+IV,Pulgada por segundo al cuadrado,in/s?,PULGADA POR SEGUNDO AL CUADRADO
+J10,Por ciento por milímetro,%/mm,POR CIENTO POR MILIMETRO
+J12,Por mille por psi,ë/psi,POR MILLE POR PSI
+J13,Grado api,?API,GRADO API
+J14,Grado baume (escala de origen), ?Bé,GRADO BAUME (ESCALA DE ORIGEN)
+J15,Grado baume (us pesado), ?Bé (US heavy),GRADO BAUME (US PESADO)
+J16,Grado baume (luz de los EUA), ?Bé (US light),GRADO BAUME (LUZ DE LOS EUA)
+J17,Grado balling,    ?Balling,GRADO BALLING
+J18,Grado brix, ?Bx,GRADO BRIX
+J19,Grado fahrenheit hora pie cuadrado por unidad térmica británica (termoquímico)., ?FÀhÀft?/Btuth,GRADO FAHRENHEIT HORA PIE CUADRADO POR UNIDAD TERMICA BRITANICA (TERMOQUIMICO).
+J2,Joule por kilogramo,J/kg,JOULE POR KILOGRAMO
+J20,Grado fahrenheit por kelvin,?F/K,GRADO FAHRENHEIT POR KELVIN
+J21,Grado fahrenheit por bar,     ?F/bar,GRADO FAHRENHEIT POR BAR
+J22,Grado fahrenheit hora pie cuadrado por unidad térmica británica (tabla internacional)., ?FÀhÀft?/BtuIT,GRADO FAHRENHEIT HORA PIE CUADRADO POR UNIDAD TERMICA BRITANICA (TABLA INTERNACIONAL).
+J23,Grado fahrenheit por hora,?F/h,GRADO FAHRENHEIT POR HORA
+J24,Grado fahrenheit por minuto,     ?F/min,GRADO FAHRENHEIT POR MINUTO
+J25,Grado fahrenheit por segundo,?F/s,GRADO FAHRENHEIT POR SEGUNDO
+J26,Reciprocidad grado fahrenheit,1/?F,RECIPROCIDAD GRADO FAHRENHEIT
+J27,Grado oechsle,    ?Oechsle,GRADO OECHSLE
+J28,Grado rankine por hora,?R/h,GRADO RANKINE POR HORA
+J29,Grado rankine por minuto,     ?R/min,GRADO RANKINE POR MINUTO
+J30,Grado rankine por segundo,?R/s,GRADO RANKINE POR SEGUNDO
+J31,Grado twaddel., ?Tw,GRADO TWADDEL.
+J32,Micropoise, ÁP,MICROPOISE
+J33,Microgramo por kilogramo,Ág/kg,MICROGRAMO POR KILOGRAMO
+J34,Microgramo por metro cúbico kelvin,    (Ág/m?)/K,MICROGRAMO POR METRO CUBICO KELVIN
+J35,Microgramo por metro cúbico bar,   (Ág/m?)/bar,MICROGRAMO POR METRO CUBICO BAR
+J36,Microlitro por litro,Ál/l,MICROLITRO POR LITRO
+J38,Baud, Bd,BAUD
+J39,Unidad térmica británica (significado), Btu,UNIDAD TERMICA BRITANICA (SIGNIFICADO)
+J40,Unidad térmica británica (tabla internacional) pie por hora pie cuadrado grado fahrenheit.,BtuITÀft/(hÀft?À?F),UNIDAD TERMICA BRITANICA (TABLA INTERNACIONAL) PIE POR HORA PIE CUADRADO GRADO FAHRENHEIT.
+J41,Unidad térmica británica (tabla internacional) pulgada por hora pie cuadrado grado fahrenheit.,BtuITÀin/(hÀft?À?F),UNIDAD TERMICA BRITANICA (TABLA INTERNACIONAL) PULGADA POR HORA PIE CUADRADO GRADO FAHRENHEIT.
+J42,Unidad térmica británica (tabla internacional) pulgada por segundo pie cuadrado grado fahrenheit.,BtuITÀin/(sÀft?À?F),UNIDAD TERMICA BRITANICA (TABLA INTERNACIONAL) PULGADA POR SEGUNDO PIE CUADRADO GRADO FAHRENHEIT.
+J43,Unidad térmica británica (tabla internacional) por libra grado fahrenheit,  BtuIT/(lbÀ?F),UNIDAD TERMICA BRITANICA (TABLA INTERNACIONAL) POR LIBRA GRADO FAHRENHEIT
+J44,Unidad térmica británica (tabla internacional) por minuto,    BtuIT/min,UNIDAD TERMICA BRITANICA (TABLA INTERNACIONAL) POR MINUTO
+J45,Unidad térmica británica (tabla internacional) por segundo,     BtuIT/s,UNIDAD TERMICA BRITANICA (TABLA INTERNACIONAL) POR SEGUNDO
+J46,Unidad térmica británica (termoquímico) pie por hora pie cuadrado grado fahrenheit.,BtuthÀft/(hÀft?À?F),UNIDAD TERMICA BRITANICA (TERMOQUIMICO) PIE POR HORA PIE CUADRADO GRADO FAHRENHEIT.
+J47,Unidad térmica británica (termoquímica) por hora,     Btuth/h,UNIDAD TERMICA BRITANICA (TERMOQUIMICA) POR HORA
+J48,Unidad térmica británica (termoquímico) pulgada por hora pie cuadrado grado fahrenheit.,BtuthÀin/(hÀft?À?F),UNIDAD TERMICA BRITANICA (TERMOQUIMICO) PULGADA POR HORA PIE CUADRADO GRADO FAHRENHEIT.
+J49,Unidad térmica británica (termoquímico) pulgada por segundo pie cuadrado grado fahrenheit.,BtuthÀin/(sÀft?À?F),UNIDAD TERMICA BRITANICA (TERMOQUIMICO) PULGADA POR SEGUNDO PIE CUADRADO GRADO FAHRENHEIT.
+J50,Unidad térmica británica (termoquímico) por libra grado fahrenheit,  Btuth/(lbÀ?F),UNIDAD TERMICA BRITANICA (TERMOQUIMICO) POR LIBRA GRADO FAHRENHEIT
+J51,Unidad térmica británica (termoquímica) por minuto,    Btuth/min,UNIDAD TERMICA BRITANICA (TERMOQUIMICA) POR MINUTO
+J52,Unidad térmica británica (termoquímica) por segundo,     Btuth/s,UNIDAD TERMICA BRITANICA (TERMOQUIMICA) POR SEGUNDO
+J53,Culombio metro cuadrado por kilogramo,     CÀm?/kg,CULOMBIO METRO CUADRADO POR KILOGRAMO
+J54,Megabaud, MBd,MEGABAUD
+J55,Watt segundo, WÀs,WATT SEGUNDO
+J56,Bar por bar,     bar/bar,BAR POR BAR
+J57,Barril (uk petróleo),  bbl (UK liq.),BARRIL (UK PETROLEO)
+J58,Barril (petróleo UK) por minuto,bbl (UK liq.)/min,BARRIL (PETROLEO UK) POR MINUTO
+J59,Barril (petróleo UK) por día, bbl (UK liq.)/d,BARRIL (PETROLEO UK) POR DIA
+J60,Barril (petróleo UK) por hora, bbl (UK liq.)/h,BARRIL (PETROLEO UK) POR HORA
+J61,Barril (petróleo UK) por segundo, bbl (UK liq.)/s,BARRIL (PETROLEO UK) POR SEGUNDO
+J62,Barril (petróleo estados unidos) por hora,   bbl (US)/h,BARRIL (PETROLEO ESTADOS UNIDOS) POR HORA
+J63,Barril (petróleo estados unidos) por segundo,   bbl (US)/s,BARRIL (PETROLEO ESTADOS UNIDOS) POR SEGUNDO
+J64,Bushel (UK) por día,    bu (UK)/d,BUSHEL (UK) POR DIA
+J65,Bushel (UK) por hora,    bu (UK)/h,BUSHEL (UK) POR HORA
+J66,Bushel (UK) por minuto,   bu (UK)/min,BUSHEL (UK) POR MINUTO
+J67,Bushel (UK) por segundo,    bu (UK)/s,BUSHEL (UK) POR SEGUNDO
+J68,"Bushel (seco,estados unidos) por día",  bu (US dry)/d,"BUSHEL (SECO,ESTADOS UNIDOS) POR DIA"
+J69,"Bushel (seco,estados unidos) por hora",  bu (US dry)/h,"BUSHEL (SECO,ESTADOS UNIDOS) POR HORA"
+J70,"Bushel (seco,estados unidos) por minuto", bu (US dry)/min,"BUSHEL (SECO,ESTADOS UNIDOS) POR MINUTO"
+J71,"Bushel (seco,estados unidos) por segundo",  bu (US dry)/s,"BUSHEL (SECO,ESTADOS UNIDOS) POR SEGUNDO"
+J72,Centinewton metro,cNÀm,CENTINEWTON METRO
+J73,Centipoise por kelvin,cP/K,CENTIPOISE POR KELVIN
+J74,Centipoise por bar,     cP/bar,CENTIPOISE POR BAR
+J75,Caloría, cal,CALORIA
+J76,Caloría (tabla internacional) por gramo gadro celsius,  calIT/(gÀ?C),CALORIA (TABLA INTERNACIONAL) POR GRAMO GADRO CELSIUS
+J78,Caloría (termoquímica) por centímetro segundo grado celsius, calth/(cmÀsÀ?C),CALORIA (TERMOQUIMICA) POR CENTIMETRO SEGUNDO GRADO CELSIUS
+J79,Caloría (termoquímico) por gramo gadro celsius,  calth/(gÀ?C),CALORIA (TERMOQUIMICO) POR GRAMO GADRO CELSIUS
+J81,Caloría (termoquímica) por minuto,    calth/min,CALORIA (TERMOQUIMICA) POR MINUTO
+J82,Caloría (termoquímica) por segundo,     calth/s,CALORIA (TERMOQUIMICA) POR SEGUNDO
+J83,Clo, clo,CLO
+J84,Centímetro por segundo kelvin,    (cm/s)/K,CENTIMETRO POR SEGUNDO KELVIN
+J85,Centímetro por segundo bar,   (cm/s)/bar,CENTIMETRO POR SEGUNDO BAR
+J87,Centímetro cúbico por metro cúbico,     cm?/m?,CENTIMETRO CUBICO POR METRO CUBICO
+J89,Centímetro de mercurio,Cm Hg,CENTIMETRO DE MERCURIO
+J90,Decímetro cúbico por día,dm?/d,DECIMETRO CUBICO POR DIA
+J91,Decímetro cúbico por metro cúbico,     dm?/m?,DECIMETRO CUBICO POR METRO CUBICO
+J92,Decímetro cúbico por minuto,     dm?/min,DECIMETRO CUBICO POR MINUTO
+J93,Decímetro cúbico por segundo,dm?/s,DECIMETRO CUBICO POR SEGUNDO
+J94,Dyne centímetro,    Dyn À cm,DYNE CENTIMETRO
+J95,"Onza (fluido, UK) por día",  fl oz (UK)/d,"ONZA (FLUIDO, UK) POR DIA"
+J96,"Onza (fluido, UK) por hora",  fl oz (UK)/h,"ONZA (FLUIDO, UK) POR HORA"
+J97,"Onza (fluido, UK) por minuto", fl oz (UK)/min,"ONZA (FLUIDO, UK) POR MINUTO"
+J98,"Onza (fluido, UK) por segundo",  fl oz (UK)/s,"ONZA (FLUIDO, UK) POR SEGUNDO"
+J99,"Onza (fluido, estados unidos) por día",  fl oz (US)/d,"ONZA (FLUIDO, ESTADOS UNIDOS) POR DIA"
+JB,Jumbo,,JUMBO
+JE,Joule por kelvin, J/K,JOULE POR KELVIN
+JK,Megajoule por kilogramo,MJ/kg,MEGAJOULE POR KILOGRAMO
+JM,Megajoule por metro cúbico,MJ/m?,MEGAJOULE POR METRO CUBICO
+JNT,Junta de tubería,,JUNTA DE TUBERIA
+Jo,Articulación,,ARTICULACION
+JOU,Joule,  J,JOULE
+JPS,Cien metros,,CIEN METROS
+JWL,Número de joyas,,NUMERO DE JOYAS
+K1,Demanda de kilowatt,,DEMANDA DE KILOWATT
+K10,"Onza (fluido, estados unidos) por hora",  fl oz (US)/h,"ONZA (FLUIDO, ESTADOS UNIDOS) POR HORA"
+K11,"Onza (fluido, estados unidos) por minuto", fl oz (US)/min,"ONZA (FLUIDO, ESTADOS UNIDOS) POR MINUTO"
+K12,"Onza (fluido, estados unidos) por segundo",  fl oz (US)/s,"ONZA (FLUIDO, ESTADOS UNIDOS) POR SEGUNDO"
+K13,Pie por grado fahrenheit,ft/?F,PIE POR GRADO FAHRENHEIT
+K14,Pie por hora,ft/h,PIE POR HORA
+K15,Pie libra-fuerza por hora,    ftÀlbf/h,PIE LIBRA-FUERZA POR HORA
+K16,Pie libra-fuerza por minuto,   ftÀlbf/min,PIE LIBRA-FUERZA POR MINUTO
+K17,Pie por psi (libra por pulgada cuadrada),     ft/psi,PIE POR PSI (LIBRA POR PULGADA CUADRADA)
+K18,Pie por segundo grado fahrenheit,    (ft/s)/?F,PIE POR SEGUNDO GRADO FAHRENHEIT
+K19,Pie por segundo psi (libra por pulgada cuadrada),   (ft/s)/psi,PIE POR SEGUNDO PSI (LIBRA POR PULGADA CUADRADA)
+K2,Kilovoltios amperios demanda reactiva,,KILOVOLTIOS AMPERIOS DEMANDA REACTIVA
+K20,Reciprocidad del pie cuadrado,1/ft?,RECIPROCIDAD DEL PIE CUADRADO
+K21,Pie cúbico por grado fahrenheit,     ft?/?F,PIE CUBICO POR GRADO FAHRENHEIT
+K22,Pie cúbico por día,ft?/d,PIE CUBICO POR DIA
+K23,Pie cúbico por psi (libra por pulgada cuadrada),     ft?/psi,PIE CUBICO POR PSI (LIBRA POR PULGADA CUADRADA)
+K24,Pie de agua,  Ft H $ ? $ O,PIE DE AGUA
+K25,Pie de mercurio,Ft Hg,PIE DE MERCURIO
+K26,Galón (UK) por día,   gal (UK)/d,GALON (UK) POR DIA
+K27,Galón (UK) por hora,   gal (UK)/h,GALON (UK) POR HORA
+K28,Galón (UK) por segundo,   gal (UK)/s,GALON (UK) POR SEGUNDO
+K3,Kilovoltio amperio hora reactivo,     kvarÀh,KILOVOLTIO AMPERIO HORA REACTIVO
+K30,"Galón (líquido, EUA) por segundo", gal (US liq.)/s,"GALON (LIQUIDO, EUA) POR SEGUNDO"
+K31,Gramo-fuerza por centímetro cuadrado,     gf/cm?,GRAMO-FUERZA POR CENTIMETRO CUADRADO
+K32,Gill (UK) por día,    gi (UK)/d,GILL (UK) POR DIA
+K33,Gill (UK) por hora,    gi (UK)/h,GILL (UK) POR HORA
+K34,Gill (UK) por minuto,   gi (UK)/min,GILL (UK) POR MINUTO
+K35,Gill (UK) por segundo,    gi (UK)/s,GILL (UK) POR SEGUNDO
+K36,Gill (estados unidos) por día,    gi (US)/d,GILL (ESTADOS UNIDOS) POR DIA
+K37,Gill (estados unidos) por hora,    gi (US)/h,GILL (ESTADOS UNIDOS) POR HORA
+K38,Gill (estados unidos) por minuto,   gi (US)/min,GILL (ESTADOS UNIDOS) POR MINUTO
+K39,Gill (estados unidos) por segundo,    gi (US)/s,GILL (ESTADOS UNIDOS) POR SEGUNDO
+K40,Aceleración estándar de la caída libre, gn,ACELERACION ESTANDAR DE LA CAIDA LIBRE
+K41,Grano por galón (EUA),   gr/gal (US),GRANO POR GALON (EUA)
+K42,Caballo de fuerza de caldera,    boiler hp,CABALLO DE FUERZA DE CALDERA
+K43,Caballo de fuerza (eléctrico),   electric hp,CABALLO DE FUERZA (ELECTRICO)
+K45,Pulgada por grado fahrenheit,in/?F,PULGADA POR GRADO FAHRENHEIT
+K46,Pulgada por psi (libra por pulgada cuadrada),     in/psi,PULGADA POR PSI (LIBRA POR PULGADA CUADRADA)
+K47,Pulgada por segundo grado fahrenheit,    (in/s)/?F,PULGADA POR SEGUNDO GRADO FAHRENHEIT
+K48,Pulgada por segundo psi (libra por pulgada cuadrada),   (in/s)/psi,PULGADA POR SEGUNDO PSI (LIBRA POR PULGADA CUADRADA)
+K49,Reciprocidad de la pulgada cuadrada,1/in?,RECIPROCIDAD DE LA PULGADA CUADRADA
+K5,Kilovoltios amperios (reactivos),Kvar,KILOVOLTIOS AMPERIOS (REACTIVOS)
+K50,Kilobaud, kBd,KILOBAUD
+K51,Kilocaloría (significado),kcal,KILOCALORIA (SIGNIFICADO)
+K52,Kilocaloría (tabla internacional) por hora metro grado celsius,  kcal/(mÀhÀ?C),KILOCALORIA (TABLA INTERNACIONAL) POR HORA METRO GRADO CELSIUS
+K53,Kilocaloría (termoquímico),     kcalth,KILOCALORIA (TERMOQUIMICO)
+K54,Kilocaloría (termoquímica) por minuto,   kcalth/min,KILOCALORIA (TERMOQUIMICA) POR MINUTO
+K55,Kilocaloría (termoquímica) por segundo,    kcalth/s,KILOCALORIA (TERMOQUIMICA) POR SEGUNDO
+K58,KiloMol por hora,     kmol/h,KILOMOL POR HORA
+K59,KiloMol por metro cúbico kelvin,   (kmol/m?)/K,KILOMOL POR METRO CUBICO KELVIN
+K6,Kilolitro, kl,KILOLITRO
+K60,KiloMol por metro cúbico bar,  (kmol/m?)/bar,KILOMOL POR METRO CUBICO BAR
+K61,KiloMol por minuto,    kmol/min,KILOMOL POR MINUTO
+K62,Litro por litro, l/l,LITRO POR LITRO
+K63,Reciprocidad del litro, 1/l,RECIPROCIDAD DEL LITRO
+K64,Libra (avoirdupois) por grado fahrenheit,lb/?F,LIBRA (AVOIRDUPOIS) POR GRADO FAHRENHEIT
+K65,Libra (avoirdupois) pie cuadrado,     lbÀft?,LIBRA (AVOIRDUPOIS) PIE CUADRADO
+K66,Libra (avoirdupois) por día,lb/d,LIBRA (AVOIRDUPOIS) POR DIA
+K67,Libra por pie hora,    lb/(ftÀh),LIBRA POR PIE HORA
+K68,Libra por pie segundo,    lb/(ftÀs),LIBRA POR PIE SEGUNDO
+K69,Libra (avoirdupois) por pie cúbico grado fahrenheit,   (lb/ft?)/?F,LIBRA (AVOIRDUPOIS) POR PIE CUBICO GRADO FAHRENHEIT
+K70,Libra (avoirdupois) por pie cúbico psi,  (lb/ft?)/psi,LIBRA (AVOIRDUPOIS) POR PIE CUBICO PSI
+K71,Libra (avoirdupois) por galón (UK),   lb/gal (UK),LIBRA (AVOIRDUPOIS) POR GALON (UK)
+K73,Libra (avoirdupois) por hora grados fahrenheit,    (lb/h)/?F,LIBRA (AVOIRDUPOIS) POR HORA GRADOS FAHRENHEIT
+K74,Libra (avoirdupois) por hora libra-fuerza por pulgada cuadrada,   (lb/h)/psi,LIBRA (AVOIRDUPOIS) POR HORA LIBRA-FUERZA POR PULGADA CUADRADA
+K75,Libra (avoirdupois) por pulgada cúbica grado fahrenheit,   (lb/in?)/?F,LIBRA (AVOIRDUPOIS) POR PULGADA CUBICA GRADO FAHRENHEIT
+K76,Libra (avoirdupois) por pulgada cúbica psi,  (lb/in?)/psi,LIBRA (AVOIRDUPOIS) POR PULGADA CUBICA PSI
+K77,Libra (avoirdupois) por psi,     lb/psi,LIBRA (AVOIRDUPOIS) POR PSI
+K78,Libra (avoirdupois) por minuto,     lb/min,LIBRA (AVOIRDUPOIS) POR MINUTO
+K79,Libra (avoirdupois) por minuto grados fahrenheit,   lb/(minÀ?F),LIBRA (AVOIRDUPOIS) POR MINUTO GRADOS FAHRENHEIT
+K80,Libra (avoirdupois) por minuto libra-fuerza por pulgada cuadrada,  (lb/min)/psi,LIBRA (AVOIRDUPOIS) POR MINUTO LIBRA-FUERZA POR PULGADA CUADRADA
+K81,Libra (avoirdupois) por segundo,lb/s,LIBRA (AVOIRDUPOIS) POR SEGUNDO
+K82,Libra (avoirdupois)por segundo grados fahrenheit,    (lb/s)/?F,LIBRA (AVOIRDUPOIS)POR SEGUNDO GRADOS FAHRENHEIT
+K83,Libra (avoirdupois) por segundo libra-fuerza por pulgada cuadrada,   (lb/s)/psi,LIBRA (AVOIRDUPOIS) POR SEGUNDO LIBRA-FUERZA POR PULGADA CUADRADA
+K84,Libra por yarda cúbica,     lb/yd?,LIBRA POR YARDA CUBICA
+K85,Libra-fuerza por pie cuadrado,     lbf/ft?,LIBRA-FUERZA POR PIE CUADRADO
+K86,Libra-fuerza por pulgada cuadrada grados fahrenheit,     psi/?F,LIBRA-FUERZA POR PULGADA CUADRADA GRADOS FAHRENHEIT
+K87,Libra-fuerza por pulgada cuadrada pulgada cúbica por segundo,    psiÀin?/s,LIBRA-FUERZA POR PULGADA CUADRADA PULGADA CUBICA POR SEGUNDO
+K88,Libra-fuerza por pulgada cuadrada litro por segundo,     psiÀl/s,LIBRA-FUERZA POR PULGADA CUADRADA LITRO POR SEGUNDO
+K89,Libra-fuerza por pulgada cuadrada metro cúbico por segundo,    psiÀm?/s,LIBRA-FUERZA POR PULGADA CUADRADA METRO CUBICO POR SEGUNDO
+K90,Libra-fuerza por pulgada cuadrada yarda cúbica por segundo,    psiÀyd?/s,LIBRA-FUERZA POR PULGADA CUADRADA YARDA CUBICA POR SEGUNDO
+K91,Libra-fuerza segundo por pie cuadrado,    lbfÀs/ft?,LIBRA-FUERZA SEGUNDO POR PIE CUADRADO
+K92,Libra-fuerza segundo por pulgada cuadrada,    lbfÀs/in?,LIBRA-FUERZA SEGUNDO POR PULGADA CUADRADA
+K93,Reciprocidad psi,1/psi,RECIPROCIDAD PSI
+K94,"Cuarto (líquido, UK) por día", qt (UK liq.)/d,"CUARTO (LIQUIDO, UK) POR DIA"
+K95,"Cuarto (líquido, UK) por hora", qt (UK liq.)/h,"CUARTO (LIQUIDO, UK) POR HORA"
+K96,"Cuarto (líquido, UK) por minuto",qt (UK liq.)/min,"CUARTO (LIQUIDO, UK) POR MINUTO"
+K97,"Cuarto (líquido, UK) por segundo", qt (UK liq.)/s,"CUARTO (LIQUIDO, UK) POR SEGUNDO"
+K98,"Cuarto (líquido, estados unidos) por día", qt (US liq.)/d,"CUARTO (LIQUIDO, ESTADOS UNIDOS) POR DIA"
+K99,"Cuarto (líquido, estados unidos) por hora", qt (US liq.)/h,"CUARTO (LIQUIDO, ESTADOS UNIDOS) POR HORA"
+KA,Pastel,,PASTEL
+KAT,Katal, kat,KATAL
+KB,Kilocaracter,,KILOCARACTER
+KBA,Kilobar,kbar,KILOBAR
+KCC,Kilogramo de cloruro de colina,  kg C? H??ClNO,KILOGRAMO DE CLORURO DE COLINA
+KD,Kilogram decimal,,KILOGRAM DECIMAL
+KDW,Kilogramo de peso neto drenado,   kg/net eda,KILOGRAMO DE PESO NETO DRENADO
+KEL,Kelvin,  K,KELVIN
+KF,Kilopacket,,KILOPACKET
+KGM,Kilogramo, kg,KILOGRAMO
+KGS,Kilogramo por segundo,kg/s,KILOGRAMO POR SEGUNDO
+KHY,Kilogramo de peróxido de hidrógeno,     kg H?O?,KILOGRAMO DE PEROXIDO DE HIDROGENO
+KHZ,Kilohertz, kHz,KILOHERTZ
+KI,Kilogramo por milímetro de ancho,,KILOGRAMO POR MILIMETRO DE ANCHO
+KIC,"Kilogramo, incluyendo el contenedor",,"KILOGRAMO, INCLUYENDO EL CONTENEDOR"
+KIP,"Kilogramo, incluyendo el empaquetado interno",,"KILOGRAMO, INCLUYENDO EL EMPAQUETADO INTERNO"
+KJ,Kilosegmento,,KILOSEGMENTO
+KJO,Kilojoule, kJ,KILOJOULE
+KL,Kilogramo por metro,kg/m,KILOGRAMO POR METRO
+KLK,Porcentaje de material seco láctico,,PORCENTAJE DE MATERIAL SECO LACTICO
+KLX,Kilolux, klx,KILOLUX
+KMA,Kilogramo de metilamina,   kg met.am.,KILOGRAMO DE METILAMINA
+KMH,Kilómetro por hora,km/h,KILOMETRO POR HORA
+KMK,Kilómetro cuadrado, km?,KILOMETRO CUADRADO
+KMQ,Kilogramo por metro cúbico,kg/m?,KILOGRAMO POR METRO CUBICO
+KMT,Kilómetro, km,KILOMETRO
+KNI,Kilogramo de nitrógeno,kg N,KILOGRAMO DE NITROGENO
+KNM,Kolonewton por metro cuadrado,KN/m2,KOLONEWTON POR METRO CUADRADO
+KNS,Kilogram sustancia nombrada,,KILOGRAM SUSTANCIA NOMBRADA
+KNT,Nudo, kn,NUDO
+KO,Miliequivalentes de potasa cáustica por gramo de producto,,MILIEQUIVALENTES DE POTASA CAUSTICA POR GRAMO DE PRODUCTO
+KPA,Kilopascal, kPa,KILOPASCAL
+KPH,Kilogramo de hidróxido de potasio (potasa cáustica),     kg KOH,KILOGRAMO DE HIDROXIDO DE POTASIO (POTASA CAUSTICA)
+KPO,Kilogramo de óxido de potasio,     kg K?O,KILOGRAMO DE OXIDO DE POTASIO
+KPP,Kilogramo de pentóxido de fósforo (anhídrido fosfórico),,KILOGRAMO DE PENTOXIDO DE FOSFORO (ANHIDRIDO FOSFORICO)
+KR,Kiloroentgen, kR,KILOROENTGEN
+KS,Mil libras por pulgada cuadrada,,MIL LIBRAS POR PULGADA CUADRADA
+KSD,Kilogramo de sustancia 90% seco,   kg 90 % sdt,KILOGRAMO DE SUSTANCIA 90% SECO
+KSH,Kilogramo de hidróxido de sodio (sodio cáustica),     kg NaOH,KILOGRAMO DE HIDROXIDO DE SODIO (SODIO CAUSTICA)
+KT,Kit,,KIT
+KTN,Kilotonelada Métrica, kt,KILOTONELADA METRICA
+KUR,Kilogramo de uranio,kg U,KILOGRAMO DE URANIO
+KVA,Kilovoltio - amperio,kVÀA,KILOVOLTIO - AMPERIO
+KVR,Kilovar,kvar,KILOVAR
+KVT,Kilovoltio, kV,KILOVOLTIO
+KW,Kilogramo por milímetro,kg/mm,KILOGRAMO POR MILIMETRO
+KWH,Kilowatt hora,kWÀh,KILOWATT HORA
+KWN,Kilowatt hora por metro cúbico normalizado,,KILOWATT HORA POR METRO CUBICO NORMALIZADO
+KWO,Kilogramo de trióxido de tungsteno,     kg WO?,KILOGRAMO DE TRIOXIDO DE TUNGSTENO
+KWS,Kilowatt hora por metro cúbico estándar,,KILOWATT HORA POR METRO CUBICO ESTANDAR
+KWT,Kilowatt, kW,KILOWATT
+KX,Mililitro por kilogramo,ml/kg,MILILITRO POR KILOGRAMO
+L10,"Cuarto (líquido, estados unidos) por minuto",qt (US liq.)/min,"CUARTO (LIQUIDO, ESTADOS UNIDOS) POR MINUTO"
+L11,"Cuarto (líquido, estados unidos) por segundo", qt (US liq.)/s,"CUARTO (LIQUIDO, ESTADOS UNIDOS) POR SEGUNDO"
+L12,Metro por segundo kelvin,     (m/s)/K,METRO POR SEGUNDO KELVIN
+L13,Metro por segundo bar,    (m/s)/bar,METRO POR SEGUNDO BAR
+L14,Metro cuadrado hora grado celsius por kilocaloría (tabla internacional),  m?ÀhÀ?C/kcal,METRO CUADRADO HORA GRADO CELSIUS POR KILOCALORIA (TABLA INTERNACIONAL)
+L15,Milipascal segundo por kelvin,     mPaÀs/K,MILIPASCAL SEGUNDO POR KELVIN
+L16,Milipascal segundo por bar,    mPaÀs/bar,MILIPASCAL SEGUNDO POR BAR
+L17,Miligramo por metro cúbico kelvin,    (mg/m?)/K,MILIGRAMO POR METRO CUBICO KELVIN
+L18,Miligramo por metro cúbico bar,   (mg/m?)/bar,MILIGRAMO POR METRO CUBICO BAR
+L19,Mililitro por litro,ml/l,MILILITRO POR LITRO
+L2,Litro por minuto,l/min,LITRO POR MINUTO
+L20,Reciprocidad del milimetro cúbico,1/mm?,RECIPROCIDAD DEL MILIMETRO CUBICO
+L21,Milimetro cúbico por metro cúbico,     mm?/m?,MILIMETRO CUBICO POR METRO CUBICO
+L23,Mol por hora,mol/h,MOL POR HORA
+L24,Mol por kilogramo kelvin,   (mol/kg)/K,MOL POR KILOGRAMO KELVIN
+L25,Mol por kilogramo bar,  (mol/kg)/bar,MOL POR KILOGRAMO BAR
+L26,Mol por litreo kelvin,    (mol/l)/K,MOL POR LITREO KELVIN
+L27,Mol por litro bar,   (mol/l)/bar,MOL POR LITRO BAR
+L28,Mol por metro cúbico kelvin,   (mol/m?)/K,MOL POR METRO CUBICO KELVIN
+L29,Mol por metro cúbico bar,  (mol/m?)/bar,MOL POR METRO CUBICO BAR
+L30,Mol por minuto,     mol/min,MOL POR MINUTO
+L31,Milliroentgen aequivalent men,mrem,MILLIROENTGEN AEQUIVALENT MEN
+L32,Nanogramo por kilogramo,ng/kg,NANOGRAMO POR KILOGRAMO
+L33,Onza (avoirdupois) por día,oz/d,ONZA (AVOIRDUPOIS) POR DIA
+L34,Onza (avoirdupois) por hora,oz/h,ONZA (AVOIRDUPOIS) POR HORA
+L35,Onza (avoirdupois) por minuto,     oz/min,ONZA (AVOIRDUPOIS) POR MINUTO
+L36,Onza (avoirdupois) por segundo,oz/s,ONZA (AVOIRDUPOIS) POR SEGUNDO
+L37,Onza (avoirdupois) por galón (UK),   oz/gal (UK),ONZA (AVOIRDUPOIS) POR GALON (UK)
+L38,Onza (avoirdupois) por galón (EUA),   oz/gal (US),ONZA (AVOIRDUPOIS) POR GALON (EUA)
+L39,Onza (avoirdupois) por pulgada cúbica,     oz/in?,ONZA (AVOIRDUPOIS) POR PULGADA CUBICA
+L40,Onza fuerza, ozf,ONZA FUERZA
+L41,Onza (avoirdupois) fuerza pulgada,     ozfÀin,ONZA (AVOIRDUPOIS) FUERZA PULGADA
+L42,Picosiemens por metro,pS/m,PICOSIEMENS POR METRO
+L43,Peck (UK),     pk (UK),PECK (UK)
+L44,Peck (UK) por día,    pk (UK)/d,PECK (UK) POR DIA
+L45,Peck (UK) por hora,    pk (UK)/h,PECK (UK) POR HORA
+L46,Peck (UK) por minuto,   pk (UK)/min,PECK (UK) POR MINUTO
+L47,Peck (UK) por segundo,    pk (UK)/s,PECK (UK) POR SEGUNDO
+L48,"Peck (seco, estados unidos) por día",  pk (US dry)/d,"PECK (SECO, ESTADOS UNIDOS) POR DIA"
+L49,"Peck (seco, estados unidos) por hora",  pk (US dry)/h,"PECK (SECO, ESTADOS UNIDOS) POR HORA"
+L50,"Peck (seco, estados unidos) por minuto", pk (US dry)/min,"PECK (SECO, ESTADOS UNIDOS) POR MINUTO"
+L51,"Peck (seco, estados unidos) por segundo",  pk (US dry)/s,"PECK (SECO, ESTADOS UNIDOS) POR SEGUNDO"
+L52,Libra.fuerza por pulgada cuadrada por libra fuerza por pulgada cuadrada,     psi/psi,LIBRA.FUERZA POR PULGADA CUADRADA POR LIBRA FUERZA POR PULGADA CUADRADA
+L53,Pinta (UK) por día,    pt (UK)/d,PINTA (UK) POR DIA
+L54,Pinta (UK) por hora,    pt (UK)/h,PINTA (UK) POR HORA
+L55,Pinta (UK) por minuto,   pt (UK)/min,PINTA (UK) POR MINUTO
+L56,Pinta (UK) por segundo,    pt (UK)/s,PINTA (UK) POR SEGUNDO
+L57,"Pinta (líquido, estados unidos) por día", pt (US liq.)/d,"PINTA (LIQUIDO, ESTADOS UNIDOS) POR DIA"
+L58,"Pinta (líquido, estados unidos) por hora", pt (US liq.)/h,"PINTA (LIQUIDO, ESTADOS UNIDOS) POR HORA"
+L59,"Pinta (líquido, estados unidos) por minuto",pt (US liq.)/min,"PINTA (LIQUIDO, ESTADOS UNIDOS) POR MINUTO"
+L60,"Pinta (líquido, estados unidos) por segundo", pt (US liq.)/s,"PINTA (LIQUIDO, ESTADOS UNIDOS) POR SEGUNDO"
+L61,Pinta (US seco),  Pt (US seco),PINTA (US SECO)
+L62,Cuarto de galón (seco de los EUA),  Qt (US seco),CUARTO DE GALON (SECO DE LOS EUA)
+L63,Slug por día,     slug/d,SLUG POR DIA
+L64,Slug por pie segundo,   slug/(ftÀs),SLUG POR PIE SEGUNDO
+L65,Slug por pie cúbico,    slug/ft?,SLUG POR PIE CUBICO
+L66,Slug por hora,     slug/h,SLUG POR HORA
+L67,Slug por minuto,    slug/min,SLUG POR MINUTO
+L68,Slug por segundo,     slug/s,SLUG POR SEGUNDO
+L69,Tonelada por kelvin, t/K,TONELADA POR KELVIN
+L70,Tonelada por bar,t/bar,TONELADA POR BAR
+L71,Tonelada por día, t/d,TONELADA POR DIA
+L72,Tonelada por día kelvin,     (t/d)/K,TONELADA POR DIA KELVIN
+L73,Tonelada por día bar,    (t/d)/bar,TONELADA POR DIA BAR
+L74,Tonelada por hora kelvin,     (t/h)/K,TONELADA POR HORA KELVIN
+L75,Tonelada por hora bar,    (t/h)/bar,TONELADA POR HORA BAR
+L76,Tonelada por metro cúbico kelvin,    (t/m?)/K,TONELADA POR METRO CUBICO KELVIN
+L77,Tonelada por metro cúbico bar,   (t/m?)/bar,TONELADA POR METRO CUBICO BAR
+L78,Tonelada por minuto,t/min,TONELADA POR MINUTO
+L79,Tonelada por minuto kelvin,    (t/min)/K,TONELADA POR MINUTO KELVIN
+L80,Tonelada por minuto bar,   (t/min)/bar,TONELADA POR MINUTO BAR
+L81,Tonelada por segundo, t/s,TONELADA POR SEGUNDO
+L82,Tonelada por segundo kelvin,     (t/s)/K,TONELADA POR SEGUNDO KELVIN
+L83,Tonelada por segundo bar,    (t/s)/bar,TONELADA POR SEGUNDO BAR
+L84,Tonelada (flota UK),British shipping ton,TONELADA (FLOTA UK)
+L85,Tonelada larga por día,   ton (UK)/d,TONELADA LARGA POR DIA
+L86,Tonelada (flota estados unidos),(US) shipping ton,TONELADA (FLOTA ESTADOS UNIDOS)
+L87,Tonelada corta por grado fahrenheit,   ton (US)/?F,TONELADA CORTA POR GRADO FAHRENHEIT
+L88,Tonelada corta por día,   ton (US)/d,TONELADA CORTA POR DIA
+L89,Tonelada corta por hora grados fahrenheit, ton (US)/(hÀ?F),TONELADA CORTA POR HORA GRADOS FAHRENHEIT
+L90,Tonelada corta por hora libra-fuerza por pulgada cuadrada,(ton (US)/h)/psi,TONELADA CORTA POR HORA LIBRA-FUERZA POR PULGADA CUADRADA
+L91,Tonelada corta por psi,  ton (US)/psi,TONELADA CORTA POR PSI
+L92,Tonelada larga (UK) por yarda cúbica, ton.l/yd? (UK),TONELADA LARGA (UK) POR YARDA CUBICA
+L93,Tonelada corta (estados unidos) por yarda cúbica, ton.s/yd? (US),TONELADA CORTA (ESTADOS UNIDOS) POR YARDA CUBICA
+L94,Tonelada fuerza,  ton.sh-force,TONELADA FUERZA
+L95,Año común,  y (365 days),ANO COMUN
+L96,Año sideral,  y (sidereal),ANO SIDERAL
+L98,Yarda por grado fahrenheit,yd/?F,YARDA POR GRADO FAHRENHEIT
+L99,Yarda por psi (libra por pulgada cuadrada),     yd/psi,YARDA POR PSI (LIBRA POR PULGADA CUADRADA)
+LA,Libra por pulgada cúbica,     lb/in?,LIBRA POR PULGADA CUBICA
+LAC,Porcentaje de exceso de lactosa,,PORCENTAJE DE EXCESO DE LACTOSA
+LBR,Libra, lb,LIBRA
+LBT,Troy pound,,TROY POUND
+LC,Centímetro lineal,,CENTIMETRO LINEAL
+LD,Litro por día, l/d,LITRO POR DIA
+LE,Lite,,LITE
+LEF,Hoja,,HOJA
+LF,Pie lineal,,PIE LINEAL
+LH,Hora de trabajo,,HORA DE TRABAJO
+LI,Pulgada lineal,,PULGADA LINEAL
+LJ,Spray grande,,SPRAY GRANDE
+LK,Enlazar,,ENLAZAR
+LM,Metro lineal,,METRO LINEAL
+LN,Longitud,,LONGITUD
+LO,Lote [unidad de adquisición],,LOTE [UNIDAD DE ADQUISICION]
+LP,Libra líquida,,LIBRA LIQUIDA
+LPA,Litro de alcohol puro,,LITRO DE ALCOHOL PURO
+LR,Capa,,CAPA
+LS,Suma global,,SUMA GLOBAL
+LTN,Tonelada (UK) o tonelada larga (estados unidos),    ton (UK),TONELADA (UK) O TONELADA LARGA (ESTADOS UNIDOS)
+LTR,Litro,  l,LITRO
+LUB,"Tonelada métrica, aceite lubricante",,"TONELADA METRICA, ACEITE LUBRICANTE"
+LUM,Lumen, lm,LUMEN
+LUX,Lux, lx,LUX
+LX,Yarda lineal por libra,,YARDA LINEAL POR LIBRA
+LY,Yarda lineal,,YARDA LINEAL
+M0,cinta magnética,,CINTA MAGNETICA
+M1,Miligramo por litro,mg/l,MILIGRAMO POR LITRO
+M10,Reciprocidad de la yarda cuadrada,1/yd?,RECIPROCIDAD DE LA YARDA CUADRADA
+M11,Yarda cúbica por grado fahrenheit,     yd?/?F,YARDA CUBICA POR GRADO FAHRENHEIT
+M12,Yarda cúbica por día,yd?/d,YARDA CUBICA POR DIA
+M13,Yarda cúbica por hora,yd?/h,YARDA CUBICA POR HORA
+M14,Yarda cúbica por psi (libra por pulgada cuadrada),     yd?/psi,YARDA CUBICA POR PSI (LIBRA POR PULGADA CUADRADA)
+M15,Yarda cúbica por minuto,     yd?/min,YARDA CUBICA POR MINUTO
+M16,Yarda cúbica por segundo,yd?/s,YARDA CUBICA POR SEGUNDO
+M17,Kilohertz metro,kHzÀm,KILOHERTZ METRO
+M18,Gigahertz metro,GHzÀm,GIGAHERTZ METRO
+M19,Beaufort, Bft,BEAUFORT
+M20,Recíproco de megakelvin ó megakelvin a la potencia menos 1,1/MK,RECIPROCO DE MEGAKELVIN O MEGAKELVIN A LA POTENCIA MENOS 1
+M21,Kilovoltio-amperio hora recíprocidad,     1/kVAh,KILOVOLTIO-AMPERIO HORA RECIPROCIDAD
+M22,Milímetro por centímetro cuadrado minuto,  (ml/min)/cm?,MILIMETRO POR CENTIMETRO CUADRADO MINUTO
+M23,Newton por centímetro,N/cm,NEWTON POR CENTIMETRO
+M24,Ohm kilómetro,?Àkm,OHM KILOMETRO
+M25,Porcentaje por grado celsius,%/?C,PORCENTAJE POR GRADO CELSIUS
+M26,GigaOhm por metro,G?/m,GIGAOHM POR METRO
+M27,Megahertz metro,MHzÀm,MEGAHERTZ METRO
+M29,Kilogramo por kilogramo,kg/kg,KILOGRAMO POR KILOGRAMO
+M30,voltio-amperio segundo recíprocidad,    1/(VÀAÀs),VOLTIO-AMPERIO SEGUNDO RECIPROCIDAD
+M31,Kilogramo por kilómetro,kg/km,KILOGRAMO POR KILOMETRO
+M32,Segundos pascal por litro,     PaÀs/l,SEGUNDOS PASCAL POR LITRO
+M33,MiliMol por litro,     mmol/l,MILIMOL POR LITRO
+M34,Newton metro por metro cuadrado,     NÀm/m?,NEWTON METRO POR METRO CUADRADO
+M35,Milivoltio - amperio,mVÀA,MILIVOLTIO - AMPERIO
+M36,Mes de 30 días,  mo (30 days),MES DE 30 DIAS
+M37,Actual 360,  y (360 days),ACTUAL 360
+M38,Kilómetro por segundo cuadrado,km/s?,KILOMETRO POR SEGUNDO CUADRADO
+M39,Centímetro por segundo cuadrado,cm/s?,CENTIMETRO POR SEGUNDO CUADRADO
+M4,Valor monetario,,VALOR MONETARIO
+M40,Yarda por segundo cuadrado,yd/s?,YARDA POR SEGUNDO CUADRADO
+M41,Milímetro por segundo cuadrado,mm/s?,MILIMETRO POR SEGUNDO CUADRADO
+M42,Milla (milla estatal)  por segundo cuadrado,mi/s?,MILLA (MILLA ESTATAL)  POR SEGUNDO CUADRADO
+M43,Mil (unidad de Medida Militar), mil,MIL (UNIDAD DE MEDIDA MILITAR)
+M44,Revolución, rev,REVOLUCION
+M45,Grado por segundo cuadrado,?/s?,GRADO POR SEGUNDO CUADRADO
+M46,Revolución por minuto,r/min,REVOLUCION POR MINUTO
+M47,Circular Mil,cmil,CIRCULAR MIL
+M48,Milla cuadrada (basado en u.s survey foot), mi? (US survey),MILLA CUADRADA (BASADO EN U.S SURVEY FOOT)
+M49,Cadena, ch (US survey),CADENA
+M5,Microcurie, ÁCi,MICROCURIE
+M50,Estadio, fur,ESTADIO
+M51,Pie (Topografía UEA), ft (US survey),PIE (TOPOGRAFIA UEA)
+M52,Milla, mi (US survey),MILLA
+M53,Metro por pascal,m/Pa,METRO POR PASCAL
+M55,Metro por radián,m/rad,METRO POR RADIAN
+M56,Shake,shake,SHAKE
+M57,Milla por minuto,     mi/min,MILLA POR MINUTO
+M58,Milla por segundo,mi/s,MILLA POR SEGUNDO
+M59,Metro por segundo pascal,    (m/s)/Pa,METRO POR SEGUNDO PASCAL
+M60,Metro por hora, m/h,METRO POR HORA
+M61,Pulgada por año,in/y,PULGADA POR ANO
+M62,Kilómetro por segundo,km/s,KILOMETRO POR SEGUNDO
+M63,Pulgada por minuto,     in/min,PULGADA POR MINUTO
+M64,Yarda por segundo,yd/s,YARDA POR SEGUNDO
+M65,Yarda por minuto,     yd/min,YARDA POR MINUTO
+M66,Yarda por hora,yd/h,YARDA POR HORA
+M67,Acre-pie,acre-ft (US survey),ACRE-PIE
+M68,Cordón,cord,CORDON
+M69,Milla cúbica (reinounido), mi?,MILLA CUBICA (REINOUNIDO)
+M7,Micro-pulgada, Áin,MICRO-PULGADA
+M70,Unidad tradicional de capacidad de carga, RT,UNIDAD TRADICIONAL DE CAPACIDAD DE CARGA
+M71,Metro cúbico por pascal (joules),m?/Pa,METRO CUBICO POR PASCAL (JOULES)
+M72,Bel,  B,BEL
+M73,Kilogramo por metro cúbico pascal,   (kg/m?)/Pa,KILOGRAMO POR METRO CUBICO PASCAL
+M74,Kilogramo por pascal,kg/Pa,KILOGRAMO POR PASCAL
+M75,Kilolibra fuerza, kip,KILOLIBRA FUERZA
+M76,Poundal, pdl,POUNDAL
+M77,Kilogramo metro por segundo cuadrado,     kgÀm/s?,KILOGRAMO METRO POR SEGUNDO CUADRADO
+M78,Pond,  p,POND
+M79,Pie cuadrado por hora,ft?/h,PIE CUADRADO POR HORA
+M80,Stokes por pascal,St/Pa,STOKES POR PASCAL
+M81,Centímetro cuadrado por segundo,cm?/s,CENTIMETRO CUADRADO POR SEGUNDO
+M82,Metro cuadrado por segundo pascal,    (m?/s)/Pa,METRO CUADRADO POR SEGUNDO PASCAL
+M83,Denier, den,DENIER
+M84,Libra por yarda,lb/yd,LIBRA POR YARDA
+M85,"Tonelada, ensayo",,"TONELADA, ENSAYO"
+M86,Libra Alemana, pfd,LIBRA ALEMANA
+M87,Kilogramo por segundo pascal,    (kg/s)/Pa,KILOGRAMO POR SEGUNDO PASCAL
+M88,Tonelada por mes,t/mo,TONELADA POR MES
+M89,Tonelada por año, t/y,TONELADA POR ANO
+M9,Millones de btu por 1000 pies cúbicos,    MBTU/kft?,MILLONES DE BTU POR 1000 PIES CUBICOS
+M90,Kilolibra por hora,klb/h,KILOLIBRA POR HORA
+M91,Libra por libra,lb/lb,LIBRA POR LIBRA
+M92,Libra fuerza pie,     lbfÀft,LIBRA FUERZA PIE
+M93,Newton metro por radián,     NÀm/rad,NEWTON METRO POR RADIAN
+M94,Kilogramo metro,kgÀm,KILOGRAMO METRO
+M95,Poundal pie,     pdlÀft,POUNDAL PIE
+M96,Poundal pulgada,     pdlÀin,POUNDAL PULGADA
+M97,Dina metro,dynÀm,DINA METRO
+M98,Kilogramo centímetro por segundo,    kgÀ(cm/s),KILOGRAMO CENTIMETRO POR SEGUNDO
+M99,Gramo centímetro por segundo,    gÀ(cm/s),GRAMO CENTIMETRO POR SEGUNDO
+MA,Máquina por unidad,,MAQUINA POR UNIDAD
+MAH,Megavoltio amperio reactivo hora,     MvarÀh,MEGAVOLTIO AMPERIO REACTIVO HORA
+MAL,Megalitro, Ml,MEGALITRO
+MAM,Megametro, Mm,MEGAMETRO
+MAR,Megavar,kvar,MEGAVAR
+MAW,Megawatt, MW,MEGAWATT
+MBE,Mil equivalente de ladrillo estándar,,MIL EQUIVALENTE DE LADRILLO ESTANDAR
+MBF,Mil pies de tabla,,MIL PIES DE TABLA
+MBR,Milibar,mbar,MILIBAR
+MC,Microgramo, Ág,MICROGRAMO
+MCU,Milicurie, mCi,MILICURIE
+MD,Tonelada métrica seca al aire,,TONELADA METRICA SECA AL AIRE
+MF,Miligramo por pie cuadrado por lado,,MILIGRAMO POR PIE CUADRADO POR LADO
+MGM,Miligramo, mg,MILIGRAMO
+MHZ,Megahertz, MHz,MEGAHERTZ
+MIK,Milla cuadrada (milla estatal), mi?,MILLA CUADRADA (MILLA ESTATAL)
+MIL,Mil,,MIL
+MIN,Minuto [unidad de tiempo], min,MINUTO [UNIDAD DE TIEMPO]
+MIO,Millon,,MILLON
+MIU,Unidad internacional de millon,,UNIDAD INTERNACIONAL DE MILLON
+MK,Miligramo por pulgada cuadrada,    Mg / in?,MILIGRAMO POR PULGADA CUADRADA
+MLD,Mil millones,,MIL MILLONES
+MLT,Mililitro, ml,MILILITRO
+MMK,Milímetro cuadrado, mm?,MILIMETRO CUADRADO
+MMQ,Milímetro cúbico, mm?,MILIMETRO CUBICO
+MMT,Milímetro, mm,MILIMETRO
+MND,"Kilogramo, peso seco",,"KILOGRAMO, PESO SECO"
+MON,Mes, mo,MES
+MPA,Megapascal, MPa,MEGAPASCAL
+MQ,Mil metros,,MIL METROS
+MQH,Metro cúbico por hora,m?/h,METRO CUBICO POR HORA
+MQS,Metro cúbico por segundo,m?/s,METRO CUBICO POR SEGUNDO
+MSK,Metro por segundo cuadrado,m/s?,METRO POR SEGUNDO CUADRADO
+MTK,Metro cuadrado, m?,METRO CUADRADO
+MTQ,Metro cúbico, m?,METRO CUBICO
+MTR,Metro,  m,METRO
+MTS,Metro por segundo, m/s,METRO POR SEGUNDO
+MV,Número de mults,,NUMERO DE MULTS
+MVA,Megavoltio - amperio,MVÀA,MEGAVOLTIO - AMPERIO
+MWH,Megawatt hora,MWÀh,MEGAWATT HORA
+N1,Pluma calórica,,PLUMA CALORICA
+N10,Libra pie por segundo,    lbÀ(ft/s),LIBRA PIE POR SEGUNDO
+N11,Libra pulgada por segundo,    lbÀ(in/s),LIBRA PULGADA POR SEGUNDO
+N12,Pferdestaerke, PS,PFERDESTAERKE
+N13,Centímetro de mercurio (0?),   cmHg (0 ?C),CENTIMETRO DE MERCURIO (0?)
+N14,Centímetro de agua (4?),  cmH?O (4 ?C),CENTIMETRO DE AGUA (4?)
+N15,Pie de agua (39.2 ?f)," ftH?O (39,2 ?F)",PIE DE AGUA (39.2 ?F)
+N16,Pulgada de mercurio (32 ?f),  inHG (32 ?F),PULGADA DE MERCURIO (32 ?F)
+N17,Pulgada de mercurio (60 ?f),  inHg (60 ?F),PULGADA DE MERCURIO (60 ?F)
+N18,Pulgada de agua (39.2 ?f)," inH?O (39,2 ?F)",PULGADA DE AGUA (39.2 ?F)
+N19,Pulgada de agua (60 ?f),  inH?O (60 ?F),PULGADA DE AGUA (60 ?F)
+N2,número de líneas,,NUMERO DE LINEAS
+N20,Kip por pulgada cuadrada, ksi,KIP POR PULGADA CUADRADA
+N21,Poundal por pie cuadrado,     pdl/ft?,POUNDAL POR PIE CUADRADO
+N22,Onza (avoirdupois) por pulgada cuadrada,     oz/in?,ONZA (AVOIRDUPOIS) POR PULGADA CUADRADA
+N23,Metro convencional de agua,mH?O,METRO CONVENCIONAL DE AGUA
+N24,Gramo por milímetro cuadrado,g/mm?,GRAMO POR MILIMETRO CUADRADO
+N25,Libra por yarda cuadrada,     lb/yd?,LIBRA POR YARDA CUADRADA
+N26,Poundal por pulgada cuadrada,     pdl/in?,POUNDAL POR PULGADA CUADRADA
+N27,Pie a la cuarta potencia, ft?,PIE A LA CUARTA POTENCIA
+N28,Decímetro cúbico por kilogramo,     dm?/kg,DECIMETRO CUBICO POR KILOGRAMO
+N29,Pie cúbico por libra,     ft?/lb,PIE CUBICO POR LIBRA
+N30,Impresión de punto,,IMPRESION DE PUNTO
+N30,Pulgada cúbica por libra,     in?/lb,PULGADA CUBICA POR LIBRA
+N31,Kilonewton por metro,kN/m,KILONEWTON POR METRO
+N32,Poundal por pulgada,     pdl/in,POUNDAL POR PULGADA
+N33,Libra-fuerza por yarda,     lbf/yd,LIBRA-FUERZA POR YARDA
+N34,Poundal segundo por pie cuadrado,   (pdl/ft?)Às,POUNDAL SEGUNDO POR PIE CUADRADO
+N35,Poise por pascal,P/Pa,POISE POR PASCAL
+N36,Newton segundo por metro cuadrado,    (N/m?)Às,NEWTON SEGUNDO POR METRO CUADRADO
+N37,Kilogramo por metro segundo,    kg/(mÀs),KILOGRAMO POR METRO SEGUNDO
+N38,Kilogramo por metro minuto,   kg/(mÀmin),KILOGRAMO POR METRO MINUTO
+N39,Kilogramo por metro día,    kg/(mÀd),KILOGRAMO POR METRO DIA
+N40,Kilogramo por metro hora,    kg/(mÀh),KILOGRAMO POR METRO HORA
+N41,Gramo por centímetro segundo,    g/(cmÀs),GRAMO POR CENTIMETRO SEGUNDO
+N42,Poundal segundo por pulgada cuadrada,   (pdl/in?)Às,POUNDAL SEGUNDO POR PULGADA CUADRADA
+N43,Libra por pie minuto,   lb/(ftÀmin),LIBRA POR PIE MINUTO
+N44,Libra por pie día,    lb/(ftÀd),LIBRA POR PIE DIA
+N45,Metro cúbico por segundo pascal,    (m?/s)/Pa,METRO CUBICO POR SEGUNDO PASCAL
+N46,Pie poundal,     ftÀpdl,PIE POUNDAL
+N47,Pulgada poundal,     inÀpdl,PULGADA POUNDAL
+N48,Watt por centímetro cuadrado,W/cm?,WATT POR CENTIMETRO CUADRADO
+N49,Watt por pulgada cuadrada,W/in?,WATT POR PULGADA CUADRADA
+N50,Unidad térmica británica (tabla internacional) por pie cuadrado hora.,  BtuIT/(ft?Àh),UNIDAD TERMICA BRITANICA (TABLA INTERNACIONAL) POR PIE CUADRADO HORA.
+N51,Unidad térmica británica (termoquímica) por pie cuadrado hora.,  Btuth/(ft?Àh),UNIDAD TERMICA BRITANICA (TERMOQUIMICA) POR PIE CUADRADO HORA.
+N52,Unidad térmica británica (termoquímico) por pie cuadrado minuto.,Btuth/(ft?Àmin),UNIDAD TERMICA BRITANICA (TERMOQUIMICO) POR PIE CUADRADO MINUTO.
+N53,Unidad térmica británica (tabla internacional) por pie cuadrado segundo.,  BtuIT/(ft?Às),UNIDAD TERMICA BRITANICA (TABLA INTERNACIONAL) POR PIE CUADRADO SEGUNDO.
+N54,Unidad térmica británica (termoquímica) por pie cuadrado segundo.,  Btuth/(ft?Às),UNIDAD TERMICA BRITANICA (TERMOQUIMICA) POR PIE CUADRADO SEGUNDO.
+N55,Unidad térmica británica (tabla internacional) por pulgada cuadrada segundo.,  BtuIT/(in?Às),UNIDAD TERMICA BRITANICA (TABLA INTERNACIONAL) POR PULGADA CUADRADA SEGUNDO.
+N56,Caloría (termoquímica) por centímetro cuadrado minuto, calth/(cm?Àmin),CALORIA (TERMOQUIMICA) POR CENTIMETRO CUADRADO MINUTO
+N57,Caloría (termoquímica) por centímetro cuadrado segundo,  calth/(cm?Às),CALORIA (TERMOQUIMICA) POR CENTIMETRO CUADRADO SEGUNDO
+N58,Unidad térmica británica (tabla internacional) por pie cúbico,    BtuIT/ft?,UNIDAD TERMICA BRITANICA (TABLA INTERNACIONAL) POR PIE CUBICO
+N59,Unidad térmica británica (termoquímica) por pie cúbico,    Btuth/ft?,UNIDAD TERMICA BRITANICA (TERMOQUIMICA) POR PIE CUBICO
+N60,Unidad térmica británica (tabla internacional) por grado fahrenheit,    BtuIT/?F,UNIDAD TERMICA BRITANICA (TABLA INTERNACIONAL) POR GRADO FAHRENHEIT
+N61,Unidad térmica británica (termoquímico) por grado fahrenheit,    Btuth/?F,UNIDAD TERMICA BRITANICA (TERMOQUIMICO) POR GRADO FAHRENHEIT
+N62,Unidad térmica británica (tabla internacional) por grado rankine,    BtuIT/?R,UNIDAD TERMICA BRITANICA (TABLA INTERNACIONAL) POR GRADO RANKINE
+N63,Unidad térmica británica (termoquímico) por grado rankine,    Btuth/?R,UNIDAD TERMICA BRITANICA (TERMOQUIMICO) POR GRADO RANKINE
+N64,Unidad térmica británica (termoquímico) por libra grado rankine,  (Btuth/?R)/lb,UNIDAD TERMICA BRITANICA (TERMOQUIMICO) POR LIBRA GRADO RANKINE
+N65,Kilocaloría (tabla internacional) por gramo kelvin,  (kcalIT/K)/g,KILOCALORIA (TABLA INTERNACIONAL) POR GRAMO KELVIN
+N66,Unidad térmica británica (39 ?f),  Btu (39 ?F),UNIDAD TERMICA BRITANICA (39 ?F)
+N67,Unidad térmica británica (59 ?f),   Btu (59 ?F),UNIDAD TERMICA BRITANICA (59 ?F)
+N68,Unidad térmica británica (60 ?f),  Btu (60 ?F),UNIDAD TERMICA BRITANICA (60 ?F)
+N69,Caloría (20 ?c),cal??,CALORIA (20 ?C)
+N70,Quad,quad,QUAD
+N71,Termia (energía comercial),    thm (EC),TERMIA (ENERGIA COMERCIAL)
+N72,Termia (UEA),    thm (US),TERMIA (UEA)
+N73,Unidad térmica británica (termoquímica) por libra,    Btuth/lb,UNIDAD TERMICA BRITANICA (TERMOQUIMICA) POR LIBRA
+N74,Unidad térmica británica (tabla internacional) por hora pie cuadrado grado fahrenheit.,BtuIT/(hÀft?À?F),UNIDAD TERMICA BRITANICA (TABLA INTERNACIONAL) POR HORA PIE CUADRADO GRADO FAHRENHEIT.
+N75,Unidad térmica británica (termoquímico) por hora pie cuadrado grado farenheit.,Btuth/(hÀft?À?F),UNIDAD TERMICA BRITANICA (TERMOQUIMICO) POR HORA PIE CUADRADO GRADO FARENHEIT.
+N76,Unidad térmica británica (tabla internacional) por segundo pie cuadrado grado fahrenheit.,BtuIT/(sÀft?À?F),UNIDAD TERMICA BRITANICA (TABLA INTERNACIONAL) POR SEGUNDO PIE CUADRADO GRADO FAHRENHEIT.
+N77,Unidad térmica británica (termoquímico) por segundo pie cuadrado grado fahrenheit.,Btuth/(s/ft2/°F),UNIDAD TERMICA BRITANICA (TERMOQUIMICO) POR SEGUNDO PIE CUADRADO GRADO FAHRENHEIT.
+N78,Kilowatt por metro cuadrado kelvin,    kW/(m?ÀK),KILOWATT POR METRO CUADRADO KELVIN
+N79,Kelvin por pascal,K/Pa,KELVIN POR PASCAL
+N80,Watt por metro grado celsius,    W/(mÀ?C),WATT POR METRO GRADO CELSIUS
+N81,Kilowatt por metro kelvin,    kW/(mÀK),KILOWATT POR METRO KELVIN
+N82,Kilowatt por metro grado celsius,    kW/(mÀ?C),KILOWATT POR METRO GRADO CELSIUS
+N83,Metro por grado celsius metro,m/(°C/m),METRO POR GRADO CELSIUS METRO
+N84,Grado fahrenheit hora por unidad térmica británica (tabla internacional),  ?F/(BtuIT/h),GRADO FAHRENHEIT HORA POR UNIDAD TERMICA BRITANICA (TABLA INTERNACIONAL)
+N85,Grado fahrenheit hora por unidad térmica británica (termoquímico),  ?F/(Btuth/h),GRADO FAHRENHEIT HORA POR UNIDAD TERMICA BRITANICA (TERMOQUIMICO)
+N86,Grado fahrenheit segundo por unidad térmica británica (tabla internacional),  ?F/(BtuIT/s),GRADO FAHRENHEIT SEGUNDO POR UNIDAD TERMICA BRITANICA (TABLA INTERNACIONAL)
+N87,Grago fahrenheit segundo por unidad térmica británica (termoquímico),  ?F/(Btuth/s),GRAGO FAHRENHEIT SEGUNDO POR UNIDAD TERMICA BRITANICA (TERMOQUIMICO)
+N88,Grado fahrenheit hora pie cuadrado por unidad térmica británica (tabla internacional) pulgada,?FÀhÀft?/(BtuITÀin),GRADO FAHRENHEIT HORA PIE CUADRADO POR UNIDAD TERMICA BRITANICA (TABLA INTERNACIONAL) PULGADA
+N89,Grado fahrenheit hora pie cuadrado por unidad térmica británica (termoquímico) pulgada.,?FÀhÀft?/(BtuthÀin),GRADO FAHRENHEIT HORA PIE CUADRADO POR UNIDAD TERMICA BRITANICA (TERMOQUIMICO) PULGADA.
+N90,Kilofaradio, kF,KILOFARADIO
+N91,Joule recíproco, 1/J,JOULE RECIPROCO
+N92,Picosiemens, pS,PICOSIEMENS
+N93,Amperio por pascal,A/Pa,AMPERIO POR PASCAL
+N94,Franklin, Fr,FRANKLIN
+N95,Amperio minuto,AÀmin,AMPERIO MINUTO
+N96,Biot, Bi,BIOT
+N97,Gilbert, Gi,GILBERT
+N98,Voltio por pascal,V/Pa,VOLTIO POR PASCAL
+N99,Picovoltio, pV,PICOVOLTIO
+NA,Miligramo por kilogramo,mg/kg,MILIGRAMO POR KILOGRAMO
+NAR,Número de artículos,,NUMERO DE ARTICULOS
+NB,barcaza,,BARCAZA
+NBB,Número de bobinas,,NUMERO DE BOBINAS
+NC,Carro,,CARRO
+NCL,Número de celulas,,NUMERO DE CELULAS
+ND,Barril neto,,BARRIL NETO
+NE,Litro neto,,LITRO NETO
+NEW,Newton,  N,NEWTON
+NF,Mensaje,,MENSAJE
+NG,Galón neto (us),,GALON NETO (US)
+NH,Hora del mensaje,,HORA DEL MENSAJE
+NI,Galón imperial neto,,GALON IMPERIAL NETO
+NIL,Nil, (),NIL
+NIU,Número de unidades internacionales,,NUMERO DE UNIDADES INTERNACIONALES
+NJ,Número de pantallas,,NUMERO DE PANTALLAS
+NL,Carga,,CARGA
+NM3,Metro cúbico normalizado,,METRO CUBICO NORMALIZADO
+NMI,Milla náutica,     n mile,MILLA NAUTICA
+NMP,Número de paquetes,,NUMERO DE PAQUETES
+NN,tren,,TREN
+NPR,Número de parejas,,NUMERO DE PAREJAS
+NPT,Número de partes,,NUMERO DE PARTES
+NQ,Mho,,MHO
+NR,Micromho,,MICROMHO
+NT,Tonelada neta,,TONELADA NETA
+NTT,Tonelada de registro neto,,TONELADA DE REGISTRO NETO
+NV,vehículo,,VEHICULO
+NV,Libra por tonelada métrica al aire seco,,LIBRA POR TONELADA METRICA AL AIRE SECO
+NX,Parte por mil,  ë,PARTE POR MIL
+OA,Panel,,PANEL
+ODE,Equvalente de agotamiento del ozona,,EQUVALENTE DE AGOTAMIENTO DEL OZONA
+Ohm,Ohm,  ?,OHM
+ON,Onza por yarda cuadrada,     oz/yd?,ONZA POR YARDA CUADRADA
+ONZ,Onza (avoirdupois), oz,ONZA (AVOIRDUPOIS)
+OP,Dos paquetes,,DOS PAQUETES
+OPM,Oscilaciones por minuto,o/min,OSCILACIONES POR MINUTO
+OT,Hora extra,,HORA EXTRA
+OZ,Onza AV,,ONZA AV
+OZA,Onza líquida (estados unidos),   fl oz (US),ONZA LIQUIDA (ESTADOS UNIDOS)
+OZI,Onza líquida (UK),   fl oz (UK),ONZA LIQUIDA (UK)
+P0,Página electrónica,,PAGINA ELECTRONICA
+P1,Tanto por ciento,    % or pct,TANTO POR CIENTO
+P10,Culombio por metro, C/m,CULOMBIO POR METRO
+P11,Kiloweber, kWb,KILOWEBER
+P12,Gamma,  ?,GAMMA
+P13,Kilotesla, kT,KILOTESLA
+P14,Joule por segundo, J/s,JOULE POR SEGUNDO
+P15,Joule por minuto,J/min,JOULE POR MINUTO
+P16,Joule por hora, J/h,JOULE POR HORA
+P17,Joule por día, J/d,JOULE POR DIA
+P18,Kilojoule por segundo,kJ/s,KILOJOULE POR SEGUNDO
+P19,Kilojoule por minuto,     kJ/min,KILOJOULE POR MINUTO
+P2,Libra por pie,lb/ft,LIBRA POR PIE
+P20,Kilojoule por hora,kJ/h,KILOJOULE POR HORA
+P21,Kilojoule por dia,kJ/d,KILOJOULE POR DIA
+P22,NanoOhm, n?,NANOOHM
+P23,Ohm circular-mil por pie,   ?Àcmil/ft,OHM CIRCULAR-MIL POR PIE
+P24,Kilohenry, kH,KILOHENRY
+P25,Lumen por pie cuadrado,     lm/ft?,LUMEN POR PIE CUADRADO
+P26,Foto, ph,FOTO
+P27,Vela (medida), ftc,VELA (MEDIDA)
+P28,Candela por pulgada cuadrada,     cd/in?,CANDELA POR PULGADA CUADRADA
+P29,Footlambert, ftL,FOOTLAMBERT
+P3,Tres paquetes,,TRES PAQUETES
+P30,Lambert, Lb,LAMBERT
+P31,Stilb, sb,STILB
+P32,Candela por pie cuadrado,     cd/ft?,CANDELA POR PIE CUADRADO
+P33,Kilocandela, kcd,KILOCANDELA
+P34,Milicandela, mcd,MILICANDELA
+P35,Hefner-kerze, HK,HEFNER-KERZE
+P36,Candela internacional, IK,CANDELA INTERNACIONAL
+P37,Unidad térmica británica (tabla internacional) por pie cuadrado,    BtuIT/ft?,UNIDAD TERMICA BRITANICA (TABLA INTERNACIONAL) POR PIE CUADRADO
+P38,Unidad térmica británica (termoquímica) por pie cuadrado,    Btuth/ft?,UNIDAD TERMICA BRITANICA (TERMOQUIMICA) POR PIE CUADRADO
+P39,Caloría (termoquímica) por centímetro cuadrado,    calth/cm?,CALORIA (TERMOQUIMICA) POR CENTIMETRO CUADRADO
+P4,paquete de cuatro,,PAQUETE DE CUATRO
+P40,Langley, Ly,LANGLEY
+P41,Década (logaritmica), dec,DECADA (LOGARITMICA)
+P42,Pascal por segundo cuadrado,Pa?Às,PASCAL POR SEGUNDO CUADRADO
+P43,Bel por metro, B/m,BEL POR METRO
+P44,Libra Mol,lbmol,LIBRA MOL
+P45,Libra de Mol por segundo,     lbmol/s,LIBRA DE MOL POR SEGUNDO
+P46,Libra Mol por minuto,     lbmol/h,LIBRA MOL POR MINUTO
+P47,KiloMol por kilogramo,     kmol/kg,KILOMOL POR KILOGRAMO
+P48,Libra de Mol por libra,    lbmol/lb,LIBRA DE MOL POR LIBRA
+P49,Newton metro cuadrado por amperio,     NÀm?/A,NEWTON METRO CUADRADO POR AMPERIO
+P5,Paquete de cinco,,PAQUETE DE CINCO
+P50,Metro weber,WbÀm,METRO WEBER
+P51,Mol por kilogramo pascal,   (mol/kg)/Pa,MOL POR KILOGRAMO PASCAL
+P52,Mol por metro cúbico pascal,   (mol/m?)/Pa,MOL POR METRO CUBICO PASCAL
+P53,Unit por segundo,   unit pole,UNIT POR SEGUNDO
+P54,MiliGray por segundo,mGy/s,MILIGRAY POR SEGUNDO
+P55,MicroGray por segundo,ÁGy/s,MICROGRAY POR SEGUNDO
+P56,NanoGray por segundo,nGy/s,NANOGRAY POR SEGUNDO
+P57,Gray por minuto,     Gy/min,GRAY POR MINUTO
+P58,MiliGray por minuto,     mGy/min,MILIGRAY POR MINUTO
+P59,Microgray por minuto,     ÁGy/min,MICROGRAY POR MINUTO
+P6,paquete de seis,,PAQUETE DE SEIS
+P60,Nanogray por minuto,     nGy/min,NANOGRAY POR MINUTO
+P61,Gray por hora,Gy/h,GRAY POR HORA
+P62,MiliGray por hora,mGy/h,MILIGRAY POR HORA
+P63,Micro gray por hora,ÁGy/h,MICRO GRAY POR HORA
+P64,Nanogray por hora,nGy/h,NANOGRAY POR HORA
+P65,Sievert por segundo,Sv/s,SIEVERT POR SEGUNDO
+P66,MilliSievert por segundo,mSv/s,MILLISIEVERT POR SEGUNDO
+P67,MicroSievert por segundo,ÁSv/s,MICROSIEVERT POR SEGUNDO
+P68,NanoSievert por segundo,nSv/s,NANOSIEVERT POR SEGUNDO
+P69,Rem por segundo,rem/s,REM POR SEGUNDO
+P7,Paquete de siete,,PAQUETE DE SIETE
+P70,Sievert por hora,Sv/h,SIEVERT POR HORA
+P71,MilliSievert por hora,mSv/h,MILLISIEVERT POR HORA
+P72,Micro Sievert por hora,ÁSv/h,MICRO SIEVERT POR HORA
+P73,NanoSievert por hora,nSv/h,NANOSIEVERT POR HORA
+P74,Sievert por minuto,     Sv/min,SIEVERT POR MINUTO
+P75,MilliSievert por minuto,     mSv/min,MILLISIEVERT POR MINUTO
+P76,MicroSievert por minuto,     ÁSv/min,MICROSIEVERT POR MINUTO
+P77,NanoSievert pominut,     nSv/min,NANOSIEVERT POMINUT
+P78,Reciprocidad por segundo,1/in?,RECIPROCIDAD POR SEGUNDO
+P79,Pascal metro cuadrado por kilogramo,   Pa/(kg/m?),PASCAL METRO CUADRADO POR KILOGRAMO
+P8,Paquete de ocho,,PAQUETE DE OCHO
+P80,Milipascal por metro.,mPa/m,MILIPASCAL POR METRO.
+P81,Kilopascal por metro.,kPa/m,KILOPASCAL POR METRO.
+P82,Hectopascal por metro.,hPa/m,HECTOPASCAL POR METRO.
+P83,Admosfera estandar por metro.,Atm/m,ADMOSFERA ESTANDAR POR METRO.
+P84,Admosfera tecnica por metro.,at/m,ADMOSFERA TECNICA POR METRO.
+P85,Torr por metro.,     Torr/m,TORR POR METRO.
+P86,Psi por pulgada,     psi/in,PSI POR PULGADA
+P87,Metro cúbico por segundo de metro cuadrado,    (m?/s)/m?,METRO CUBICO POR SEGUNDO DE METRO CUADRADO
+P88,Rhe, rhe,RHE
+P89,Libra por metro cúbico de pulgada,    lbfÀft/in,LIBRA POR METRO CUBICO DE PULGADA
+P9,Nueve paquetes,,NUEVE PAQUETES
+P90,Libra-fuerza por pulgada cuadrada,    lbfÀin/in,LIBRA-FUERZA POR PULGADA CUADRADA
+P91,Permanente (0?c),  perm (0 ?C),PERMANENTE (0?C)
+P92,Permanente (23?c),  perm (23 ?C),PERMANENTE (23?C)
+P93,Byte por segundo,     byte/s,BYTE POR SEGUNDO
+P94,Kilobyte por segundo,     kbyte/s,KILOBYTE POR SEGUNDO
+P95,Megabite por segundo,     Mbyte/s,MEGABITE POR SEGUNDO
+P96,Recíproco de la unidad si deriva voltio, 1/V,RECIPROCO DE LA UNIDAD SI DERIVA VOLTIO
+P97,Reciprocidad de Radian,1/rad,RECIPROCIDAD DE RADIAN
+P98,Pascal a la suma de potencia de los números estequimetricos,Pa??B,PASCAL A LA SUMA DE POTENCIA DE LOS NUMEROS ESTEQUIMETRICOS
+P99,Mols por metro cúbico a la suma de potencia de los números estequimetricos,   (mol/m?)??B,MOLS POR METRO CUBICO A LA SUMA DE POTENCIA DE LOS NUMEROS ESTEQUIMETRICOS
+PAL,Pascal, Pa,PASCAL
+PB,Par de la pulgada,,PAR DE LA PULGADA
+PD,Almohadilla,,ALMOHADILLA
+PE,Libra equivalente,,LIBRA EQUIVALENTE
+PFL,Litro de prueba,,LITRO DE PRUEBA
+PGL,Galón de prueba,,GALON DE PRUEBA
+PI,Tono,,TONO
+PLA,Grado de platón, ?P,GRADO DE PLATON
+PM,Porcentaje de libra,,PORCENTAJE DE LIBRA
+PO,Libra por pulgada,lb/in,LIBRA POR PULGADA
+PQ,Página por pulgada, ppi,PAGINA POR PULGADA
+PR,Par,,PAR
+PS,Libra fuerza por pulgada cuadrada,     lbf/in?,LIBRA FUERZA POR PULGADA CUADRADA
+PT,Pinta (US),     Pt (US),PINTA (US)
+PTD,Pinta seca (estados unidos),   dry pt (US),PINTA SECA (ESTADOS UNIDOS)
+PTI,Pint (uk),     pt (UK),PINT (UK)
+PTL,Pinta líquida (estados unidos),   liq pt (US),PINTA LIQUIDA (ESTADOS UNIDOS)
+PTN,Parte, PTN,PARTE
+PV,Media pinta (US),,MEDIA PINTA (US)
+PW,Libra por pulgada de ancho,,LIBRA POR PULGADA DE ANCHO
+PY,Pico seco (EUA),,PICO SECO (EUA)
+PZ,Peck dry (UK),,PECK DRY (UK)
+Q10,Joule por tesla, J/T,JOULE POR TESLA
+Q11,Erlang,  E,ERLANG
+Q12,Octeto,  o,OCTETO
+Q13,Octeto por segundo, o/s,OCTETO POR SEGUNDO
+Q14,Shannon, Sh,SHANNON
+Q15,Hartley,Hart,HARTLEY
+Q16,Unidad natural de información, nat,UNIDAD NATURAL DE INFORMACION
+Q17,Shannon por segundo,Sh/s,SHANNON POR SEGUNDO
+Q18,Hartley por segundo,     Hart/s,HARTLEY POR SEGUNDO
+Q19,Unidad natural de información por segundo,nat/s,UNIDAD NATURAL DE INFORMACION POR SEGUNDO
+Q20,Segundo por kilogramo,s/kg,SEGUNDO POR KILOGRAMO
+Q21,Watt metro cuadrado,WÀm?,WATT METRO CUADRADO
+Q22,Segundo por metro cúbicos de radianes,  1/(HzÀradÀm?),SEGUNDO POR METRO CUBICOS DE RADIANES
+Q23,Weber a la potencia menos uno,1/Wb,WEBER A LA POTENCIA MENOS UNO
+Q24,Reciprocidad de Pulgada,1/in,RECIPROCIDAD DE PULGADA
+Q25,Dioptría, dpt,DIOPTRIA
+Q26,Uno por uno, 1/1,UNO POR UNO
+Q27,Newtons metros por metro,     NÀm/m?,NEWTONS METROS POR METRO
+Q28,Kilograma por metro cuadrado pascal segundo,  kg/(m?ÀPaÀs),KILOGRAMA POR METRO CUADRADO PASCAL SEGUNDO
+Q29,Microgramo por hectogramo,Ág/hg,MICROGRAMO POR HECTOGRAMO
+Q3,Comida,,COMIDA
+Q30,Ph (potencial de hidrogeno), pH,PH (POTENCIAL DE HIDROGENO)
+Q31,Kilojoule por gramo,kJ/g,KILOJOULE POR GRAMO
+Q32,Femtolitro, fl,FEMTOLITRO
+Q33,Picolitro, pl,PICOLITRO
+Q34,Nanolitro, nl,NANOLITRO
+Q35,Megawatts por minuto,     MW/min,MEGAWATTS POR MINUTO
+Q36,Metro cuadrado por metro cúbico,m2/m3,METRO CUADRADO POR METRO CUBICO
+Q37,Metro cúbico estándar por día,,METRO CUBICO ESTANDAR POR DIA
+Q38,Metro cúbico estándar por hora,,METRO CUBICO ESTANDAR POR HORA
+Q39,Metro cúbico normalizado por día,,METRO CUBICO NORMALIZADO POR DIA
+Q40,Metro cúbico normalizado por hora,,METRO CUBICO NORMALIZADO POR HORA
+Q41,Joule por metro cúbico normalizado,,JOULE POR METRO CUBICO NORMALIZADO
+Q42,Joule por metro cúbico estándar,,JOULE POR METRO CUBICO ESTANDAR
+QA,Página-fascimil,,PAGINA-FASCIMIL
+QAN,Cuarto (de un año),,CUARTO (DE UN ANO)
+QB,"Página, copia impresa",,"PAGINA, COPIA IMPRESA"
+QD,Cuarta docena,,CUARTA DOCENA
+QH,Un cuarto de hora,,UN CUARTO DE HORA
+QK,Cuarto de kilogramo,,CUARTO DE KILOGRAMO
+QR,Mano de papel, qr,MANO DE PAPEL
+QT,Cuarto (EUA),     Qt (US),CUARTO (EUA)
+QTD,Cuarto seco (estados unidos),   dry qt (US),CUARTO SECO (ESTADOS UNIDOS)
+QTI,Cuarto (UK),     qt (UK),CUARTO (UK)
+QTL,Cuarto de líquido (estadis unidos),   liq qt (US),CUARTO DE LIQUIDO (ESTADIS UNIDOS)
+QTR,Cuarto,     Qr (UK),CUARTO
+R1,Pica,,PICA
+R9,Mil metros cúbicos,,MIL METROS CUBICOS
+RH,Hora de funcionamiento,,HORA DE FUNCIONAMIENTO
+RK,Medida métrica de rollo,,MEDIDA METRICA DE ROLLO
+RM,Resma,,RESMA
+RN,Medida métrica de Hojas (resma),,MEDIDA METRICA DE HOJAS (RESMA)
+ROM,Habitación,,HABITACION
+RP,Libra por resma,,LIBRA POR RESMA
+RPM,Revoluciones por minuto,r/min,REVOLUCIONES POR MINUTO
+RPS,Revoluciones por segundo, r/s,REVOLUCIONES POR SEGUNDO
+RS,Reiniciar,,REINICIAR
+RT,Milla de toneladas de ingresos,,MILLA DE TONELADAS DE INGRESOS
+RU,correr,,CORRER
+S3,Pie cuadrado por segundo,ft?/s,PIE CUADRADO POR SEGUNDO
+S4,Metro cuadrado por segundo,m?/s,METRO CUADRADO POR SEGUNDO
+S5,Sesenta cuartos de pulgada,,SESENTA CUARTOS DE PULGADA
+S6,Sesión,,SESION
+S7,unidad de almacenamiento,,UNIDAD DE ALMACENAMIENTO
+S8,Unidad de publicidad estándar,,UNIDAD DE PUBLICIDAD ESTANDAR
+SAN,Medio año,,MEDIO ANO
+SCO,Puntuación,,PUNTUACION
+SCR,Escrúpulo,,ESCRUPULO
+SD,Libra sólida,,LIBRA SOLIDA
+SE,Sección,,SECCION
+SEC,Segundo [unidad de tiempo],  s,SEGUNDO [UNIDAD DE TIEMPO]
+SET,Conjunto,,CONJUNTO
+SG,Segmento,,SEGMENTO
+SHT,Tonelada de envíos,,TONELADA DE ENVIOS
+SIE,Siemens,  S,SIEMENS
+SK,Camión cisterna con división,,CAMION CISTERNA CON DIVISION
+SM3,Metro cúbico estándar,,METRO CUBICO ESTANDAR
+SMI,Milla (milla estatal),mile,MILLA (MILLA ESTATAL)
+SN,Barra cuadrada, Rd?,BARRA CUADRADA
+SQ,Cuadrado,,CUADRADO
+SQR,Cuadrado y techado,,CUADRADO Y TECHADO
+SR,Tira,,TIRA
+á,Medida métrica de hoja,,MEDIDA METRICA DE HOJA
+áT,Estandar corto (7200 partidos),,ESTANDAR CORTO (7200 PARTIDOS)
+STC,Palo,,PALO
+STI,Estone (UK), st,ESTONE (UK)
+STK,"Palo, cigarrillo",,"PALO, CIGARRILLO"
+STL,Litro estándar,,LITRO ESTANDAR
+STN,Tonelada (estados unidos) o tonelada corta (UK y estados unidos),    ton (US),TONELADA (ESTADOS UNIDOS) O TONELADA CORTA (UK Y ESTADOS UNIDOS)
+STW,Paja,,PAJA
+SW,Número de madejas,,NUMERO DE MADEJAS
+SX,Envío,,ENVIO
+SYR,Jeringuilla,,JERINGUILLA
+T0,Linea de telecomunicaciones en servicio,,LINEA DE TELECOMUNICACIONES EN SERVICIO
+T1,Mil libras,,MIL LIBRAS
+T3,Mil pedazos,,MIL PEDAZOS
+T4,Bolsa de mil,,BOLSA DE MIL
+T5,Mil envolturas,,MIL ENVOLTURAS
+T6,Mil galones (US),,MIL GALONES (US)
+T7,Impresión de mil,,IMPRESION DE MIL
+T8,Mil pulgadas lineales,,MIL PULGADAS LINEALES
+TA,Décimo de pie cúbico,,DECIMO DE PIE CUBICO
+TAB,Tonelada de registro bruto,,TONELADA DE REGISTRO BRUTO
+TAH,Kiloamperio-hora (milamperio-hora),kAÀh,KILOAMPERIO-HORA (MILAMPERIO-HORA)
+TAN,Número de acido total, TAN,NUMERO DE ACIDO TOTAL
+TC,Camión,,CAMION
+TD,Termico,,TERMICO
+TE,Totalizador,,TOTALIZADOR
+TF,Diez yardas cuadradas,,DIEZ YARDAS CUADRADAS
+TI,Mil pulgadas cuadradas,,MIL PULGADAS CUADRADAS
+TIC,"Tonelada métrica, incluido el contenedor",,"TONELADA METRICA, INCLUIDO EL CONTENEDOR"
+TIP,"Tonelada métrica, incluido el embalaje interior",,"TONELADA METRICA, INCLUIDO EL EMBALAJE INTERIOR"
+TJ,Mil centímetros cuadrados,,MIL CENTIMETROS CUADRADOS
+TKM,Tonelada kilometro,tÀkm,TONELADA KILOMETRO
+TL,Mil pies (lineal),,MIL PIES (LINEAL)
+TMS,"Kilogramo de carne importada, menos despojos",,"KILOGRAMO DE CARNE IMPORTADA, MENOS DESPOJOS"
+TNE,Tonelada (tonelada métrica),  t,TONELADA (TONELADA METRICA)
+TP,Paquete de diez,,PAQUETE DE DIEZ
+TPI,Dientes por pulgada, TPI,DIENTES POR PULGADA
+TPR,Decenas de pares,,DECENAS DE PARES
+TQ,Mil pies,,MIL PIES
+TQD,Mil metros cúbicos por día,km?/d,MIL METROS CUBICOS POR DIA
+TR,Diez pies cuadrados,,DIEZ PIES CUADRADOS
+TRL,Trillones (eur),,TRILLONES (EUR)
+Ts,Mil pies cuadrados,,MIL PIES CUADRADOS
+TSD,Tonelada de sustancia 90% seca,,TONELADA DE SUSTANCIA 90% SECA
+TSH,Tonelada de vapor por hora,,TONELADA DE VAPOR POR HORA
+TST,Decena de conjuntos,,DECENA DE CONJUNTOS
+TT,Mil metros lineales,,MIL METROS LINEALES
+TTS,Decenas de millar de pegatinas,,DECENAS DE MILLAR DE PEGATINAS
+Tu,Contenedor externo,,CONTENEDOR EXTERNO
+TV,Mil kilogramos,,MIL KILOGRAMOS
+TW,Mil hojas,,MIL HOJAS
+U1,Tratamiento,,TRATAMIENTO
+U2,Número de tabletas,,NUMERO DE TABLETAS
+UA,Torr,Torr,TORR
+UB,Linea de telecomunicaciones en servicio promedio,,LINEA DE TELECOMUNICACIONES EN SERVICIO PROMEDIO
+UC,Puerto de telecomunicaciones,,PUERTO DE TELECOMUNICACIONES
+UD,Décimo minuto,,DECIMO MINUTO
+UE,Hora de décimo,,HORA DE DECIMO
+UF,Uso por línea de telecomunicaciones promedio,,USO POR LINEA DE TELECOMUNICACIONES PROMEDIO
+UH,Diez mil yardas,,DIEZ MIL YARDAS
+UM,Millón de unidades,,MILLON DE UNIDADES
+UN,Newton metro, NÀm,NEWTON METRO
+VA,Voltio-amperio por kilogramo,    VÀA / kg,VOLTIO-AMPERIO POR KILOGRAMO
+VLT,Voltio,  V,VOLTIO
+VP,Volumen porcentual,,VOLUMEN PORCENTUAL
+VS,Visita,,VISITA
+W2,Kilo húmedo,,KILO HUMEDO
+W4,Dos semanas,,DOS SEMANAS
+WA,Watt por kilogramo,W/kg,WATT POR KILOGRAMO
+WB,Libra húmeda,,LIBRA HUMEDA
+WCD,Cable,,CABLE
+WE,Tonelada húmeda,,TONELADA HUMEDA
+WEB,Weber, Wb,WEBER
+WEE,Semana, wk,SEMANA
+WG,Galón de vino,,GALON DE VINO
+WH,Rueda,,RUEDA
+WHR,Watt hora, WÀh,WATT HORA
+WI,Peso por pulgada cuadrada,,PESO POR PULGADA CUADRADA
+WM,Mes de trabajo,,MES DE TRABAJO
+WR,Envolver,,ENVOLVER
+WSD,Estándar, std,ESTANDAR
+WTT,Watt,  W,WATT
+WW,Mililitro de agua,,MILILITRO DE AGUA
+X1,Cadena de gunter,     ch (UK),CADENA DE GUNTER
+X1A,Tambor de acero,,TAMBOR DE ACERO
+X1B,Tambor de aluminio,,TAMBOR DE ALUMINIO
+X1D,Tambor contrachapado,,TAMBOR CONTRACHAPADO
+X1F,Contenedor flexible,,CONTENEDOR FLEXIBLE
+X1G,Tambor de fibra,,TAMBOR DE FIBRA
+X1w,Tambor de madera,,TAMBOR DE MADERA
+X2C,Barril de madera,,BARRIL DE MADERA
+X3A,Bidón de acero,,BIDON DE ACERO
+X3H,Bidón de plástico,,BIDON DE PLASTICO
+X43,Bolsa de gran tamaño,,BOLSA DE GRAN TAMANO
+X44,Bolsa de plastico,,BOLSA DE PLASTICO
+X4A,Caja de acero,,CAJA DE ACERO
+X4B,Caja de aluminio,,CAJA DE ALUMINIO
+X4C,Caja de  madera natural,,CAJA DE  MADERA NATURAL
+X4D,Caja de contrachapado,,CAJA DE CONTRACHAPADO
+X4F,Caja de madera reconstituida,,CAJA DE MADERA RECONSTITUIDA
+X4G,Caja de cartón,,CAJA DE CARTON
+X4H,Caja de plástico,,CAJA DE PLASTICO
+X5H,Bolsa de plástico tejido,,BOLSA DE PLASTICO TEJIDO
+X5L,Bolsa textil,,BOLSA TEXTIL
+X5M,Bolsa de papel,,BOLSA DE PAPEL
+X6H,"Recipiente de plástico, Contenedor compuesto.",,"RECIPIENTE DE PLASTICO, CONTENEDOR COMPUESTO."
+X6P,"Recipiente de vidrio, Contenedor compuesto.",,"RECIPIENTE DE VIDRIO, CONTENEDOR COMPUESTO."
+X7A,Estuche para carro,,ESTUCHE PARA CARRO
+X7B,Estuche de madera,,ESTUCHE DE MADERA
+X8A,Pallet de madera,,PALLET DE MADERA
+X8B,Cajón de madera,,CAJON DE MADERA
+X8C,Madera flejada,,MADERA FLEJADA
+XAA,Contenedor intermedio  para gráneles de plástico rígido,,CONTENEDOR INTERMEDIO  PARA GRANELES DE PLASTICO RIGIDO
+XAB,Contenedor de fibra,,CONTENEDOR DE FIBRA
+XAC,Contenedor de papel,,CONTENEDOR DE PAPEL
+XAD,Contenedor de madera,,CONTENEDOR DE MADERA
+XAE,Aerosol,,AEROSOL
+XAF,"Pallet modular con collares,  80cms * 60cms",,"PALLET MODULAR CON COLLARES,  80CMS * 60CMS"
+XAG,Pallet o empaquetado,,PALLET O EMPAQUETADO
+XAH,"Pallet, 100cms X 110cms",,"PALLET, 100CMS X 110CMS"
+XAI,Contenedor tipo concha,,CONTENEDOR TIPO CONCHA
+XAJ,Cono,,CONO
+XAL,Esféra,,ESFERA
+XAM,Ampolleta no protegida,,AMPOLLETA NO PROTEGIDA
+XAP,Ampolleta protegida,,AMPOLLETA PROTEGIDA
+XAT,Atomizador,,ATOMIZADOR
+XAV,Cápsula,,CAPSULA
+XB4,Cinturón,,CINTURON
+XBA,Barril,,BARRIL
+XBB,Bobina,,BOBINA
+XBC,Cajón para botellas / Estante para botellas,,CAJON PARA BOTELLAS / ESTANTE PARA BOTELLAS
+XBD,Tablero,,TABLERO
+XBE,Flejado,,FLEJADO
+XBF,Globo no protegido,,GLOBO NO PROTEGIDO
+XBG,Bolso,,BOLSO
+XBH,Manojo,,MANOJO
+XBI,Compartimiento,,COMPARTIMIENTO
+XBJ,Cubeta,,CUBETA
+XBK,Cesta,,CESTA
+XBL,Paca comprimida,,PACA COMPRIMIDA
+XBM,Cuenco,,CUENCO
+XBN,Paca no comprimida,,PACA NO COMPRIMIDA
+XBO,Botella no-protegida y cilíndrica,,BOTELLA NO-PROTEGIDA Y CILINDRICA
+XBP,Globo protegido,,GLOBO PROTEGIDO
+XBQ,Botella cilíndrica protegida,,BOTELLA CILINDRICA PROTEGIDA
+XBR,Barra,,BARRA
+XBS,"Botella, no-protegida en forma de bulbo",,"BOTELLA, NO-PROTEGIDA EN FORMA DE BULBO"
+XBT,Rollo de tela,,ROLLO DE TELA
+XBU,Butt,,BUTT
+XBV,Botella de bulbo protegido,,BOTELLA DE BULBO PROTEGIDO
+XBW,Caja para líquidos,,CAJA PARA LIQUIDOS
+XBX,Caja,,CAJA
+XBY,"Tablero, con fleje/ agrupados/ armados",,"TABLERO, CON FLEJE/ AGRUPADOS/ ARMADOS"
+XBZ,"Barras, con fleje/ agrupados/ armados",,"BARRAS, CON FLEJE/ AGRUPADOS/ ARMADOS"
+XCA,Lata rectangular,,LATA RECTANGULAR
+XCB,Cajón para cerveza,,CAJON PARA CERVEZA
+XCC,Mantequera,,MANTEQUERA
+XCD,Lata con mango y boquilla,,LATA CON MANGO Y BOQUILLA
+XCE,Cesto tejido,,CESTO TEJIDO
+XCF,Cofre,,COFRE
+XCG,Contenedor tipo Jaula,,CONTENEDOR TIPO JAULA
+XCH,Cajonera,,CAJONERA
+XCI,Frasco,,FRASCO
+XCJ,Ataúd,,ATAUD
+XCK,Barrica,,BARRICA
+XCL,Espiral,,ESPIRAL
+XCM,Paquete de tarjetas,,PAQUETE DE TARJETAS
+XCN,"Contenedor, no especificado como equipo de transporte",,"CONTENEDOR, NO ESPECIFICADO COMO EQUIPO DE TRANSPORTE"
+XCO,Garrafón no protegido,,GARRAFON NO PROTEGIDO
+XCP,Garrafón protegido,,GARRAFON PROTEGIDO
+XCQ,Cartucho,,CARTUCHO
+XCR,Cajón,,CAJON
+XCS,Estuche,,ESTUCHE
+XCT,Cartón,,CARTON
+XCU,Vaso,,VASO
+XCV,Cubierta,,CUBIERTA
+XCW,Jaula estilo rodillo,,JAULA ESTILO RODILLO
+XCX,Lata cilíndrica,,LATA CILINDRICA
+XCY,Cilindro,,CILINDRO
+XCZ,Lona,,LONA
+XDA,Cajón multicapa de plástico,,CAJON MULTICAPA DE PLASTICO
+XDB,Cajón de varias capas de madera,,CAJON DE VARIAS CAPAS DE MADERA
+XDC,Cajón multicapa de cartón,,CAJON MULTICAPA DE CARTON
+XDG,"Jaula, Según la clasificación de la compañía (Commonwealth Handling Equipment Pool (CHEP))",,"JAULA, SEGUN LA CLASIFICACION DE LA COMPANIA (COMMONWEALTH HANDLING EQUIPMENT POOL (CHEP))"
+XDH,"Caja, Según la clasificación de la compañía (CHEP), Eurobox",,"CAJA, SEGUN LA CLASIFICACION DE LA COMPANIA (CHEP), EUROBOX"
+XDI,Tambor de hierro,,TAMBOR DE HIERRO
+XDJ,"damajuana o garrafa, no protegido",,"DAMAJUANA O GARRAFA, NO PROTEGIDO"
+XDK,"Cajón a granel, cartón",,"CAJON A GRANEL, CARTON"
+XDL,Cajas de plástico,,CAJAS DE PLASTICO
+XDM,Cajones a granel de madera,,CAJONES A GRANEL DE MADERA
+XDN,Dispensador,,DISPENSADOR
+XDP,"damajuana o garrafa, protegido",,"DAMAJUANA O GARRAFA, PROTEGIDO"
+XDR,Tambor,,TAMBOR
+XDS,Bandeja de una capa sin cubierta y de plástico,,BANDEJA DE UNA CAPA SIN CUBIERTA Y DE PLASTICO
+XDT,Bandeja de una capa sin cubierta y de madera,,BANDEJA DE UNA CAPA SIN CUBIERTA Y DE MADERA
+XDU,Bandeja de una capa sin cubierta y  poliestireno,,BANDEJA DE UNA CAPA SIN CUBIERTA Y  POLIESTIRENO
+XDV,Bandeja de una capa sin cubierta y de cartón,,BANDEJA DE UNA CAPA SIN CUBIERTA Y DE CARTON
+XDW,Bandeja de dos capas sin tapa y con bandeja de plástico,,BANDEJA DE DOS CAPAS SIN TAPA Y CON BANDEJA DE PLASTICO
+XDX,Bandeja de dos capas sin cubierta y de madera,,BANDEJA DE DOS CAPAS SIN CUBIERTA Y DE MADERA
+XDY,Bandeja de dos capas sin cubierta y de cartón,,BANDEJA DE DOS CAPAS SIN CUBIERTA Y DE CARTON
+XEC,Bolsa de plástico,,BOLSA DE PLASTICO
+XED,"Estuche, con pallet de base",,"ESTUCHE, CON PALLET DE BASE"
+XEE,"Estuche, con pallet base de madera",,"ESTUCHE, CON PALLET BASE DE MADERA"
+XEF,"Estuche, con pallet base de cartón",,"ESTUCHE, CON PALLET BASE DE CARTON"
+XEG,"Estuche, con pallet base de plástico",,"ESTUCHE, CON PALLET BASE DE PLASTICO"
+XEH,"Estuche, con pallet base de metal",,"ESTUCHE, CON PALLET BASE DE METAL"
+XEI,Estuche isotérmico,,ESTUCHE ISOTERMICO
+XEN,Sobre,,SOBRE
+XFB,Bolsa flexible,,BOLSA FLEXIBLE
+XFC,Cajón para fruta,,CAJON PARA FRUTA
+XFD,Cajón enmarcado,,CAJON ENMARCADO
+XFE,Tanque flexible,,TANQUE FLEXIBLE
+XFI,Firkin,,FIRKIN
+XFL,Matraz,,MATRAZ
+XFO,Cajón para zapatos,,CAJON PARA ZAPATOS
+XFP,Caja auxiliar para película fotográfica,,CAJA AUXILIAR PARA PELICULA FOTOGRAFICA
+XFR,Marco,,MARCO
+XFT,Contenedor para alimentos,,CONTENEDOR PARA ALIMENTOS
+XFW,Carro de cama plana,,CARRO DE CAMA PLANA
+XFX,Bolsa flexible tipo contenedor,,BOLSA FLEXIBLE TIPO CONTENEDOR
+XGB,Botella para gas,,BOTELLA PARA GAS
+XGI,Viga,,VIGA
+XGL,Contenedor tipo galón,,CONTENEDOR TIPO GALON
+XGR,Recipiente de vidrio,,RECIPIENTE DE VIDRIO
+XGU,Bandeja contenedor para apilar horizontalmente objetos planos,,BANDEJA CONTENEDOR PARA APILAR HORIZONTALMENTE OBJETOS PLANOS
+XGY,Costal de Yute,,COSTAL DE YUTE
+XGZ,Vigas con correas o agrupadas,,VIGAS CON CORREAS O AGRUPADAS
+XHA,Cesta con mango y de plástico,,CESTA CON MANGO Y DE PLASTICO
+XHB,Cesta con mango y de madera,,CESTA CON MANGO Y DE MADERA
+XHC,Cesta  con asa y de  cartón,,CESTA  CON ASA Y DE  CARTON
+XHG,Hogshead,,HOGSHEAD
+XHN,Gancho,,GANCHO
+XHR,Cesto,,CESTO
+XIA,Paquete con pantalla y de madera,,PAQUETE CON PANTALLA Y DE MADERA
+XIB,Paquete  con pantalla y de cartón,,PAQUETE  CON PANTALLA Y DE CARTON
+XIC,Paquete con pantalla y de plástico,,PAQUETE CON PANTALLA Y DE PLASTICO
+XID,Paquete con pantalla y de metal,,PAQUETE CON PANTALLA Y DE METAL
+XIE,Paquete de mostrador.,,PAQUETE DE MOSTRADOR.
+XIF,Envase para alimentos,,ENVASE PARA ALIMENTOS
+XIG,Paquete envuelto en papel,,PAQUETE ENVUELTO EN PAPEL
+XIH,Tambor de plástico,,TAMBOR DE PLASTICO
+XIK,Paquete de cartón con los agujeros para botellas,,PAQUETE DE CARTON CON LOS AGUJEROS PARA BOTELLAS
+XIL,Bandeja rígida con tapa y apilable (CEN TS 14482: 2002),,BANDEJA RIGIDA CON TAPA Y APILABLE (CEN TS 14482: 2002)
+XIN,Lingote,,LINGOTE
+XIZ,Lingotes  con correas/ agrupados,,LINGOTES  CON CORREAS/ AGRUPADOS
+XJB,Bolsa jumbo,,BOLSA JUMBO
+XJC,Bidón rectangular,,BIDON RECTANGULAR
+XJG,Jarra,,JARRA
+XJR,Tarro,,TARRO
+XJT,Bolsa de yute,,BOLSA DE YUTE
+XJY,"Bidón, cilíndrico",,"BIDON, CILINDRICO"
+XKG,Barrilete,,BARRILETE
+XKI,Kit (Conjunto de piezas),,KIT (CONJUNTO DE PIEZAS)
+XLE,Valijas,,VALIJAS
+XLG,Bitacora,,BITACORA
+XLT,Lote,,LOTE
+XLU,Caja de arrastre,,CAJA DE ARRASTRE
+XLV,Contenedor pequeño,,CONTENEDOR PEQUENO
+XLZ,Registros  con fleje/ agrupados/ armados,,REGISTROS  CON FLEJE/ AGRUPADOS/ ARMADOS
+XMA,Cajón metálico,,CAJON METALICO
+XMB,Múltiplo de bolsas,,MULTIPLO DE BOLSAS
+XMC,Cajón para leche,,CAJON PARA LECHE
+XME,Contenedor de metal,,CONTENEDOR DE METAL
+XMR,Recipiente de metal,,RECIPIENTE DE METAL
+XMS,Saco milti-pared,,SACO MILTI-PARED
+XMT,Tapete,,TAPETE
+XMW,Contenedor envuelto en plástico,,CONTENEDOR ENVUELTO EN PLASTICO
+XMX,Caja pequeña de cerillos,,CAJA PEQUENA DE CERILLOS
+XNA,No disponible,,NO DISPONIBLE
+XNE,Sin empaque o no empaquetado,,SIN EMPAQUE O NO EMPAQUETADO
+XNF,"Sin empaque o no empaquetado, unidad simple",,"SIN EMPAQUE O NO EMPAQUETADO, UNIDAD SIMPLE"
+XNG,"Sin empaque o no empaquetado, unidades múltiples",,"SIN EMPAQUE O NO EMPAQUETADO, UNIDADES MULTIPLES"
+XNS,Caja nido,,CAJA NIDO
+XNT,Red,,RED
+XNU,Red de plástico con tubo,,RED DE PLASTICO CON TUBO
+XNV,Red textil con tubo,,RED TEXTIL CON TUBO
+XOA,"Pallet, Según la clasificación de la compañía (Commonwealth Handling Equipment Pool (CHEP) 40 cm x 6",0 cm,"PALLET, SEGUN LA CLASIFICACION DE LA COMPANIA (COMMONWEALTH HANDLING EQUIPMENT POOL (CHEP) 40 CM X 6"
+XOB,"Pallet, Según la clasificación de la compañía (Commonwealth Handling Equipment Pool (CHEP) 80 cm x 1",20 cm,"PALLET, SEGUN LA CLASIFICACION DE LA COMPANIA (COMMONWEALTH HANDLING EQUIPMENT POOL (CHEP) 80 CM X 1"
+XOC,"Pallet, Según la clasificación de la compañía (Commonwealth Handling Equipment Pool (CHEP) 100 cm x",120 cm,"PALLET, SEGUN LA CLASIFICACION DE LA COMPANIA (COMMONWEALTH HANDLING EQUIPMENT POOL (CHEP) 100 CM X"
+XOD,"Pallet, AS 4068-1993",,"PALLET, AS 4068-1993"
+XOE,"Pallet, ISO T11",,"PALLET, ISO T11"
+XOF,"Plataforma, peso o dimensión no especificada",,"PLATAFORMA, PESO O DIMENSION NO ESPECIFICADA"
+XOK,Bloque,,BLOQUE
+XOT,Octabin,,OCTABIN
+XP2,Charola,,CHAROLA
+XPA,Cajetilla,,CAJETILLA
+XPB,"Pallet, Caja combinada y abierta con caja y pallet.",,"PALLET, CAJA COMBINADA Y ABIERTA CON CAJA Y PALLET."
+XPC,Paquete postal,,PAQUETE POSTAL
+XPD,Pallet modular con collares (80cms * 100cms),,PALLET MODULAR CON COLLARES (80CMS * 100CMS)
+XPE,Pallet modular con collares (80cms * 120cms),,PALLET MODULAR CON COLLARES (80CMS * 120CMS)
+XPF,Corral,,CORRAL
+XPG,Placa,,PLACA
+XPH,Cantaro,,CANTARO
+XPI,Pleca,,PLECA
+XPJ,Canastilla,,CANASTILLA
+XPK,Paquete,,PAQUETE
+XPL,Balde,,BALDE
+XPN,Tablón,,TABLON
+XPO,Bolsa pequeña,,BOLSA PEQUENA
+XPR,Contenedor de plástico,,CONTENEDOR DE PLASTICO
+XPT,Maceta,,MACETA
+XPU,Cacerola,,CACEROLA
+XPV,"Tubos, con fleje/ agrupados/ armados",,"TUBOS, CON FLEJE/ AGRUPADOS/ ARMADOS"
+XPX,Pallet,,PALLET
+XPY,Placas con fleje/ agrupados/ armados,,PLACAS CON FLEJE/ AGRUPADOS/ ARMADOS
+XPZ,Tablones con fleje/ agrupados/ armados,,TABLONES CON FLEJE/ AGRUPADOS/ ARMADOS
+XQA,Tambor de acero con cabeza no desmontable,,TAMBOR DE ACERO CON CABEZA NO DESMONTABLE
+XQB,Tambor de  acero con cabeza extraíble,,TAMBOR DE  ACERO CON CABEZA EXTRAIBLE
+XQC,Tambor de aluminio con cabeza no extraíble,,TAMBOR DE ALUMINIO CON CABEZA NO EXTRAIBLE
+XQD,Tambor de aluminio con cabeza extraíble,,TAMBOR DE ALUMINIO CON CABEZA EXTRAIBLE
+XQF,"Tambor, plástico con cabeza no desmontable",,"TAMBOR, PLASTICO CON CABEZA NO DESMONTABLE"
+XQG,"Tambor, plástico, cabeza extraíble",,"TAMBOR, PLASTICO, CABEZA EXTRAIBLE"
+XQH,Barril de madera con tapón,,BARRIL DE MADERA CON TAPON
+XQJ,Barril de madera con cabeza desprendible,,BARRIL DE MADERA CON CABEZA DESPRENDIBLE
+XQK,Bidón de acero con cabeza no desmontable,,BIDON DE ACERO CON CABEZA NO DESMONTABLE
+XQL,Bidón de acero con cabeza desmontable,,BIDON DE ACERO CON CABEZA DESMONTABLE
+XQM,Bidón de plástico con cabeza no desmontable,,BIDON DE PLASTICO CON CABEZA NO DESMONTABLE
+XQN,Bidón de plástico con cabeza extraíble,,BIDON DE PLASTICO CON CABEZA EXTRAIBLE
+XQP,Caja de madera natural estándar,,CAJA DE MADERA NATURAL ESTANDAR
+XQQ,Caja de madera natural con muros a prueba de filtraciones,,CAJA DE MADERA NATURAL CON MUROS A PRUEBA DE FILTRACIONES
+XQR,Caja de plástico expandida,,CAJA DE PLASTICO EXPANDIDA
+XQS,Caja de plástico sólida,,CAJA DE PLASTICO SOLIDA
+XRD,Rod,,ROD
+XRG,Anillo,,ANILLO
+XRJ,"Estante, Perchero para ropa",,"ESTANTE, PERCHERO PARA ROPA"
+XRK,Estante,,ESTANTE
+XRL,Carrete,,CARRETE
+XRO,Rollo,,ROLLO
+XRT,Red Roja,,RED ROJA
+XRZ,Varillas  con fleje/ agrupados/ armados,,VARILLAS  CON FLEJE/ AGRUPADOS/ ARMADOS
+XSA,Saco,,SACO
+XSB,Losa,,LOSA
+XSC,Cajón poco profundo,,CAJON POCO PROFUNDO
+XSD,Huso,,HUSO
+XSE,Baúl,,BAUL
+XSH,Bolsa pequeña hermética,,BOLSA PEQUENA HERMETICA
+XSI,Patín,,PATIN
+XSK,Carcasa esqueleto,,CARCASA ESQUELETO
+XSL,Hoja de deslizamiento,,HOJA DE DESLIZAMIENTO
+XSM,Hoja de metal,,HOJA DE METAL
+XSO,Carrete pequeño,,CARRETE PEQUENO
+XSP,Hoja de empaque de plástico,,HOJA DE EMPAQUE DE PLASTICO
+Xá,Cajón de acero,,CAJON DE ACERO
+XSU,Maleta,,MALETA
+XSV,Sobre de acero,,SOBRE DE ACERO
+XSW,Envoltorio,,ENVOLTORIO
+XSY,Manga,,MANGA
+XSZ,Hojas  con fleje/ agrupados/ armados,,HOJAS  CON FLEJE/ AGRUPADOS/ ARMADOS
+XT1,Tableta,,TABLETA
+XTB,Tina,,TINA
+XTC,Caja para té,,CAJA PARA TE
+XTD,Tubo plegable,,TUBO PLEGABLE
+XTG,Contenedor de tanque genérico,,CONTENEDOR DE TANQUE GENERICO
+XTI,Tierce,,TIERCE
+XTK,Tanque rectangular,,TANQUE RECTANGULAR
+XTL,Tina con tapa,,TINA CON TAPA
+XTN,Hojalata,,HOJALATA
+XTO,Tonel,,TONEL
+XTR,Maletero,,MALETERO
+XTS,Estructura,,ESTRUCTURA
+XTT,Bolsa de mano,,BOLSA DE MANO
+XTU,Tubo,,TUBO
+XTV,Tubo con boquilla,,TUBO CON BOQUILLA
+XTW,Pallet tricapa,,PALLET TRICAPA
+XTY,Tanque cilíndrico,,TANQUE CILINDRICO
+XTZ,Tubos  con fleje/ agrupados/ armados,,TUBOS  CON FLEJE/ AGRUPADOS/ ARMADOS
+XUC,Sin empaque,,SIN EMPAQUE
+XUN,Unidad,,UNIDAD
+XVA,Tanque,,TANQUE
+XVG,"Tanque de gas (a 1,031 mbar y 15?áC)",,"TANQUE DE GAS (A 1,031 MBAR Y 15?áC)"
+XVI,Frasco pequeño,,FRASCO PEQUENO
+XVK,Paquete transportable,,PAQUETE TRANSPORTABLE
+XVL,Contenedor para líquidos a granel,,CONTENEDOR PARA LIQUIDOS A GRANEL
+XVN,Vehículo,,VEHICULO
+XVO,"Contenedor para sólido de partículas grandes a granel (""nódulos"")",,CONTENEDOR PARA SOLIDO DE PARTICULAS GRANDES A GRANEL ( NODULOS )
+XVP,Envasado al vacío,,ENVASADO AL VACIO
+XVQ,Tanque para Gas licuado (a temperatura / presión anormal),,TANQUE PARA GAS LICUADO (A TEMPERATURA / PRESION ANORMAL)
+XVR,Contenedor para sólidos de partículas granulares a granel (Granos),,CONTENEDOR PARA SOLIDOS DE PARTICULAS GRANULARES A GRANEL (GRANOS)
+XVS,Contenedor de chatarra a granel,,CONTENEDOR DE CHATARRA A GRANEL
+XVY,"Contenedor para sólido de partículas finas a granel (""polvos"")",,CONTENEDOR PARA SOLIDO DE PARTICULAS FINAS A GRANEL ( POLVOS )
+XWA,Contenedor de granel intermedio,,CONTENEDOR DE GRANEL INTERMEDIO
+XWB,Botella de mimbre,,BOTELLA DE MIMBRE
+XWC,Contenedor intermedio para gráneles y de acero,,CONTENEDOR INTERMEDIO PARA GRANELES Y DE ACERO
+XWD,Contenedor intermedio para gráneles y de aluminio,,CONTENEDOR INTERMEDIO PARA GRANELES Y DE ALUMINIO
+XWF,Contenedor intermedio para gráneles y de metal,,CONTENEDOR INTERMEDIO PARA GRANELES Y DE METAL
+XWG,Contenedor intermedio para gráneles y de acero presurizado menor a 10 kpa,,CONTENEDOR INTERMEDIO PARA GRANELES Y DE ACERO PRESURIZADO MENOR A 10 KPA
+XWH,"Contenedor intermedio para gráneles y de aluminio, presurizado menor a 10 kpa",,"CONTENEDOR INTERMEDIO PARA GRANELES Y DE ALUMINIO, PRESURIZADO MENOR A 10 KPA"
+XWJ,Contenedor intermedio para gráneles y de metal con una presión de 10 kpa,,CONTENEDOR INTERMEDIO PARA GRANELES Y DE METAL CON UNA PRESION DE 10 KPA
+XWK,Contenedor intermedio para gráneles y de acero para líquido,,CONTENEDOR INTERMEDIO PARA GRANELES Y DE ACERO PARA LIQUIDO
+XWL,Contenedor intermedio para gráneles y de aluminio para líquido,,CONTENEDOR INTERMEDIO PARA GRANELES Y DE ALUMINIO PARA LIQUIDO
+XWM,Contenedor intermedio para gráneles y de metal para líquido,,CONTENEDOR INTERMEDIO PARA GRANELES Y DE METAL PARA LIQUIDO
+XWN,Contenedor intermedio para gráneles con tejido plástico sin capa con revestimiento,,CONTENEDOR INTERMEDIO PARA GRANELES CON TEJIDO PLASTICO SIN CAPA CON REVESTIMIENTO
+XWP,Contenedor intermedio para gráneles con tejido plástico y recubierto,,CONTENEDOR INTERMEDIO PARA GRANELES CON TEJIDO PLASTICO Y RECUBIERTO
+XWQ,Contenedor intermedio para gráneles con tejido plástico con revestimiento,,CONTENEDOR INTERMEDIO PARA GRANELES CON TEJIDO PLASTICO CON REVESTIMIENTO
+XWR,"Contenedor intermedio para gráneles con tejido plástico, revestido y con forro",,"CONTENEDOR INTERMEDIO PARA GRANELES CON TEJIDO PLASTICO, REVESTIDO Y CON FORRO"
+XWS,Contenedor intermedio para gráneles con película de plástico,,CONTENEDOR INTERMEDIO PARA GRANELES CON PELICULA DE PLASTICO
+XWT,Contenedor intermedio para gráneles textil sin capa / forro,,CONTENEDOR INTERMEDIO PARA GRANELES TEXTIL SIN CAPA / FORRO
+XWU,Contenedor intermedio para gráneles de madera natural con forro interior,,CONTENEDOR INTERMEDIO PARA GRANELES DE MADERA NATURAL CON FORRO INTERIOR
+XWV,Contenedor intermedio para gráneles textil recubierto,,CONTENEDOR INTERMEDIO PARA GRANELES TEXTIL RECUBIERTO
+XWW,Contenedor intermedio para gráneles textil con revestimiento,,CONTENEDOR INTERMEDIO PARA GRANELES TEXTIL CON REVESTIMIENTO
+XWX,Contenedor intermedio para gráneles textil recubierto y con forro,,CONTENEDOR INTERMEDIO PARA GRANELES TEXTIL RECUBIERTO Y CON FORRO
+XWY,Contenedor intermedio para gráneles contrachapado con revestimiento interior,,CONTENEDOR INTERMEDIO PARA GRANELES CONTRACHAPADO CON REVESTIMIENTO INTERIOR
+XWZ,Contenedor intermedio para gráneles de madera reconstituida con revestimiento interior,,CONTENEDOR INTERMEDIO PARA GRANELES DE MADERA RECONSTITUIDA CON REVESTIMIENTO INTERIOR
+XXA,"Bolsa de tejido plástico, sin abrigo interior ni forro",,"BOLSA DE TEJIDO PLASTICO, SIN ABRIGO INTERIOR NI FORRO"
+XXB,Bolsa de tejido plástico a prueba de filtraciones,,BOLSA DE TEJIDO PLASTICO A PRUEBA DE FILTRACIONES
+XXC,Bolsa de tejido plástico resistente al agua,,BOLSA DE TEJIDO PLASTICO RESISTENTE AL AGUA
+XXD,Bolsa con película de plástico,,BOLSA CON PELICULA DE PLASTICO
+XXF,Bolsa textil sin capa ni forro interior,,BOLSA TEXTIL SIN CAPA NI FORRO INTERIOR
+XXG,Bolsa textil a prueba de filtraciones,,BOLSA TEXTIL A PRUEBA DE FILTRACIONES
+XXH,Bolsa textil resistente al agua,,BOLSA TEXTIL RESISTENTE AL AGUA
+XXJ,Bolsa de papel multi-pared,,BOLSA DE PAPEL MULTI-PARED
+XXK,"Bolsa de papel multi-pared, resistente al agua",,"BOLSA DE PAPEL MULTI-PARED, RESISTENTE AL AGUA"
+XYA,"Empaque compuesto, recipiente de plástico en tambor de acero",,"EMPAQUE COMPUESTO, RECIPIENTE DE PLASTICO EN TAMBOR DE ACERO"
+XYB,"Empaque compuesto, recipiente de plástico en cajas de acero",,"EMPAQUE COMPUESTO, RECIPIENTE DE PLASTICO EN CAJAS DE ACERO"
+XYC,"Empaque compuesto, recipiente de plástico en tambor de aluminio",,"EMPAQUE COMPUESTO, RECIPIENTE DE PLASTICO EN TAMBOR DE ALUMINIO"
+XYD,"Empaque compuesto, recipiente de plástico en cajón de aluminio",,"EMPAQUE COMPUESTO, RECIPIENTE DE PLASTICO EN CAJON DE ALUMINIO"
+XYF,"Empaque compuesto, recipiente de plástico en caja de madera",,"EMPAQUE COMPUESTO, RECIPIENTE DE PLASTICO EN CAJA DE MADERA"
+XYG,"Empaque compuesto, recipiente de plástico en tambor de madera contrachapada",,"EMPAQUE COMPUESTO, RECIPIENTE DE PLASTICO EN TAMBOR DE MADERA CONTRACHAPADA"
+XYH,"Empaque compuesto, recipiente de plástico en caja de madera contrachapada",,"EMPAQUE COMPUESTO, RECIPIENTE DE PLASTICO EN CAJA DE MADERA CONTRACHAPADA"
+XYJ,"Empaque compuesto, recipiente de plástico en tambor de fibra",,"EMPAQUE COMPUESTO, RECIPIENTE DE PLASTICO EN TAMBOR DE FIBRA"
+XYK,"Empaque compuesto, recipiente de plástico en caja de cartón",,"EMPAQUE COMPUESTO, RECIPIENTE DE PLASTICO EN CAJA DE CARTON"
+XYL,"Empaque compuesto, recipiente de plástico en el tambor de plástico",,"EMPAQUE COMPUESTO, RECIPIENTE DE PLASTICO EN EL TAMBOR DE PLASTICO"
+XYM,"Empaque compuesto, recipiente de plástico en caja de plástico sólido",,"EMPAQUE COMPUESTO, RECIPIENTE DE PLASTICO EN CAJA DE PLASTICO SOLIDO"
+XYN,"Empaque compuesto, receptáculo de vidrio en tambor de acero",,"EMPAQUE COMPUESTO, RECEPTACULO DE VIDRIO EN TAMBOR DE ACERO"
+XYP,"Empaque compuesto, receptáculo de vidrio en caja de cajas de acero",,"EMPAQUE COMPUESTO, RECEPTACULO DE VIDRIO EN CAJA DE CAJAS DE ACERO"
+XYQ,"Empaque compuesto, recipiente de vidrio en tambor de aluminio",,"EMPAQUE COMPUESTO, RECIPIENTE DE VIDRIO EN TAMBOR DE ALUMINIO"
+XYR,"Empaque compuesto, receptáculo de vidrio en caja de aluminio",,"EMPAQUE COMPUESTO, RECEPTACULO DE VIDRIO EN CAJA DE ALUMINIO"
+XYS,"Empaque compuesto, recipiente de vidrio en caja de madera",,"EMPAQUE COMPUESTO, RECIPIENTE DE VIDRIO EN CAJA DE MADERA"
+XYT,"Empaque compuesto, recipiente de vidrio en tambor de madera contrachapada",,"EMPAQUE COMPUESTO, RECIPIENTE DE VIDRIO EN TAMBOR DE MADERA CONTRACHAPADA"
+Xyv,"Empaque compuesto, recipiente de vidrio en el cesto de mimbre",,"EMPAQUE COMPUESTO, RECIPIENTE DE VIDRIO EN EL CESTO DE MIMBRE"
+XYW,"Empaque compuesto, recipiente de vidrio en tambor de fibra",,"EMPAQUE COMPUESTO, RECIPIENTE DE VIDRIO EN TAMBOR DE FIBRA"
+XYX,"Empaque compuesto, recipiente de vidrio en caja de cartón",,"EMPAQUE COMPUESTO, RECIPIENTE DE VIDRIO EN CAJA DE CARTON"
+XYY,"Empaque compuesto, recipiente de vidrio en paquete de plástico expandible",,"EMPAQUE COMPUESTO, RECIPIENTE DE VIDRIO EN PAQUETE DE PLASTICO EXPANDIBLE"
+XYZ,"Empaque compuesto, recipiente de vidrio en paquete de plástico sólido",,"EMPAQUE COMPUESTO, RECIPIENTE DE VIDRIO EN PAQUETE DE PLASTICO SOLIDO"
+XZA,"Contenedor de granel intermedio, papel, multi-pared",,"CONTENEDOR DE GRANEL INTERMEDIO, PAPEL, MULTI-PARED"
+XZB,Bolsa grande,,BOLSA GRANDE
+XZC,"Contenedor intermedio para gráneles de papel, multi-pared y resistente al agua",,"CONTENEDOR INTERMEDIO PARA GRANELES DE PAPEL, MULTI-PARED Y RESISTENTE AL AGUA"
+XZD,"Contenedor intermedio para gráneles de plástico rígido, con equipo estructural para sólidos",,"CONTENEDOR INTERMEDIO PARA GRANELES DE PLASTICO RIGIDO, CON EQUIPO ESTRUCTURAL PARA SOLIDOS"
+XZF,"Contenedor intermedio para gráneles de plástico rígido, autoportante para sólidos",,"CONTENEDOR INTERMEDIO PARA GRANELES DE PLASTICO RIGIDO, AUTOPORTANTE PARA SOLIDOS"
+XZG,"Contenedor intermedio para gráneles de plástico rígido, con equipo estructural, presurizado",,"CONTENEDOR INTERMEDIO PARA GRANELES DE PLASTICO RIGIDO, CON EQUIPO ESTRUCTURAL, PRESURIZADO"
+XZH,"Contenedor intermedio para gráneles de plástico rígido, autoportante y presurizado",,"CONTENEDOR INTERMEDIO PARA GRANELES DE PLASTICO RIGIDO, AUTOPORTANTE Y PRESURIZADO"
+XZJ,"Contenedor intermedio para gráneles de plástico rígido, con equipo estructural para líquidos",,"CONTENEDOR INTERMEDIO PARA GRANELES DE PLASTICO RIGIDO, CON EQUIPO ESTRUCTURAL PARA LIQUIDOS"
+XZK,"Contenedor intermedio para gráneles de plástico rígido, autoportante, líquidos",,"CONTENEDOR INTERMEDIO PARA GRANELES DE PLASTICO RIGIDO, AUTOPORTANTE, LIQUIDOS"
+XZL,"Contenedor intermedio para gráneles, compuesto y de plástico rígido, sólidos",,"CONTENEDOR INTERMEDIO PARA GRANELES, COMPUESTO Y DE PLASTICO RIGIDO, SOLIDOS"
+XZM,"Contenedor intermedio para gráneles, compuesto y de plástico flexible, sólidos",,"CONTENEDOR INTERMEDIO PARA GRANELES, COMPUESTO Y DE PLASTICO FLEXIBLE, SOLIDOS"
+XZN,"Contenedor intermedio para gráneles, compuesto y de plástico rígido, presurizado",,"CONTENEDOR INTERMEDIO PARA GRANELES, COMPUESTO Y DE PLASTICO RIGIDO, PRESURIZADO"
+XZP,"Contenedor intermedio para gráneles, compuesto y de plástico flexible, presurizado",,"CONTENEDOR INTERMEDIO PARA GRANELES, COMPUESTO Y DE PLASTICO FLEXIBLE, PRESURIZADO"
+XZQ,"Contenedor intermedio para gráneles, compuesto y de plástico rígido, líquidos",,"CONTENEDOR INTERMEDIO PARA GRANELES, COMPUESTO Y DE PLASTICO RIGIDO, LIQUIDOS"
+XZR,"Contenedor intermedio para gráneles, compuesto y de plástico flexible para líquidos",,"CONTENEDOR INTERMEDIO PARA GRANELES, COMPUESTO Y DE PLASTICO FLEXIBLE PARA LIQUIDOS"
+XZS,"Contenedor intermedio para gráneles, compuesto",,"CONTENEDOR INTERMEDIO PARA GRANELES, COMPUESTO"
+XZT,Contenedor intermedio para gráneles con tablero de fibras,,CONTENEDOR INTERMEDIO PARA GRANELES CON TABLERO DE FIBRAS
+XZU,Contenedor intermedio para gráneles flexible,,CONTENEDOR INTERMEDIO PARA GRANELES FLEXIBLE
+XZV,"Contenedor intermedio para gráneles de metal, distinto del acero",,"CONTENEDOR INTERMEDIO PARA GRANELES DE METAL, DISTINTO DEL ACERO"
+XZW,"Contenedor intermedio para gráneles, de madera natural",,"CONTENEDOR INTERMEDIO PARA GRANELES, DE MADERA NATURAL"
+XZX,"Contenedor intermedio para gráneles, de contrachapado",,"CONTENEDOR INTERMEDIO PARA GRANELES, DE CONTRACHAPADO"
+XZY,"Contenedor intermedio para gráneles, de madera reconstituida",,"CONTENEDOR INTERMEDIO PARA GRANELES, DE MADERA RECONSTITUIDA"
+YDK,Yarda cuadrada, yd?,YARDA CUADRADA
+YDQ,Yarda cúbica, yd?,YARDA CUBICA
+YL,Cien yardas lineales,,CIEN YARDAS LINEALES
+YRD,Yarda, yd,YARDA
+YT,Diez yardas,,DIEZ YARDAS
+Z1,Furgoneta,,FURGONETA
+Z11,Contenedor colgante,,CONTENEDOR COLGANTE
+Z5,Arrastre,,ARRASTRE
+Z6,Punto de conferencia,,PUNTO DE CONFERENCIA
+Z8,Página de noticias,,PAGINA DE NOTICIAS
+ZP,Páginas,,PAGINAS
+ZZ,Mutuamente definido,,MUTUAMENTE DEFINIDO

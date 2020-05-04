@@ -1,0 +1,51 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://bulma.io/css/bulma-docs.min.css?v=202003220948">
+<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+<title>Upload Form</title>
+<script>
+function show()
+{
+	console.log('show');
+	document.getElementById('getFile').click();
+}
+
+function setName()
+{
+	console.log('Entrando->'+document.getElementById('getFile').value);
+	//var name = document.getElementById('getFile');
+	//document.getElementById('file_name').innerHTML = name.files.item(0).name;
+	//document.getElementById('file_name').innerHTML = document.getElementById('getFile').value
+}
+
+function mensaje()
+{
+	console.log('Mensaje->'+document.getElementById('getFile').value);
+}
+</script>
+</head>
+<body>
+<input type="hidden" class="input" name="nfname" value="46925">	
+<!-- style="display:none" -->
+<input id="getFile" type="file"  onchange="setName();" value="">
+<!--div class="file has-name is-primary">
+  <label class="file-label">    
+    <span class="file-cta">
+      <span class="file-icon">
+        <i class="fas fa-upload"></i>
+      </span>
+      <span class="file-label" onclick="show();">
+        Seleccione un archivo…
+      </span>
+    </span>
+    <span class="file-name" id="file_name">      
+    </span>
+  </label>
+</div-->
+<br>
+<br>
+<button class="button is-link is-small" onclick="mensaje();">Cargar</button>
+
+
+</body>
+</html>
