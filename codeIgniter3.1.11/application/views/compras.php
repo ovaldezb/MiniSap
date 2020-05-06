@@ -2,7 +2,7 @@
 	<input type="hidden" id="aniofiscal" value="<?php echo $aniofiscal?>">
 	<input type="hidden"  id="idsucursal" value="<?php echo $id_sucursal?>">
 	<input type="hidden" id="updtTable" value="F">
-	<div class="container" ng-app="myCompras" ng-controller="myCtrlCompras" data-ng-init="init()">
+	<div class="container" ng-controller="myCtrlCompras" data-ng-init="init()">
 		<div class="notification">
 			<h1 class="title is-2 has-text-centered">Compra de Producto</h1>
 		</div>
