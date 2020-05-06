@@ -1,24 +1,3 @@
-<?php
-	defined('BASEPATH') OR exit('No direct script access allowed');
-?>
-
-<html lang="en">
-<head>
-	<meta charset="utf-8">
-	<title>Gestión de Compras</title>
-	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
-	<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-	<link rel="stylesheet" href="<?php echo base_url(); ?>css/foopicker.css">
-	<link rel="stylesheet" href="<?php echo base_url(); ?>css/utils.css">
-	<script src="<?php echo base_url(); ?>js/foopicker.js"></script>
-	<script src="<?php echo base_url(); ?>js/jquery-3.4.1.slim.js"></script>
-	<script src="<?php echo base_url(); ?>js/compras.js"></script>
-	<script src="<?php echo base_url(); ?>js/utilerias.js"></script>
-
-</head>
-<body>
 	<input type="hidden" id="idempresa" value="<?php echo $idpempresa?>">
 	<input type="hidden" id="aniofiscal" value="<?php echo $aniofiscal?>">
 	<input type="hidden"  id="idsucursal" value="<?php echo $id_sucursal?>">
@@ -486,11 +465,10 @@
 			</div>
 		</div>
 	</div>
-</body>
+
 <script>
 		var foopicker = new FooPicker({
 		id: 'fechapago',
 		dateFormat: 'dd/MM/yyyy'
 		});
 </script>
-</html>
