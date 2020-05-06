@@ -1,6 +1,4 @@
-var path = '/codeigniter3.1.11/proveedor/';
-var path1 = '/codeigniter3.1.11/utils/';
-var app = angular.module('myProveedor', []);
+
 app.controller('myCtrlProveedor', function($scope,$http)
 {
   $scope.lstProveedor = [];
@@ -28,7 +26,7 @@ app.controller('myCtrlProveedor', function($scope,$http)
 
   $scope.init = function()
   {
-  	$http.get(path+'load', {responseType: 'json'}).
+  	$http.get(pathPrve+'load', {responseType: 'json'}).
     then(function(res)
   	{
   		if(res.data.length > 0)
@@ -54,7 +52,7 @@ app.controller('myCtrlProveedor', function($scope,$http)
   $scope.openDivAgregar = function()
   {
     $scope.isDivProvActivo = true;
-    $http.get(path+'incremento/PROV/'+$('#idempresa').val()+'/5').
+    $http.get(pathUtils+'incremento/PROV/'+$('#idempresa').val()+'/5').
     then(function(res)
     {
       if(res.data.length > 0)
@@ -69,7 +67,7 @@ app.controller('myCtrlProveedor', function($scope,$http)
 
   $scope.update = function()
   {
-  	$http.get(path+'loadbyid/'+$scope.idProveedor, {responseType: 'json'}).
+  	$http.get(pathPrve+'loadbyid/'+$scope.idProveedor, {responseType: 'json'}).
     then(function(res)
   	{
   		if(res.data.length > 0)
@@ -123,7 +121,7 @@ app.controller('myCtrlProveedor', function($scope,$http)
     //console.log(dataProveedor);
     if($scope.btnAccion == 'Agregar')
     {
-      $http.post(path+'save', dataProveedor).
+      $http.post(pathPrve+'save', dataProveedor).
       then(function(res)
       {
         //$('#message').html(res.data);
@@ -145,7 +143,7 @@ app.controller('myCtrlProveedor', function($scope,$http)
     	});
 
     }else {
-      $http.put(path+'update/'+$scope.idProveedor,dataProveedor).
+      $http.put(pathPrve+'update/'+$scope.idProveedor,dataProveedor).
       then(function(res)
     	{
     		if(res.status==200 && res.data.value=='OK')
@@ -180,7 +178,7 @@ app.controller('myCtrlProveedor', function($scope,$http)
 
   $scope.eliminar = function()
   {
-  	$http.delete(path+'delete/'+$scope.idProveedor).
+  	$http.delete(pathPrve+'delete/'+$scope.idProveedor).
   	then(function(res){
   		if(res.status==200 && res.data.value=='OK')
   		{

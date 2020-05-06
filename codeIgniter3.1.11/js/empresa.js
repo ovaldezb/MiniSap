@@ -1,5 +1,3 @@
-var path = '/codeigniter3.1.11/empresa/';
-var app = angular.module('myEmpresa', []);
 app.controller('myCtrlEmpresa', function($scope,$http)
 {
   $scope.lstEmpresas = [];
@@ -24,7 +22,7 @@ app.controller('myCtrlEmpresa', function($scope,$http)
 
   $scope.init = function()
   {
-    $http.get(path+'load', {responseType: 'json'})
+    $http.get(pathEmpr+'load', {responseType: 'json'})
   	.then(function(res)
   	{
   		if(res.data.length > 0)
@@ -100,7 +98,7 @@ app.controller('myCtrlEmpresa', function($scope,$http)
 
   $scope.update = function()
   {
-  	$http.get(path+'loadbyid/'+$scope.idEmpresa, {responseType: 'json'}).
+  	$http.get(pathEmpr+'loadbyid/'+$scope.idEmpresa, {responseType: 'json'}).
     then(function(res)
   	{
   		if(res.data.length > 0)
@@ -142,7 +140,7 @@ app.controller('myCtrlEmpresa', function($scope,$http)
 
     if($scope.actnBton == 'Agregar')
     {
-      $http.post(path+'save',dataEmpresa).
+      $http.post(pathEmpr+'save',dataEmpresa).
       then(function(res)
       {
         if(res.data.length > 0) {
@@ -160,7 +158,7 @@ app.controller('myCtrlEmpresa', function($scope,$http)
     		console.log(err);
     	});
     }else {
-      $http.put(path+'update/'+$scope.idEmpresa,dataEmpresa).
+      $http.put(pathEmpr+'update/'+$scope.idEmpresa,dataEmpresa).
       then(function(res)
     	{
     		if(res.status== 200 && res.data.value == 'OK')
@@ -186,7 +184,7 @@ app.controller('myCtrlEmpresa', function($scope,$http)
 
   $scope.eliminar = function()
   {
-    $http.delete(path+'delete/'+$scope.idEmpresa).
+    $http.delete(pathEmpr+'delete/'+$scope.idEmpresa).
   	then(function(res){
   		if(res.status==200 && res.data.value=='OK')
   		{

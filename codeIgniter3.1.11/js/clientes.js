@@ -1,7 +1,5 @@
-var path = '/codeigniter3.1.11/cliente/';
-var path1 = '/codeigniter3.1.11/proveedor/';
-var path2 = '/codeigniter3.1.11/utils/'
-var app = angular.module('myClientes', []);
+
+
 app.controller('myCtrlClientes', function($scope,$http)
 {
   $scope.lstCliente = [];
@@ -31,9 +29,10 @@ app.controller('myCtrlClientes', function($scope,$http)
   $scope.init = function()
   {
     var valor=0;
-    $http.get(path+'load', { responseType: 'json'}).
+    $http.get(pathClte+'load', { responseType: 'json'}).
     then(function(res)
     {
+      console.log(res);
       if(res.data.length > 0)
       {
         valor = 1;
@@ -53,7 +52,7 @@ app.controller('myCtrlClientes', function($scope,$http)
 
   $scope.getNextDocClte = function()
   {
-    $http.get(path2+'incremento/CLTE/'+$('#idempresa').val()+'/4').
+    $http.get(pathUtils+'incremento/CLTE/'+$('#idempresa').val()+'/4').
     then(function(res)
     {
       $scope.clave = res.data[0].VALOR;
@@ -125,7 +124,7 @@ app.controller('myCtrlClientes', function($scope,$http)
     if($scope.msjBoton =='Agregar')
     {
       var nextId, idCliente, respuesta;
-      $http.post(path+'save', dataClte).
+      $http.post(pathClte+'save', dataClte).
       then(function(res)
       {
         //console.log(res);
@@ -147,7 +146,7 @@ app.controller('myCtrlClientes', function($scope,$http)
         console.log(err);
       });
     }else{
-      $http.put(path+'update/'+$scope.idCliente, dataClte).
+      $http.put(pathClte+'update/'+$scope.idCliente, dataClte).
       then(function(res)
     	{
     		if(res.status==200)
@@ -174,7 +173,7 @@ app.controller('myCtrlClientes', function($scope,$http)
 
   $scope.borraCliente = function()
   {
-    $http.delete(path+'delete/'+$scope.idCliente).
+    $http.delete(pathClte+'delete/'+$scope.idCliente).
   	then(function(res){
       console.log(res);
   		if(res.status==200)
@@ -194,7 +193,7 @@ app.controller('myCtrlClientes', function($scope,$http)
 
   $scope.editaCliente = function()
   {
-    $http.get(path+'loadbyid/'+$scope.idCliente, {responseType: 'json'}).
+    $http.get(pathClte+'loadbyid/'+$scope.idCliente, {responseType: 'json'}).
     then(function(res)
     {
       console.log();

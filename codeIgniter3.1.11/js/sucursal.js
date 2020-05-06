@@ -1,5 +1,3 @@
-var path = '/codeigniter3.1.11/sucursal/';
-var app = angular.module('mySucursal', []);
 app.controller('myCtrlSucursal', function($scope,$http)
 {
   $scope.lstSucursal = [];
@@ -19,7 +17,7 @@ app.controller('myCtrlSucursal', function($scope,$http)
   $scope.idSucursal = '';
 
   $scope.init = function() {
-    $http.get(path+'load',{responseType:'json'}).
+    $http.get(pathSucr+'load',{responseType:'json'}).
     then(function(res)
     {
       if(res.data.length>0)
@@ -56,7 +54,7 @@ app.controller('myCtrlSucursal', function($scope,$http)
 
     if($scope.btnAccion == 'Agregar')
     {
-      $http.post(path+'save',dataSuc).
+      $http.post(pathSucr+'save',dataSuc).
       then(function(res)
       {
         $('#message').html(res.data);
@@ -81,7 +79,7 @@ app.controller('myCtrlSucursal', function($scope,$http)
       });
 
     }else {
-      $http.put(path+'update/'+$scope.idSucursal,dataSuc).
+      $http.put(pathSucr+'update/'+$scope.idSucursal,dataSuc).
       then(function(res)
       {
         if(res.data.value == 'OK')
@@ -108,7 +106,7 @@ app.controller('myCtrlSucursal', function($scope,$http)
 
   $scope.update = function()
   {
-    $http.get(path+'loadbyid/'+$scope.idSucursal).
+    $http.get(pathSucr+'loadbyid/'+$scope.idSucursal).
     then(function(res)
     {
       if(res.data.length > 0)
@@ -131,7 +129,7 @@ app.controller('myCtrlSucursal', function($scope,$http)
 
   $scope.eliminar = function()
   {
-    $http.delete(path+'delete/'+$scope.idSucursal).
+    $http.delete(pathSucr+'delete/'+$scope.idSucursal).
     then(function(res)
     {
       if(res.data.value=='OK')

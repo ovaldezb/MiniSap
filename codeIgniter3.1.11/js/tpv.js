@@ -1,10 +1,3 @@
-var path  = '/codeigniter3.1.11/tpv/';
-var path1 = '/codeigniter3.1.11/producto/';
-var path2 = '/codeigniter3.1.11/cliente/';
-var path3 = '/codeigniter3.1.11/vendedor/';
-var path4 = '/codeigniter3.1.11/utils/';
-
-var app = angular.module('myTpv', []);
 app.controller('myCtrlTpv', function($scope,$http,$interval)
 {
   $scope.fecha = formatDatePrint(new Date());
@@ -80,7 +73,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
   }
 
   $scope.getNextDocTpv = function(){
-		$http.get(path4+'incremento/TPVS/'+$('#idempresa').val()+'/7').
+		$http.get(pathUtils+'incremento/TPVS/'+$('#idempresa').val()+'/7').
 		then(function(res)
 		{
 			if(res.data.length > 0)
@@ -154,7 +147,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
   {
     if(event.keyCode==13)
     {
-      $http.get(path1+'prodbycode/'+$scope.codigo_prodto,{responseType: 'json'}).
+      $http.get(pathProd+'prodbycode/'+$scope.codigo_prodto,{responseType: 'json'}).
       then(function(res)
       {
         if(res.data != false)
@@ -185,7 +178,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
       }
     	$('#dispsearch').show();
     	var searchword = $scope.prod_desc !='' ? $scope.prod_desc : 'vacio';
-    	$http.get(path+'getitems/'+searchword+'/V', {
+    	$http.get(pathTpv+'getitems/'+searchword+'/V', {
     		responseType: 'json'}).
     	then(function(res)
     	{
@@ -223,7 +216,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
       $('#mascant').prop('disabled',false);
       $scope.closeDivSearch();
 
-      $http.get(path+'getitemsbyprodsuc/'+$scope.id_producto+'/'+$('#idsucursal').val()).
+      $http.get(pathTpv+'getitemsbyprodsuc/'+$scope.id_producto+'/'+$('#idsucursal').val()).
       then(function(res)
       {
         if(res.data.length > 0)
@@ -398,7 +391,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
       var searchword;
       $('#listaClientes').show();
       searchword = $scope.nombre_cliente != '' ? $scope.nombre_cliente : 'vacio';
-      $http.get(path2+'loadbynombre/'+searchword).
+      $http.get(pathClte+'loadbynombre/'+searchword).
       then(function(res)
       {
         if(res.status == 200)
@@ -431,7 +424,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
       var searchword;
       $('#listaVendedores').show();
       searchword = $scope.nombre_vendedor != '' ? $scope.nombre_vendedor : 'vacio';
-      $http.get(path3+'getvendedores/'+searchword).
+      $http.get(pathVend+'getvendedores/'+searchword).
       then(function(res)
       {
         if(res.status == 200)
@@ -536,7 +529,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
         idsucursal:$('#idsucursal').val()
       }
 
-      $http.put(path+'registraventa',dataVenta).
+      $http.put(pathTpv+'registraventa',dataVenta).
       then(function(res)
       {
         $scope.idVenta = res.data[0].registra_venta;
@@ -580,7 +573,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
           idsucursal:$('#idsucursal').val(),
           tipops:$scope.tipo_ps
         }
-        $http.put(path+'registraventaprod',vntaProd).
+        $http.put(pathTpv+'registraventaprod',vntaProd).
         then(function(res)
         {
           /*se insertó con éxito*/
@@ -599,7 +592,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
         alert('Seleccione un cliente');
         return;
       }
-      $http.get(path2+'loadbyidverfi/'+$scope.idcliente,{responseType:'json'}).
+      $http.get(pathClte+'loadbyidverfi/'+$scope.idcliente,{responseType:'json'}).
       then(function(res)
       {
         if(res.data.length > 0)
@@ -655,7 +648,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
     $scope.verificaExistencia = function()
     {
       $scope.modalVerifProdSuc = true;
-      $http.get(path+'getproductosforsucursal/'+$scope.id_producto,{responseType:'json'}).
+      $http.get(pathTpv+'getproductosforsucursal/'+$scope.id_producto,{responseType:'json'}).
       then(function(res)
       {
         if(res.data.length > 0)

@@ -1,10 +1,3 @@
-var path = '/codeigniter3.1.11/tpv/';
-var path1 = '/codeigniter3.1.11/compras/';
-var path2 = '/codeigniter3.1.11/proveedor/';
-var path3 = '/codeigniter3.1.11/utils/';
-var path4 = '/codeigniter3.1.11/producto/';
-
-var app = angular.module('myCompras', []);
 app.controller('myCtrlCompras', function($scope,$http)
 {
 	$scope.counter = 0;
@@ -51,7 +44,7 @@ app.controller('myCtrlCompras', function($scope,$http)
 	 var hoy = new Date();
 		$('#fechacompra').val(formatDatePrint(hoy));
 		$('#fechapago').val(formatDatePrint(hoy));
-		$http.get(path1+'getcompras/'+$('#idempresa').val()+'/'+$('#aniofiscal').val())
+		$http.get(pathCmpr+'getcompras/'+$('#idempresa').val()+'/'+$('#aniofiscal').val())
 		.then(function(res)
 		{
 			$scope.listaCompras = res.data;
@@ -63,7 +56,7 @@ app.controller('myCtrlCompras', function($scope,$http)
 	}
 
 	$scope.getNextDocCompra = function(){
-		$http.get(path3+'incremento/CMPR/'+$('#idempresa').val()+'/6').
+		$http.get(pathUtils+'incremento/CMPR/'+$('#idempresa').val()+'/6').
 		then(function(res)
 		{
 			if(res.data.length > 0)
@@ -106,7 +99,7 @@ app.controller('myCtrlCompras', function($scope,$http)
   {
     event.stopPropagation()
     if(event.keyCode == 13){
-      $http.get(path2+'getprvdorclave/'+$scope.claveprov, {
+      $http.get(pathPrve+'getprvdorclave/'+$scope.claveprov, {
     		responseType: 'json'}).
       then(function(res){
         if(res.status == '200'){
@@ -135,7 +128,7 @@ app.controller('myCtrlCompras', function($scope,$http)
     {
     	$('#buscaprov').show();
     	searchword = $scope.proveedor !='' ? $scope.proveedor : 'vacio';
-    	$http.get(path2+'getproveedores/'+searchword, {
+    	$http.get(pathPrve+'getproveedores/'+searchword, {
     		responseType: 'json'}).
     	then(function(res)
     	{
@@ -166,7 +159,7 @@ app.controller('myCtrlCompras', function($scope,$http)
     if(event.keyCode==13){
       $('#dispsearch').show();
     	searchword = $scope.descripcion!=''  ? $scope.descripcion : 'vacio';
-    	$http.get(path+'getitems/'+searchword+'/C', {responseType: 'json'}).
+    	$http.get(pathTpv+'getitems/'+searchword+'/C', {responseType: 'json'}).
     	then(function(res)
     	{
     		if(res.status == '200')
@@ -184,7 +177,7 @@ app.controller('myCtrlCompras', function($scope,$http)
   {
     if(event.keyCode==13)
     {
-      $http.get(path4+'prodbycode/'+$scope.codigo,{responseType: 'json'}).
+      $http.get(pathProd+'prodbycode/'+$scope.codigo,{responseType: 'json'}).
       then(function(res)
       {
         if(res.data != false)
@@ -386,7 +379,7 @@ app.controller('myCtrlCompras', function($scope,$http)
 			idproveedor:$scope.idproveedor
     };
 
-    $http.put(path1+'registracompra',data).
+    $http.put(pathCmpr+'registracompra',data).
   	then(function(res)
   	{
 			console.log(res);
@@ -444,7 +437,7 @@ app.controller('myCtrlCompras', function($scope,$http)
   	var i;
   	for(i=0;i<$scope.listaproductos.length;i++)
   	{
-  		$http.put(path1+'regcompraprdcto/', {
+  		$http.put(pathCmpr+'regcompraprdcto/', {
   			idcompra:$scope.idcompra,
   			idproducto:$scope.listaproductos[i].IDPRODUCTO,
   			cantidad:$scope.listaproductos[i].CANTIDAD,
@@ -537,7 +530,7 @@ app.controller('myCtrlCompras', function($scope,$http)
 
  $scope.buscacompraclave = function()
   {
-    $http.get(path1+'getcomprodbyid/'+$scope.idSelCompra,{responseType: 'json'}).
+    $http.get(pathCmpr+'getcomprodbyid/'+$scope.idSelCompra,{responseType: 'json'}).
     then(function(res)
     {
       $scope.listaproductos = res.data;
@@ -564,7 +557,7 @@ app.controller('myCtrlCompras', function($scope,$http)
 
   $scope.eliminacompra = function()
   {
-    $http.delete(path1+'elimcompraprodid/'+$scope.listaCompras[ $scope.indexRowCompra].ID_COMPRA+'/'+$('#idsucursal').val()).
+    $http.delete(pathCmpr+'elimcompraprodid/'+$scope.listaCompras[ $scope.indexRowCompra].ID_COMPRA+'/'+$('#idsucursal').val()).
     then(function(res)
     {
       if(res.status == "200")

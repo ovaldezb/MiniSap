@@ -1,7 +1,3 @@
-var path = '/codeigniter3.1.11/producto/';
-var path1 = '/codeigniter3.1.11/upload/startupload/';
-
-var app = angular.module('myProducto', []);
 app.controller('myCtrlProducto', function($scope,$http)
 {
   $scope.codigo = '';
@@ -41,7 +37,7 @@ app.controller('myCtrlProducto', function($scope,$http)
 
   $scope.init = function printProducto()
   {
-  	$http.get(path+'load',{responseType: 'json'}).
+  	$http.get(pathProd+'load',{responseType: 'json'}).
     then(function(res)
   	{
   		if(res.data.length > 0)
@@ -95,7 +91,7 @@ app.controller('myCtrlProducto', function($scope,$http)
   $scope.update = function()
   {
   	showImg('F');
-  	$http.get(path+'loadbyid/'+$scope.idProducto, {responseType: 'json'}).
+  	$http.get(pathProd+'loadbyid/'+$scope.idProducto, {responseType: 'json'}).
     then(function(res)
   	{
       if(res.data.length > 0)
@@ -175,7 +171,7 @@ app.controller('myCtrlProducto', function($scope,$http)
     if($scope.btnAccion == 'Agregar')
     {
       var nvoProd ={};
-      axios.post(path+'save', dataProdUpdt).
+      axios.post(pathProd+'save', dataProdUpdt).
       then(function(res)
       {
         console.log(res);
@@ -201,7 +197,7 @@ app.controller('myCtrlProducto', function($scope,$http)
       });
     }else {
       var actProd ={};
-      $http.put(path+'update/'+$scope.idProducto,dataProdUpdt).
+      $http.put(pathProd+'update/'+$scope.idProducto,dataProdUpdt).
       then(function(res)
     	{
     		if(res.status==200 && res.data.value=='OK')
@@ -233,7 +229,7 @@ app.controller('myCtrlProducto', function($scope,$http)
 
   $scope.eliminar = function()
   {
-  	$http.delete(path+'delete/'+$scope.idProducto).
+  	$http.delete(pathProd+'delete/'+$scope.idProducto).
   	then(function(res){
   		if(res.status==200)
   		{
@@ -260,7 +256,7 @@ app.controller('myCtrlProducto', function($scope,$http)
   		return;
   	}else
   	{
-  		var winchild = popupwindow(path1+$scope.codigo+'/'+$('#idemprcodigo').val(),'Cargar Imagen',500,200);
+  		var winchild = popupwindow(pathUpld+$scope.codigo+'/'+$('#idemprcodigo').val(),'Cargar Imagen',500,200);
   	}
   }
 
@@ -279,7 +275,7 @@ app.controller('myCtrlProducto', function($scope,$http)
       return;
     }
 
-  	$http.get(path+'items/'+$scope.cfdidesc).
+  	$http.get(pathProd+'items/'+$scope.cfdidesc).
   	then(function(res)
     {
         if(res.data.length > 0)
@@ -322,7 +318,7 @@ app.controller('myCtrlProducto', function($scope,$http)
     {
       return;
     }
-  	$http.get(path+'unidadsat/'+$scope.unidaddesc).
+  	$http.get(pathProd+'unidadsat/'+$scope.unidaddesc).
   	then(function(res)
     {
   		if(res.data.length > 0)
