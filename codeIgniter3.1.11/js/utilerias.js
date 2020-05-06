@@ -1,3 +1,21 @@
+function addListener()
+{
+	var tabla = document.getElementById('permisos');
+	var td, tr,i,j;
+	for (i = 0; i <tabla.rows.length; i++)
+	{
+		td = tabla.rows[i].cells;
+		for (j = 0; j < td.length; j++)
+		{
+			//if ( td[i].addEventListener ) {
+				td[j].addEventListener("click", alertRowCell, false);
+			//} else if ( cls[i].attachEvent ) {
+			//	td[i].attachEvent("onclick", alertRowCell);
+			//}
+		}
+	}
+}
+
 function formatDatePrint(hoy)
 {
 	var dia, mes, year;
@@ -144,4 +162,22 @@ function doFilter(filter,nombre_tabla)
 			tabla.rows[i].style.display = "none";
 		}
 	 }
+}
+
+
+
+function alertRowCell(e){
+  var cell = e.target || window.event.srcElement;
+  //alert( cell.cellIndex + ' : ' + cell.parentNode.rowIndex );
+	if(cell.style.backgroundColor == "red")
+	{
+		//cell.bgColor = "green";
+		cell.style.backgroundColor = "green";
+	}else if(cell.style.backgroundColor == "green") {
+			//cell.bgColor = "red";
+			cell.style.backgroundColor = "red";
+	}else {
+		cell.style.backgroundColor = "green";
+	}
+
 }
