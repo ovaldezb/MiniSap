@@ -15,6 +15,15 @@ textarea.ng-invalid {
   background-color: pink;
 }
 
+.centro {
+    position: relative;          /* where the next element will be automatically positioned */
+    display: inline-block;       /* causes element width to shrink to fit content */
+    left: 50%;                   /* moves left side of image/element to center of parent element */
+    transform: translate(-50%);  /* centers image/element on "left: 50%" position */
+    margin: 0 auto;
+    text-align:center;
+}
+
 .document,
 .bd-document{border:2px solid #f5f5f5;position:relative}.document::before,
 .bd-document::before{background:#ffdd57;border-radius:2px 2px 0 0;bottom:100%;color:rgba(0,0,0,.7);content:"Documento";display:inline-block;font-size:7px;font-weight:700;left:-1px;letter-spacing:1px;margin-left:-1px;padding:3px 5px;position:absolute;text-transform:uppercase;vertical-align:top}
@@ -38,3 +47,19 @@ textarea.ng-invalid {
 .permisos,
 .bd-permisos{border:2px solid #f5f5f5;position:relative}.permisos::before,
 .bd-permisos::before{background:#ffdd57;border-radius:2px 2px 0 0;bottom:100%;color:rgba(0,0,0,.7);content:"Permisos";display:inline-block;font-size:7px;font-weight:700;left:-1px;letter-spacing:1px;margin-left:-1px;padding:3px 5px;position:absolute;text-transform:uppercase;vertical-align:top}
+
+.datos,
+.bd-datos{border:2px solid #f5f5f5;position:relative}.datos::before,
+.bd-datos::before{background:#ffdd57;border-radius:2px 2px 0 0;bottom:100%;color:rgba(0,0,0,.7);content:"Datos";display:inline-block;font-size:7px;font-weight:700;left:-1px;letter-spacing:1px;margin-left:-1px;padding:3px 5px;position:absolute;text-transform:uppercase;vertical-align:top}
+
+.modperm,
+.bd-modperm{border:2px solid #f5f5f5;position:relative}.modperm::before,
+.bd-modperm::before{background:#ffdd57;border-radius:2px 2px 0 0;bottom:100%;color:rgba(0,0,0,.7);content:"Módulos Permitidos";display:inline-block;font-size:7px;font-weight:700;left:-1px;letter-spacing:1px;margin-left:-1px;padding:3px 5px;position:absolute;text-transform:uppercase;vertical-align:top}
+
+.sucursal,
+.bd-sucursal{border:2px solid #f5f5f5;position:relative}.sucursal::before,
+.bd-sucursal::before{background:#ffdd57;border-radius:2px 2px 0 0;bottom:100%;color:rgba(0,0,0,.7);content:"Sucursal";display:inline-block;font-size:7px;font-weight:700;left:-1px;letter-spacing:1px;margin-left:-1px;padding:3px 5px;position:absolute;text-transform:uppercase;vertical-align:top}
+
+.empperm,
+.bd-empperm{border:2px solid #f5f5f5;position:relative}.empperm::before,
+.bd-empperm::before{background:#ffdd57;border-radius:2px 2px 0 0;bottom:100%;color:rgba(0,0,0,.7);content:"Empresas Permitidas";display:inline-block;font-size:7px;font-weight:700;left:-1px;letter-spacing:1px;margin-left:-1px;padding:3px 5px;position:absolute;text-transform:uppercase;vertical-align:top}

@@ -11,6 +11,13 @@ class Sucursalmodel extends CI_model
 		$this->conn = $this->postgresdb->getConn();
 	}
 
+	function get_sucursales_raw()
+  {
+    $query='SELECT * FROM "SUCURSALES" ORDER BY "ID_SUCURSAL"';
+    $result = pg_fetch_all(pg_query($this->conn, $query));
+		return $result;
+  }
+
   function get_sucursales()
   {
     $query='SELECT * FROM "SUCURSALES" ORDER BY "ID_SUCURSAL"';
