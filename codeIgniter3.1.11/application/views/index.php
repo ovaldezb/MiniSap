@@ -11,6 +11,19 @@
   <link rel="stylesheet" href="<?php echo base_url(); ?>css/foopicker.css">
 </head>
 <body ng-app="myApp">
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a class="navbar-item" href="https://bulma.io">
+      <img src="<?php echo base_url(); ?>/img/cercanias.png" alt="Bulma: Free, open source, and modern CSS framework based on Flexbox" width="40" height="28">
+    </a>
+
+    <!--a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a-->
+  </div>
+</nav>
   <div class="columns">
     <div class="column is-one-fifth">
       <aside class="menu">
@@ -18,7 +31,7 @@
           General
         </p>
         <ul class="menu-list">
-          <li><a>Administracion de Usuarios</a></li>
+          <li><a href="#!user">Administracion de Usuarios</a></li>
         </ul>
         <p class="menu-label">
           Administración
@@ -55,6 +68,7 @@ var pathSucr = '/codeigniter3.1.11/sucursal/';
 var pathTpv = '/codeigniter3.1.11/tpv/';
 var pathCmpr = '/codeigniter3.1.11/compras/';
 var pathVend = '/codeigniter3.1.11/vendedor/';
+var pathUsr = '/codeigniter3.1.11/usuarios/';
 var app = angular.module("myApp", ["ngRoute"]);
 app.config(function($routeProvider) {
     $routeProvider
@@ -81,6 +95,9 @@ app.config(function($routeProvider) {
     })
     .when("/tpv", {
         templateUrl : '/codeigniter3.1.11/tpv'
+    })
+    .when("/user", {
+        templateUrl : '/codeigniter3.1.11/usuarios'
     });
 });
 </script>
@@ -91,5 +108,6 @@ app.config(function($routeProvider) {
 <script src="<?php echo base_url(); ?>js/sucursal.js"></script>
 <script src="<?php echo base_url(); ?>js/compras.js"></script>
 <script src="<?php echo base_url(); ?>js/tpv.js"></script>
+<script src="<?php echo base_url(); ?>js/usuarios.js"></script>
 </body>
 </html>

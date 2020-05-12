@@ -1,5 +1,3 @@
-var pathUsr = '/codeigniter3.1.11/usuarios/';
-var app = angular.module("myApp",[]);
 app.controller('myCtrlUsuarios', function($scope,$http)
 {
   $scope.lstProcesos = [];

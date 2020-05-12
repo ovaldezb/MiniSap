@@ -1,15 +1,4 @@
-<html>
-<head>
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
-  <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-	<script src="<?php echo base_url(); ?>js/utilerias.js"></script>
-	<script src="<?php echo base_url(); ?>js/jquery-3.4.1.slim.js"></script>
-  <script src="<?php echo base_url(); ?>js/usuarios.js"></script>
-  <link rel="stylesheet" href="<?php echo base_url(); ?>css/utils.css">
-</head>
+<!--script src="https://unpkg.com/axios/dist/axios.min.js"></script-->
 <body>
   <div class="container" ng-app="myApp" ng-controller="myCtrlUsuarios" data-ng-init="init()">
     <div class="notification">
