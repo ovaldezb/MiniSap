@@ -59,7 +59,7 @@ class Usuarios extends CI_Controller {
     $result = $this->usuariomodel->crea_usuario(
       $data['nombre'],
       $data['usrname'],
-      password_hash($data['paswd'], PASSWORD_BCRYPT),
+      password_hash($data['paswd'], PASSWORD_DEFAULT),
       $data['idsucursal']
     );
     return $this->output

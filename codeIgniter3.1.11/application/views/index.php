@@ -23,6 +23,13 @@
       <span aria-hidden="true"></span>
     </a-->
   </div>
+  <div class="navbar-end">
+    <div class="navbar-item">
+      <div class="field is-grouped">
+        <label class="label"><?php echo $nombre?></label>
+      </div>
+    </div>
+  </div>
 </nav>
   <div class="columns">
     <div class="column is-one-fifth">
@@ -51,6 +58,9 @@
         <ul class="menu-list">
           <li><a href="#!tpv">TPV</a></li>
         </ul>
+        <ul class="menu-list">
+          <li><a href="#!clss">Cerrar Sesión</a></li>
+        </ul>
       </aside>
     </div>
     <div class="column">
@@ -73,7 +83,10 @@ var app = angular.module("myApp", ["ngRoute"]);
 app.config(function($routeProvider) {
     $routeProvider
     .when("/", {
-        templateUrl : "/codeigniter3.1.11/access"
+        templateUrl : "/codeigniter3.1.11/access/inicio"
+    })
+    .when("/clss", {
+        templateUrl : "/codeigniter3.1.11/access/logout"
     })
     .when("/clte", {
       templateUrl: '/codeigniter3.1.11/cliente'
@@ -109,5 +122,6 @@ app.config(function($routeProvider) {
 <script src="<?php echo base_url(); ?>js/compras.js"></script>
 <script src="<?php echo base_url(); ?>js/tpv.js"></script>
 <script src="<?php echo base_url(); ?>js/usuarios.js"></script>
+<script src="<?php echo base_url(); ?>js/logout.js"></script>
 </body>
 </html>
