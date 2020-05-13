@@ -7,13 +7,19 @@ class Usuarios extends CI_Controller {
     $this->load->model('usuariomodel');
     $this->load->model('sucursalmodel');
     $this->load->helper('url');
+    $this->load->library('session');
   }
 
   public function index()
   {
-    $data['sucursales'] = $this->sucursalmodel->get_sucursales_raw();
-    $this->load->view('usuarios',$data);
-
+    if(isset($_SESSION['username']))
+    {
+      $data['sucursales'] = $this->sucursalmodel->get_sucursales_raw();
+      $this->load->view('usuarios',$data);
+		}else {
+			$error['error'] = '';
+      $this->load->view('login',$error);
+    }
   }
 
   /*Obtiene los datos de un usuario por su Id*/

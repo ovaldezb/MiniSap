@@ -9,15 +9,21 @@ class Proveedor extends CI_Controller
 		$this->load->model('catalogosmodel');
 		$this->load->model('proveedormodel');
 		$this->load->helper('url');
+		$this->load->library('session');
 	}
 
 	function index() {
-		$data['proveedores'] = $this->catalogosmodel->get_tipo_prov();
-		$data['alcanceprov'] = $this->catalogosmodel->get_alcance_prov();
-		$data['bancos'] = $this->catalogosmodel->get_bancos();
-		/*Esta variable se debe recibir del lugar donde se invoque este servicio*/
-		$data['id_empresa'] = '1';
-		$this->load->view('proveedor',$data);
+		if(isset($_SESSION['username']))
+    {
+			$data['proveedores'] = $this->catalogosmodel->get_tipo_prov();
+			$data['alcanceprov'] = $this->catalogosmodel->get_alcance_prov();
+			$data['bancos'] = $this->catalogosmodel->get_bancos();
+			$data['id_empresa'] = '1';
+			$this->load->view('proveedor',$data);
+		}else {
+			$error['error'] = '';
+			$this->load->view('login',$error);
+    }
 	}
 
 	function load()

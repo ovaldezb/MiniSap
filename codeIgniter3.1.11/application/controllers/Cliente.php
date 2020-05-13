@@ -8,17 +8,24 @@ class Cliente extends CI_Controller
 		$this->load->model('clientemodel');
 		$this->load->model('catalogosmodel');
 		$this->load->helper('url');
+		$this->load->library('session');
 	}
 
 	function index() {
-		$data['tipo_cliente'] = $this->catalogosmodel->get_tipo_cliente();
-		$data['revision'] = $this->catalogosmodel->get_dias_semana();
-		$data['forma_pago'] = $this->catalogosmodel->get_forma_pago();
-		$data['vendedor'] = $this->catalogosmodel->get_vendedor();
-		$data['uso_cfdi'] = $this->catalogosmodel->get_uso_cfdi();
-		/*Esta variable se debe recibir del lugar donde se invoque este servicio*/
-		$data['id_empresa'] = '1';
-		$this->load->view('clientes',$data);
+		if(isset($_SESSION['username']))
+    {
+			$data['tipo_cliente'] = $this->catalogosmodel->get_tipo_cliente();
+			$data['revision'] = $this->catalogosmodel->get_dias_semana();
+			$data['forma_pago'] = $this->catalogosmodel->get_forma_pago();
+			$data['vendedor'] = $this->catalogosmodel->get_vendedor();
+			$data['uso_cfdi'] = $this->catalogosmodel->get_uso_cfdi();
+			/*Esta variable se debe recibir del lugar donde se invoque este servicio*/
+			$data['id_empresa'] = '1';
+			$this->load->view('clientes',$data);
+		}else {
+			$error['error'] = '';
+      $this->load->view('login',$error);
+    }
 	}
 
 	function load()

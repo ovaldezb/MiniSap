@@ -8,19 +8,26 @@ class Tpv extends CI_Controller
 		$this->load->model('tpvmodel');
 		$this->load->model('catalogosmodel');
 		$this->load->helper('url');
+		$this->load->library('session');
 	}
 
 	function index()
 	{
-		$data['tipo_pagos'] = $this->catalogosmodel->get_tipo_pago();
-		$data['bancos'] = $this->catalogosmodel->get_bancos();
-		$data['tarjetas'] = $this->catalogosmodel->get_tarjetas();
-		$data['vales'] = $this->catalogosmodel->get_vales();
-		/*Estos valores se deben recibir de quien mande llamar este servicios*/
-		$data['idpempresa'] = 1;
-		$data['aniofiscal'] = 2020;
-		$data['id_sucursal'] = 1;
-		$this->load->view('tpv',$data);
+		if(isset($_SESSION['username']))
+    {
+			$data['tipo_pagos'] = $this->catalogosmodel->get_tipo_pago();
+			$data['bancos'] = $this->catalogosmodel->get_bancos();
+			$data['tarjetas'] = $this->catalogosmodel->get_tarjetas();
+			$data['vales'] = $this->catalogosmodel->get_vales();
+			/*Estos valores se deben recibir de quien mande llamar este servicios*/
+			$data['idpempresa'] = 1;
+			$data['aniofiscal'] = 2020;
+			$data['id_sucursal'] = $_SESSION['idsucursal'];;
+			$this->load->view('tpv',$data);
+		}else {
+			$error['error'] = '';
+      $this->load->view('login',$error);
+    }
 	}
 
 	function getitems($desc,$tipo_req)

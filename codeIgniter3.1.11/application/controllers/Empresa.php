@@ -8,11 +8,18 @@ class Empresa extends CI_Controller
 		$this->load->model('empresamodel');
 		$this->load->model('catalogosmodel');
 		$this->load->helper('url');
+		$this->load->library('session');
 	}
 
 	function index() {
-		$data['regimenes'] = $this->catalogosmodel->get_regimenes();
-		$this->load->view('empresa',$data);
+		if(isset($_SESSION['username']))
+    {
+			$data['regimenes'] = $this->catalogosmodel->get_regimenes();
+			$this->load->view('empresa',$data);
+		}else {
+			$error['error'] = '';
+      $this->load->view('login',$error);
+    }
 	}
 
 	function load()

@@ -2,16 +2,23 @@
 
 class Upload extends CI_Controller {
 
-        public function __construct()
-        {
-                parent::__construct();
-                $this->load->helper(array('form', 'url'));
-        }
+    public function __construct()
+    {
+      parent::__construct();
+      $this->load->helper(array('form', 'url'));
+      $this->load->library('session');
+    }
 
-        public function index()
-        {
-                $this->load->view('upload_form', array('error' => ' ' ));
-        }
+    public function index()
+    {
+      if(isset($_SESSION['username']))
+      {
+  			$this->load->view('upload_form', array('error' => ' ' ));
+  		}else {
+  			$error['error'] = '';
+        $this->load->view('login',$error);
+      }      
+    }
 
 		public function startupload($name,$idempresa)
 		{

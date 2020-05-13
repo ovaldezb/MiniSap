@@ -7,18 +7,25 @@ class Compras extends CI_Controller
 		parent::__construct();
 		$this->load->model('comprasmodel');
 		$this->load->model('catalogosmodel');
+		$this->load->library('session');
 		//$this->load->helper('url');
 	}
 
 	function index()
 	{
-		$data['tipopago'] = $this->catalogosmodel->get_tipo_pago();
-		$data['monedas'] = $this->catalogosmodel->get_monedas();
-		/*Estos valores se tiene que recibir cuando se invoque este controlador*/
-		$data['idpempresa'] = 1;
-		$data['aniofiscal'] = 2020;
-		$data['id_sucursal'] = 1;
-		$this->load->view('compras',$data);
+		if(isset($_SESSION['username']))
+    {
+			$data['tipopago'] = $this->catalogosmodel->get_tipo_pago();
+			$data['monedas'] = $this->catalogosmodel->get_monedas();
+			/*Estos valores se tiene que recibir cuando se invoque este controlador*/
+			$data['idpempresa'] = 1;
+			$data['aniofiscal'] = 2020;
+			$data['id_sucursal'] = $_SESSION['idsucursal'];
+			$this->load->view('compras',$data);
+		}else {
+			$error['error'] = '';
+      $this->load->view('login',$error);
+    }
 	}
 
 	function registracompra()

@@ -9,6 +9,7 @@ class Producto extends CI_Controller
 		$this->load->model('catalogosmodel');
 		$this->load->model('productomodel');
 		$this->load->helper('url');
+		$this->load->library('session');
 	}
 
 	/*function _remap($param) {
@@ -16,15 +17,21 @@ class Producto extends CI_Controller
     }*/
 
 	function index() {
-		$data['lineas'] = $this->catalogosmodel->get_linea();
-		$data['monedas'] = $this->catalogosmodel->get_monedas();
-		$data['iepss'] = $this->catalogosmodel->get_ieps();
-		$data['umedidas'] = $this->catalogosmodel->get_unidad_medida();
-		/*Esta variable se debe recibir del lugar donde se invoque este servicio*/
-		$data['id_empresa'] = '1';
-		$data['id_empr_codigo'] = 'E0000001';
-		$data['id_sucursal'] = '1';
-		$this->load->view('producto',$data);
+		if(isset($_SESSION['username']))
+    {
+			$data['lineas'] = $this->catalogosmodel->get_linea();
+			$data['monedas'] = $this->catalogosmodel->get_monedas();
+			$data['iepss'] = $this->catalogosmodel->get_ieps();
+			$data['umedidas'] = $this->catalogosmodel->get_unidad_medida();
+			/*Esta variable se debe recibir del lugar donde se invoque este servicio*/
+			$data['id_empresa'] = '1';
+			$data['id_empr_codigo'] = 'E0000001';
+			$data['id_sucursal'] = $_SESSION['idsucursal'];
+			$this->load->view('producto',$data);
+    }else {
+      $error['error'] = '';
+      $this->load->view('login',$error);
+    }
 	}
 
 	function load()

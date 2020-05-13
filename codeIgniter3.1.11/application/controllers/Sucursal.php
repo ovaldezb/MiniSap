@@ -5,17 +5,22 @@ class Sucursal extends CI_Controller
 {
 	function __construct() {
 		parent::__construct();
-
-		//$this->load->model('catalogosmodel');
 		$this->load->model('sucursalmodel');
 		$this->load->helper('url');
+		$this->load->library('session');
 	}
 
   function index()
   {
-    /*Esta variable se debe recibir del lugar donde se invoque este servicio*/
-    $data['id_empresa'] = '1';
-    $this->load->view('sucursal',$data);
+		if(isset($_SESSION['username']))
+    {
+			/*Esta variable se debe recibir del lugar donde se invoque este servicio*/
+			$data['id_empresa'] = '1';
+			$this->load->view('sucursal',$data);
+		}else {
+			$error['error'] = '';
+      $this->load->view('login',$error);
+    }
   }
 
   function load()
