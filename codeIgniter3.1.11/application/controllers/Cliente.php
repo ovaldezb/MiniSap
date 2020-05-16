@@ -20,7 +20,7 @@ class Cliente extends CI_Controller
 			$data['vendedor'] = $this->catalogosmodel->get_vendedor();
 			$data['uso_cfdi'] = $this->catalogosmodel->get_uso_cfdi();
 			/*Esta variable se debe recibir del lugar donde se invoque este servicio*/
-			$data['id_empresa'] = '1';
+			$data['id_empresa'] = $_SESSION['idempresa'];
 			$this->load->view('clientes',$data);
 		}else {
 			$error['error'] = '';

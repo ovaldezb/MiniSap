@@ -24,7 +24,7 @@ class Producto extends CI_Controller
 			$data['iepss'] = $this->catalogosmodel->get_ieps();
 			$data['umedidas'] = $this->catalogosmodel->get_unidad_medida();
 			/*Esta variable se debe recibir del lugar donde se invoque este servicio*/
-			$data['id_empresa'] = '1';
+			$data['id_empresa'] = $_SESSION['idempresa'];
 			$data['id_empr_codigo'] = 'E0000001';
 			$data['id_sucursal'] = $_SESSION['idsucursal'];
 			$this->load->view('producto',$data);

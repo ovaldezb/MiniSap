@@ -20,8 +20,8 @@ class Tpv extends CI_Controller
 			$data['tarjetas'] = $this->catalogosmodel->get_tarjetas();
 			$data['vales'] = $this->catalogosmodel->get_vales();
 			/*Estos valores se deben recibir de quien mande llamar este servicios*/
-			$data['idpempresa'] = 1;
-			$data['aniofiscal'] = 2020;
+			$data['idpempresa'] = $_SESSION['idempresa'];
+			$data['aniofiscal'] = $_SESSION['aniofiscal'];
 			$data['id_sucursal'] = $_SESSION['idsucursal'];;
 			$this->load->view('tpv',$data);
 		}else {

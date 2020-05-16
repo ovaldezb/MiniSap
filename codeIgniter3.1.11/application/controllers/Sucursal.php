@@ -15,7 +15,7 @@ class Sucursal extends CI_Controller
 		if(isset($_SESSION['username']))
     {
 			/*Esta variable se debe recibir del lugar donde se invoque este servicio*/
-			$data['id_empresa'] = '1';
+			$data['id_empresa'] = $_SESSION['idempresa'];
 			$this->load->view('sucursal',$data);
 		}else {
 			$error['error'] = '';

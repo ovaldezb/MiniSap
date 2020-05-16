@@ -1,3 +1,4 @@
+<br><br>
 <input type="hidden" id="idempresa" value="<?php echo $id_empresa ?>">
 <div class="container" ng-controller="myCtrlSucursal" data-ng-init="init()">
   <div class="notification" >

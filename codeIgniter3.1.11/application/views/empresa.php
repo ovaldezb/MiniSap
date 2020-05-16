@@ -2,7 +2,7 @@
 	defined('BASEPATH') OR exit('No direct script access allowed');
 	$size1 = 50;
 ?>
-<div class="container" ng-app="myEmpresa" ng-controller="myCtrlEmpresa" data-ng-init="init()">
+<div class="container" ng-controller="myCtrlEmpresa" data-ng-init="init()">
 	<div class="notification" >
 		<h1 class="title has-text-centered">Administración de Empresas</h1>
 	</div>

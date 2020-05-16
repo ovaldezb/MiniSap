@@ -1,3 +1,4 @@
+<br><br>
 <input type="hidden" id="idempresa" value="<?php echo $id_empresa ?>">
 <div class="container">
 	<div class="notification" align="center">

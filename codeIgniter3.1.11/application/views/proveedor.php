@@ -1,3 +1,4 @@
+<br><br>
 <input type="hidden" id="idempresa" value="<?php echo $id_empresa ?>">
 <div class="container" ng-app="myProveedor" ng-controller="myCtrlProveedor" data-ng-init="init()">
 	<div class="notification" >

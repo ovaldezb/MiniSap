@@ -18,7 +18,7 @@ class Proveedor extends CI_Controller
 			$data['proveedores'] = $this->catalogosmodel->get_tipo_prov();
 			$data['alcanceprov'] = $this->catalogosmodel->get_alcance_prov();
 			$data['bancos'] = $this->catalogosmodel->get_bancos();
-			$data['id_empresa'] = '1';
+			$data['id_empresa'] = $_SESSION['idempresa'];
 			$this->load->view('proveedor',$data);
 		}else {
 			$error['error'] = '';

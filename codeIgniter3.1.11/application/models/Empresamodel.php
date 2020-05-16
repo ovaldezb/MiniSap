@@ -13,7 +13,7 @@ class Empresamodel extends CI_model
 
 	function get_empresas()
 	{
-		$query = 'SELECT * FROM "EMPRESA" ORDER BY "NOMBRE"';
+		$query = 'SELECT * FROM "EMPRESA" WHERE "ACTIVO" = true ORDER BY "NOMBRE"';
 		$result = pg_fetch_all(pg_query($this->conn, $query));
 		return json_encode($result);
 	}
@@ -21,12 +21,6 @@ class Empresamodel extends CI_model
 	function create_empresa($nombre, $domicilio, $rfc, $ejercicio_fiscal, $id_regimen, $digxcuenta, $cta_res, $res_ant)
 	{
 		$query = 'SELECT * FROM crea_empresa($1, $2, $3, $4, $5, $6, $7,$8)';
-		/*$result = pg_prepare($this->conn,"insertquery",
-				'INSERT INTO "EMPRESA" ("NOMBRE", "DOMICILIO", "RFC", "ID_REGIMEN", "DIGITO_X_CUENTA", "CUENTA_RESULTADO", "RESULTADO_ANTERIOR")
-				  VALUES ($1, $2, $3, $4, $5, $6, $7)');
-		$result = pg_execute($this->conn,"insertquery",array($nombre, $domicilio, $rfc, $id_regimen, $digxcuenta, $cta_res, $res_ant));
-		$result1 = pg_prepare($this->conn,"insertejefis",'INSERT INTO "EMP_EJER_FISC" ("ID_EMPRESA", "EJER_FISC") SELECT "ID_EMPRESA",$1 FROM "EMPRESA" ORDER BY "ID_EMPRESA" DESC LIMIT 1');
-		$result1 = pg_execute($this->conn,"insertejefis",array($ejercicio_fiscal));*/
 		pg_prepare($this->conn, "creaempresa", $query);
 		$result =  pg_fetch_all(pg_execute($this->conn, "creaempresa", array($nombre,$domicilio,$rfc,$ejercicio_fiscal,$id_regimen,$digxcuenta,$cta_res,$res_ant)));
 		return json_encode($result);
@@ -38,12 +32,12 @@ class Empresamodel extends CI_model
 				A."ID_REGIMEN", A."DIGITO_X_CUENTA", A."CUENTA_RESULTADO", A."RESULTADO_ANTERIOR", B."EJER_FISC"
 				FROM "EMPRESA" A, "EMP_EJER_FISC" B
 				WHERE A."ID_EMPRESA" = $1 AND A."ID_EMPRESA" = B."ID_EMPRESA" ORDER BY A."ID_EMPRESA" LIMIT 1';
-		$result = pg_prepare($this->conn, "my_query", $query);
+		pg_prepare($this->conn, "my_query", $query);
 		$result =  pg_fetch_all(pg_execute($this->conn, "my_query", array($_id)));
 		return json_encode($result);
 	}
 
-	function update_cliente($id_empresa,$nombre, $domicilio, $rfc, $ejercicio_fiscal, $id_regimen, $digxcuenta, $cta_res, $res_ant)
+	function update_empresa($id_empresa,$nombre, $domicilio, $rfc, $ejercicio_fiscal, $id_regimen, $digxcuenta, $cta_res, $res_ant)
 	{
 		$result = pg_prepare($this->conn,"updatequery",'UPDATE "EMPRESA" SET
 				"NOMBRE" = $1,
@@ -56,18 +50,40 @@ class Empresamodel extends CI_model
 				WHERE "ID_EMPRESA" = $8');
 
 		$result = pg_execute($this->conn,"updatequery",array($nombre, $domicilio,$rfc,$id_regimen, $digxcuenta, $cta_res, $res_ant,$id_empresa));
-		$result = pg_prepare($this->conn,"updateempejerfis",'UPDATE "EMP_EJER_FISC" SET "EJER_FISC" = $1 WHERE "ID_EMPRESA" = $2');
+		pg_prepare($this->conn,"updateempejerfis",'UPDATE "EMP_EJER_FISC" SET "EJER_FISC" = $1 WHERE "ID_EMPRESA" = $2');
 		$result = pg_execute($this->conn,"updateempejerfis",array($ejercicio_fiscal,$id_empresa));
 		return $result;
 	}
 
-	function delete_empresa($_id)
+	function delete_empresa($_idempresa)
 	{
-		$query = "DELETE FROM \"EMPRESA\" WHERE \"ID_EMPRESA\" = $1";
-		$result = pg_prepare($this->conn,"deletequery",$query);
-		$result = pg_execute($this->conn,"deletequery",array($_id));
+		$query = 'UPDATE "EMPRESA" SET "ACTIVO"=false WHERE "ID_EMPRESA" = $1';
+		pg_prepare($this->conn,"deletequery",$query);
+		$result = pg_execute($this->conn,"deletequery",array($_idempresa));
 		return $result;
 	}
+
+	function get_emp_perm_by_id($idusuario)
+	{
+		$query = 'SELECT UE."ID_EMPRESA", TRIM(E."NOMBRE") as "NOMBRE"
+							FROM "USUARIO_EMPRESA" as UE
+							INNER JOIN "EMPRESA" E ON E."ID_EMPRESA" = UE."ID_EMPRESA"
+							WHERE UE."ID_USUARIO" = $1 ORDER BY E."NOMBRE"';
+		pg_prepare($this->conn,"select_empperm",$query);
+		$result = pg_fetch_all(pg_execute($this->conn,"select_empperm",array($idusuario)));
+		return json_encode($result);
+	}
+
+	function get_fy_by_emp($idempresa)
+	{
+		$query = 'SELECT "EJER_FISC"
+		  				FROM "EMP_EJER_FISC"
+							WHERE "ID_EMPRESA" = $1 ';
+		pg_prepare($this->conn,"select_fy_emp",$query);
+		$result = pg_fetch_all(pg_execute($this->conn,"select_fy_emp",array($idempresa)));
+		return json_encode($result);
+	}
+
 }
 
 ?>

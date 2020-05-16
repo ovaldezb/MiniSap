@@ -47,7 +47,10 @@ app.controller('myCtrlCompras', function($scope,$http)
 		$http.get(pathCmpr+'getcompras/'+$('#idempresa').val()+'/'+$('#aniofiscal').val())
 		.then(function(res)
 		{
-			$scope.listaCompras = res.data;
+			if(res.data.length > 0)
+			{
+				$scope.listaCompras = res.data;
+			}
 		}).catch(function(err)
 		{
 			console.log(err);

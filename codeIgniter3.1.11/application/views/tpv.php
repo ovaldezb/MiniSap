@@ -1,3 +1,4 @@
+<br>
 <input type="hidden" id="updtTblComp" value="F">
 <input type="hidden" id="aniofiscal" value="<?php echo $aniofiscal?>">
 <input type="hidden" id="idempresa" value="<?php echo $idpempresa?>">

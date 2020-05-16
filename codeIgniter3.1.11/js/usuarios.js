@@ -248,7 +248,6 @@ app.controller('myCtrlUsuarios', function($scope,$http)
 
   $scope.insertaModulos = function()
   {
-
     for(var i=0;i<$scope.lstModulos.length;i++)
     {
       if($scope.lstModulos[i].PERMITIDO)
@@ -256,7 +255,7 @@ app.controller('myCtrlUsuarios', function($scope,$http)
         $http.post(pathUsr+'insrtmdls/'+$scope.idUsuario+'/'+$scope.lstModulos[i].ID_MODULO).
         then(function(res)
         {
-
+          //console.log(res);
         }).
         catch(function(err)
         {
@@ -352,34 +351,34 @@ app.controller('myCtrlUsuarios', function($scope,$http)
     $http.delete(pathUsr+'eliminausrproc/'+$scope.idUsuario).
     then(function(res)
     {
+      for(var i=0;i<$scope.lstProcesos.length;i++)
+      {
+        if($scope.lstProcesos[i].P)
+        {
+          $http.put(pathUsr+'insrtprocusr/'+
+                    $scope.idUsuario+'/'+
+                    $scope.lstProcesos[i].ID_PROCESO+'/'+
+                    $scope.lstProcesos[i].P+'/'+
+                    $scope.lstProcesos[i].A+'/'+
+                    $scope.lstProcesos[i].B+'/'+
+                    $scope.lstProcesos[i].M+'/'+
+                    $scope.lstProcesos[i].C
+                  ).
+          then(function(res)
+          {
+
+          }).
+          catch(function(err)
+          {
+            console.log(err);
+          });
+        }
+      }
       alert('Se actualizaron los permisos')
     }).catch(function(err)
     {
       console.log(err);
     });
-    for(var i=0;i<$scope.lstProcesos.length;i++)
-    {
-      if($scope.lstProcesos[i].P)
-      {
-        $http.put(pathUsr+'insrtprocusr/'+
-                  $scope.idUsuario+'/'+
-                  $scope.lstProcesos[i].ID_PROCESO+'/'+
-                  $scope.lstProcesos[i].P+'/'+
-                  $scope.lstProcesos[i].A+'/'+
-                  $scope.lstProcesos[i].B+'/'+
-                  $scope.lstProcesos[i].M+'/'+
-                  $scope.lstProcesos[i].C
-                ).
-        then(function(res)
-        {
-
-        }).
-        catch(function(err)
-        {
-          console.log(err);
-        });
-      }
-    }
   }
 
   $scope.preguntaElimUser = function()

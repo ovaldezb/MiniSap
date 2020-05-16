@@ -2,6 +2,7 @@
 	defined('BASEPATH') OR exit('No direct script access allowed');
 	$size1 = 100;
 ?>
+<br><br>
 <input type="hidden"  id="idempresa" value="<?php echo $id_empresa ?>">
 <input type="hidden"  id="idemprcodigo" value="<?php echo $id_empr_codigo ?>">
 <input type="hidden"  id="idsucursal" value="<?php echo $id_sucursal ?>">

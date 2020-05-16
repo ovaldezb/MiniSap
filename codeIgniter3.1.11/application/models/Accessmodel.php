@@ -11,9 +11,9 @@ class Accessmodel extends CI_model
 		$this->conn = $this->postgresdb->getConn();
 	}
 
-  function valida_credenciales($user)
+  function get_credenciales($user)
   {
-    $query = 'SELECT "ID_SUCURSAL",TRIM("PASSWORD") as "PASSWORD", TRIM("NOMBRE") as "NOMBRE" FROM "USUARIO" WHERE "CLAVE_USR" = $1';
+    $query = 'SELECT "ID_USUARIO","ID_SUCURSAL",TRIM("PASSWORD") as "PASSWORD", TRIM("NOMBRE") as "NOMBRE" FROM "USUARIO" WHERE "CLAVE_USR" = $1';
     pg_prepare($this->conn,"valida_user",$query);
     $result = pg_fetch_array(pg_execute($this->conn, "valida_user", array($user)));
 		return $result;

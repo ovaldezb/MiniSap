@@ -4,124 +4,255 @@
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
   <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-	<script src="<?php echo base_url(); ?>js/utilerias.js"></script>
-	<script src="<?php echo base_url(); ?>js/jquery-3.4.1.slim.js"></script>
-  <script src="<?php echo base_url(); ?>js/foopicker.js"></script>
-  <link rel="stylesheet" href="<?php echo base_url(); ?>css/utils.css">
-  <link rel="stylesheet" href="<?php echo base_url(); ?>css/foopicker.css">
-</head>
-<body ng-app="myApp">
-  <nav class="navbar" role="navigation" aria-label="main navigation">
-  <div class="navbar-brand">
-    <a class="navbar-item" href="https://bulma.io">
-      <img src="<?php echo base_url(); ?>/img/cercanias.png" alt="Bulma: Free, open source, and modern CSS framework based on Flexbox" width="40" height="28">
-    </a>
+	<script src="../js/utilerias.js"></script>
+	<script src="../js/jquery-3.4.1.slim.js"></script>
+  <script src="../js/foopicker.js"></script>
+  <link rel="stylesheet" href="../css/utils.css">
+  <link rel="stylesheet" href="../css/foopicker.css">
+  <style>
+.accordion {
+  background-color: #eee;
+  color: #444;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  transition: 0.4s;
+}
 
-    <!--a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false">
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-    </a-->
-  </div>
-  <div class="navbar-end">
-    <div class="navbar-item">
-      <div class="field is-grouped">
-        <label class="label"><?php echo $nombre?></label>
+.active, .accordion:hover {
+  background-color: #ccc;
+}
+
+.panel {
+  padding: 0 18px;
+  display: none;
+  background-color: white;
+  overflow: hidden;
+}
+.accordion:after {
+  content: '\002B';
+  color: #777;
+  font-weight: bold;
+  float: right;
+  margin-left: 5px;
+}
+
+.active:after {
+  content: "\2212";
+}
+.sidepanel  {
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  height: 250px;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+.sidepanel a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidepanel a:hover {
+  color: #f1f1f1;
+}
+
+.sidepanel .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+}
+
+.openbtn {
+  font-size: 20px;
+  cursor: pointer;
+  background-color: #111;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+}
+
+.openbtn:hover {
+  background-color:#444;
+}
+</style>
+
+</head>
+<body ng-app="myApp" ng-controller="myCtrlIndex" data-ng-init="init()">
+  <input type="hidden" id="idusuario" name="idusuario" value="<?php echo $idusuario ?>">
+  <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://bulma.io">
+        <img src="../img/cercanias.png" alt="Sistema de Gesti&oacute;n Empresarial" width="40" height="28">
+      </a>
+    </div>
+    <div class="navbar-end">
+      <div class="navbar-item">
+        <div class="field is-grouped">
+          <p class="control">
+            <span class="icon">
+              <i class="fas fa-user"></i>
+            </span>
+            <span><?php echo $nombre?></span>
+          </p>
+          <p class="control">
+            <span class="icon">
+              <i class="far fa-building"></i>
+            </span>
+            <span>{{nombreEmpresa}}</span>
+          </p>
+          <p class="control">
+            <span class="icon">
+              <i class="far fa-calendar-alt"></i>
+            </span>
+            <span>{{anioFiscal}}</span>
+          </p>
+          <p class="control">
+              <a class="button is-primary" href="#!clss">
+                <span class="icon">
+                  <i class="fas fa-door-open"></i>
+                </span>
+                <span>Salir</span>
+              </a>
+            </p>
+        </div>
       </div>
     </div>
-  </div>
-</nav>
+  </nav>
+  <br><br><br>
   <div class="columns">
     <div class="column is-one-fifth">
-      <aside class="menu">
-        <p class="menu-label">
-          General
-        </p>
-        <ul class="menu-list">
-          <li><a href="#!user">Administracion de Usuarios</a></li>
+      <aside class="menu" style="width:100%; height:800px; overflow:auto;">
+<?php
+  $modulotmp = '';
+  $isFinModulo = false;
+  foreach ($modproc as $key)
+  {
+    $modulo = $key['MODULO'];
+    if($modulo != $modulotmp)
+    {
+      if($isFinModulo)
+      {?>
         </ul>
-        <p class="menu-label">
-          Administración
-        </p>
+<?php
+      }?>
+        <p class="menu-label"><?php echo $key['MODULO']?></p>
         <ul class="menu-list">
-          <li><a href="#!empr">Empresas</a></li>
-          <li><a href="#!clte">Clientes</a></li>
-          <li><a href="#!prod">Productos</a></li>
-          <li><a href="#!prve">Proveedor</a></li>
-          <li><a href="#!sucr">Sucursal</a></li>
-        </ul>
-        <p class="menu-label">CRM</p>
-        <ul class="menu-list">
-          <li><a href="#!cmpr">Compras</a></li>
-        </ul>
-        <p class="menu-label">TPV</p>
-        <ul class="menu-list">
-          <li><a href="#!tpv">TPV</a></li>
-        </ul>
-        <ul class="menu-list">
-          <li><a href="#!clss">Cerrar Sesión</a></li>
-        </ul>
+          <li><a href="#!<?php echo $key['RUTA']?>"><?php echo $key['PROCESO']?></a></li>
+<?php
+      $isFinModulo = true;
+    }else {?>
+          <li><a href="#!<?php echo $key['RUTA']?>"><?php echo $key['PROCESO']?></a></li>
+<?php
+    }
+    $modulotmp = $modulo;?>
+<?php
+  } ?>
       </aside>
     </div>
     <div class="column">
       <div ng-view></div>
     </div>
   </div>
+  <div class="{{isEmpPermActiv ? 'modal is-active': 'modal'}}">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Seleccione una empresa</p>
+      </header>
+      <section class="modal-card-body">
+        <table style="width:100%">
+          <tr>
+            <td>
+              <table style="width:100%">
+                <tr>
+                  <td align="center"><label class="label">Nombre/Razón Social</label></td>
+                </tr>
+              </table>
+            </td>
+            <td>
+              <table style="width:100%" class="table">
+                <tr>
+                  <td align="center"><label class="label">Año Fiscal</label></td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div style="width:100%; height:300px; overflow:auto;">
+                <table style="width:100%" class="table">
+                  <tr ng-repeat="x in lstEmprPerm" ng-click="selectEmpPerm(x.ID_EMPRESA,$index)" ng-class="{selected: x.ID_EMPRESA === idSelEmp}">
+                    <td>{{x.NOMBRE}}</td>
+                  </tr>
+                </table>
+              </div>
+            </td>
+            <td>
+              <div style="width:100%; height:300px; overflow:auto;">
+                <table style="width:100%" class="table">
+                  <tr ng-repeat="x in lstFYEmpr" ng-click="selectFYEmp(x.EJER_FISC,$index)" ng-class="{selected: x.EJER_FISC === idSelFYEmp}">
+                    <td>{{x.EJER_FISC}}</td>
+                  </tr>
+                </table>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </section>
+      <footer class="modal-card-foot">
+        <button class="button is-success" ng-click="guardarEmpPerm()">Aceptar</button>
+      </footer>
+    </div>
+  </div>
+<script src="../js/index.js"></script>
+<script src="../js/clientes.js"></script>
+<script src="../js/empresa.js"></script>
+<script src="../js/producto.js"></script>
+<script src="../js/proveedor.js"></script>
+<script src="../js/sucursal.js"></script>
+<script src="../js/compras.js"></script>
+<script src="../js/tpv.js"></script>
+<script src="../js/usuarios.js"></script>
+<script src="../js/logout.js"></script>
 <script>
-var pathPrve = '/codeigniter3.1.11/proveedor/';
-var pathClte = '/codeigniter3.1.11/cliente/';
-var pathUtils = '/codeigniter3.1.11/utils/';
-var pathEmpr = '/codeigniter3.1.11/empresa/';
-var pathProd = '/codeigniter3.1.11/producto/';
-var pathUpld = '/codeigniter3.1.11/upload/startupload/';
-var pathSucr = '/codeigniter3.1.11/sucursal/';
-var pathTpv = '/codeigniter3.1.11/tpv/';
-var pathCmpr = '/codeigniter3.1.11/compras/';
-var pathVend = '/codeigniter3.1.11/vendedor/';
-var pathUsr = '/codeigniter3.1.11/usuarios/';
-var app = angular.module("myApp", ["ngRoute"]);
-app.config(function($routeProvider) {
-    $routeProvider
-    .when("/", {
-        templateUrl : "/codeigniter3.1.11/access/inicio"
-    })
-    .when("/clss", {
-        templateUrl : "/codeigniter3.1.11/access/logout"
-    })
-    .when("/clte", {
-      templateUrl: '/codeigniter3.1.11/cliente'
-    })
-    .when("/empr", {
-        templateUrl : '/codeigniter3.1.11/empresa'
-    })
-    .when("/prod", {
-        templateUrl : '/codeigniter3.1.11/producto'
-    })
-    .when("/prve", {
-        templateUrl : '/codeigniter3.1.11/proveedor'
-    })
-    .when("/sucr", {
-        templateUrl : '/codeigniter3.1.11/sucursal'
-    })
-    .when("/cmpr", {
-        templateUrl : '/codeigniter3.1.11/compras'
-    })
-    .when("/tpv", {
-        templateUrl : '/codeigniter3.1.11/tpv'
-    })
-    .when("/user", {
-        templateUrl : '/codeigniter3.1.11/usuarios'
-    });
-});
+var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+  acc[i].addEventListener("click", function() {
+    console.log(i);
+    this.classList.toggle("active");
+    var panel = this.nextElementSibling;
+    if (panel.style.display === "block") {
+      panel.style.display = "none";
+    } else {
+      panel.style.display = "block";
+    }
+  });
+}
+
+function openNav() {
+  document.getElementById("mySidepanel").style.width = "250px";
+}
+
+function closeNav() {
+  document.getElementById("mySidepanel").style.width = "0";
+}
 </script>
-<script src="<?php echo base_url(); ?>js/clientes.js"></script>
-<script src="<?php echo base_url(); ?>js/empresa.js"></script>
-<script src="<?php echo base_url(); ?>js/producto.js"></script>
-<script src="<?php echo base_url(); ?>js/proveedor.js"></script>
-<script src="<?php echo base_url(); ?>js/sucursal.js"></script>
-<script src="<?php echo base_url(); ?>js/compras.js"></script>
-<script src="<?php echo base_url(); ?>js/tpv.js"></script>
-<script src="<?php echo base_url(); ?>js/usuarios.js"></script>
-<script src="<?php echo base_url(); ?>js/logout.js"></script>
 </body>
 </html>

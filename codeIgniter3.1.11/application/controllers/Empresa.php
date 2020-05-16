@@ -65,7 +65,7 @@ class Empresa extends CI_Controller
 	function update($id)
 	{
 		$data = json_decode(file_get_contents("php://input"),true);
-		$result = $this->empresamodel->update_cliente($id,$data['nombre'],
+		$result = $this->empresamodel->update_empresa($id,$data['nombre'],
 		$data['domicilio'],
 		$data['rfc'],
 		$data['ejercicio_fiscal'],
@@ -84,9 +84,9 @@ class Empresa extends CI_Controller
 		}
 	}
 
-	function delete($id)
+	function delete($idempresa)
 	{
-		$result = $this->empresamodel->delete_empresa($id);
+		$result = $this->empresamodel->delete_empresa($idempresa);
 		if($result)
 		{
 			$res = 'OK';
@@ -98,6 +98,20 @@ class Empresa extends CI_Controller
 		return $this->output
 			->set_content_type('application/json')
 			->set_output(json_encode(array('value'=>$res)));
+	}
+
+	function getemppermbyusr($idusuario)
+	{
+		return $this->output
+			->set_content_type('application/json')
+			->set_output($this->empresamodel->get_emp_perm_by_id($idusuario));
+	}
+
+	function getfybyemp($idempresa)
+	{
+		return $this->output
+			->set_content_type('application/json')
+			->set_output($this->empresamodel->get_fy_by_emp($idempresa));
 	}
 }
 ?>
