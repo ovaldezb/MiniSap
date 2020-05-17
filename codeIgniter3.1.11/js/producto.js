@@ -37,7 +37,7 @@ app.controller('myCtrlProducto', function($scope,$http)
 
   $scope.init = function printProducto()
   {
-  	$http.get(pathProd+'load',{responseType: 'json'}).
+  	$http.get(pathProd+'load/'+$('#idempresa').val(),{responseType: 'json'}).
     then(function(res)
   	{
   		if(res.data.length > 0)

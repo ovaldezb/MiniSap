@@ -24,8 +24,9 @@ class Producto extends CI_Controller
 			$data['iepss'] = $this->catalogosmodel->get_ieps();
 			$data['umedidas'] = $this->catalogosmodel->get_unidad_medida();
 			/*Esta variable se debe recibir del lugar donde se invoque este servicio*/
-			$data['id_empresa'] = $_SESSION['idempresa'];
-			$data['id_empr_codigo'] = 'E0000001';
+			$idEmpresa = $_SESSION['idempresa'];
+			$data['id_empresa'] = $idEmpresa;
+			$data['id_empr_codigo'] = str_pad('E',7-mb_strlen($idEmpresa),'0').$idEmpresa;
 			$data['id_sucursal'] = $_SESSION['idsucursal'];
 			$this->load->view('producto',$data);
     }else {
@@ -34,9 +35,9 @@ class Producto extends CI_Controller
     }
 	}
 
-	function load()
+	function load($idempresa)
 	{
-		$data = $this->productomodel->get_productos();
+		$data = $this->productomodel->get_productos($idempresa);
 		return $this->output
             ->set_content_type('application/json')
             ->set_output($data);
@@ -84,19 +85,19 @@ class Producto extends CI_Controller
 		}
 	}
 
-	function loadbyid($id)
+	function loadbyid($idProducto)
 	{
-		$data = $this->productomodel->get_producto_by_id($id);
+		$data = $this->productomodel->get_producto_by_id($idProducto);
 		return $this->output
             ->set_content_type('application/json')
             ->set_output($data);
 	}
 
-	function update($id)
+	function update($idProducto)
 	{
 		$data = json_decode(file_get_contents("php://input"),true);
 		$result = $this->productomodel->update_producto(
-		$id,
+		$idProducto,
 		$data['codigo'],
 		$data['nombre'],
 		$data['linea'],
@@ -131,10 +132,10 @@ class Producto extends CI_Controller
 		}
 	}
 
-	function delete($id)
+	function delete($idProducto)
 	{
 		// base_url()
-		$result = $this->productomodel->delete_producto($id);
+		$result = $this->productomodel->delete_producto($idProducto);
 		if($result)
 		{
 			$res = 'OK';

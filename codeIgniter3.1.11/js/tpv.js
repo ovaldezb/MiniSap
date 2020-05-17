@@ -64,7 +64,8 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
   $scope.noproveedor = '';
   $scope.notas = '';
   $scope.modalVerfClte = false;
-
+  $scope.showLstClte = false;
+  $scope.btnVerifClte = 'Actualizar';
   $scope.init = function()
   {
       $('#regcompra').prop('disabled',true);
@@ -222,18 +223,20 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
         if(res.data.length > 0)
         {
           $scope.qtyProdSuc = res.data[0].STOCK;
-          $scope.tipo_ps = res.data[0].TIPO_PS;
-          if($scope.qtyProdSuc == 0 && $scope.tipo_ps == 'P')
-          {
-            $scope.agregaProd = false;
-          }
-          if($scope.tipo_ps =='S')
-          {
-            $scope.isVerifExis = false;
-          }else if($scope.tipo_ps =='P')
-          {
-            $scope.isVerifExis = true;
-          }
+          //$scope.tipo_ps = res.data[0].TIPO_PS;
+        }else {
+          $scope.qtyProdSuc = 0;
+        }
+        if($scope.qtyProdSuc == 0 && $scope.tipo_ps == 'P')
+        {
+          $scope.agregaProd = false;
+        }
+        if($scope.tipo_ps =='S')
+        {
+          $scope.isVerifExis = false;
+        }else if($scope.tipo_ps =='P')
+        {
+          $scope.isVerifExis = true;
         }
       }).catch(function(err)
       {
@@ -342,7 +345,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
       $scope.tipo_ps = $scope.lstProdCompra[$scope.indexRowCompra].TIPO_PS;
       if($scope.tipo_ps == 'P')
       {
-          $scope.isVerifExis = true;
+        $scope.isVerifExis = true;
       }else {
         $scope.isVerifExis = false;
       }
@@ -389,14 +392,16 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
     $scope.buscacliente = function(event)
     {
       var searchword;
-      $('#listaClientes').show();
       searchword = $scope.nombre_cliente != '' ? $scope.nombre_cliente : 'vacio';
       $http.get(pathClte+'loadbynombre/'+searchword).
       then(function(res)
       {
-        if(res.status == 200)
+        if(res.data.length > 0)
         {
           $scope.lstCliente = res.data;
+          $scope.showLstClte = true;
+        }else {
+          $scope.showLstClte = false;
         }
       }).catch(function(err)
       {
@@ -410,13 +415,13 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
       $scope.nombre_cliente = $scope.lstCliente[indxRowClte].NOMBRE;
       $scope.idcliente = $scope.lstCliente[indxRowClte].ID_CLIENTE;
       $scope.lstCliente = [];
-      $('#listaClientes').hide();
+      $scope.showLstClte = false;
     }
 
     $scope.closeClteSearch = function()
     {
       $scope.lstCliente = [];
-      $('#listaClientes').hide();
+      $scope.showLstClte = false;
     }
 
     $scope.buscavendedor = function(event)
@@ -585,82 +590,95 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
       }
     }
 
-    $scope.VerificarCliente = function()
-    {
-      if($scope.claveclte == '')
+  $scope.VerificarCliente = function()
+  {
+      if($scope.claveclte != '')
       {
-        alert('Seleccione un cliente');
-        return;
+        $http.get(pathClte+'loadbyidverfi/'+$scope.idcliente,{responseType:'json'}).
+        then(function(res)
+        {
+          if(res.data.length > 0)
+          {
+            $scope.clave = res.data[0].CLAVE;
+            $scope.nombre = res.data[0].NOMBRE;
+            $scope.domicilio = res.data[0].DOMICILIO;
+            $scope.telefono = res.data[0].TELEFONO;
+            $scope.cp = res.data[0].CP;
+            $scope.contacto = res.data[0].CONTACTO;
+            $scope.rfc = res.data[0].RFC;
+            $scope.curp = res.data[0].CURP;
+            $scope.tipo_cliente = res.data[0].TIPO_CLIENTE;
+            $scope.diascredito = res.data[0].DIAS_CREDITO;
+            $scope.revision = res.data[0].REVISION;
+            $scope.pagos = res.data[0].PAGOS;
+            $scope.forma_pago = res.data[0].FORMA_PAGO;
+            $scope.vendedor = res.data[0].VENDEDOR;
+            $scope.cfdi = res.data[0].CFDI;
+            $scope.email = res.data[0].EMAIL;
+            $scope.noproveedor = res.data[0].NUM_PROVEEDOR;
+            $scope.notas = res.data[0].NOTAS;
+            $scope.btnVerifClte = 'Actualizar';
+          }
+        }).
+        catch(function(err)
+        {
+          console.log(err);
+        });
+      }else{
+        $scope.btnVerifClte = 'Agregar';
       }
-      $http.get(pathClte+'loadbyidverfi/'+$scope.idcliente,{responseType:'json'}).
-      then(function(res)
-      {
-        if(res.data.length > 0)
-        {
-          $scope.clave = res.data[0].CLAVE;
-          $scope.nombre = res.data[0].NOMBRE;
-          $scope.domicilio = res.data[0].DOMICILIO;
-          $scope.telefono = res.data[0].TELEFONO;
-          $scope.cp = res.data[0].CP;
-          $scope.contacto = res.data[0].CONTACTO;
-          $scope.rfc = res.data[0].RFC;
-          $scope.curp = res.data[0].CURP;
-          $scope.tipo_cliente = res.data[0].TIPO_CLIENTE;
-          $scope.diascredito = res.data[0].DIAS_CREDITO;
-          $scope.revision = res.data[0].REVISION;
-          $scope.pagos = res.data[0].PAGOS;
-          $scope.forma_pago = res.data[0].FORMA_PAGO;
-          $scope.vendedor = res.data[0].VENDEDOR;
-          $scope.cfdi = res.data[0].CFDI;
-          $scope.email = res.data[0].EMAIL;
-          $scope.noproveedor = res.data[0].NUM_PROVEEDOR;
-          $scope.notas = res.data[0].NOTAS;
-          $scope.modalVerfClte = true;
-        }
-      }).
-      catch(function(err)
-      {
-        console.log(err);
-      });
+      $scope.modalVerfClte = true;
+  }
+
+  $scope.closeVerifClte = function()
+  {
+    $scope.clave = '';
+    $scope.nombre = '';
+    $scope.domicilio = '';
+    $scope.telefono = '';
+    $scope.cp = '';
+    $scope.contacto = '';
+    $scope.rfc = '';
+    $scope.curp = '';
+    $scope.tipo_cliente = '';
+    $scope.diascredito = '';
+    $scope.revision = '';
+    $scope.pagos = '';
+    $scope.forma_pago = '';
+    $scope.vendedor = '';
+    $scope.cfdi = '';
+    $scope.email = '';
+    $scope.noproveedor = '';
+    $scope.notas = '';
+    $scope.modalVerfClte = false;
+  }
+  
+  $scope.enviaDatosCliente = function()
+  {
+    if($scope.btnVerifClte == 'Actualizar')
+    {
+        
+     }else{
+
+      }
     }
 
-    $scope.closeVerifClte = function()
+  $scope.verificaExistencia = function()
+  {
+    $scope.modalVerifProdSuc = true;
+    $http.get(pathTpv+'getproductosforsucursal/'+$scope.id_producto,{responseType:'json'}).
+    then(function(res)
     {
-      $scope.clave = '';
-      $scope.nombre = '';
-      $scope.domicilio = '';
-      $scope.contacto = '';
-      $scope.rfc = '';
-      $scope.curp = '';
-      $scope.tipo_cliente = '';
-      $scope.diascredito = '';
-      $scope.revision = '';
-      $scope.pagos = '';
-      $scope.forma_pago = '';
-      $scope.vendedor = '';
-      $scope.cfdi = '';
-      $scope.email = '';
-      $scope.noproveedor = '';
-      $scope.notas = '';
-      $scope.modalVerfClte = false;
-    }
-
-    $scope.verificaExistencia = function()
+      if(res.data.length > 0)
+      {
+          $scope.lstPrdSucExis = res.data;
+      }
+    }).
+    catch(function(err)
     {
-      $scope.modalVerifProdSuc = true;
-      $http.get(pathTpv+'getproductosforsucursal/'+$scope.id_producto,{responseType:'json'}).
-      then(function(res)
-      {
-        if(res.data.length > 0)
-        {
-            $scope.lstPrdSucExis = res.data;
-        }
-      }).
-      catch(function(err)
-      {
-        console.log(err);
-      });
-    }
+      console.log(err);
+    });
+  }
 
     /*$scope.orderByMe = function(valorOrden)
     {

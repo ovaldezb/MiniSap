@@ -35,7 +35,8 @@ class Tpvmodel extends CI_model
 							ON P."ID_PRODUCTO" = S."ID_PRODUCTO"
 							WHERE UPPER("DESCRIPCION") LIKE  UPPER($1)'
 							. $condition .
-							'GROUP BY P."ID_PRODUCTO",
+							'AND P."ACTIVO" = true
+							GROUP BY P."ID_PRODUCTO",
 											"DESCRIPCION","CODIGO","PRECIO_LISTA",
 											"PRECIO_COMPRA", "IVA",
 											"UNIDAD_MEDIDAD","IMAGEN",
@@ -63,7 +64,8 @@ class Tpvmodel extends CI_model
 							FROM "PRODUCTO" as P INNER JOIN  "PRODUCTO_SUCURSAL" as S
 							ON P."ID_PRODUCTO" = S."ID_PRODUCTO" '
 							.$condition.
-							'GROUP BY P."ID_PRODUCTO","DESCRIPCION","CODIGO",
+							'AND P."ACTIVO" = true
+							GROUP BY P."ID_PRODUCTO","DESCRIPCION","CODIGO",
 											"PRECIO_LISTA","PRECIO_COMPRA", "IVA",
 											"UNIDAD_MEDIDAD","IMAGEN",
 											"ES_PROMO",
@@ -98,7 +100,7 @@ class Tpvmodel extends CI_model
 		$query = 'SELECT P."TIPO_PS", "STOCK"
 		FROM "PRODUCTO" as P INNER JOIN "PRODUCTO_SUCURSAL" As PS
 		ON P."ID_PRODUCTO" = PS."ID_PRODUCTO"
-		WHERE "ID_PRODUCTO" = $1 AND "ID_SUCURSAL" = $2';
+		WHERE P."ID_PRODUCTO" = $1 AND "ID_SUCURSAL" = $2 AND P."ACTIVO" = true';
 		pg_prepare($this->conn,"select_stock",$query);
 		$result = pg_fetch_all(pg_execute($this->conn, "select_stock", array($idProducto,$idSucursal)));
 		return json_encode($result,JSON_NUMERIC_CHECK);

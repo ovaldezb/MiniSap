@@ -11,14 +11,18 @@ class Productomodel extends CI_model
 		$this->conn = $this->postgresdb->getConn();
 	}
 
-	function get_productos()
+	function get_productos($idempresa)
 	{
-		$query = 'SELECT P."ID_PRODUCTO", P."DESCRIPCION", TRIM(P."CODIGO") AS "CODIGO" ,P."PRECIO_LISTA",SUM(S."STOCK") as "STOCK"
+		$query = 'SELECT P."ID_PRODUCTO", P."DESCRIPCION",
+							TRIM(P."CODIGO") AS "CODIGO",
+							P."PRECIO_LISTA", SUM(S."STOCK") as "STOCK"
 							FROM "PRODUCTO" as P
 							INNER JOIN "PRODUCTO_SUCURSAL" as S
 							ON P."ID_PRODUCTO" = S."ID_PRODUCTO"
-							GROUP BY P."DESCRIPCION",P."ID_PRODUCTO", P."CODIGO",P."PRECIO_LISTA"';
-		$result = pg_fetch_all(pg_query($this->conn, $query));
+							WHERE P."ID_EMPRESA" = $1 AND P."ACTIVO" = true
+							GROUP BY P."DESCRIPCION",P."ID_PRODUCTO", P."CODIGO",P."PRECIO_LISTA"							';
+		pg_prepare($this->conn, "selproducto",$query);
+		$result = pg_fetch_all(pg_execute($this->conn, "selproducto",array($idempresa)));
 		return json_encode($result,JSON_NUMERIC_CHECK);
 	}
 
@@ -80,7 +84,7 @@ class Productomodel extends CI_model
 
 	function delete_producto($_id)
 	{
-		$query = 'DELETE FROM "PRODUCTO" WHERE "ID_PRODUCTO" = $1';
+		$query = 'UPDATE "PRODUCTO" SET "ACTIVO" = false WHERE "ID_PRODUCTO" = $1';
 		pg_prepare($this->conn,"deletequery",$query);
 		$result = pg_execute($this->conn,"deletequery",array($_id));
 		return $result;

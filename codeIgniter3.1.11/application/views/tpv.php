@@ -56,7 +56,7 @@
 					</div>
 					<div class="column is-2">
 					</div>
-					<div class="column is-8" style="display:none" id="listaClientes">
+					<div class="column is-8" ng-show="showLstClte" >
 						<table border="1" style="width:100%;">
 							<tr>
 								<td align="center">
@@ -577,68 +577,69 @@
 					<col width="35%">
 					<tr>
 						<td><label class="label">{{clave}}</label></td>
-						<td colspan="3"><label class="label">{{nombre}}</label></td>
+						<td colspan="3"><input type="text" class="input is-small" ng-model="nombre"></td>
 					</tr>
 					<tr>
 						<td>Domicilio:</td>
-						<td colspan="3">{{domicilio}}</td>
+						<td colspan="3"><input type="text" class="input is-small" ng-model="domicilio"></td>
 					</tr>
 					<tr>
 						<td>Telefono:</td>
-						<td>{{telefono}}</td>
+						<td><input type="text" class="input is-small" ng-model="telefono"></td>
 						<td>CP:</td>
-						<td>{{cp}}</td>
+						<td><input type="text" class="input is-small" ng-model="cp"></td>
 					</tr>
 					<tr>
 						<td>Contacto:</td>
-						<td colspan="3">{{contacto}}</td>
+						<td colspan="3"><input type="text" class="input is-small" ng-model="contacto"></td>
 					</tr>
 					<tr>
 						<td>RFC:</td>
-						<td>{{rfc}}</td>
+						<td><input type="text" class="input is-small" ng-model="rfc"></td>
 						<td>CURP:</td>
-						<td>{{curp}}</td>
+						<td><input type="text" class="input is-small" ng-model="curp"></td>
 					</tr>
 					<tr>
 						<td>Cliente:</td>
-						<td>{{tipo_cliente}}</td>
+						<td><input type="text" class="input is-small" ng-model="tipo_cliente"></td>
 						<td>Crédito:</td>
-						<td>{{diascredito}}</td>
+						<td><input type="text" class="input is-small" ng-model="diascredito"></td>
 					</tr>
 					<tr>
 						<td>Revisión:</td>
-						<td>{{revision}}</td>
+						<td><input type="text" class="input is-small" ng-model="revision"></td>
 						<td>Pagos:</td>
-						<td>{{pagos}}</td>
+						<td><input type="text" class="input is-small" ng-model="pagos"></td>
 					</tr>
 					<tr>
 						<td>Forma Pago:</td>
-						<td colspan="3">{{forma_pago}}</td>
+						<td colspan="3"><input type="text" class="input is-small" ng-model="forma_pago"></td>
 					</tr>
 					<tr>
 						<td>Vendedor:</td>
-						<td colspan="3">{{vendedor}}</td>
+						<td colspan="3"><input type="text" class="input is-small" ng-model="vendedor"></td>
 					</tr>
 					<tr>
 						<td>Uso CFDI:</td>
-						<td colspan="3">{{cfdi}}</td>
+						<td colspan="3"><input type="text" class="input is-small" ng-model="cfdi"></td>
 					</tr>
 					<tr>
 						<td>Email:</td>
-						<td colspan="3">{{email}}</td>
+						<td colspan="3"><input type="text" class="input is-small" ng-model="email"></td>
 					</tr>
 					<tr>
 						<td>No Proveedor:</td>
-						<td colspan="3">{{noproveedor}}</td>
+						<td colspan="3"><input type="text" class="input is-small" ng-model="noproveedor"></td>
 					</tr>
 					<tr>
 						<td>Observaciones:</td>
-						<td colspan="3">{{notas}}</td>
+						<td colspan="3"><input type="text" class="input is-small" ng-model="notas"></td>
 					</tr>
 				</table>
 	    </section>
-	    <footer class="modal-card-foot">
-	      <button class="button" ng-click="closeVerifClte();">Cerrar</button>
+	    <footer class="modal-card-foot">			
+	      <button class="button" ng-click="enviaDatosCliente();">{{btnVerifClte}}</button>
+		  <button class="button" ng-click="closeVerifClte()">Cerrar</button>
 	    </footer>
 	  </div>
 	</div>
