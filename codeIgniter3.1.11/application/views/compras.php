@@ -1,7 +1,5 @@
 <br><br>
-<input type="hidden" id="idempresa" value="<?php echo $idpempresa?>">
-<input type="hidden" id="aniofiscal" value="<?php echo $aniofiscal?>">
-<input type="hidden"  id="idsucursal" value="<?php echo $id_sucursal?>">
+
 <input type="hidden" id="updtTable" value="F">
 <div class="container" ng-controller="myCtrlCompras" data-ng-init="init()">
 	<div class="notification">
@@ -10,52 +8,30 @@
 	<div class="box" id="barranavegacion">
 		<nav class="level">
 			<div class="level-left">
-				<p class="level-item"><span class="icon has-text-success"><i class="far fa-file" onclick="agregarcompra();" title="Nueva Compra"></i></span></p>
+				<p class="level-item"><a ng-click="agregarcompra();"><span class="icon has-text-success"><i class="far fa-file" title="Nueva Compra"></i></span></a></p>
 				<p class="level-item"><a ng-click="preguntaelimcomp()"><span class="icon has-text-danger"><i class="far fa-trash-alt" title="Elimina Compra"></i></span></a></p>
 				<p class="level-item"><a ng-click="despliegaCompra()"><span class="icon has-text-info"><i class="fas fa-folder-open" title="Visualiza Compra"></i></span></a></p>
 				<p class="level-item"><span class="icon has-text-info"><i class="fas fa-print" title="Imprime Compras"></i></span></p>
 			</div>
 		</nav>
 	</div>
-	<div id="divdisplay" class="box" style="display:none">
+	<div class="box" style="display:{{isAgrgaCompra ? 'block' : 'none'}}">
 	<form name="myForm">
 	<div class="columns">
-		<div class="column is-one-quarter">
-			<div class="box">
-				<div class="columns">
-					<div class="column is-narrow">
-						<a id="anchor1"><label class="label">Proveedor:<label></a>
-					</div>
-					<div class="column">
-						<input type="text" class="input is-small" ng-model="docprev">
-					</div>
-					<div class="column">
-						<input type="text" class="input is-small" ng-model="claveprov" ng-keyup="buscaprovbyclave($event)">
-					</div>
-				</div>
-				<div class="columns">
-					<div class="column is-narrow">
-						<label class="label">N&uacute;mero:&nbsp;&nbsp;<label>
-					</div>
-					<div class="column">
-						<input type="text" class="input is-small" ng-model="numdoc" required>
-					</div>
-				</div>
-				<div class="columns">
-					<div class="column is-narrow">
-						<label class="label">Fecha:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>
-					</div>
-					<div class="column" style="width:50px">
-						<input type="text" class="input is-small" id="fechacompra" value="" disabled>
-					</div>
-				</div>
-			</div>
-		</div>
 		<div class="column">
 			<div class="box">
 				<div class="columns">
-					<div class="column is-full">
-						<input type="text" class="input is-small"  ng-model="proveedor" ng-keyup="buscaprovbynombre($event)">
+					<div class="column is-narrow" style="width:100px">
+						<label class="label">Proveedor:<label>
+					</div>
+					<div class="column is-1">
+						<input type="text" class="input is-small" ng-model="docprev">
+					</div>
+					<div class="column is-2">
+						<input type="text" class="input is-small" ng-model="claveprov" ng-keyup="buscaprovbyclave($event)" placeholder="Clave del proveedor">
+					</div>
+					<div class="column is-6">
+						<input type="text" class="input is-small"  ng-model="proveedor" ng-keyup="buscaprovbynombre($event)" placeholder="Nombre del proveedor">
 					</div>
 				</div>
 				<div class="table-container" style="display:none" id="buscaprov">
@@ -100,6 +76,12 @@
 					</table>
 				</div>
 				<div class="columns">
+					<div class="column is-narrow" style="width:100px">
+						<label class="label">Documento:<label>
+					</div>
+					<div class="column is-1">
+						<input type="text" class="input is-small" ng-model="numdoc" required>
+					</div>
 					<div class="column is-narrow">
 						<div class="control">
 							<div class="select is-small">
@@ -131,6 +113,12 @@
 					</div>
 				</div>
 				<div class="columns">
+					<div class="column is-narrow" style="width:100px">
+						<label class="label">Fecha:<label>
+					</div>
+					<div class="column is-2" style="width:110px">
+						<input type="text" class="input is-small" id="fechacompra" value="" disabled>
+					</div>
 					<div class="column is-narrow">
 						<div class="control">
 							<div class="select is-small">
@@ -356,7 +344,6 @@
 						</td>
 					</tr>
 				</table>
-
 		</div>
 	</div>
 	</div>
@@ -411,7 +398,7 @@
 		</div>
 	</form>
 	</div>
-	<div id="listacompras" class="box">
+	<div class="box" style="display:{{isAgrgaCompra ? 'none':'block'}}">
 		<table style="width:100%" border="1">
 			<tr>
 				<td>

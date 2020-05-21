@@ -1,8 +1,5 @@
 <br>
 <input type="hidden" id="updtTblComp" value="F">
-<input type="hidden" id="aniofiscal" value="<?php echo $aniofiscal?>">
-<input type="hidden" id="idempresa" value="<?php echo $idpempresa?>">
-<input type="hidden"  id="idsucursal" value="<?php echo $id_sucursal?>">
 <div class="container">
   <div class="notification" align="center">
     <h1 class="title is-1">Terminal Punto de Venta</h1>
@@ -577,67 +574,107 @@
 					<col width="35%">
 					<tr>
 						<td><label class="label">{{clave}}</label></td>
-						<td colspan="3"><input type="text" class="input is-small" ng-model="nombre"></td>
+						<td colspan="3"><input type="text" class="input is-small" ng-model="nombre" placeholder="NOMBRE"></td>
 					</tr>
 					<tr>
 						<td>Domicilio:</td>
-						<td colspan="3"><input type="text" class="input is-small" ng-model="domicilio"></td>
+						<td colspan="3"><input type="text" class="input is-small" ng-model="domicilio" placeholder="DOMICILIO"></td>
 					</tr>
 					<tr>
 						<td>Telefono:</td>
-						<td><input type="text" class="input is-small" ng-model="telefono"></td>
+						<td><input type="text" class="input is-small" ng-model="telefono" placeholder="TELEFONO"></td>
 						<td>CP:</td>
-						<td><input type="text" class="input is-small" ng-model="cp"></td>
+						<td><input type="text" class="input is-small" ng-model="cp" placeholder="CP"></td>
 					</tr>
 					<tr>
 						<td>Contacto:</td>
-						<td colspan="3"><input type="text" class="input is-small" ng-model="contacto"></td>
+						<td colspan="3"><input type="text" class="input is-small" ng-model="contacto" placeholder="CONTACTO"></td>
 					</tr>
 					<tr>
 						<td>RFC:</td>
-						<td><input type="text" class="input is-small" ng-model="rfc"></td>
+						<td><input type="text" class="input is-small" ng-model="rfc" placeholder="RFC"></td>
 						<td>CURP:</td>
-						<td><input type="text" class="input is-small" ng-model="curp"></td>
+						<td><input type="text" class="input is-small" ng-model="curp" placeholder="CURP"></td>
 					</tr>
 					<tr>
 						<td>Cliente:</td>
-						<td><input type="text" class="input is-small" ng-model="tipo_cliente"></td>
+						<td>
+              <select name="id_tipo_cliente" id="id_tipo_cliente">
+      <?php	foreach ($tipo_cliente as $tc) { ?>
+      					<option value=<?php echo $tc['ID_TIPO_CLTE'] ?>><?php echo $tc['DESCRIPCION']?></option>
+      <?php	} ?>
+      				</select>
+            </td>
 						<td>Crédito:</td>
-						<td><input type="text" class="input is-small" ng-model="diascredito"></td>
+						<td><input type="text" class="input is-small" ng-model="diascredito" placeholder="DIAS DE CREDITO"></td>
 					</tr>
 					<tr>
 						<td>Revisión:</td>
-						<td><input type="text" class="input is-small" ng-model="revision"></td>
+						<td>
+              <select name="revision" id="revision">
+      <?php 		foreach($revision as $rev) {?>
+      					<option value='<?php echo $rev['ID_DIA']?>'><?php echo trim($rev['NOMBRE'])?></option>
+      <?php 		}?>
+      				</select>
+            </td>
 						<td>Pagos:</td>
-						<td><input type="text" class="input is-small" ng-model="pagos"></td>
+						<td>
+              <select id="pagos">
+      <?php 		foreach($revision as $rev) {?>
+      					<option value='<?php echo $rev['ID_DIA']?>'><?php echo trim($rev['NOMBRE'])?></option>
+      <?php 		}?>
+      				</select>
+            </td>
 					</tr>
 					<tr>
 						<td>Forma Pago:</td>
-						<td colspan="3"><input type="text" class="input is-small" ng-model="forma_pago"></td>
+						<td colspan="3">
+              <select name="id_forma_pago" id="id_forma_pago">
+      <?php foreach($forma_pago as $fp) {?>
+      					<option value='<?php echo $fp['ID_FORMA_PAG']?>'><?php echo trim($fp['CLAVE'])?> <?php echo trim($fp['DESCRIPCION'])?></option>
+      <?php }?>
+      				</select>
+            </td>
 					</tr>
 					<tr>
 						<td>Vendedor:</td>
-						<td colspan="3"><input type="text" class="input is-small" ng-model="vendedor"></td>
+						<td colspan="3">
+              <select name="id_vendedor" id="id_vendedor">
+      <?php	foreach($vendedor as $vend) {?>
+      					<option value='<?php echo $vend['ID_VENDEDOR']?>'><?php echo trim($vend['NOMBRE'])?></option>
+      <?php	}?>
+      				</select>
+            </td>
 					</tr>
 					<tr>
 						<td>Uso CFDI:</td>
-						<td colspan="3"><input type="text" class="input is-small" ng-model="cfdi"></td>
+						<td colspan="3">
+              <select name="id_uso_cfdi" id="id_uso_cfdi">
+      <?php 		foreach($uso_cfdi as $ucfdi) {?>
+      					<option value='<?php echo $ucfdi['ID_CFDI']?>'><?php echo trim($ucfdi['CLAVE'])?> <?php echo trim($ucfdi['DESCRIPCION'])?></option>
+      <?php 		}?>
+      				</select>
+            </td>
 					</tr>
 					<tr>
 						<td>Email:</td>
-						<td colspan="3"><input type="text" class="input is-small" ng-model="email"></td>
+						<td colspan="2"><input type="text" class="input is-small" ng-model="email" placeholder="EMAIL"></td>
+            <td></td>
 					</tr>
 					<tr>
 						<td>No Proveedor:</td>
-						<td colspan="3"><input type="text" class="input is-small" ng-model="noproveedor"></td>
+						<td><input type="text" class="input is-small" ng-model="noproveedor" placeholder="PROVEEDOR"></td>
+            <td colspan="2"></td>
 					</tr>
 					<tr>
 						<td>Observaciones:</td>
-						<td colspan="3"><input type="text" class="input is-small" ng-model="notas"></td>
+						<td colspan="3">
+              <textarea ng-model="notas" id="tacliente"></textarea>
+            </td>
 					</tr>
 				</table>
 	    </section>
-	    <footer class="modal-card-foot">			
+	    <footer class="modal-card-foot">
 	      <button class="button" ng-click="enviaDatosCliente();">{{btnVerifClte}}</button>
 		  <button class="button" ng-click="closeVerifClte()">Cerrar</button>
 	    </footer>

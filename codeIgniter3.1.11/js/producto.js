@@ -34,10 +34,28 @@ app.controller('myCtrlProducto', function($scope,$http)
   $scope.espromo = false;
   $scope.estasaexenta = false;
   $scope.tipops_msg = 'PRODUCTO';
+  $scope.idempresa = '';
+  $scope.idemprcodigo = '';
+  $scope.idsucursal = '';
+  $scope.img_name = '';
 
   $scope.init = function printProducto()
   {
-  	$http.get(pathProd+'load/'+$('#idempresa').val(),{responseType: 'json'}).
+    $http.get(pathAcc+'getdata',{responseType:'json'}).
+    then(function(res){
+      if(res.data.value=='OK'){
+        $scope.idempresa = res.data.idempresa;
+        $scope.idemprcodigo = res.data.id_empr_codigo;
+        $scope.idsucursal = res.data.idsucursal;
+        $scope.getDataInit();
+      }
+    }).catch(function(err){
+      console.log(err);
+    });
+  }
+
+  $scope.getDataInit = function(){
+    $http.get(pathProd+'load/'+$scope.idempresa,{responseType: 'json'}).
     then(function(res)
   	{
   		if(res.data.length > 0)
@@ -119,7 +137,7 @@ app.controller('myCtrlProducto', function($scope,$http)
         $scope.ieps = res.data[0].IEPS;
         if(res.data[0].IMAGEN!=null && res.data[0].IMAGEN!=''){
         	document.getElementById('imgsrc').src = res.data[0].IMAGEN;
-        	document.getElementById('img_name').value = res.data[0].IMAGEN;
+        	$scope.img_name = res.data[0].IMAGEN;
         	showImg('True');
         }else
         {
@@ -162,9 +180,9 @@ app.controller('myCtrlProducto', function($scope,$http)
   		minstock:$scope.minstock,
   		estasaexenta:String($scope.estasaexenta),
   		notas:$scope.notas,
-  		img:$('#img_name').val(),
-      idempresa:$('#idempresa').val(),
-      idscursal:$('#idsucursal').val(),
+  		img:$scope.img_name,
+      idempresa:$scope.idempresa,
+      idscursal:$scope.idsucursal,
       tipops:$('input[name="tipo"]:checked').val()
     };
 
@@ -256,7 +274,7 @@ app.controller('myCtrlProducto', function($scope,$http)
   		return;
   	}else
   	{
-  		var winchild = popupwindow(pathUpld+$scope.codigo+'/'+$('#idemprcodigo').val(),'Cargar Imagen',500,200);
+  		var winchild = popupwindow(pathUpld+$scope.codigo+'/'+$scope.idemprcodigo,'Cargar Imagen',500,200);
   	}
   }
 
@@ -373,7 +391,7 @@ app.controller('myCtrlProducto', function($scope,$http)
   	$scope.unidaddesc = '';
     $scope.unidad_sat = '';
   	document.getElementById('imgsrc').src = '';
-  	document.getElementById('img_name').value = '';
+  	$scope.img_name = '';
   }
 
   $scope.openDivAgregar = function()
@@ -414,15 +432,14 @@ app.controller('myCtrlProducto', function($scope,$http)
 
 function setValue(valor)
 {
-	var id_empresa_codigo = document.getElementById('idemprcodigo');
-	document.getElementById('imgsrc').src='./uploads/'+id_empresa_codigo.value+'/'+ valor;
-	document.getElementById('img_name').value = './uploads/'+id_empresa_codigo.value+'/'+valor;
+	document.getElementById('imgsrc').src='../uploads/'+$scope.idemprcodigo+'/'+ valor;
+	$scope.img_name = '../uploads/'+$scope.idemprcodigo+'/'+valor;
 }
 
 function showImg(flag)
 {
 	var x = document.getElementById("imgsrc");
-	var y = document.getElementById('img_name');
+	//var y = document.getElementById('img_name');
 	if(flag=='True')
 	{
 		x.style.display = "block";
@@ -430,7 +447,7 @@ function showImg(flag)
 	{
 		x.src = '';
 		x.style.display = "none";
-		y.value = '';
+		$scope.img_name = '';
 	}
 }
 

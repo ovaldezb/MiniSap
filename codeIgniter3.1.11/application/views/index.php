@@ -1,6 +1,10 @@
 <html>
 <head>
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <meta http-equiv="Expires" content="0">
+  <meta http-equiv="Last-Modified" content="0">
+  <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <!--script src="https://unpkg.com/axios/dist/axios.min.js"></script-->
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
@@ -111,9 +115,11 @@
             <span><?php echo $nombre?></span>
           </p>
           <p class="control">
-            <span class="icon">
-              <i class="far fa-building"></i>
-            </span>
+            <a ng-click="selectEmpresa()">
+              <span class="icon">
+                <i class="far fa-building"></i>
+              </span>
+            </a>
             <span>{{nombreEmpresa}}</span>
           </p>
           <p class="control">

@@ -15,9 +15,22 @@ app.controller('myCtrlSucursal', function($scope,$http)
   $scope.idSelSuc = '';
   $scope.idxRowSuc = '';
   $scope.idSucursal = '';
+  $scope.idempresa = '';
 
   $scope.init = function() {
-    $http.get(pathSucr+'load',{responseType:'json'}).
+    $http.get(pathAcc+'getdata',{responseType:'json'}).
+    then(function(res){
+      if(res.data.value=='OK'){
+        $scope.idempresa = res.data.idempresa;
+        $scope.getDataInit();
+      }
+    }).catch(function(err){
+      console.log(err);
+    });
+  }
+
+  $scope.getDataInit = function(){
+    $http.get(pathSucr+'load/'+$scope.idempresa,{responseType:'json'}).
     then(function(res)
     {
       if(res.data.length>0)
@@ -49,7 +62,7 @@ app.controller('myCtrlSucursal', function($scope,$http)
       cp:$scope.cp,
       alias:$scope.alias,
       notas:$scope.notas,
-      idempresa:$('#idempresa').val()
+      idempresa:$scope.idempresa
     };
 
     if($scope.btnAccion == 'Agregar')

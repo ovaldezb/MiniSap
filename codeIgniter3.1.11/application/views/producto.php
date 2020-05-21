@@ -1,11 +1,12 @@
+<meta http-equiv="Expires" content="0">
+<meta http-equiv="Last-Modified" content="0">
+<meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
+<meta http-equiv="Pragma" content="no-cache">
 <?php
 	defined('BASEPATH') OR exit('No direct script access allowed');
 	$size1 = 100;
 ?>
 <br><br>
-<input type="hidden"  id="idempresa" value="<?php echo $id_empresa ?>">
-<input type="hidden"  id="idemprcodigo" value="<?php echo $id_empr_codigo ?>">
-<input type="hidden"  id="idsucursal" value="<?php echo $id_sucursal ?>">
 <div class="container" ng-controller="myCtrlProducto" data-ng-init="init()">
 	<div class="notification" >
 		<h1 class="title is-2 has-text-centered">Administración de Productos y Servicios</h1>
@@ -108,7 +109,6 @@
 			<div class="column has-text-centered">
 			<figure class="media-left">
 				<p class="image is-128x128">
-				<input type="hidden" id="img_name" value="">
 				<img style="display: none;" id="imgsrc" src="">
 				</p>
 		  </figure>

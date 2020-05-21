@@ -13,16 +13,17 @@ class Sucursalmodel extends CI_model
 
 	function get_sucursales_raw()
   {
-    $query='SELECT * FROM "SUCURSALES" ORDER BY "ID_SUCURSAL"';
+    $query='SELECT * FROM "SUCURSALES" WHERE "ACTIVO" = true ORDER BY "ID_SUCURSAL"';
     $result = pg_fetch_all(pg_query($this->conn, $query));
 		return $result;
   }
 
-  function get_sucursales()
+  function get_sucursales_by_empresa($idEmpresa)
   {
-    $query='SELECT * FROM "SUCURSALES" ORDER BY "ID_SUCURSAL"';
-    $result = pg_fetch_all(pg_query($this->conn, $query));
-		return json_encode($result);
+    $query='SELECT * FROM "SUCURSALES" WHERE "ID_EMPRESA" = $1 ORDER BY "ID_SUCURSAL"';
+    pg_prepare($this->conn,"getsucbyid",$query);
+    $result = pg_fetch_all(pg_execute($this->conn,"getsucbyid",array($idEmpresa)));
+    return json_encode($result);
   }
 
   function create_sucursal($clave,$direccion,$responsable,$telefono,$cp,$alias,$notas,$idempresa)
@@ -33,11 +34,11 @@ class Sucursalmodel extends CI_model
 		return json_encode($result);
   }
 
-  function get_sucursal_by_id($_id)
+  function get_sucursal_by_id($idSucursal)
   {
     $query = 'SELECT * FROM "SUCURSALES" WHERE "ID_SUCURSAL" = $1';
     pg_prepare($this->conn,"getbyid",$query);
-    $result = pg_fetch_all(pg_execute($this->conn,"getbyid",array($_id)));
+    $result = pg_fetch_all(pg_execute($this->conn,"getbyid",array($idSucursal)));
     return json_encode($result);
   }
 
@@ -59,7 +60,7 @@ class Sucursalmodel extends CI_model
 
   function delete_sucursal($_id)
   {
-    $query = 'DELETE FROM "SUCURSALES" WHERE "ID_SUCURSAL" = $1';
+    $query = 'UPDATE "SUCURSALES" SET "ACTIVO" = true WHERE "ID_SUCURSAL" = $1';
     pg_prepare($this->conn,"delete_suc",$query);
     $result = pg_execute($this->conn,"delete_suc",array($_id));
     return $result;

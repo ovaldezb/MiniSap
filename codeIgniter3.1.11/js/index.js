@@ -45,7 +45,7 @@ app.config(function($routeProvider) {
     });
 });
 
-app.controller('myCtrlIndex', function($scope,$http)
+app.controller('myCtrlIndex', function($scope,$http,$location,$window)
 {
   $scope.idusuario = $('#idusuario').val();
   $scope.lstEmprPerm = [];
@@ -97,18 +97,26 @@ app.controller('myCtrlIndex', function($scope,$http)
   }
 
   $scope.guardarEmpPerm = function()
-  {    
+  {
     $http.put(pathAcc+'setempfy/'+$scope.idSelEmp+'/'+$scope.idSelFYEmp).
     then(function(res)
     {
       $scope.nombreEmpresa = $scope.lstEmprPerm[$scope.indxdSelEmp].NOMBRE;
       $scope.anioFiscal = $scope.lstFYEmpr[$scope.indxdFyEmp].EJER_FISC;
+      $scope.indx = $location.absUrl().indexOf('#');
+      $scope.myUrl = $location.absUrl().substring(0, $scope.indx+3);
+      $window.location.href = $scope.myUrl;      
     }).
     catch(function(err)
     {
       console.log(err);
     });
     $scope.isEmpPermActiv = false;
+  }
+
+  $scope.selectEmpresa = function()
+  {
+    $scope.isEmpPermActiv = true;
   }
 
   $scope.selectEmpPerm = function(idEmp,indx)

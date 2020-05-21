@@ -185,12 +185,12 @@
 		<table style="width:100%">
 			<tr>
 				<td>
-					<table style="width:100%">
-						<col width="30%">
+					<table style="width:100%" border="1">
+						<col width="10%">
+						<col width="50%">
 						<col width="40%">
-						<col width="30%">
 						<tr style="background-color:CornflowerBlue; color:Ivory;">
-							<td ng-click="orderByMe('CLAVE')" align="right">CLAVE</td>
+							<td ng-click="orderByMe('CLAVE')" align="left">CLAVE</td>
 							<td ng-click="orderByMe('NOMBRE')" align="center">NOMBRE</td>
 							<td ng-click="orderByMe('RFC')" align="center">RFC</td>
 						</tr>

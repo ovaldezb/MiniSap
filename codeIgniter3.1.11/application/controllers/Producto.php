@@ -23,11 +23,6 @@ class Producto extends CI_Controller
 			$data['monedas'] = $this->catalogosmodel->get_monedas();
 			$data['iepss'] = $this->catalogosmodel->get_ieps();
 			$data['umedidas'] = $this->catalogosmodel->get_unidad_medida();
-			/*Esta variable se debe recibir del lugar donde se invoque este servicio*/
-			$idEmpresa = $_SESSION['idempresa'];
-			$data['id_empresa'] = $idEmpresa;
-			$data['id_empr_codigo'] = str_pad('E',7-mb_strlen($idEmpresa),'0').$idEmpresa;
-			$data['id_sucursal'] = $_SESSION['idsucursal'];
 			$this->load->view('producto',$data);
     }else {
       $error['error'] = '';

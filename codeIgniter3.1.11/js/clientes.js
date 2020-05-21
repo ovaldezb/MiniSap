@@ -120,17 +120,14 @@ app.controller('myCtrlClientes', function($scope,$http)
       dcredito:$scope.dcredito,
       idempresa:$('#idempresa').val()
     };
-    console.log(dataClte);
+
     if($scope.msjBoton =='Agregar')
     {
       var nextId, idCliente, respuesta;
       $http.post(pathClte+'save', dataClte).
       then(function(res)
       {
-        //console.log(res);
-        //$('#message').html(res.data);
-        if(res.data.length > 0) {
-          //rsplit = res.data[0].crea_cliente.replace("(","").replace(")","").split(",");
+        if(res.data.length > 0) {          
           var row = {
             CLAVE:$scope.clave,
             NOMBRE:$scope.nombre,
@@ -196,7 +193,6 @@ app.controller('myCtrlClientes', function($scope,$http)
     $http.get(pathClte+'loadbyid/'+$scope.idCliente, {responseType: 'json'}).
     then(function(res)
     {
-      console.log();
       if(res.status == 200)
       {
         $scope.clave = res.data[0].CLAVE.trim();

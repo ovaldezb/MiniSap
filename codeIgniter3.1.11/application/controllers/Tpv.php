@@ -19,10 +19,12 @@ class Tpv extends CI_Controller
 			$data['bancos'] = $this->catalogosmodel->get_bancos();
 			$data['tarjetas'] = $this->catalogosmodel->get_tarjetas();
 			$data['vales'] = $this->catalogosmodel->get_vales();
-			/*Estos valores se deben recibir de quien mande llamar este servicios*/
-			$data['idpempresa'] = $_SESSION['idempresa'];
-			$data['aniofiscal'] = $_SESSION['aniofiscal'];
-			$data['id_sucursal'] = $_SESSION['idsucursal'];;
+			/*Datos para los vendedores */
+			$data['tipo_cliente'] = $this->catalogosmodel->get_tipo_cliente();
+			$data['revision'] = $this->catalogosmodel->get_dias_semana();
+			$data['forma_pago'] = $this->catalogosmodel->get_forma_pago();
+			$data['vendedor'] = $this->catalogosmodel->get_vendedor();
+			$data['uso_cfdi'] = $this->catalogosmodel->get_uso_cfdi();
 			$this->load->view('tpv',$data);
 		}else {
 			$error['error'] = '';
@@ -30,14 +32,14 @@ class Tpv extends CI_Controller
     }
 	}
 
-	function getitems($desc,$tipo_req)
+	function getitems($idEmpresa,$desc,$tipo_req)
 	{
 		if($desc != 'vacio'){
 			$nvodesc = str_replace("%20"," ",$desc);
-			$data = $this->tpvmodel->get_items('%'.$nvodesc.'%',$tipo_req);
+			$data = $this->tpvmodel->get_items($idEmpresa,'%'.$nvodesc.'%',$tipo_req);
 		}else
 		{
-			$data = $this->tpvmodel->get_items_vacio($tipo_req);
+			$data = $this->tpvmodel->get_items_vacio($idEmpresa,$tipo_req);
 		}
 		return $this->output
             ->set_content_type('application/json')

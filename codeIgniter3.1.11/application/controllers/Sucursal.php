@@ -14,18 +14,16 @@ class Sucursal extends CI_Controller
   {
 		if(isset($_SESSION['username']))
     {
-			/*Esta variable se debe recibir del lugar donde se invoque este servicio*/
-			$data['id_empresa'] = $_SESSION['idempresa'];
-			$this->load->view('sucursal',$data);
+			$this->load->view('sucursal');
 		}else {
 			$error['error'] = '';
       $this->load->view('login',$error);
     }
   }
 
-  function load()
+  function load($idEmpresa)
   {
-    $data = $this->sucursalmodel->get_sucursales();
+    $data = $this->sucursalmodel->get_sucursales_by_empresa($idEmpresa);
     return $this->output
             ->set_content_type('application/json')
             ->set_output($data);

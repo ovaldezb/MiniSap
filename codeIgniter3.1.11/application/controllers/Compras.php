@@ -17,10 +17,6 @@ class Compras extends CI_Controller
     {
 			$data['tipopago'] = $this->catalogosmodel->get_tipo_pago();
 			$data['monedas'] = $this->catalogosmodel->get_monedas();
-			/*Estos valores se tiene que recibir cuando se invoque este controlador*/
-			$data['idpempresa'] = $_SESSION['idempresa'];
-			$data['aniofiscal'] = $_SESSION['aniofiscal'];
-			$data['id_sucursal'] = $_SESSION['idsucursal'];
 			$this->load->view('compras',$data);
 		}else {
 			$error['error'] = '';

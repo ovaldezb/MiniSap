@@ -147,15 +147,7 @@ app.controller('myCtrlProveedor', function($scope,$http)
       then(function(res)
     	{
     		if(res.status==200 && res.data.value=='OK')
-    		{
-          var dataRowProvU =
-          {
-            CLAVE:$scope.clave,
-            NOMBRE:$scope.nombre,
-            RFC:$scope.rfc,
-            ID_PROVEEDOR:$scope.idProveedor
-          };
-          $scope.lstProveedor[$scope.indexRowProv] = dataRowProvU;
+    		{          
           $scope.selectRowProveedor($scope.lstProveedor[$scope.indexRowProv].RFC,$scope.indexRowProv,$scope.lstProveedor[$scope.indexRowProv].ID_PROVEEDOR);
     			alert('El proveedor se actualizó correctamente');
     		}else

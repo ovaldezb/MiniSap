@@ -38,13 +38,34 @@ app.controller('myCtrlCompras', function($scope,$http)
   $scope.modalActive = false;
   $scope.codigocompra = '';
   $scope.idcompra = 0;
+	$scope.isAgrgaCompra = false;
+	$scope.idempresa = '';
+	$scope.idsucursal = '';
+	$scope.aniofiscal = '';
 
 	$scope.init = function()
 	{
 	 var hoy = new Date();
 		$('#fechacompra').val(formatDatePrint(hoy));
 		$('#fechapago').val(formatDatePrint(hoy));
-		$http.get(pathCmpr+'getcompras/'+$('#idempresa').val()+'/'+$('#aniofiscal').val())
+		$http.get(pathAcc+'getdata',{responseType:'json'}).
+    then(function(res){
+      if(res.data.value=='OK'){
+        $scope.idempresa = res.data.idempresa;
+        $scope.aniofiscal = res.data.aniofiscal;
+        $scope.idsucursal = res.data.idsucursal;
+        $scope.getDataInit();
+				$scope.getNextDocCompra();
+      }
+
+    }).catch(function(err){
+      console.log(err);
+    });
+	}
+
+	$scope.getDataInit = function()
+	{
+		$http.get(pathCmpr+'getcompras/'+$scope.idempresa+'/'+$scope.aniofiscal)
 		.then(function(res)
 		{
 			if(res.data.length > 0)
@@ -55,11 +76,10 @@ app.controller('myCtrlCompras', function($scope,$http)
 		{
 			console.log(err);
 		});
-		$scope.getNextDocCompra();
 	}
 
 	$scope.getNextDocCompra = function(){
-		$http.get(pathUtils+'incremento/CMPR/'+$('#idempresa').val()+'/6').
+		$http.get(pathUtils+'incremento/CMPR/'+$scope.idempresa+'/6').
 		then(function(res)
 		{
 			if(res.data.length > 0)
@@ -162,7 +182,7 @@ app.controller('myCtrlCompras', function($scope,$http)
     if(event.keyCode==13){
       $('#dispsearch').show();
     	searchword = $scope.descripcion!=''  ? $scope.descripcion : 'vacio';
-    	$http.get(pathTpv+'getitems/'+searchword+'/C', {responseType: 'json'}).
+    	$http.get(pathTpv+'getitems/'+$scope.idempresa+'/'+searchword+'/C', {responseType: 'json'}).
     	then(function(res)
     	{
     		if(res.status == '200')
@@ -371,28 +391,28 @@ app.controller('myCtrlCompras', function($scope,$http)
     	contrarec:$scope.contrarecibo,
     	fecpago:formatFecPago($('#fechapago').val()),
     	fecrevision:formatDateInsert(hoy),
-    	idempresa:$('#idempresa').val(),
+    	idempresa:$scope.idempresa,
     	docprev:$scope.docprev,
     	diascred:$scope.diascred != '' ? $scope.diascred : 0,
     	importe:$('#importe').val(),
     	iva:$scope.iva,
-    	aniofiscal:$('#aniofiscal').val(),
+    	aniofiscal:$scope.aniofiscal,
       descuento:$scope.descuento,
-			idsucursal:$('#idsucursal').val(),
+			idsucursal:$scope.idsucursal,
 			idproveedor:$scope.idproveedor
     };
 
     $http.put(pathCmpr+'registracompra',data).
   	then(function(res)
   	{
-			console.log(res);
   		if(res.data.length>0)
   		{
   			$scope.idcompra = res.data[0].inserta_compra;
   			$scope.regtracompraprod();
   			habilitar(true,true);
   			alert('Se registro la compra exitosamente');
-        $('#divdisplay').hide();
+        //$('#divdisplay').hide();
+				$scope.isAgrgaCompra = false;
 				$scope.getNextDocCompra();
   		}
   	}).
@@ -448,7 +468,7 @@ app.controller('myCtrlCompras', function($scope,$http)
   			preciounitario:$scope.listaproductos[i].PRECIO,
   			importetotal:$scope.listaproductos[i].IMPORTE,
         dsctoprod:$scope.listaproductos[i].DESCTO,
-				idsucursal:$('#idsucursal').val()
+				idsucursal:$scope.idsucursal
   		}).
   		then(function(res)
   		{
@@ -506,7 +526,8 @@ app.controller('myCtrlCompras', function($scope,$http)
 
  $scope.despliegaCompra = function()
  {
-   $('#divdisplay').show();
+   //$('#divdisplay').show();
+	 $scope.isAgrgaCompra = true;
    $('#barranavegacion').hide();
    $('#listacompras').hide();
    $('#barraProducto').hide();
@@ -560,7 +581,7 @@ app.controller('myCtrlCompras', function($scope,$http)
 
   $scope.eliminacompra = function()
   {
-    $http.delete(pathCmpr+'elimcompraprodid/'+$scope.listaCompras[ $scope.indexRowCompra].ID_COMPRA+'/'+$('#idsucursal').val()).
+    $http.delete(pathCmpr+'elimcompraprodid/'+$scope.listaCompras[ $scope.indexRowCompra].ID_COMPRA+'/'+$scope.idsucursal).
     then(function(res)
     {
       if(res.status == "200")
@@ -598,7 +619,8 @@ app.controller('myCtrlCompras', function($scope,$http)
 
 $scope.btnCancel = function()
 {
-  $('#divdisplay').hide();
+  //$('#divdisplay').hide();
+	$scope.isAgrgaCompra = false;
   $scope.limpiarBox1();
   $scope.listaproductos = [];
   if($scope.msgBton == 'Cerrar')
@@ -642,6 +664,11 @@ $scope.limpiarBox1 = function()
  {
    $('#dispsearch').hide();
    $scope.listaproductos = [];
+ }
+
+ $scope.agregarcompra = function()
+ {
+	 $scope.isAgrgaCompra = true;
  }
 
 });

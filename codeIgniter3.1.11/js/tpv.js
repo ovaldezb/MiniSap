@@ -66,15 +66,29 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
   $scope.modalVerfClte = false;
   $scope.showLstClte = false;
   $scope.btnVerifClte = 'Actualizar';
+  $scope.idempresa = '';
+  $scope.idsucursal = '';
+  $scope.aniofiscal = '';
   $scope.init = function()
   {
       $('#regcompra').prop('disabled',true);
       $('#codigo_prodto').prop('disabled',true);
-      $scope.getNextDocTpv();
+      $http.get(pathAcc+'getdata',{responseType:'json'}).
+      then(function(res){
+        if(res.data.value=='OK'){
+          $scope.idempresa = res.data.idempresa;
+          $scope.idsucursal = res.data.idsucursal;
+          $scope.aniofiscal = res.data.aniofiscal;
+          $scope.getNextDocTpv();
+        }
+      }).catch(function(err){
+        console.log(err);
+      });
+
   }
 
   $scope.getNextDocTpv = function(){
-		$http.get(pathUtils+'incremento/TPVS/'+$('#idempresa').val()+'/7').
+		$http.get(pathUtils+'incremento/TPVS/'+$scope.idempresa+'/7').
 		then(function(res)
 		{
 			if(res.data.length > 0)
@@ -179,10 +193,10 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
       }
     	$('#dispsearch').show();
     	var searchword = $scope.prod_desc !='' ? $scope.prod_desc : 'vacio';
-    	$http.get(pathTpv+'getitems/'+searchword+'/V', {
-    		responseType: 'json'}).
+    	$http.get(pathTpv+'getitems/'+$scope.idempresa+'/'+searchword+'/V', {responseType: 'json'}).
     	then(function(res)
     	{
+        console.log(res);
     		if(res.status == '200')
     		{
           $scope.lstProdBusqueda = res.data;
@@ -217,7 +231,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
       $('#mascant').prop('disabled',false);
       $scope.closeDivSearch();
 
-      $http.get(pathTpv+'getitemsbyprodsuc/'+$scope.id_producto+'/'+$('#idsucursal').val()).
+      $http.get(pathTpv+'getitemsbyprodsuc/'+$scope.id_producto+'/'+$scope.idsucursal).
       then(function(res)
       {
         if(res.data.length > 0)
@@ -519,8 +533,8 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
         idcliente:$scope.idcliente,
         idvendedor:$scope.idvendedor,
         fechaventa:formatDateInsert(new Date()),
-        aniofiscal:$('#aniofiscal').val(),
-        idempresa:$('#idempresa').val(),
+        aniofiscal:$scope.aniofiscal,
+        idempresa:$scope.idempresa,
         idtipopago:$('#tipopago').val(),
         pagoefectivo:$scope.pago_efectivo,
         pagotarjeta:$scope.pago_tarjeta,
@@ -531,7 +545,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
         idvales:$('#idvales').val()=='' ? null : $('#idvales').val(),
         importe:$scope.total,
         cambio:$scope.cambio,
-        idsucursal:$('#idsucursal').val()
+        idsucursal:$scope.idsucursal
       }
 
       $http.put(pathTpv+'registraventa',dataVenta).
@@ -575,7 +589,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
           cantidad:$scope.lstProdCompra[i].CANTIDAD,
           precio:$scope.lstProdCompra[i].PRECIO_LISTA,
           importe:$scope.lstProdCompra[i].IMPORTE,
-          idsucursal:$('#idsucursal').val(),
+          idsucursal:$scope.idsucursal,
           tipops:$scope.tipo_ps
         }
         $http.put(pathTpv+'registraventaprod',vntaProd).
@@ -597,6 +611,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
         $http.get(pathClte+'loadbyidverfi/'+$scope.idcliente,{responseType:'json'}).
         then(function(res)
         {
+          console.log(res);
           if(res.data.length > 0)
           {
             $scope.clave = res.data[0].CLAVE;
@@ -607,13 +622,13 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
             $scope.contacto = res.data[0].CONTACTO;
             $scope.rfc = res.data[0].RFC;
             $scope.curp = res.data[0].CURP;
-            $scope.tipo_cliente = res.data[0].TIPO_CLIENTE;
-            $scope.diascredito = res.data[0].DIAS_CREDITO;
-            $scope.revision = res.data[0].REVISION;
-            $scope.pagos = res.data[0].PAGOS;
-            $scope.forma_pago = res.data[0].FORMA_PAGO;
-            $scope.vendedor = res.data[0].VENDEDOR;
-            $scope.cfdi = res.data[0].CFDI;
+            //$scope.tipo_cliente = res.data[0].TIPO_CLIENTE;
+            $('#id_tipo_cliente').val(res.data[0].ID_TIPO_CLIENTE);
+            $('#revision').val(res.data[0].ID_REVISION);
+            $('#pagos').val(res.data[0].ID_PAGOS);
+            $('#id_forma_pago').val(res.data[0].ID_FORMA_PAGO);
+            $('#id_vendedor').val(res.data[0].ID_VENDEDOR);
+            $('#id_uso_cfdi').val(res.data[0].ID_USO_CFDI);
             $scope.email = res.data[0].EMAIL;
             $scope.noproveedor = res.data[0].NUM_PROVEEDOR;
             $scope.notas = res.data[0].NOTAS;
@@ -652,16 +667,52 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
     $scope.notas = '';
     $scope.modalVerfClte = false;
   }
-  
+
   $scope.enviaDatosCliente = function()
   {
-    if($scope.btnVerifClte == 'Actualizar')
+    var  row, dataClte;
+    dataClte = {
+      //clave:$scope.clave,
+      nombre:$scope.nombre,
+      domicilio:$scope.domicilio,
+      cp:$scope.cp,
+      telefono:$scope.telefono,
+      contacto:$scope.contacto,
+      rfc:$scope.rfc,
+      curp:$scope.curp,
+      id_tipo_cliente:$('#id_tipo_cliente').val(),
+      revision:$('#revision').val(),
+      pagos:$('#pagos').val(),
+      id_forma_pago:$('#id_forma_pago').val(),
+      id_vendedor:$('#id_vendedor').val(),
+      id_uso_cfdi:$('#id_uso_cfdi').val(),
+      email:$scope.email,
+      num_proveedor:$scope.noproveedor,
+      notas:$scope.notas,
+      dcredito:$scope.diascredito,
+      idempresa:$scope.idempresa
+    };
+    if($scope.btnVerifClte == 'Agregar')
     {
-        
-     }else{
+      var nextId, idCliente, respuesta;
+      $http.post(pathClte+'save', dataClte).
+      then(function(res)
+      {
 
-      }
+      }).catch(function(err) {
+        console.log(err);
+      });
+     }else{
+       $http.put(pathClte+'update/'+$scope.idCliente, dataClte).
+       then(function(res)
+       {
+
+       }).catch(function(err)
+       {
+         console.log(err);
+       });
     }
+  }
 
   $scope.verificaExistencia = function()
   {
@@ -671,7 +722,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
     {
       if(res.data.length > 0)
       {
-          $scope.lstPrdSucExis = res.data;
+        $scope.lstPrdSucExis = res.data;
       }
     }).
     catch(function(err)

@@ -56,11 +56,30 @@ class Access extends CI_Controller {
 
   public function setempfy($idempresa,$fy)
   {
+    if(isset($_SESSION['idempresa'])){
+      unset(
+          $_SESSION['idempresa'],
+          $_SESSION['aniofiscal']
+      );
+    }
     $data = array(
       'idempresa' => $idempresa,
       'aniofiscal' => $fy
     );
     $this->session->set_userdata($data);
+  }
+
+  public function getdata()
+  {
+    if(isset( $_SESSION['idempresa'])){
+      $idEmpresa = $_SESSION['idempresa'];
+      $data = array('value'=>'OK','idempresa'=>$_SESSION['idempresa'],'id_empr_codigo'=>str_pad('E',7-mb_strlen($idEmpresa),'0').$idEmpresa,'aniofiscal'=>$_SESSION['aniofiscal'],'idsucursal'=>$_SESSION['idsucursal']);
+    }else {
+      $data = array('value'=>'ERROR');
+    }
+    return $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($data));;
   }
 
 }
