@@ -23,10 +23,23 @@ app.controller('myCtrlProveedor', function($scope,$http)
   $scope.idProveedor = '';
   $scope.sortDir = true;
   $scope.myOrderBy = '';
+  $scope.idempresa = '';
 
   $scope.init = function()
   {
-  	$http.get(pathPrve+'load', {responseType: 'json'}).
+    $http.get(pathAcc+'getdata',{responseType:'json'}).
+    then(function(res){
+      if(res.data.value=='OK'){
+        $scope.idempresa = res.data.idempresa;
+        $scope.getDataInit();
+      }
+    }).catch(function(err){
+      console.log(err);
+    });
+  }
+
+  $scope.getDataInit = function(){
+    $http.get(pathPrve+'loadByEmpresa/'+$scope.idempresa, {responseType: 'json'}).
     then(function(res)
   	{
   		if(res.data.length > 0)
@@ -52,7 +65,7 @@ app.controller('myCtrlProveedor', function($scope,$http)
   $scope.openDivAgregar = function()
   {
     $scope.isDivProvActivo = true;
-    $http.get(pathUtils+'incremento/PROV/'+$('#idempresa').val()+'/5').
+    $http.get(pathUtils+'incremento/PROV/'+$scope.idempresa+'/5').
     then(function(res)
     {
       if(res.data.length > 0)
@@ -115,7 +128,7 @@ app.controller('myCtrlProveedor', function($scope,$http)
   		cuenta:$scope.cuenta,
   		email:$scope.email,
   		notas:$scope.notas,
-      idempresa:$('#idempresa').val()
+      idempresa:$scope.idempresa
     };
 
     //console.log(dataProveedor);
@@ -147,7 +160,7 @@ app.controller('myCtrlProveedor', function($scope,$http)
       then(function(res)
     	{
     		if(res.status==200 && res.data.value=='OK')
-    		{          
+    		{
           $scope.selectRowProveedor($scope.lstProveedor[$scope.indexRowProv].RFC,$scope.indexRowProv,$scope.lstProveedor[$scope.indexRowProv].ID_PROVEEDOR);
     			alert('El proveedor se actualizó correctamente');
     		}else

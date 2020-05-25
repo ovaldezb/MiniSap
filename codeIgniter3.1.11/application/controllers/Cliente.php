@@ -19,8 +19,6 @@ class Cliente extends CI_Controller
 			$data['forma_pago'] = $this->catalogosmodel->get_forma_pago();
 			$data['vendedor'] = $this->catalogosmodel->get_vendedor();
 			$data['uso_cfdi'] = $this->catalogosmodel->get_uso_cfdi();
-			/*Esta variable se debe recibir del lugar donde se invoque este servicio*/
-			$data['id_empresa'] = $_SESSION['idempresa'];
 			$this->load->view('clientes',$data);
 		}else {
 			$error['error'] = '';
@@ -28,9 +26,9 @@ class Cliente extends CI_Controller
     }
 	}
 
-	function load()
+	function loadByEmpresa($idEmpresa)
 	{
-		$data = $this->clientemodel->get_user_json();
+		$data = $this->clientemodel->get_clientes_by_empresa($idEmpresa);
 		return $this->output
             ->set_content_type('application/json')
             ->set_output($data);
@@ -52,14 +50,14 @@ class Cliente extends CI_Controller
             ->set_output($data);
 	}
 
-	function loadbynombre($nombre)
+	function loadbynombre($idempresa,$nombre)
 	{
 		if($nombre == 'vacio')
 		{
-			$data = $this->clientemodel->get_user_json();
+			$data = $this->clientemodel->get_clientes_by_empresa($idempresa);
 		}else{
 			$nvonombre = str_replace("%20"," ",$nombre);
-			$data = $this->clientemodel->get_clientes_by_nombre('%'.$nvonombre.'%');
+			$data = $this->clientemodel->get_clientes_by_nombre($idempresa,'%'.$nvonombre.'%');
 		}
 
 		return $this->output

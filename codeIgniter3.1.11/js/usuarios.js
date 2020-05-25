@@ -423,6 +423,7 @@ app.controller('myCtrlUsuarios', function($scope,$http)
   {
     $scope.modlAddUser = false;
     $scope.btnAccion ='Aceptar';
+    $scope.cleanUsr();
   }
 
   $scope.alertRowCell = function(evento,indx)

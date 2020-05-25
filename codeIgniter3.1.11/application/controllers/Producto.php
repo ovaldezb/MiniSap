@@ -12,10 +12,6 @@ class Producto extends CI_Controller
 		$this->load->library('session');
 	}
 
-	/*function _remap($param) {
-        $this->index($param);
-    }*/
-
 	function index() {
 		if(isset($_SESSION['username']))
     {

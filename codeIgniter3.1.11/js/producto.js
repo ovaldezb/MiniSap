@@ -37,7 +37,6 @@ app.controller('myCtrlProducto', function($scope,$http)
   $scope.idempresa = '';
   $scope.idemprcodigo = '';
   $scope.idsucursal = '';
-  $scope.img_name = '';
 
   $scope.init = function printProducto()
   {
@@ -137,7 +136,7 @@ app.controller('myCtrlProducto', function($scope,$http)
         $scope.ieps = res.data[0].IEPS;
         if(res.data[0].IMAGEN!=null && res.data[0].IMAGEN!=''){
         	document.getElementById('imgsrc').src = res.data[0].IMAGEN;
-        	$scope.img_name = res.data[0].IMAGEN;
+          document.getElementById('img_name').value = res.data[0].IMAGEN;
         	showImg('True');
         }else
         {
@@ -180,7 +179,7 @@ app.controller('myCtrlProducto', function($scope,$http)
   		minstock:$scope.minstock,
   		estasaexenta:String($scope.estasaexenta),
   		notas:$scope.notas,
-  		img:$scope.img_name,
+  		img:$('#img_name').val(),
       idempresa:$scope.idempresa,
       idscursal:$scope.idsucursal,
       tipops:$('input[name="tipo"]:checked').val()
@@ -189,7 +188,7 @@ app.controller('myCtrlProducto', function($scope,$http)
     if($scope.btnAccion == 'Agregar')
     {
       var nvoProd ={};
-      axios.post(pathProd+'save', dataProdUpdt).
+      $http.post(pathProd+'save', dataProdUpdt).
       then(function(res)
       {
         console.log(res);
@@ -266,7 +265,6 @@ app.controller('myCtrlProducto', function($scope,$http)
 
   $scope.openImageWnd = function()
   {
-
   	if($scope.codigo =='')
   	{
   		alert('Para cargar una imagen, debe ingresar el código del producto primero.');
@@ -391,7 +389,7 @@ app.controller('myCtrlProducto', function($scope,$http)
   	$scope.unidaddesc = '';
     $scope.unidad_sat = '';
   	document.getElementById('imgsrc').src = '';
-  	$scope.img_name = '';
+  	document.getElementById('img_name').value = '';
   }
 
   $scope.openDivAgregar = function()
@@ -430,16 +428,16 @@ app.controller('myCtrlProducto', function($scope,$http)
 
 });
 
-function setValue(valor)
+function setValue(valor,idemprcodigo)
 {
-	document.getElementById('imgsrc').src='../uploads/'+$scope.idemprcodigo+'/'+ valor;
-	$scope.img_name = '../uploads/'+$scope.idemprcodigo+'/'+valor;
+  document.getElementById('imgsrc').src='../uploads/'+idemprcodigo+'/'+ valor;
+	document.getElementById('img_name').value = '../uploads/'+idemprcodigo+'/'+valor;
 }
 
 function showImg(flag)
 {
-	var x = document.getElementById("imgsrc");
-	//var y = document.getElementById('img_name');
+  var x = document.getElementById("imgsrc");
+	var y = document.getElementById('img_name');
 	if(flag=='True')
 	{
 		x.style.display = "block";
@@ -447,7 +445,7 @@ function showImg(flag)
 	{
 		x.src = '';
 		x.style.display = "none";
-		$scope.img_name = '';
+		y.value = '';
 	}
 }
 

@@ -78,7 +78,8 @@ class Usuariomodel extends CI_model
 							(SELECT "ID_EMPRESA","PERMITIDO"
 							FROM "USUARIO_EMPRESA"
 							WHERE "ID_USUARIO" = $1) as U
-							ON E."ID_EMPRESA" = U."ID_EMPRESA"';
+							ON E."ID_EMPRESA" = U."ID_EMPRESA"
+							WHERE "ACTIVO" = true';
 		pg_prepare($this->conn,"select_useremp",$query);
 		$result = pg_fetch_all(pg_execute($this->conn,"select_useremp",array($usuario)));
 		return json_encode($result);

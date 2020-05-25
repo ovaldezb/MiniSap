@@ -23,7 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://35.231.110.9/codeigniter3.1.11/';
+$config['base_url'] = 'http://104.198.146.73/codeigniter3.1.11/';
 
 /*
 |--------------------------------------------------------------------------

@@ -8,7 +8,6 @@ class Compras extends CI_Controller
 		$this->load->model('comprasmodel');
 		$this->load->model('catalogosmodel');
 		$this->load->library('session');
-		//$this->load->helper('url');
 	}
 
 	function index()
@@ -45,7 +44,9 @@ class Compras extends CI_Controller
 		$data['aniofiscal'],
 		$data['descuento'],
 		$data['idsucursal'],
-		$data['idproveedor']);
+		$data['idproveedor'],
+		$data['notas']
+	);
 		return $this->output
 			->set_content_type('application/json')
 			->set_output($result);

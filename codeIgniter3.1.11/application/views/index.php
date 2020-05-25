@@ -143,7 +143,7 @@
   <br><br><br>
   <div class="columns">
     <div class="column is-one-fifth">
-      <aside class="menu" style="width:100%; height:800px; overflow:auto;">
+      <aside class="menu" style="width:100%; height:890px; overflow:auto;">
 <?php
   $modulotmp = '';
   $isFinModulo = false;
@@ -180,6 +180,7 @@
     <div class="modal-card">
       <header class="modal-card-head">
         <p class="modal-card-title">Seleccione una empresa</p>
+        <button class="delete" aria-label="close" ng-click="cerrarSelectEmpr()"></button>
       </header>
       <section class="modal-card-body">
         <table style="width:100%">
@@ -223,6 +224,7 @@
       </section>
       <footer class="modal-card-foot">
         <button class="button is-success" ng-click="guardarEmpPerm()">Aceptar</button>
+        <button class="button" ng-click="cerrarSelectEmpr()">Cancelar</button>
       </footer>
     </div>
   </div>

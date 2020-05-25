@@ -14,14 +14,14 @@ class Vendedor extends CI_Controller
 
   }
 
-  function getvendedores($nombre)
+  function getvendedores($idempresa,$nombre)
   {
     if($nombre == 'vacio')
 		{
-			$data = $this->vendedormodel->get_vendedores();
+			$data = $this->vendedormodel->get_vendedores($idempresa);
 		}else{
 			$nvoNombre = rawurldecode($nombre);
-			$data = $this->vendedormodel->get_vendedores_by_nombre('%'.$nvoNombre.'%');
+			$data = $this->vendedormodel->get_vendedores_by_nombre($idempresa,'%'.$nvoNombre.'%');
 		}
 		return $this->output
 						->set_content_type('application/json')

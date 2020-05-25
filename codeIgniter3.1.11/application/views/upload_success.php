@@ -3,8 +3,8 @@
 <title>Upload Form</title>
 <script>
 	function OnLoad() {
-		window.opener.setValue('<?php echo $nombre.$upload_data['file_ext']?>');
-		window.opener.showImg('True');
+		parent.window.opener.setValue('<?php echo $nombre.$upload_data['file_ext']?>','<?php echo $idempresa?>');
+		parent.window.opener.showImg('True');
 		setTimeout(function () { window.close();}, 1000);
 	}
 </script>

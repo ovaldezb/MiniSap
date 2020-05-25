@@ -3,84 +3,78 @@
 <input type="hidden" id="updtTable" value="F">
 <div class="container" ng-controller="myCtrlCompras" data-ng-init="init()">
 	<div class="notification">
-		<h1 class="title is-2 has-text-centered">Compra de Producto</h1>
+		<h1 class="title is-2 has-text-centered">Compra de Productos</h1>
 	</div>
-	<div class="box" id="barranavegacion">
+	<div class="box" id="barranavegacion" ng-show="!isAgrgaCompra">
 		<nav class="level">
 			<div class="level-left">
-				<p class="level-item"><a ng-click="agregarcompra();"><span class="icon has-text-success"><i class="far fa-file" title="Nueva Compra"></i></span></a></p>
+				<div class="level-item">
+					<p class="subtitle is-5">
+	        	<strong>Filtro:</strong>
+	      	</p>
+				</div>
+				<div class="level-item">
+					<input name="producto" class="input is-small" type="input" onKeyUp="doFilter(this.value,'tblcompras');" title="Ingrese cualquier dato que desee encontrar, Ej. nombre, código, precio ">
+				</div>
+			</div>
+			<div class="level-right">
+				<p class="level-item"><a ng-click="agregarcompra();"><span class="icon has-text-success"><i class="fas fa-plus-square" title="Nueva Compra"></i></span></a></p>
 				<p class="level-item"><a ng-click="preguntaelimcomp()"><span class="icon has-text-danger"><i class="far fa-trash-alt" title="Elimina Compra"></i></span></a></p>
 				<p class="level-item"><a ng-click="despliegaCompra()"><span class="icon has-text-info"><i class="fas fa-folder-open" title="Visualiza Compra"></i></span></a></p>
 				<p class="level-item"><span class="icon has-text-info"><i class="fas fa-print" title="Imprime Compras"></i></span></p>
 			</div>
 		</nav>
 	</div>
-	<div class="box" style="display:{{isAgrgaCompra ? 'block' : 'none'}}">
+	<div id="divdisplay" class="box" ng-show="isAgrgaCompra">
 	<form name="myForm">
 	<div class="columns">
 		<div class="column">
 			<div class="box">
 				<div class="columns">
-					<div class="column is-narrow" style="width:100px">
+					<div class="column is-narrow">
 						<label class="label">Proveedor:<label>
 					</div>
 					<div class="column is-1">
 						<input type="text" class="input is-small" ng-model="docprev">
 					</div>
-					<div class="column is-2">
-						<input type="text" class="input is-small" ng-model="claveprov" ng-keyup="buscaprovbyclave($event)" placeholder="Clave del proveedor">
+					<div class="column is-1">
+						<input type="text" class="input is-small" ng-model="claveprov" ng-keyup="buscaprovbyclave($event)" placeholder="Clave Proveedor">
 					</div>
-					<div class="column is-6">
-						<input type="text" class="input is-small"  ng-model="proveedor" ng-keyup="buscaprovbynombre($event)" placeholder="Nombre del proveedor">
+					<div class="column is-4">
+						<input type="text" class="input is-small"  ng-model="proveedor" ng-keyup="buscaprovbynombre($event)" placeholder="Nombde del Proveedor">
 					</div>
 				</div>
-				<div class="table-container" style="display:none" id="buscaprov">
+				<div class="table-container" style="display:none; width:43%;margin-left:215px;margin-top:-25px" id="buscaprov">
 					<table style="width:100%">
 						<tr>
 							<td>
-								<table class="table" style="width:100%" border="1">
-									<col width="50%">
-									<col width="25%">
-									<col width="25%">
-									<tr>
-										<th>Nombre/Razón Social</th>
-										<th align="center">Clave</th>
-										<th align="center">CP</th>
-									</tr>
-								</table>
+								<div style="width:100%; height:200px; overflow:auto;">
+									<table class="table is-hoverable"  style="width:100%;" id="proveedores">
+										<col width="20%">
+										<col width="80%">
+										<tr ng-repeat="x in lstaprovee" ng-click="selectProvee($index)">
+											<td>{{x.CLAVE.trim()}}</td>
+											<td>{{x.NOMBRE.trim()}}</td>
+										</tr>
+									</table>
+								</div>
 							</td>
 							<td>
 								<a aria-label="like">
-								<span class="icon has-text-danger">
-									<i onclick="closeDivSearchProv()" class="fas fa-times-circle"></i>
-								</span>
+									<span class="icon has-text-danger">
+										<i onclick="closeDivSearchProv()" class="fas fa-times-circle"></i>
+									</span>
 								</a>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<div style="width:100%; height:200px; overflow:auto;">
-								<table class="table is-hoverable"  style="width:100%;" id="proveedores">
-									<col width="60%">
-									<col width="20%">
-									<col width="20%">
-									<tr ng-repeat="x in lstaprovee" ng-click="selectProvee($index)">
-										<td>{{x.NOMBRE.trim()}}</td>
-										<td>{{x.CLAVE.trim()}}</td>
-										<td align="center">{{x.CP.trim()}}</td>
-									</tr>
-								</table>
-								</div>
 							</td>
 						</tr>
 					</table>
 				</div>
 				<div class="columns">
-					<div class="column is-narrow" style="width:100px">
+					<div class="column is-narrow">
 						<label class="label">Documento:<label>
 					</div>
 					<div class="column is-1">
-						<input type="text" class="input is-small" ng-model="numdoc" required>
+						<input type="text" class="input is-small" ng-model="numdoc" placeholder="No Documento" required>
 					</div>
 					<div class="column is-narrow">
 						<div class="control">
@@ -94,16 +88,16 @@
 						</div>
 					</div>
 					<div class="column is-narrow" style="width:90px">
-						<input type="text" class="input is-small" id="diascred"  onkeyup="sumadias()" ng-model="diascred" disabled>
+						<input type="number" class="input is-small" id="diascred"  onkeyup="sumadias()" ng-model="diascred" disabled>
 					</div>
-					<div class="column is-narrow is-vleft">
+					<div class="column is-narrow">
 						<label class="label">d&iacute;as</label>
 					</div>
 					<div class="column is-narrow">
 						<label class="label">C.R.</label>
 					</div>
-					<div class="column is-narrow">
-						<input type="text" class="input is-small" id="contrarecibo" ng-model="contrarecibo">
+					<div class="column is-1">
+						<input type="text" class="input is-small" id="contrarecibo" ng-model="contrarecibo" style="text-align:right">
 					</div>
 					<div class="column is-1">
 						<label class="label">Pago:</label>
@@ -113,10 +107,10 @@
 					</div>
 				</div>
 				<div class="columns">
-					<div class="column is-narrow" style="width:100px">
+					<div class="column is-1">
 						<label class="label">Fecha:<label>
 					</div>
-					<div class="column is-2" style="width:110px">
+					<div class="column is-1" >
 						<input type="text" class="input is-small" id="fechacompra" value="" disabled>
 					</div>
 					<div class="column is-narrow">
@@ -142,13 +136,13 @@
 						<label class="label">Desc %</label>
 					</div>
 					<div class="column is-narrow" style="width:100px">
-						<input type="number" class="input is-small" value="" ng-model="descuento" ng-keyup="validaDescto()" style="text-align:right;">
+						<input type="number" class="input is-small" value="" ng-model="descuento" ng-keyup="validaDescto()" style="text-align:center;">
 					</div>
 					<div class="column is-narrow">
 						<label class="label">Iva %</label>
 					</div>
 					<div class="column is-narrow" style="width:80px">
-						<input type="number" class="input is-small" id="iva" ng-model="iva" value="" ng-blur="validaIva()" required style="text-align:right;">
+						<input type="number" class="input is-small" id="iva" ng-model="iva" value="" ng-blur="validaIva()" required style="text-align:center;">
 					</div>
 				</div>
 			</div>
@@ -231,7 +225,7 @@
 								<button class="button is-info is-small" ng-click="decrease()" id="mencant" disabled>-</button>
 							</div>
 							<div class="control">
-								<input type="text" class="input is-small" ng-model="cantidad" id="cantidad" ng-keyup="manualenter()" disabled onfocus="this.select();" required>
+								<input type="text" class="input is-small" ng-model="cantidad" id="cantidad" ng-keyup="manualenter()" disabled onfocus="this.select();" required style="text-align:center">
 							</div>
 							<div class="control">
 								<button class="button is-info is-small" ng-click="increase()" id="mascant" disabled>+</button>
@@ -239,7 +233,7 @@
 						</div>
 					</td>
 					<td><input type="text" class="input is-small" id="unidad" ng-model="unidad" style="text-align:right;" disabled></td>
-					<td><input type="text" class="input is-small" id="precio" ng-model="precio" disabled style="text-align:right;" required></td>
+					<td><input type="number" class="input is-small" id="precio" ng-model="precio" disabled style="text-align:right;" required></td>
 					<td><input type="text" class="input is-small" id="desctoprod" ng-model="desctoprod" ng-blur="validaDcto()" style="text-align:right;" disabled></td>
 				</tr>
 			</table>
@@ -344,13 +338,14 @@
 						</td>
 					</tr>
 				</table>
+
 		</div>
 	</div>
 	</div>
 	<div class="box">
 		<div class="columns">
 			<div class="column is-7">
-				<textarea class="textarea"></textarea>
+				<textarea class="textarea" ng-model="notas" placeholder="Observaciones"></textarea>
 			</div>
 			<div class="column is-2">
 			</div>
@@ -368,7 +363,7 @@
 						<label class="label">Suma</label>
 					</div>
 					<div class="column has-text-right">
-						<label id="suma" class="label">$ {{suma}}</label>
+						<label id="suma" class="label">{{suma | currency}}</label>
 					</div>
 				</div>
 				<div class="columns">
@@ -376,7 +371,7 @@
 						<label class="label">Iva(+)</label>
 					</div>
 					<div class="column has-text-right">
-						<label id="ivasuma" class="label">$ {{ivapaga}}</label>
+						<label id="ivasuma" class="label">{{ivapaga | currency}}</label>
 					</div>
 				</div>
 				<div class="columns">
@@ -384,7 +379,7 @@
 						<label class="label">Total $</label>
 					</div>
 					<div class="column has-text-right">
-						<label id="sumtot" class="label">$ {{total}}</label>
+						<label id="sumtot" class="label">{{total | currency}}</label>
 						<input type="hidden" id="importe" value="{{total}}">
 					</div>
 				</div>
@@ -398,7 +393,7 @@
 		</div>
 	</form>
 	</div>
-	<div class="box" style="display:{{isAgrgaCompra ? 'none':'block'}}">
+	<div id="listacompras" class="box" ng-show="!isAgrgaCompra">
 		<table style="width:100%" border="1">
 			<tr>
 				<td>

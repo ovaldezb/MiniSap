@@ -30,6 +30,7 @@ class Comprasmodel extends CI_model
 							C."ID_TIPO_PAGO" as "TIPO_PAGO",
 							"ID_MONEDA" as "MONEDA",
 							"CONTRA_RECIBO" as "CR",
+							C."NOTAS",
 							to_char(C."FECHA_REVISION",\'DD/MM/YYYY\') as "FECHA_REVISION",
 							to_char(C."FECHA_PAGO",\'DD/MM/YYYY\') as "FECHA_PAGO",
 							CASE "DIAS_PAGO"
@@ -48,11 +49,11 @@ class Comprasmodel extends CI_model
 		return json_encode($result);
 	}
 
-	function insert_compra($documento,$claveprov,$fec_comp,$tipo_pago,$moneda,$tipo_cambio,$contra_rec,$fec_pago,$fec_rev,$id_empresa,$docprev,$diascred,$importe,$iva,$anio_fiscal,$descuento,$idsucursal,$idproveedor)
+	function insert_compra($documento,$claveprov,$fec_comp,$tipo_pago,$moneda,$tipo_cambio,$contra_rec,$fec_pago,$fec_rev,$id_empresa,$docprev,$diascred,$importe,$iva,$anio_fiscal,$descuento,$idsucursal,$idproveedor,$notas)
 	{
-		$query = 'SELECT * FROM inserta_compra($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18)';
+		$query = 'SELECT * FROM inserta_compra($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19)';
 		pg_prepare($this->conn,"insert_compra",$query);
-		$result = pg_fetch_all(pg_execute($this->conn,"insert_compra",array($documento,$claveprov,$fec_comp,$tipo_pago,$moneda,$tipo_cambio,$contra_rec,$fec_pago,$fec_rev,$id_empresa,$docprev,$diascred,$importe,$iva,$anio_fiscal,$descuento,$idsucursal,$idproveedor)));
+		$result = pg_fetch_all(pg_execute($this->conn,"insert_compra",array($documento,$claveprov,$fec_comp,$tipo_pago,$moneda,$tipo_cambio,$contra_rec,$fec_pago,$fec_rev,$id_empresa,$docprev,$diascred,$importe,$iva,$anio_fiscal,$descuento,$idsucursal,$idproveedor,$notas)));
 		return json_encode($result);
 	}
 
@@ -73,6 +74,7 @@ class Comprasmodel extends CI_model
 							"DESCUENTO",
 							"IVA",
 							"TIPO_ORDENCOMPRA",
+							"NOTAS",
 							"DIAS_PAGO"
 							FROM "COMPRAS" AS C INNER  JOIN "PROVEEDORES" AS P
 							ON C."CLAVE_PROVEEDOR" = P."CLAVE"
@@ -88,8 +90,8 @@ class Comprasmodel extends CI_model
 							P."DESCRIPCION",
 							C."CANTIDAD",
 							TRIM(C."UNIDAD") as "UNIDAD",
-							C."PRECIO_UNITARIO" as "PRECIO",
-							to_char(C."IMPORTE_TOTAL",\'999,999,999.00\') as "IMPORTE",
+							C."PRECIO_UNITARIO" as "PRECIO",							
+							C."IMPORTE_TOTAL" as "IMPORTE",
 							C."DSCTOPROD" as "DESCTO"
 							FROM "COMPRA_PRODUCTO" as C INNER JOIN "PRODUCTO" as P
 							ON C."ID_PRODUCTO" = P."ID_PRODUCTO"
@@ -97,7 +99,7 @@ class Comprasmodel extends CI_model
 							ORDER BY P."DESCRIPCION"';
 		$result = pg_prepare($this->conn,"selectquery",$query);
 		$result = pg_fetch_all(pg_execute($this->conn, "selectquery", array($id_compra)));
-		return json_encode($result);
+		return json_encode($result,JSON_NUMERIC_CHECK);
 	}
 
 	function elimina_compraprod_by_id($idcompra,$idsucursal)

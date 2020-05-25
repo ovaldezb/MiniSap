@@ -11,11 +11,12 @@ class Proveedormodel extends CI_model
 		$this->conn = $this->postgresdb->getConn();
 	}
 
-	function get_proveedores()
+	function get_proveedores_by_empresa($idEmpresa)
 	{
-		$query = 'SELECT * FROM "PROVEEDORES" WHERE "ACTIVO" = true';
-		$result = pg_fetch_all(pg_query($this->conn, $query));
-		return json_encode($result);
+		$query = 'SELECT * FROM "PROVEEDORES" WHERE "ACTIVO" = true AND "ID_EMPRESA" = $1';
+		pg_prepare($this->conn,"select_prov",$query);
+		$result = pg_fetch_all(pg_execute($this->conn,"select_prov",array($idEmpresa)));
+		return json_encode($result,JSON_NUMERIC_CHECK);
 	}
 
 	function create_proveedor($clave,$nombre,$domicilio,$cp,$telefono,$contacto,$rfc,$curp,$id_tipo_prov,$dias_cred,$id_tipo_alc_prov,$id_banco,$cuenta,$email,$notas,$idempresa)
@@ -75,11 +76,14 @@ class Proveedormodel extends CI_model
 		return $result;
 	}
 
-	function get_proveedor_by_desc($desc)
+	function get_proveedor_by_desc($idEmpresa,$desc)
 	{
-		$query = 'SELECT * FROM "PROVEEDORES" WHERE UPPER("NOMBRE") like UPPER($1) AND "ACTIVO" = true';
+		$query = 'SELECT * FROM "PROVEEDORES"
+		WHERE UPPER("NOMBRE") like UPPER($1)
+		AND "ID_EMPRESA" = $2
+		AND "ACTIVO" = true';
 		$result = pg_prepare($this->conn, "selectquery", $query);
-		$result =  pg_fetch_all(pg_execute($this->conn, "selectquery", array($desc)));
+		$result =  pg_fetch_all(pg_execute($this->conn, "selectquery", array($desc,$idEmpresa)));
 		return json_encode($result);
 	}
 

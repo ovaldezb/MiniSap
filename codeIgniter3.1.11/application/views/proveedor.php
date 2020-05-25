@@ -1,9 +1,9 @@
 <br><br>
-<input type="hidden" id="idempresa" value="<?php echo $id_empresa ?>">
 <div class="container" ng-app="myProveedor" ng-controller="myCtrlProveedor" data-ng-init="init()">
 	<div class="notification" >
 	<h1 class="title has-text-centered">Administración de Proveedores</h1>
 	</div>
+	<div class="box" ng-show="!isDivProvActivo">
 	<nav class="level">
 		<div class="level-left">
 			<div class="level-item">
@@ -16,20 +16,8 @@
 			</div>
 		</div>
 		<div class="level-right">
-			<p class="level-item">
-				<a ng-click="openDivAgregar()">
-					<span class="icon has-text-success">
-						<i title="Agrega un nuevo Proveedor" class="fas fa-plus-square" ></i>
-					</span>
-				</a>
-			</p>
-			<p class="level-item">
-				<a ng-click="update()">
-					<span class="icon has-text-info">
-						<i title="Edita un Proveedor" class="fas fa-edit" ></i>
-					</span>
-				</a>
-			</p>
+			<p class="level-item"><a ng-click="openDivAgregar()"><span class="icon has-text-success"><i title="Agrega un nuevo Proveedor" class="fas fa-plus-square" ></i></span></a></p>
+			<p class="level-item"><a ng-click="update()"><span class="icon has-text-info"><i title="Edita un Proveedor" class="fas fa-edit" ></i></span></a></p>
 			<p class="level-item">
 				<a ng-click="preguntaEliminar()">
 					<span class="icon has-text-danger">
@@ -39,22 +27,23 @@
 			</p>
 		</div>
 	</nav>
+</div>
 	<div class="box" style="display:{{isDivProvActivo ? 'block':'none'}}">
 		<form name="myForm">
 		<div class="columns">
 			<div class="column is-1">
 				<input id="clave" ng-model="clave" class="input is-small" type="text" placeholder="CLAVE" required>
 			</div>
-			<div class="column is-5">
-				<input id="nombre" ng-model="nombre" class="input is-small" type="text" placeholder="NOMBRE" onKeyUp="this.value=this.value.toUpperCase()" required>
+			<div class="column is-4">
+				<input id="nombre" ng-model="nombre" class="input is-small" type="text" placeholder="NOMBRE DE LA EMPRESA" onKeyUp="this.value=this.value.toUpperCase()" required>
 			</div>
 		</div>
 		<div class="columns">
 			<div class="column is-1">
 				<label class="label">Domicilio:</label>
 			</div>
-			<div class="column is-6">
-				<textarea type="text" ng-model="domicilio" name="domicilio" class="input is-small"  ng-required="true"></textarea>
+			<div class="column is-4">
+				<textarea type="text" ng-model="domicilio" name="domicilio" class="input is-small"  placeholder="DOMICILIO" ng-required="true"></textarea>
 			</div>
 		</div>
 		<div class="columns">
@@ -64,18 +53,20 @@
 			<div class="column is-1">
 				<input id="cp" ng-model="cp" class="input is-small" value="" type="text" placeholder="CP" maxlength="5" required>
 			</div>
-			<div class="column is-1">
+			<div class="column is-narrow" style="width:146px">
+			</div>
+			<div class="column is-narrow" style="width:75px">
 				<label class="label">Teléfono:</label>
 			</div>
-			<div class="column is-4">
+			<div class="column is-narrow" style="width:110px">
 				<input id="telefono" ng-model="telefono" class="input is-small" type="text" placeholder="TELEFONO" maxlength="10" required>
 			</div>
 		</div>
 		<div class="columns">
-			<div class="column is-narrow">
+			<div class="column is-narrow" style="width:110px">
 				<label class="label">Contacto:</label>
 			</div>
-			<div class="column is-6">
+			<div class="column is-4">
 				<input id="contacto" ng-model="contacto" class="input is-small" type="input" placeholder="Contacto" required>
 			</div>
 		</div>
@@ -86,18 +77,20 @@
 			<div class="column is-2">
 				 <input id="rfc" ng-model="rfc" class="input is-small" type="text" placeholder="RFC" maxlength="20" onKeyUp="this.value=this.value.toUpperCase()" required>
 			</div>
+		</div>
+		<div class="columns">
 			<div class="column is-1">
 				<label class="label">CURP:</label>
 			</div>
-			<div class="column is-3">
-				<input id="curp" ng-model="curp" class="input is-small" type="text" placeholder="CURP" maxlength="20" onKeyUp="this.value=this.value.toUpperCase()" required>
+			<div class="column is-2">
+				<input id="curp" ng-model="curp" class="input is-small" type="text" placeholder="CURP" maxlength="20" onKeyUp="this.value=this.value.toUpperCase()">
 			</div>
 		</div>
 		<div class="columns">
 			<div class="column is-1">
 				<label class="label">Proveedor:</label>
 			</div>
-			<div class="column is-2">
+			<div class="column is-narrow" style="width:190px">
 				<div class="control">
 					<div class="select is-small">
 						<select name="id_tipo_prov" id="id_tipo_prov" required>
@@ -108,8 +101,8 @@
 					</div>
 				</div>
 			</div>
-			<div class="column is-narrow">
-				<label class="label">Crédito: (días)</label>
+			<div class="column is-narrow" style="width:141px">
+				<label class="label">Días de crédito:</label>
 			</div>
 			<div class="column is-1">
 				<input id="dias_cred" ng-model="dias_cred" type="number" class="input is-small" maxlength="4" required>
@@ -133,7 +126,7 @@
 			<div class="column is-1">
 				<label class="label">Banco:</label>
 			</div>
-			<div class="column is-2">
+			<div class="column is-narrow" style="width:190px">
 				<div class="control">
 					<div class="select is-small">
 				        <select name="banco" id="banco">
@@ -144,10 +137,10 @@
 					</div>
 				</div>
 			</div>
-			<div class="column is-1">
+			<div class="column is-narrow" style="width:70px">
 				<label class="label">Cuenta:</label>
 			</div>
-			<div class="column is-3">
+			<div class="column is-narrow">
 				<input name="cuenta" ng-model="cuenta" type="number" class="input is-small" maxlength="20" placeholder="Cuenta" required>
 			</div>
 		</div>
@@ -165,23 +158,23 @@
 				<label class="label">Observaciones:</label>
 			</div>
 		</div>
-		<div class="columns is-gapless is-multiline is-mobile">
-			<div class="column is-6">
+		<div class="columns">
+			<div class="column is-5">
 				<textarea ng-model="notas" class="textarea"></textarea>
 			</div>
 		</div>
 		<div class="field is-grouped">
 		  <p class="control">
-			<button  ng-click="submitForm();" class="button is-primary" ng-disabled="myForm.$invalid">{{btnAccion}}</button>
+				<button  ng-click="submitForm();" class="button is-primary" ng-disabled="myForm.$invalid">{{btnAccion}}</button>
 		  </p>
 		  <p class="control">
-			<button type="button" ng-click="cancelar()" class="button is-light">Cancelar</button>
+				<button type="button" ng-click="cancelar()" class="button is-light">Cancelar</button>
 		  </p>
 		</div>
 		</form>
 	</div>
 
-	<div style="border: 2px solid black">
+	<div style="border: 2px solid black" ng-show="!isDivProvActivo">
 		<table style="width:100%">
 			<tr>
 				<td>

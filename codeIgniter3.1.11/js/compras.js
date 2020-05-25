@@ -42,6 +42,7 @@ app.controller('myCtrlCompras', function($scope,$http)
 	$scope.idempresa = '';
 	$scope.idsucursal = '';
 	$scope.aniofiscal = '';
+	$scope.notas = '';
 
 	$scope.init = function()
 	{
@@ -151,7 +152,7 @@ app.controller('myCtrlCompras', function($scope,$http)
     {
     	$('#buscaprov').show();
     	searchword = $scope.proveedor !='' ? $scope.proveedor : 'vacio';
-    	$http.get(pathPrve+'getproveedores/'+searchword, {
+    	$http.get(pathPrve+'getproveedores/'+$scope.idempresa+'/'+searchword, {
     		responseType: 'json'}).
     	then(function(res)
     	{
@@ -399,7 +400,8 @@ app.controller('myCtrlCompras', function($scope,$http)
     	aniofiscal:$scope.aniofiscal,
       descuento:$scope.descuento,
 			idsucursal:$scope.idsucursal,
-			idproveedor:$scope.idproveedor
+			idproveedor:$scope.idproveedor,
+			notas:$scope.notas
     };
 
     $http.put(pathCmpr+'registracompra',data).
@@ -411,7 +413,38 @@ app.controller('myCtrlCompras', function($scope,$http)
   			$scope.regtracompraprod();
   			habilitar(true,true);
   			alert('Se registro la compra exitosamente');
-        //$('#divdisplay').hide();
+				dataCompra =
+		    {
+		      FECHA_COMPRA:formatDatePrint(hoy),
+		      TIPO_ORDENCOMPRA:$scope.docprev,
+		      DOCUMENTO:$scope.numdoc,
+		      PROVEEDOR:$scope.proveedor,
+		      CLAVE_PROVEEDOR:$scope.claveprov,
+		      IMPORTE:'$ '+$scope.total,
+		      SALDO:$('#tipopago').val() == 1 ? '$ 0.00' : '$ '+$scope.total,
+		      FECHA_REVISION:formatDatePrint(hoy),
+		      FECHA_PAGO:$('#fechapago').val(),
+		      FORMA_PAGO:$('#tipopago').val() == 1 ? 'Contado' : 'Crédito '+$scope.diascred+' días',
+		      IVA:$scope.iva,
+		      DIAS_PAGO:$scope.diascred,
+		      DESCUENTO:$scope.descuento,
+		      MONEDA:$('#moneda').val(),
+		      CR:$scope.contrarecibo,
+		      TIPO_CAMBIO:$scope.tipocambio,
+		      ID_COMPRA:$scope.idcompra
+		    };
+
+		    $scope.listaCompras.unshift(dataCompra);
+		    $scope.selectRowCompra($scope.listaCompras[0].ID_COMPRA,0);
+				$scope.cantidad = 0;
+				$scope.counter = 0;
+				$scope.suma = 0;
+				$scope.ivapaga = 0;
+				$scope.total = 0;
+				$scope.descuento = 0;
+				$scope.precio = 0;
+		    $('#tipopago').val(1);
+		    $('#moneda').val(1);
 				$scope.isAgrgaCompra = false;
 				$scope.getNextDocCompra();
   		}
@@ -420,39 +453,6 @@ app.controller('myCtrlCompras', function($scope,$http)
   	{
   		console.log(err);
   	});
-
-    dataCompra =
-    {
-      FECHA_COMPRA:formatDatePrint(hoy),
-      TIPO_ORDENCOMPRA:$scope.docprev,
-      DOCUMENTO:$scope.numdoc,
-      PROVEEDOR:$scope.proveedor,
-      CLAVE_PROVEEDOR:$scope.claveprov,
-      IMPORTE:'$ '+$scope.total,
-      SALDO:$('#tipopago').val() == 1 ? '$ 0.00' : '$ '+$scope.total,
-      FECHA_REVISION:formatDatePrint(hoy),
-      FECHA_PAGO:$('#fechapago').val(),
-      FORMA_PAGO:$('#tipopago').val() == 1 ? 'Contado' : 'Crédito '+$scope.diascred+' días',
-      IVA:$scope.iva,
-      DIAS_PAGO:$scope.diascred,
-      DESCUENTO:$scope.descuento,
-      MONEDA:$('#moneda').val(),
-      CR:$scope.contrarecibo,
-      TIPO_CAMBIO:$scope.tipocambio,
-      ID_COMPRA:$scope.idcompra
-    };
-
-    $scope.listaCompras.unshift(dataCompra);
-    $scope.selectRowCompra($scope.listaCompras[0].ID_COMPRA,0);
-		$scope.cantidad = 0;
-		$scope.counter = 0;
-		$scope.suma = 0;
-		$scope.ivapaga = 0;
-		$scope.total = 0;
-		$scope.descuento = 0;
-		$scope.precio = 0;
-    $('#tipopago').val(1);
-    $('#moneda').val(1);
 	}
 
   $scope.regtracompraprod = function ()
@@ -526,7 +526,6 @@ app.controller('myCtrlCompras', function($scope,$http)
 
  $scope.despliegaCompra = function()
  {
-   //$('#divdisplay').show();
 	 $scope.isAgrgaCompra = true;
    $('#barranavegacion').hide();
    $('#listacompras').hide();
@@ -556,7 +555,7 @@ app.controller('myCtrlCompras', function($scope,$http)
   {
     $http.get(pathCmpr+'getcomprodbyid/'+$scope.idSelCompra,{responseType: 'json'}).
     then(function(res)
-    {
+    {			
       $scope.listaproductos = res.data;
       $scope.suma = 0;
       for(var i=0;i<$scope.listaproductos.length;i++)

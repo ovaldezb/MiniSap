@@ -407,7 +407,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
     {
       var searchword;
       searchword = $scope.nombre_cliente != '' ? $scope.nombre_cliente : 'vacio';
-      $http.get(pathClte+'loadbynombre/'+searchword).
+      $http.get(pathClte+'loadbynombre/'+$scope.idempresa +'/'+searchword).
       then(function(res)
       {
         if(res.data.length > 0)
@@ -441,14 +441,16 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
     $scope.buscavendedor = function(event)
     {
       var searchword;
-      $('#listaVendedores').show();
       searchword = $scope.nombre_vendedor != '' ? $scope.nombre_vendedor : 'vacio';
-      $http.get(pathVend+'getvendedores/'+searchword).
+      $http.get(pathVend+'getvendedores/'+$scope.idempresa+'/'+searchword).
       then(function(res)
       {
-        if(res.status == 200)
+        if(res.data.length > 0)
         {
           $scope.lstVendedor = res.data;
+          $('#listaVendedores').show();
+        }else {
+          $scope.lstVendedor = [];
         }
       }).catch(function(err)
       {
@@ -570,6 +572,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
         $scope.rgstracompra = false;
         $('#regcompra').prop('disabled',true);
         $scope.getNextDocTpv();
+        alert('La venta se registro exitosamente');
       }).
       catch(function(err)
       {

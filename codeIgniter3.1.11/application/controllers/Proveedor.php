@@ -18,7 +18,6 @@ class Proveedor extends CI_Controller
 			$data['proveedores'] = $this->catalogosmodel->get_tipo_prov();
 			$data['alcanceprov'] = $this->catalogosmodel->get_alcance_prov();
 			$data['bancos'] = $this->catalogosmodel->get_bancos();
-			$data['id_empresa'] = $_SESSION['idempresa'];
 			$this->load->view('proveedor',$data);
 		}else {
 			$error['error'] = '';
@@ -26,9 +25,9 @@ class Proveedor extends CI_Controller
     }
 	}
 
-	function load()
+	function loadByEmpresa($idEmpresa)
 	{
-		$data = $this->proveedormodel->get_proveedores();
+		$data = $this->proveedormodel->get_proveedores_by_empresa($idEmpresa);
 		return $this->output
             ->set_content_type('application/json')
             ->set_output($data);
@@ -121,13 +120,13 @@ class Proveedor extends CI_Controller
 			->set_output(json_encode(array('value'=>$res)));
 	}
 
-	function getproveedores($desc)
+	function getproveedores($idEmpresa,$desc)
 	{
 		if($desc != 'vacio'){
-			$data = $this->proveedormodel->get_proveedor_by_desc($desc.'%');
+			$data = $this->proveedormodel->get_proveedor_by_desc($idEmpresa,$desc.'%');
 		}else
 		{
-			$data = $this->proveedormodel->get_proveedores();
+			$data = $this->proveedormodel->get_proveedores_by_empresa($idEmpresa);
 		}
 
 		return $this->output

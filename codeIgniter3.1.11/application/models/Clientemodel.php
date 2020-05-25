@@ -11,32 +11,23 @@ class Clientemodel extends CI_model
 		$this->conn = $this->postgresdb->getConn();
 	}
 
-	function get_user_json()
+	function get_clientes_by_empresa($idEmpresa)
 	{
-		$query = 'SELECT * FROM "CLIENTE" WHERE "ACTIVO" = true ORDER BY "CLAVE"';
-		if($this->conn)
-		{
-			$result = pg_fetch_all(pg_query($this->conn, $query));
-		}
+		$query = 'SELECT * FROM "CLIENTE" WHERE "ACTIVO" = true AND "ID_EMPRESA" = $1 ORDER BY "CLAVE"';
+		pg_prepare($this->conn, "my_query", $query);
+		$result =  pg_fetch_all(pg_execute($this->conn, "my_query", array($idEmpresa)));
 		return json_encode($result,JSON_NUMERIC_CHECK);
 	}
 
-	/*function get_last_user()
-	{
-		$query = 'SELECT * FROM "CLIENTE" ORDER BY "ID_CLIENTE" DESC LIMIT 1';
-		$result = pg_fetch_all(pg_query($this->conn, $query));
-		return json_encode($result);
-	}*/
-
-	function get_cliente_by_id($_id)
+	function get_cliente_by_id($_idCliente)
 	{
 		$query = 'SELECT * FROM "CLIENTE" WHERE "ID_CLIENTE" = $1 AND "ACTIVO" = true';
-		$result = pg_prepare($this->conn, "my_query", $query);
-		$result =  pg_fetch_all(pg_execute($this->conn, "my_query", array($_id)));
+		pg_prepare($this->conn, "my_query", $query);
+		$result =  pg_fetch_all(pg_execute($this->conn, "my_query", array($_idCliente)));
 		return json_encode($result,JSON_NUMERIC_CHECK);
 	}
 
-	function get_cliente_by_id_verif($_id)
+	function get_cliente_by_id_verif($_idCliente)
 	{
 		$query = 'SELECT TRIM(C."CLAVE") as "CLAVE",C."NOMBRE",C."DOMICILIO","CP",TRIM("TELEFONO") as "TELEFONO",
 		"CONTACTO",TRIM("RFC") as "RFC",TRIM("CURP") as "CURP",
@@ -59,32 +50,36 @@ class Clientemodel extends CI_model
 		WHERE "ID_CLIENTE" = $1
 		AND "ACTIVO" = true';
 		$result = pg_prepare($this->conn, "my_query", $query);
-		$result =  pg_fetch_all(pg_execute($this->conn, "my_query", array($_id)));
+		$result =  pg_fetch_all(pg_execute($this->conn, "my_query", array($_idCliente)));
 		return json_encode($result,JSON_NUMERIC_CHECK);
 	}
 
-	function get_clientes_by_nombre($nombre)
+	function get_clientes_by_nombre($idempresa,$nombre)
 	{
-		$query = 'SELECT * FROM "CLIENTE" WHERE UPPER("NOMBRE") LIKE UPPER($1) AND "ACTIVO" = true';
+		$query = 'SELECT * FROM "CLIENTE"
+							WHERE UPPER("NOMBRE")
+							LIKE UPPER($1)
+							AND "ID_EMPRESA" = $2
+							AND "ACTIVO" = true';
 		$result = pg_prepare($this->conn, "my_query", $query);
-		$result =  pg_fetch_all(pg_execute($this->conn, "my_query", array($nombre)));
+		$result =  pg_fetch_all(pg_execute($this->conn, "my_query", array($nombre,$idempresa)));
 		return json_encode($result,JSON_NUMERIC_CHECK);
 	}
 
 
 	function crea_cliente($clave,$nombre,$domicilio,$cp,$telefono, $contacto, $rfc, $curp, $id_tipo_cliente, $revision, $pagos, $id_forma_pago, $id_vendedor,$id_uso_cfdi,$email,$num_proveedor,$notas,$diascred,$idempresa)
 	 {
-		$pstmt = 'SELECT * FROM crea_cliente($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19);';
+		$pstmt = 'SELECT * FROM crea_cliente($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19)';
 		pg_prepare($this->conn,"insertquery",$pstmt);
 		$result = pg_fetch_all(pg_execute($this->conn, "insertquery", array($clave,$nombre,$domicilio,$cp,$telefono, $contacto, $rfc, $curp, $id_tipo_cliente, $revision, $pagos, $id_forma_pago, $id_vendedor,$id_uso_cfdi,$email,$num_proveedor,$notas,$diascred,$idempresa)));
 		return json_encode($result);
 	}
 
-	function delete_cliente($_id)
+	function delete_cliente($_idCliente)
 	{
 		$query = 'UPDATE "CLIENTE" SET "ACTIVO" = false WHERE "ID_CLIENTE" = $1';
 		$result = pg_prepare($this->conn,"deletequery",$query);
-		$result = pg_execute($this->conn,"deletequery",array($_id));
+		$result = pg_execute($this->conn,"deletequery",array($_idCliente));
 		return $result;
 	}
 

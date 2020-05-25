@@ -28,11 +28,23 @@ app.controller('myCtrlClientes', function($scope,$http)
 
   $scope.init = function()
   {
+    $http.get(pathAcc+'getdata',{responseType:'json'}).
+    then(function(res){
+      if(res.data.value=='OK'){
+        $scope.idempresa = res.data.idempresa;
+        $scope.getDataInit();
+      }
+    }).catch(function(err){
+      console.log(err);
+    });
+  }
+
+  $scope.getDataInit = function()
+  {
     var valor=0;
-    $http.get(pathClte+'load', { responseType: 'json'}).
+    $http.get(pathClte+'loadByEmpresa/'+$scope.idempresa, { responseType: 'json'}).
     then(function(res)
     {
-      console.log(res);
       if(res.data.length > 0)
       {
         valor = 1;
@@ -52,7 +64,7 @@ app.controller('myCtrlClientes', function($scope,$http)
 
   $scope.getNextDocClte = function()
   {
-    $http.get(pathUtils+'incremento/CLTE/'+$('#idempresa').val()+'/4').
+    $http.get(pathUtils+'incremento/CLTE/'+$scope.idempresa+'/4').
     then(function(res)
     {
       $scope.clave = res.data[0].VALOR;
@@ -118,7 +130,7 @@ app.controller('myCtrlClientes', function($scope,$http)
       num_proveedor:$scope.num_proveedor,
       notas:$scope.notas,
       dcredito:$scope.dcredito,
-      idempresa:$('#idempresa').val()
+      idempresa:$scope.idempresa
     };
 
     if($scope.msjBoton =='Agregar')
@@ -127,7 +139,7 @@ app.controller('myCtrlClientes', function($scope,$http)
       $http.post(pathClte+'save', dataClte).
       then(function(res)
       {
-        if(res.data.length > 0) {          
+        if(res.data.length > 0) {
           var row = {
             CLAVE:$scope.clave,
             NOMBRE:$scope.nombre,
@@ -138,6 +150,7 @@ app.controller('myCtrlClientes', function($scope,$http)
           $scope.lstCliente.push(row);
           $scope.cancelCliente();
           $scope.getNextDocClte();
+          alert('El cliente se insertó correctamente');
         }
       }).catch(function(err) {
         console.log(err);

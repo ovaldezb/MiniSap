@@ -22,13 +22,13 @@ class Tpvmodel extends CI_model
 
 		$query = 'SELECT P."ID_PRODUCTO",
 							"DESCRIPCION",
-							"CODIGO",
+							TRIM("CODIGO") as "CODIGO",
 							to_char("PRECIO_LISTA",\'L999,999,999.00\') as "PREC_LISTA_DISP",
 							"PRECIO_LISTA",
 							to_char("PRECIO_COMPRA",\'L999,999,999.00\') AS "PRECIO_COMPRA_DISP",
 							"PRECIO_COMPRA",
 							"IVA",
-							"UNIDAD_MEDIDAD",
+							TRIM("UNIDAD_MEDIDAD") as "UNIDAD_MEDIDAD",
 							SUM(S."STOCK") as "STOCK",
 							"IMAGEN","ES_PROMO","ES_DESCUENTO","PRECIO_PROMO","PRECIO_DESCUENTO","TIPO_PS"
 							FROM "PRODUCTO" as P INNER JOIN  "PRODUCTO_SUCURSAL" as S
@@ -45,7 +45,7 @@ class Tpvmodel extends CI_model
 							ORDER BY "DESCRIPCION"';
 		$result = pg_prepare($this->conn, "selectquery", $query);
 		$result =  pg_fetch_all(pg_execute($this->conn, "selectquery", array($desc,$idEmpresa)));
-		return json_encode($result);
+		return json_encode($result,JSON_NUMERIC_CHECK);
 	}
 
 	function get_items_vacio($idEmpresa,$tipo_req)

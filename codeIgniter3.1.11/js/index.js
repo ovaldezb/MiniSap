@@ -105,7 +105,7 @@ app.controller('myCtrlIndex', function($scope,$http,$location,$window)
       $scope.anioFiscal = $scope.lstFYEmpr[$scope.indxdFyEmp].EJER_FISC;
       $scope.indx = $location.absUrl().indexOf('#');
       $scope.myUrl = $location.absUrl().substring(0, $scope.indx+3);
-      $window.location.href = $scope.myUrl;      
+      $window.location.href = $scope.myUrl;
     }).
     catch(function(err)
     {
@@ -117,6 +117,16 @@ app.controller('myCtrlIndex', function($scope,$http,$location,$window)
   $scope.selectEmpresa = function()
   {
     $scope.isEmpPermActiv = true;
+  }
+
+  $scope.cerrarSelectEmpr = function()
+  {
+    if($scope.nombreEmpresa == '')
+    {
+      alert('Debe seleccionar una empresa');
+      return;
+    }
+    $scope.isEmpPermActiv = false;
   }
 
   $scope.selectEmpPerm = function(idEmp,indx)

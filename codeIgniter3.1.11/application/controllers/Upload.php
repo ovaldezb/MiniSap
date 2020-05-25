@@ -17,7 +17,7 @@ class Upload extends CI_Controller {
   		}else {
   			$error['error'] = '';
         $this->load->view('login',$error);
-      }      
+      }
     }
 
 		public function startupload($name,$idempresa)
@@ -58,9 +58,9 @@ class Upload extends CI_Controller {
 					$dorename = rename($config['upload_path'].$data['upload_data']['file_name'],$config['upload_path'].$this->input->post('nfname').$data['upload_data']['file_ext']);
 				}
 				$data['nombre'] = $this->input->post('nfname');
-				$data['dorename'] = $dorename;
+				$data['idempresa'] = $this->input->post('idempresa');
 				$this->load->view('upload_success', $data);
 			}
-        }
+    }
 }
 ?>
