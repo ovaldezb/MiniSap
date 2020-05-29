@@ -70,7 +70,6 @@ app.controller('myCtrlSucursal', function($scope,$http)
       $http.post(pathSucr+'save',dataSuc).
       then(function(res)
       {
-        $('#message').html(res.data);
         if(res.data.length > 0)
         {
           var dataSucAdd =
@@ -126,11 +125,11 @@ app.controller('myCtrlSucursal', function($scope,$http)
       {
         $scope.clave = res.data[0].CLAVE.trim();
         $scope.direccion = res.data[0].DIRECCION;
-        $scope.responsable = res.data[0].RESPONSABLE.trim();
-        $scope.telefono = res.data[0].TELEFONO;
-        $scope.cp = res.data[0].CP
-        $scope.alias = res.data[0].ALIAS.trim();
-        $scope.notas = res.data[0].NOTAS;
+        $scope.responsable = res.data[0].RESPONSABLE!=null?res.data[0].RESPONSABLE.trim():'';
+        $scope.telefono = res.data[0].TELEFONO!=null?res.data[0].TELEFONO:'';
+        $scope.cp = res.data[0].CP!=null?res.data[0].CP:'';
+        $scope.alias = res.data[0].ALIAS!=null?res.data[0].ALIAS.trim():'';
+        $scope.notas = res.data[0].NOTAS!=null?res.data[0].NOTAS:'';
         $scope.isDivSucActivo = true;
         $scope.btnAccion = 'Actualizar';
       }

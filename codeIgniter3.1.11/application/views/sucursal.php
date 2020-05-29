@@ -3,49 +3,51 @@
   <div class="notification" >
 	<h1 class="title has-text-centered">Administración de Sucursales</h1>
 	</div>
-	<nav class="level">
-		<div class="level-left">
-			<div class="level-item">
-				<p class="subtitle is-5">
-					<strong>Filtro:</strong>
-				</p>
-			</div>
-			<div class="level-item">
-				<input name="sucursal" class="input is-small" type="input" onKeyUp="doFilter(this.value,'tablaprovedores');" title="Ingrese cualquier dato que desee encontrar, Ej. nombre, código, precio ">
-			</div>
-		</div>
-		<div class="level-right">
-			<p class="level-item">
-				<a ng-click="openDivAgregar()">
-					<span class="icon has-text-success">
-						<i title="Agrega una nueva Sucursal" class="fas fa-plus-square" ></i>
-					</span>
-				</a>
-			</p>
-			<p class="level-item">
-				<a ng-click="update()">
-					<span class="icon has-text-info">
-						<i title="Edita una Sucursal" class="fas fa-edit" ></i>
-					</span>
-				</a>
-			</p>
-			<p class="level-item">
-				<a ng-click="preguntaEliminar()">
-					<span class="icon has-text-danger">
-						<i title="Elimna una Sucursal" class="far fa-trash-alt"></i>
-					</span>
-				</a>
-			</p>
-		</div>
-	</nav>
-  <div class="box" style="display:{{isDivSucActivo ? 'block':'none'}}" >
+  <div class="box" ng-show="!isDivSucActivo">
+  	<nav class="level">
+  		<div class="level-left">
+  			<div class="level-item">
+  				<p class="subtitle is-5">
+  					<strong>Filtro:</strong>
+  				</p>
+  			</div>
+  			<div class="level-item">
+  				<input name="sucursal" class="input is-small" type="input" onKeyUp="doFilter(this.value,'tablaprovedores');" title="Ingrese cualquier dato que desee encontrar, Ej. nombre, código, precio ">
+  			</div>
+  		</div>
+  		<div class="level-right">
+  			<p class="level-item">
+  				<a ng-click="openDivAgregar()">
+  					<span class="icon has-text-success">
+  						<i title="Agrega una nueva Sucursal" class="fas fa-plus-square" ></i>
+  					</span>
+  				</a>
+  			</p>
+  			<p class="level-item">
+  				<a ng-click="update()">
+  					<span class="icon has-text-info">
+  						<i title="Edita una Sucursal" class="fas fa-edit" ></i>
+  					</span>
+  				</a>
+  			</p>
+  			<p class="level-item">
+  				<a ng-click="preguntaEliminar()">
+  					<span class="icon has-text-danger">
+  						<i title="Elimna una Sucursal" class="far fa-trash-alt"></i>
+  					</span>
+  				</a>
+  			</p>
+  		</div>
+  	</nav>
+  </div>
+  <div class="box" ng-show="isDivSucActivo">
     <form name="myForm">
       <div class="columns">
         <div class="column is-1">
           <label class="label">Clave:</label>
         </div>
         <div class="column is-1">
-          <input type="text" name="clave" ng-model="clave" class="input is-small" required>
+          <input type="text" name="clave" ng-model="clave" class="input is-small" required placeholder="Clave">
         </div>
       </div>
       <div class="columns is-multiline">
@@ -53,7 +55,7 @@
           <label class="label">Dirección:</label>
         </div>
         <div class="column is-4">
-          <textarea class="textarea" ng-model="direccion" name="direccion" required></textarea>
+          <textarea class="textarea" ng-model="direccion" name="direccion" ></textarea>
         </div>
       </div>
       <div class="columns">
@@ -61,15 +63,15 @@
           <label class="label">CP:</label>
         </div>
         <div class="column is-2">
-          <input type="text" name="cp" ng-model="cp" class="input is-small" required maxlength="5">
+          <input type="text" name="cp" ng-model="cp" class="input is-small"  maxlength="5" placeholder="Código Postal">
         </div>
       </div>
       <div class="columns">
-        <div class="column is-narrow" style="width:100px">
+        <div class="column is-narrow" style="width:111px">
           <label class="label">Responsable:</label>
         </div>
         <div class="column is-2">
-          <input type="text" name="responsable" ng-model="responsable" class="input is-small" required>
+          <input type="text" name="responsable" ng-model="responsable" class="input is-small" placeholder="Responsable" >
         </div>
       </div>
       <div class="columns">
@@ -77,7 +79,7 @@
           <label class="label">Teléfono:</label>
         </div>
         <div class="column is-2">
-          <input type="text" name="telefono" ng-model="telefono" class="input is-small" required maxlength="10">
+          <input type="text" name="telefono" ng-model="telefono" class="input is-small" placeholder="Teléfono"  maxlength="10">
         </div>
       </div>
       <div class="columns">
@@ -85,7 +87,7 @@
           <label class="label">Alias:</label>
         </div>
         <div class="column is-2">
-          <input type="text" name="alias" ng-model="alias" class="input is-small" required>
+          <input type="text" name="alias" ng-model="alias" class="input is-small" placeholder="Alias" required>
         </div>
       </div>
       <div class="columns">
@@ -94,7 +96,7 @@
         </div>
       </div>
       <div class="columns is-gapless is-multiline is-mobile">
-        <div class="column is-5">
+        <div class="column is-5" style="margin-top:-20px">
           <textarea class="textarea" name="notas" ng-model="notas"></textarea>
         </div>
       </div>
@@ -108,8 +110,7 @@
 			</div>
     </form>
   </div>
-  <div id="message"></div>
-  <div class="table-container" style="border: 2px solid black">
+  <div class="table-container" style="border: 2px solid black" ng-show="!isDivSucActivo">
     <table style="width:100%">
       <tr>
         <td>

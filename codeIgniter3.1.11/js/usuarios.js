@@ -153,8 +153,7 @@ app.controller('myCtrlUsuarios', function($scope,$http)
       idusuario:$scope.idUsuario,
       nombre:$scope.nombre,
       usrname:$scope.username,
-      paswd:$scope.password==undefined ? 'false':$scope.password,
-      idsucursal:$('#sucursal').val(),
+      paswd:$scope.password==undefined ? 'false':$scope.password,      
       updtpwd:$scope.password==undefined ? 'false' : 'true'
     };
 

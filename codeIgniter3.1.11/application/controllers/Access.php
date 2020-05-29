@@ -6,6 +6,7 @@ class Access extends CI_Controller {
 		parent::__construct();
 		$this->load->model('accessmodel');
     $this->load->model('procesosmodel');
+    $this->load->model('sucursalmodel');
     $this->load->library('session');
 		$this->load->helper('url');
 	}
@@ -34,13 +35,13 @@ class Access extends CI_Controller {
     {
       $data = array(
         'username' => $this->input->post('username'),
-        'idsucursal' => $usuario['ID_SUCURSAL'],
         'idusuario' => $usuario['ID_USUARIO']
       );
       $this->session->set_userdata($data);
       $user['nombre'] = $usuario['NOMBRE'];
       $user['idusuario'] = $usuario['ID_USUARIO'];
       $user['modproc'] = $this->procesosmodel->get_modulos_procesos_by_usuario($usuario['ID_USUARIO']);
+
       $this->load->view('index',$user);
     }else {
       $error['error'] = 'Usuario o contraseña no coinciden';
@@ -59,14 +60,21 @@ class Access extends CI_Controller {
     if(isset($_SESSION['idempresa'])){
       unset(
           $_SESSION['idempresa'],
-          $_SESSION['aniofiscal']
+          $_SESSION['aniofiscal'],
+          $_SESSION['idsucursal']
       );
     }
+    $sucursal = $this->accessmodel->get_idSucursal_by_usuario($_SESSION['idusuario'],$_SESSION['idempresa']);
+    $suc_dec = json_decode($sucursal,true);
     $data = array(
       'idempresa' => $idempresa,
-      'aniofiscal' => $fy
+      'aniofiscal' => $fy,
+      'idsucursal' => $suc_dec['ID_SUCURSAL']
     );
     $this->session->set_userdata($data);
+    return  $this->output
+            ->set_content_type('application/json')
+            ->set_output($sucursal);
   }
 
   public function getdata()

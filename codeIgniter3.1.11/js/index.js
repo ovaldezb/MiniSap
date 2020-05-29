@@ -50,13 +50,16 @@ app.controller('myCtrlIndex', function($scope,$http,$location,$window)
   $scope.idusuario = $('#idusuario').val();
   $scope.lstEmprPerm = [];
   $scope.lstFYEmpr = [];
-  $scope.idSelEmp = '';
+  $scope.lstSucursal = [];
+  $scope.idEmpresaSelected = '';
   $scope.idSelFYEmp = '';
   $scope.indxdSelEmp = '';
   $scope.indxdFyEmp = '';
   $scope.nombreEmpresa = '';
   $scope.anioFiscal = '';
   $scope.isEmpPermActiv = true;
+  $scope.idSucEmp = 0;
+  $scope.sucursalEmpresa = '';
   $scope.init = function()
   {
     $http.get(pathEmpr+'getemppermbyusr/'+$scope.idusuario,{responseType:'json'}).
@@ -65,9 +68,9 @@ app.controller('myCtrlIndex', function($scope,$http,$location,$window)
       if(res.data.length > 0)
       {
         $scope.lstEmprPerm = res.data;
-        $scope.idSelEmp = $scope.lstEmprPerm[0].ID_EMPRESA;
+        $scope.idEmpresaSelected = $scope.lstEmprPerm[0].ID_EMPRESA;
         $scope.indxdSelEmp = 0;
-        $scope.obtieneFYEmp($scope.idSelEmp);
+        $scope.obtieneFYEmp($scope.idEmpresaSelected);
       }else {
         alert('El usuario no tiene Empresas asignadas, favor de contactar a su administrador!')
       }
@@ -98,7 +101,7 @@ app.controller('myCtrlIndex', function($scope,$http,$location,$window)
 
   $scope.guardarEmpPerm = function()
   {
-    $http.put(pathAcc+'setempfy/'+$scope.idSelEmp+'/'+$scope.idSelFYEmp).
+    $http.get(pathAcc+'setempfy/'+$scope.idEmpresaSelected+'/'+$scope.idSelFYEmp,{responseType:'json'}).
     then(function(res)
     {
       $scope.nombreEmpresa = $scope.lstEmprPerm[$scope.indxdSelEmp].NOMBRE;
@@ -106,12 +109,28 @@ app.controller('myCtrlIndex', function($scope,$http,$location,$window)
       $scope.indx = $location.absUrl().indexOf('#');
       $scope.myUrl = $location.absUrl().substring(0, $scope.indx+3);
       $window.location.href = $scope.myUrl;
+      $scope.sucursalEmpresa = res.data[0].ID_SUCURSAL;
+      $scope.getLstSucursales();
     }).
     catch(function(err)
     {
       console.log(err);
     });
     $scope.isEmpPermActiv = false;
+  }
+
+  $scope.getLstSucursales = function()
+  {
+    $http.get(pathSucr+'load/'+$scope.idEmpresaSelected,{responseType:'json'}).
+    then((res)=>{
+      if(res.data.length > 0)
+      {
+        $scope.lstSucursal = res.data;
+      }
+    }).
+    catch((err)=>{
+      console.log(err);
+    });
   }
 
   $scope.selectEmpresa = function()
@@ -131,7 +150,7 @@ app.controller('myCtrlIndex', function($scope,$http,$location,$window)
 
   $scope.selectEmpPerm = function(idEmp,indx)
   {
-    $scope.idSelEmp = idEmp;
+    $scope.idEmpresaSelected = idEmp;
     $scope.indxdSelEmp = indx;
     $scope.obtieneFYEmp(idEmp);
   }
@@ -141,4 +160,17 @@ app.controller('myCtrlIndex', function($scope,$http,$location,$window)
     $scope.idSelFYEmp = ejerFisc;
     $scope.indxdFyEmp = index;
   }
+
+  $scope.cambiaSucursal = ()=>{
+    $http.put(pathSucr+'updtscursaluser/'+$scope.idEmpresaSelected+'/'+$scope.sucursalEmpresa).
+    then((res)=>{      
+      if(res.data.value == 'OK')
+      {
+        alert('Se actualizó la sucursal!');
+      }
+    }).catch((err)=>{
+      console.log(err);
+    });
+  }
+
 });

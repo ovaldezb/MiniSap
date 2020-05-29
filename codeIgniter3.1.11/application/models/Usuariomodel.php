@@ -112,10 +112,11 @@ class Usuariomodel extends CI_model
 
 	function inserta_empperm_by_user($idusuario,$idempresa)
 	{
-		$query = 'INSERT INTO "USUARIO_EMPRESA" ("ID_USUARIO","ID_EMPRESA","PERMITIDO")
-							VALUES($1,$2,$3)';
+		/*$query = 'INSERT INTO "USUARIO_EMPRESA" ("ID_USUARIO","ID_EMPRESA","PERMITIDO")
+							VALUES($1,$2,$3)';*/
+		$query = 'SELECT * FROM insert_emp_perm($1,$2)';
 		pg_prepare($this->conn,"insert_empperm",$query);
-		$result = pg_execute($this->conn, "insert_empperm", array($idusuario,$idempresa,true));
+		$result = pg_execute($this->conn, "insert_empperm", array($idusuario,$idempresa));
 		return json_encode($result);
 	}
 
@@ -137,11 +138,11 @@ class Usuariomodel extends CI_model
 		return json_encode($result,JSON_NUMERIC_CHECK);
 	}
 
-	public function update_usuario($idusuario,$nombre,$usrname,$paswd,$idsucursal,$updtpwd)
+	public function update_usuario($idusuario,$nombre,$usrname,$paswd,$updtpwd)
 	{
-		$query = 'SELECT * FROM actualiza_usuario($1,$2,$3,$4,$5,$6)';
+		$query = 'SELECT * FROM actualiza_usuario($1,$2,$3,$4,$5)';
 		pg_prepare($this->conn,"updt_user",$query);
-		$result = pg_fetch_all(pg_execute($this->conn, "updt_user", array($idusuario,$nombre,$usrname,$paswd,$idsucursal,$updtpwd)));
+		$result = pg_fetch_all(pg_execute($this->conn, "updt_user", array($idusuario,$nombre,$usrname,$paswd,$updtpwd)));
 		return json_encode($result,JSON_NUMERIC_CHECK);
 	}
 

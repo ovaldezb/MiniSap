@@ -5,7 +5,6 @@ class Usuarios extends CI_Controller {
   function __construct() {
     parent::__construct();
     $this->load->model('usuariomodel');
-    $this->load->model('sucursalmodel');
     $this->load->helper('url');
     $this->load->library('session');
   }
@@ -14,8 +13,7 @@ class Usuarios extends CI_Controller {
   {
     if(isset($_SESSION['username']))
     {
-      $data['sucursales'] = $this->sucursalmodel->get_sucursales_raw();
-      $this->load->view('usuarios',$data);
+      $this->load->view('usuarios');
 		}else {
 			$error['error'] = '';
       $this->load->view('login',$error);
@@ -80,8 +78,7 @@ class Usuarios extends CI_Controller {
       $data['idusuario'],
       $data['nombre'],
       $data['usrname'],
-      password_hash($data['paswd'], PASSWORD_BCRYPT),
-      $data['idsucursal'],
+      password_hash($data['paswd'], PASSWORD_BCRYPT),      
       $data['updtpwd']
     );
     return $this->output

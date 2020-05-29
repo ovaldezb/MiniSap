@@ -162,23 +162,6 @@
         </div>
         <br>
         <div class="columns">
-          <div class="column sucursal">
-            <table style="width:100%" >
-              <tr>
-                <td>Sucursal</td>
-                <td>
-                  <select id="sucursal">
-<?php foreach($sucursales as $suc ) { ?>
-                    <option value="<?php echo $suc['ID_SUCURSAL'] ?>"><?php echo $suc['ALIAS']?>-<?php echo $suc['DIRECCION'] ?></option>
-<?php }?>
-                  </select>
-                </td>
-              </tr>
-            </table>
-          </div>
-        </div>
-        <br>
-        <div class="columns">
           <div class="column empperm ">
             <table style="width:100%">
               <tr>

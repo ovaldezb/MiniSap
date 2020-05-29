@@ -122,11 +122,21 @@
             </a>
             <span>{{nombreEmpresa}}</span>
           </p>
+
           <p class="control">
             <span class="icon">
               <i class="far fa-calendar-alt"></i>
             </span>
             <span>{{anioFiscal}}</span>
+          </p>
+          <p class="control">
+            <span class="icon">
+              <i class="fas fa-store-alt"></i>
+            </span>
+              <select ng-change="cambiaSucursal()" ng-model="sucursalEmpresa" ng-options="x.ID_SUCURSAL as x.ALIAS for x in lstSucursal">                
+              </select>
+            <span>
+            </span>
           </p>
           <p class="control">
               <a class="button is-primary" href="#!clss">
@@ -204,7 +214,7 @@
             <td>
               <div style="width:100%; height:300px; overflow:auto;">
                 <table style="width:100%" class="table">
-                  <tr ng-repeat="x in lstEmprPerm" ng-click="selectEmpPerm(x.ID_EMPRESA,$index)" ng-class="{selected: x.ID_EMPRESA === idSelEmp}">
+                  <tr ng-repeat="x in lstEmprPerm" ng-click="selectEmpPerm(x.ID_EMPRESA,$index)" ng-class="{selected: x.ID_EMPRESA === idEmpresaSelected}">
                     <td>{{x.NOMBRE}}</td>
                   </tr>
                 </table>
