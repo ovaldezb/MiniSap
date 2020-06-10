@@ -41,7 +41,7 @@
 			</p>
   	</div>
 	</nav>
-	<div class="box" style="display:{{isDivEmpActivo ? 'block':'none'}}">
+	<div class="box" ng-show="isDivEmpActivo">
 		<div class="box">
 			<div class="columns">
 				<div class="column is-1">
@@ -155,7 +155,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="container" style="border: 2px solid black">
+	<div class="container" style="border: 2px solid black" ng-show="!isDivEmpActivo">
 		<table style="width:100%">
 			<tr>
 				<td>

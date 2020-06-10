@@ -1,5 +1,3 @@
-
-
 app.controller('myCtrlClientes', function($scope,$http)
 {
   $scope.lstCliente = [];

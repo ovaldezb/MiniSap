@@ -10,10 +10,16 @@ class Utils extends CI_Controller
 
   function incremento($nombre,$idempresa,$longitud)
   {
-    $data = $this->catalogosmodel->get_incremento_by_name($nombre,$idempresa,$longitud);
     return $this->output
             ->set_content_type('application/json')
-            ->set_output($data);
+            ->set_output($this->catalogosmodel->get_incremento_by_name($nombre,$idempresa,$longitud));
+  }
+
+  function lineaempr($idEmpresa)
+  {
+    return $this->output
+            ->set_content_type('application/json')
+            ->set_output($this->catalogosmodel->get_linea_by_empresa($idEmpresa));
   }
 }
 ?>

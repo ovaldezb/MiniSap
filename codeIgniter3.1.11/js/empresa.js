@@ -101,19 +101,21 @@ app.controller('myCtrlEmpresa', function($scope,$http)
   	$http.get(pathEmpr+'loadbyid/'+$scope.idEmpresa, {responseType: 'json'}).
     then(function(res)
   	{
+      console.log(res);
   		if(res.data.length > 0)
   		{
-  			$scope.nombre = res.data[0].nombre;
+  			$scope.nombre = res.data[0].NOMBRE;
   			$scope.domicilio = res.data[0].DOMICILIO;
-  			$scope.rfc = res.data[0].rfc;
+  			$scope.rfc = res.data[0].RFC;
   			$scope.ejercicio_fiscal = res.data[0].EJER_FISC;
   			$('#regimen').val(res.data[0].ID_REGIMEN);
   			$scope.cuenta_resultado = res.data[0].CUENTA_RESULTADO;
   			$scope.resultado_anterior = res.data[0].RESULTADO_ANTERIOR;
-  			$scope.dig1 = res.data[0].DIGITO_X_CUENTA.split("")[0];
-  			$scope.dig2 = res.data[0].DIGITO_X_CUENTA.split("")[1];
-  			$scope.dig3 = res.data[0].DIGITO_X_CUENTA.split("")[2];
-  			$scope.dig4 = res.data[0].DIGITO_X_CUENTA.split("")[3];
+        var digxcta = res.data[0].DIGITO_X_CUENTA.toString().split("");
+  			$scope.dig1 = digxcta[0];
+  			$scope.dig2 = digxcta[1];
+  			$scope.dig3 = digxcta[2];
+  			$scope.dig4 = digxcta[3];
         $scope.isDivEmpActivo = true;
         $scope.actnBton = 'Actualizar';
   		}

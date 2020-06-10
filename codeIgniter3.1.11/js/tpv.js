@@ -142,14 +142,12 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
   {
     if($scope.captura_rapida)
     {
-      //$('#codprod').show();
       $('#prod_desc').prop('disabled',true);
       $('#codigo_prodto').prop('disabled',false);
       $scope.counter = 1;
   		$scope.cantidad = $scope.counter;
     }else {
       {
-        //$('#codprod').hide();
         $('#prod_desc').prop('disabled',false);
         $('#codigo_prodto').prop('disabled',true);
         $scope.counter = 0;
@@ -196,7 +194,6 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
     	$http.get(pathTpv+'getitems/'+$scope.idempresa+'/'+searchword+'/V', {responseType: 'json'}).
     	then(function(res)
     	{
-        console.log(res);
     		if(res.status == '200')
     		{
           $scope.lstProdBusqueda = res.data;
@@ -561,6 +558,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
         $scope.docto = '';
         $scope.idcliente = '';
         $scope.nombre_cliente = '';
+        $scope.claveclte = '';
         $scope.idvendedor = '';
         $scope.nombre_vendedor = '';
         $scope.pago_efectivo = 0;

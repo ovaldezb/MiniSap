@@ -14,6 +14,7 @@ class Compras extends CI_Controller
 	{
 		if(isset($_SESSION['username']))
     {
+			/*Validacion de acceso*/
 			$data['tipopago'] = $this->catalogosmodel->get_tipo_pago();
 			$data['monedas'] = $this->catalogosmodel->get_monedas();
 			$this->load->view('compras',$data);

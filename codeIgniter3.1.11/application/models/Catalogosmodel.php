@@ -168,5 +168,13 @@ class Catalogosmodel extends CI_model
 		return json_encode($result);
 	}
 
+	function get_linea_by_empresa($idEmpresa)
+	{
+		$query = 'SELECT "ID_LINEA",TRIM("NOMBRE") as "NOMBRE" FROM "LINEA" WHERE "ID_EMPRESA" = $1';
+		pg_prepare($this->conn,"qry_linea_emp",$query);
+		$result = pg_fetch_all(pg_execute($this->conn,"qry_linea_emp",array($idEmpresa)));
+		return json_encode($result,JSON_NUMERIC_CHECK);
+	}
+
 }
 ?>

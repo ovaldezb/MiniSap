@@ -64,12 +64,12 @@ class Access extends CI_Controller {
           $_SESSION['idsucursal']
       );
     }
-    $sucursal = $this->accessmodel->get_idSucursal_by_usuario($_SESSION['idusuario'],$_SESSION['idempresa']);
+    $sucursal = $this->accessmodel->get_idSucursal_by_usuario($_SESSION['idusuario'],$idempresa);
     $suc_dec = json_decode($sucursal,true);
     $data = array(
       'idempresa' => $idempresa,
       'aniofiscal' => $fy,
-      'idsucursal' => $suc_dec['ID_SUCURSAL']
+      'idsucursal' => $suc_dec[0]['ID_SUCURSAL']
     );
     $this->session->set_userdata($data);
     return  $this->output

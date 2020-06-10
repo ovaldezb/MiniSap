@@ -10,6 +10,7 @@ var FooPicker = (function () {
   'use strict';
 
   var hasEventListener = window.addEventListener;
+
   var weeks = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];
   var months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
@@ -30,6 +31,7 @@ var FooPicker = (function () {
 
     // Show date picker on click
     _self.showPicker = function() {
+
       _self.buildPicker();
       var pickerField = document.getElementById(_id);
       var pickerDiv = document.getElementById('foopicker-' + _id);
@@ -176,7 +178,7 @@ var FooPicker = (function () {
         addEvent(pickerDiv, 'click', _self.handlePickerClick, false);
       }
       document.addEventListener('keydown', keyDownListener, false);
-      
+
       // Close the date picker if clicked anywhere outside the picker element
       var htmlRoot = document.getElementsByTagName('html')[0];
       addEvent(htmlRoot, 'click', _self.handleDocumentClick, false);
@@ -186,7 +188,7 @@ var FooPicker = (function () {
       event.stopPropagation();
       if (!_self.isDateClicked) {
         _self.isPickerClicked = true;
-      }   
+      }
     };
 
     _self.handleDocumentClick = function(event) {
@@ -200,9 +202,9 @@ var FooPicker = (function () {
     };
 
     _self.buildTemplate = function() {
-      var pickerDiv = document.createElement('div');	  
+      var pickerDiv = document.createElement('div');
       pickerDiv.id = 'foopicker-' + _id;
-		document.body.appendChild(pickerDiv);		
+		document.body.appendChild(pickerDiv);    
 	  addListeners(_self);
     };
 
@@ -496,7 +498,7 @@ var FooPicker = (function () {
       if (pickerDiv) {
         var monthSelect = pickerDiv.getElementsByClassName('foopicker__date--month')[0];
         var yearSelect = pickerDiv.getElementsByClassName('foopicker__date--year')[0];
-        
+
         monthSelect.removeEventListener('change', this.handleMonthChange, false);
         yearSelect.removeEventListener('change', this.handleYearChange, false);
       }

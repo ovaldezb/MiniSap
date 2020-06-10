@@ -1,47 +1,55 @@
-var pathPrve = '/codeigniter3.1.11/proveedor/';
-var pathClte = '/codeigniter3.1.11/cliente/';
-var pathUtils = '/codeigniter3.1.11/utils/';
-var pathEmpr = '/codeigniter3.1.11/empresa/';
-var pathProd = '/codeigniter3.1.11/producto/';
-var pathUpld = '/codeigniter3.1.11/upload/startupload/';
-var pathSucr = '/codeigniter3.1.11/sucursal/';
-var pathTpv = '/codeigniter3.1.11/tpv/';
-var pathCmpr = '/codeigniter3.1.11/compras/';
-var pathVend = '/codeigniter3.1.11/vendedor/';
-var pathUsr = '/codeigniter3.1.11/usuarios/';
-var pathAcc = '/codeigniter3.1.11/access/';
+var pathCliente = '/core/';
+var pathPrve = pathCliente+'proveedor/';
+var pathClte = pathCliente+'cliente/';
+var pathUtils = pathCliente+'utils/';
+var pathEmpr = pathCliente+'empresa/';
+var pathProd = pathCliente+'producto/';
+var pathUpld = pathCliente+'upload/startupload/';
+var pathSucr = pathCliente+'sucursal/';
+var pathTpv = pathCliente+'tpv/';
+var pathCmpr = pathCliente+'compras/';
+var pathVend = pathCliente+'vendedor/';
+var pathUsr = pathCliente+'usuarios/';
+var pathAcc = pathCliente+'access/';
+var pathRepo = pathCliente+'reportes/';
 var app = angular.module("myApp", ["ngRoute"]);
 app.config(function($routeProvider) {
     $routeProvider
     .when("/", {
-        templateUrl : "/codeigniter3.1.11/access/inicio"
+        templateUrl : pathCliente+'access/inicio'
     })
     .when("/clss", {
-        templateUrl : "/codeigniter3.1.11/access/logout"
+        templateUrl : pathCliente+'access/logout'
     })
     .when("/clte", {
-      templateUrl: '/codeigniter3.1.11/cliente'
+      templateUrl:    pathCliente+'cliente'
     })
     .when("/empr", {
-        templateUrl : '/codeigniter3.1.11/empresa'
+        templateUrl : pathCliente+'empresa'
     })
     .when("/prod", {
-        templateUrl : '/codeigniter3.1.11/producto'
+        templateUrl : pathCliente+'producto'
     })
     .when("/prve", {
-        templateUrl : '/codeigniter3.1.11/proveedor'
+        templateUrl : pathCliente+'proveedor'
     })
     .when("/sucr", {
-        templateUrl : '/codeigniter3.1.11/sucursal'
+        templateUrl : pathCliente+'sucursal'
     })
     .when("/cmpr", {
-        templateUrl : '/codeigniter3.1.11/compras'
+        templateUrl : pathCliente+'compras'
     })
     .when("/tpv", {
-        templateUrl : '/codeigniter3.1.11/tpv'
+        templateUrl : pathCliente+'tpv'
     })
     .when("/user", {
-        templateUrl : '/codeigniter3.1.11/usuarios'
+        templateUrl : pathCliente+'usuarios'
+    })
+    .when("/mval",{
+      templateUrl : pathRepo+'rmovalmc'
+    })
+    .when("/rven",{
+      templateUrl : pathRepo+'rventas'
     });
 });
 
@@ -163,7 +171,7 @@ app.controller('myCtrlIndex', function($scope,$http,$location,$window)
 
   $scope.cambiaSucursal = ()=>{
     $http.put(pathSucr+'updtscursaluser/'+$scope.idEmpresaSelected+'/'+$scope.sucursalEmpresa).
-    then((res)=>{      
+    then((res)=>{
       if(res.data.value == 'OK')
       {
         alert('Se actualizó la sucursal!');

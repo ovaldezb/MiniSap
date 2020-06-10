@@ -19,6 +19,7 @@ app.controller('myCtrlUsuarios', function($scope,$http)
     $http.get(pathUsr+'getusrs',{responseType:'json'}).
     then(function(res)
     {
+      console.log(res);
       if(res.data.length > 0)
       {
         $scope.lstUsuarios = res.data;
@@ -153,7 +154,7 @@ app.controller('myCtrlUsuarios', function($scope,$http)
       idusuario:$scope.idUsuario,
       nombre:$scope.nombre,
       usrname:$scope.username,
-      paswd:$scope.password==undefined ? 'false':$scope.password,      
+      paswd:$scope.password==undefined ? 'false':$scope.password,
       updtpwd:$scope.password==undefined ? 'false' : 'true'
     };
 

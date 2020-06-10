@@ -133,7 +133,7 @@
             <span class="icon">
               <i class="fas fa-store-alt"></i>
             </span>
-              <select ng-change="cambiaSucursal()" ng-model="sucursalEmpresa" ng-options="x.ID_SUCURSAL as x.ALIAS for x in lstSucursal">                
+              <select ng-change="cambiaSucursal()" ng-model="sucursalEmpresa" ng-options="x.ID_SUCURSAL as x.ALIAS for x in lstSucursal">
               </select>
             <span>
             </span>
@@ -248,8 +248,12 @@
 <script src="../js/tpv.js"></script>
 <script src="../js/usuarios.js"></script>
 <script src="../js/logout.js"></script>
+<script src="../js/repmovalm.js"></script>
+<script src="../js/rventas.js"></script>
+
 <script>
-var acc = document.getElementsByClassName("accordion");
+
+/*var acc = document.getElementsByClassName("accordion");
 var i;
 
 for (i = 0; i < acc.length; i++) {
@@ -271,7 +275,7 @@ function openNav() {
 
 function closeNav() {
   document.getElementById("mySidepanel").style.width = "0";
-}
+}*/
 </script>
 </body>
 </html>

@@ -112,8 +112,6 @@ class Usuariomodel extends CI_model
 
 	function inserta_empperm_by_user($idusuario,$idempresa)
 	{
-		/*$query = 'INSERT INTO "USUARIO_EMPRESA" ("ID_USUARIO","ID_EMPRESA","PERMITIDO")
-							VALUES($1,$2,$3)';*/
 		$query = 'SELECT * FROM insert_emp_perm($1,$2)';
 		pg_prepare($this->conn,"insert_empperm",$query);
 		$result = pg_execute($this->conn, "insert_empperm", array($idusuario,$idempresa));
@@ -122,7 +120,7 @@ class Usuariomodel extends CI_model
 
 	function get_ususarios()
 	{
-		$query = 'SELECT "ID_USUARIO","NOMBRE","CLAVE_USR","ID_SUCURSAL" FROM "USUARIO" WHERE "ACTIVO" = true ORDER BY "ID_USUARIO"';
+		$query = 'SELECT "ID_USUARIO","NOMBRE","CLAVE_USR" FROM "USUARIO" WHERE "ACTIVO" = true ORDER BY "ID_USUARIO"';
 		$result = pg_fetch_all(pg_query($this->conn,$query));
 		return json_encode($result,JSON_NUMERIC_CHECK);
 	}

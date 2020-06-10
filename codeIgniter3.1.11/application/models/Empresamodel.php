@@ -28,13 +28,13 @@ class Empresamodel extends CI_model
 
 	function get_empresa_by_id($_id)
 	{
-		$query = 'SELECT TRIM(A."NOMBRE") NOMBRE, A."DOMICILIO", TRIM(A."RFC") RFC,
+		$query = 'SELECT TRIM(A."NOMBRE") as "NOMBRE", A."DOMICILIO", TRIM(A."RFC") as "RFC",
 				A."ID_REGIMEN", A."DIGITO_X_CUENTA", A."CUENTA_RESULTADO", A."RESULTADO_ANTERIOR", B."EJER_FISC"
 				FROM "EMPRESA" A, "EMP_EJER_FISC" B
 				WHERE A."ID_EMPRESA" = $1 AND A."ID_EMPRESA" = B."ID_EMPRESA" ORDER BY A."ID_EMPRESA" LIMIT 1';
 		pg_prepare($this->conn, "my_query", $query);
 		$result =  pg_fetch_all(pg_execute($this->conn, "my_query", array($_id)));
-		return json_encode($result);
+		return json_encode($result,JSON_NUMERIC_CHECK);
 	}
 
 	function update_empresa($id_empresa,$nombre, $domicilio, $rfc, $ejercicio_fiscal, $id_regimen, $digxcuenta, $cta_res, $res_ant)

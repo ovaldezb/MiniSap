@@ -1,5 +1,3 @@
-
-
 function formatDatePrint(hoy)
 {
 	var dia, mes, year;
@@ -22,6 +20,17 @@ function formatDatePantalla(hoy)
 	return fecha
 }
 
+function formatDateReporte(fechaRep)
+{
+	var mesNombre = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+	var fecha;
+	var dia = fechaRep.substr(0,2);
+	var mes = Number(fechaRep.substr(3,2))-1;
+	var year = fechaRep.substr(6,4);
+	fecha = dia+' de '+mesNombre[mes]+' de '+year;
+	return fecha
+}
+
 function formatDateInsert(hoy)
 {
 	var dia, mes, year;
@@ -37,6 +46,24 @@ function formatDateInsert(hoy)
 	return fecha
 }
 
+function formatHoraReporte(hoy)
+{
+	var mesNombre = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+	var dia, mes, year;
+	var fecha;
+	dia = hoy.getDate() <10 ? '0'+hoy.getDate() : hoy.getDate();
+	mes = hoy.getMonth() < 9 ? '0'+(hoy.getMonth()+1) : (hoy.getMonth()+1);
+	year = hoy.getFullYear();
+	var hours = hoy.getHours();
+  var minutes = hoy.getMinutes();
+  var ampm = hours >= 12 ? 'pm' : 'am';
+  hours = hours % 12;
+  hours = hours ? hours : 12; // the hour '0' should be '12'
+  minutes = minutes < 10 ? '0'+minutes : minutes;
+	fecha = dia+' de '+mesNombre[mes-1]+' de '+year+' '+hours+':'+minutes+' '+ ampm ;
+	return fecha
+}
+
 function formatFecPago(fecha)
 {
 	var dia = fecha.substr(0,2);
@@ -45,7 +72,20 @@ function formatFecPago(fecha)
 	return year+'-'+mes+'-'+dia;
 }
 
-//$('#tipopago').change(function()
+function formatFecQuery(fecha,tipo)
+{
+	var horas;
+	var dia = fecha.substr(0,2);
+	var mes = fecha.substr(3,2);
+	var year = fecha.substr(6,4);
+	if(tipo=='ini'){
+		horas = '00:00:00'
+	}else if(tipo=='fin'){
+		horas = '23:59:59'
+	}
+	return mes+'-'+dia+'-'+year+' '+horas;
+}
+
 function cambiotp()
 {
   if($('#tipopago').val() ==1)
@@ -147,21 +187,3 @@ function doFilter(filter,nombre_tabla)
 		}
 	 }
 }
-
-
-
-/*function alertRowCell(e){
-  var cell = e.target || window.event.srcElement;
-  //alert( cell.cellIndex + ' : ' + cell.parentNode.rowIndex );
-	if(cell.style.backgroundColor == "red")
-	{
-		//cell.bgColor = "green";
-		cell.style.backgroundColor = "green";
-	}else if(cell.style.backgroundColor == "green") {
-			//cell.bgColor = "red";
-			cell.style.backgroundColor = "red";
-	}else {
-		cell.style.backgroundColor = "green";
-	}
-
-}*/
