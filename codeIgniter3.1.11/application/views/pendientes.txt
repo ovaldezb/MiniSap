@@ -3,26 +3,28 @@
 3) En producto agregar la carpeta con el ID de la empresa
 
 
-SELECT C."ID_COMPRA",to_char(C."FECHA_COMPRA",'DD/MM/YYYY') as "FECHA_COMPRA",
-TRIM(C."DOCUMENTO") AS "DOCUMENTO",
-TRIM(P."NOMBRE") as "PROVEEDOR",
-to_char(C."IMPORTE",'L999,999,999.00') as "IMPORTE",
-"DIAS_PAGO",
-CASE "DIAS_PAGO"
-WHEN 0 THEN '$             0.00'
-ELSE to_char("IMPORTE",'L999,999,999.00')
-END as "SALDO",
-to_char(C."FECHA_REVISION",'DD/MM/YYYY') as "FECHA_REVISION",
-to_char(C."FECHA_PAGO",'DD/MM/YYYY') as "FECHA_PAGO",
-CASE "DIAS_PAGO"
-WHEN 0 THEN T."DESCRIPCION"
-ELSE T."DESCRIPCION" || ' ' ||"DIAS_PAGO" || ' días'
-END as "FORMA_PAGO"
-FROM "COMPRAS" AS C INNER JOIN "PROVEEDORES" AS P
-ON C."CLAVE_PROVEEDOR" = P."CLAVE"
-INNER JOIN "TIPO_PAGO" as T
-ON C."ID_TIPO_PAGO" = T."ID_TIPO_PAGO"
-WHERE "ID_EMPRESA" = 1
-AND "ANIO_FISCAL" = 2020
-ORDER BY
-C."FECHA_COMPRA"
+1) Ciclo completo de una
+  Empresa/
+  Usuarios/
+  Sucursal/
+  Producto/
+  Proveedor/
+  Cliente/
+  Compras/
+  Ventas/
+  Reportes
+
+  No hay borrados físicos, sólo lógicos
+
+  Segundo Sprint
+  Borrar fisicamente la imagen* No sé si sea necesario y/o correcto ya que no hay borrados físicos
+  Reporte de Productos (STOCK)
+  Hacer la páginación de los Reportes
+  Timbrado de facturas
+
+
+sudo chown -R apache:apache    /var/www/html/core                 
+sudo chown -R apache:apache    /var/www/html/paty
+
+sudo chown -R  hheisego:hheisego /var/www/html/core
+sudo chown -R  hheisego:hheisego /var/www/html/paty
