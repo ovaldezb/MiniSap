@@ -82,10 +82,10 @@ app.controller('myCtrlClientes', function($scope,$http)
     }
   }
 
-  /*$scope.orderByMe = function(x) {
+  $scope.orderByMe = function(x) {
       $scope.myOrderBy = x;
       $scope.sortDir = !$scope.sortDir;
-  }*/
+  }
 
   $scope.selectRowCliente = function(idSelCompra,index,idCliente)
   {

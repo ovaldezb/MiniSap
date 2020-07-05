@@ -1,7 +1,3 @@
-<meta http-equiv="Expires" content="0">
-<meta http-equiv="Last-Modified" content="0">
-<meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
-<meta http-equiv="Pragma" content="no-cache">
 <?php
 	defined('BASEPATH') OR exit('No direct script access allowed');
 	$size1 = 100;
@@ -116,23 +112,22 @@
 		  	</figure>
 				</div>
 			</div>
-			<div class="columns">
-			<div class="column is-2"></div>
-			<div class="column is-1">
-				<input type="checkbox" class="checkbox" id="esequiv" ng-model="esequiv">
-			</div>
-			<div class="column is-narrow" style="width: 160px;">
-				<label class="label">Equivalencia</label>
-			</div>
-			<div class="column is-1">
-				<input  ng-model="equivalencia" class="input is-small" type="text">
-			</div>
-			<div class="column is-2"></div>
-			<div class="column is-1">
-				<div class="control" id="cargarimg">
-					<button  ng-click="openImageWnd();" class="button is-primary">Agregar Imagen</button>
+			<div class="columns">			
+				<div class="column is-narrow">
+					<input type="checkbox" class="checkbox" id="esequiv" ng-model="esequiv">
 				</div>
-			</div>
+				<div class="column is-narrow" style="width: 100px;">
+					<label class="label">Equivalencia</label>
+				</div>
+				<div class="column is-1">
+					<input  ng-model="equivalencia" class="input is-small" type="text">
+				</div>
+				<div class="column is-3"></div>
+				<div class="column is-2">
+					<div class="control" id="cargarimg">
+						<button  ng-click="openImageWnd();" class="button is-primary">Agregar Imagen</button>
+					</div>
+				</div>
 			</div>
 		</div>
 
@@ -268,7 +263,7 @@
 	<div class="box">
 			<div class="columns is-gapless">
 				<div class="column is-2 has-background-primary">
-					<label class="label">Precio de Lista $</label>
+					<label class="label">Precio de Venta $</label>
 				</div>
 				<div class="column is-1">
 					<input ng-model="preciolista" class="input is-small" type="number" placeholder="PRECIO" required>
@@ -296,7 +291,7 @@
 				<div class="column is-2">
 					<label class="label">En Promoción</label>
 				</div>
-				<div class="column is-1">
+				<div class="column is-narrow" style="margin-right:84px">
 					<input type="checkbox" class="checkbox" ng-model="espromo">
 				</div>
 				<div class="column is-narrow">
@@ -321,7 +316,7 @@
 				<div class="column is-2">
 					<label class="label">Con Descuento</label>
 				</div>
-				<div class="column is-1">
+				<div class="column is-narrow" style="margin-right:80px">
 					<input id="esdescnt" ng-model="esdescnt" class="checkbox" type="checkbox">
 				</div>
 				<div class="column is-narrow">
@@ -351,12 +346,12 @@
 				</div>
 				<div class="column is-1">
 				</div>
-				<div class="column is-1">
+				<div class="column is-narrow" style="margin-right:80px">
 					<label class="label">Stock</label>
 				</div>
 				<div class="column is-1">
 				</div>
-				<div class="column is-1">
+				<div class="column is-narrow" style="margin-right:28px">
 					<label class="label">Máximo</label>
 				</div>
 				<div class="column is-1">
@@ -367,15 +362,15 @@
 				<div class="column is-2">
 					<label class="label">Observaciones</label>
 				</div>
-				<div class="column is-narrow">
+				<div class="column is-narrow" style="margin-right:5px">
 					<input id="estasaexenta" ng-model="estasaexenta" class="checkbox" type="checkbox">
 				</div>
 				<div class="column is-1">
 					<label class="label">Tasa Exenta</label>
 				</div>
-				<div class="column is-2">
+				<div class="column is-3">
 				</div>
-				<div class="column is-1">
+				<div class="column is-narrow" style="margin-right:30px">
 					<label class="label">Mínimo</label>
 				</div>
 				<div class="column is-1">

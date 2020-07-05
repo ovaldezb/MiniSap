@@ -57,6 +57,7 @@ app.controller('myCtrlProducto', function($scope,$http)
     $http.get(pathProd+'load/'+$scope.idempresa,{responseType: 'json'}).
     then(function(res)
   	{
+      console.log(res);
   		if(res.data.length > 0)
   		{
   			$scope.lstPrdcts = res.data;

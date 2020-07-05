@@ -14,6 +14,7 @@
   <script src="../js/foopicker.js"></script>
   <link rel="stylesheet" href="../css/utils.css">
   <link rel="stylesheet" href="../css/foopicker.css">
+  <title>RTS</title>
   <style>
 .accordion {
   background-color: #eee;
@@ -160,19 +161,19 @@
   foreach ($modproc as $key)
   {
     $modulo = $key['MODULO'];
+    $ruta = $key['RUTA'];
     if($modulo != $modulotmp)
     {
       if($isFinModulo)
       {?>
         </ul>
-<?php
-      }?>
-        <p class="menu-label"><?php echo $key['MODULO']?></p>
+<?php }?>
+        <h2><?php echo $key['MODULO']?></h2>
         <ul class="menu-list">
           <li><a href="#!<?php echo $key['RUTA']?>"><?php echo $key['PROCESO']?></a></li>
 <?php
       $isFinModulo = true;
-    }else {?>
+    }else if($ruta !=null) {?>
           <li><a href="#!<?php echo $key['RUTA']?>"><?php echo $key['PROCESO']?></a></li>
 <?php
     }
@@ -250,7 +251,7 @@
 <script src="../js/logout.js"></script>
 <script src="../js/repmovalm.js"></script>
 <script src="../js/rventas.js"></script>
-
+<script src="../js/linea.js"></script>
 <script>
 
 /*var acc = document.getElementsByClassName("accordion");

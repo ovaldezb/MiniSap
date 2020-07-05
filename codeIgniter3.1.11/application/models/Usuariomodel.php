@@ -13,7 +13,7 @@ class Usuariomodel extends CI_model
 
 	function get_usuario_by_id($idusuario)
 	{
-		$query = 'SELECT TRIM("NOMBRE") as "NOMBRE",TRIM("CLAVE_USR") as "CLAVE_USR","ID_SUCURSAL" FROM "USUARIO" WHERE "ID_USUARIO"=$1';
+		$query = 'SELECT TRIM("NOMBRE") as "NOMBRE",TRIM("CLAVE_USR") as "CLAVE_USR" FROM "USUARIO" WHERE "ID_USUARIO"=$1';
 		pg_prepare($this->conn,"select_usrbyid",$query);
 		$result = pg_fetch_all(pg_execute($this->conn,"select_usrbyid",array($idusuario)));
 		return json_encode($result,JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);

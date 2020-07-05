@@ -29,7 +29,8 @@ class Clientemodel extends CI_model
 
 	function get_cliente_by_id_verif($_idCliente)
 	{
-		$query = 'SELECT TRIM(C."CLAVE") as "CLAVE",C."NOMBRE",C."DOMICILIO","CP",TRIM("TELEFONO") as "TELEFONO",
+		$query = 'SELECT TRIM(C."CLAVE") as "CLAVE",C."NOMBRE",C."DOMICILIO","CP",
+		TRIM("TELEFONO") as "TELEFONO",
 		"CONTACTO",TRIM("RFC") as "RFC",TRIM("CURP") as "CURP",
 		TRIM(TC."DESCRIPCION") as "TIPO_CLIENTE","DIAS_CREDITO",
 		TRIM(DS1."NOMBRE") as "REVISION",
@@ -39,7 +40,7 @@ class Clientemodel extends CI_model
 		TRIM(FP."DESCRIPCION") as "FORMA_PAGO",
 		V."NOMBRE" as "VENDEDOR",
 		UC."DESCRIPCION" as "CFDI",
-		C."EMAIL",C."NUM_PROVEEDOR",C."NOTAS"
+		TRIM(C."EMAIL") AS "EMAIL",TRIM(C."NUM_PROVEEDOR") as "NUM_PROVEEDOR",C."NOTAS"
 		FROM "CLIENTE" as C
 		INNER JOIN "VENDEDOR" as V ON C."ID_VENDEDOR" = V."ID_VENDEDOR"
 		INNER JOIN "TIPO_CLIENTE" as TC ON TC."ID_TIPO_CLTE" = C."ID_TIPO_CLIENTE"
@@ -48,7 +49,7 @@ class Clientemodel extends CI_model
 		INNER JOIN "DIAS_SEMANA" as DS2 on DS2."ID_DIA" = C."ID_PAGOS"
 		INNER JOIN "USO_CFDI" as UC on UC."ID_CFDI" = C."ID_USO_CFDI"
 		WHERE "ID_CLIENTE" = $1
-		AND "ACTIVO" = true';
+		AND C."ACTIVO" = true';
 		$result = pg_prepare($this->conn, "my_query", $query);
 		$result =  pg_fetch_all(pg_execute($this->conn, "my_query", array($_idCliente)));
 		return json_encode($result,JSON_NUMERIC_CHECK);

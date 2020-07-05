@@ -104,6 +104,7 @@ app.controller('myCtrlUsuarios', function($scope,$http)
         }
       }
     }
+    $scope.cerrarAddUser();
   }
 
   $scope.guardaUsuario = function()

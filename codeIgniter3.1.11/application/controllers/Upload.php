@@ -29,8 +29,9 @@ class Upload extends CI_Controller {
 
     public function do_upload()
     {
+      $url_split = explode("/",base_url());
 			$dorename = 0;
-			$config['upload_path']          = './uploads/'.$this->input->post('idempresa').'/';
+			$config['upload_path']          = './uploads/'.$this->input->post('idempresa').'/';      
 			$config['allowed_types']        = 'gif|jpg|png|jpeg';
 			$config['max_size']             = 0;
 			$config['max_width']            = 1024;

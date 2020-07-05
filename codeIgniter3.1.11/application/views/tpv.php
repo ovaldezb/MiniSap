@@ -54,10 +54,10 @@
 					<div class="column is-2">
 					</div>
 					<div class="column is-8" ng-show="showLstClte" >
-						<table border="1" style="width:100%;">
+						<table style="width:100%; border:2px solid red">
 							<tr>
 								<td align="center">
-									<table style="width:100%" border="1">
+									<table style="width:100%">
 										<col width="26%">
 										<col width="63%">
 										<col width="11%">
@@ -80,7 +80,7 @@
 							<tr>
 								<td align="center">
 									<div style="width:100%; height:100px; overflow:auto;">
-										<table border="1" style="width:100%; border:2px red">
+										<table style="width:100%;">
 											<col width="26%">
 											<col width="74%">
 											<tr ng-repeat="x in lstCliente" ng-click="seleccionaCliente($index)">
@@ -574,27 +574,27 @@
 					<col width="35%">
 					<tr>
 						<td><label class="label">{{clave}}</label></td>
-						<td colspan="3"><input type="text" class="input is-small" ng-model="nombre" placeholder="NOMBRE"></td>
+						<td colspan="3"><input type="text" class="input is-small" ng-model="cliente.nombre" placeholder="NOMBRE" required></td>
 					</tr>
 					<tr>
 						<td>Domicilio:</td>
-						<td colspan="3"><input type="text" class="input is-small" ng-model="domicilio" placeholder="DOMICILIO"></td>
+						<td colspan="3"><input type="text" class="input is-small" ng-model="cliente.domicilio" placeholder="DOMICILIO"></td>
 					</tr>
 					<tr>
 						<td>Telefono:</td>
-						<td><input type="text" class="input is-small" ng-model="telefono" placeholder="TELEFONO"></td>
+						<td><input maxlength="10" type="number" class="input is-small" ng-model="cliente.telefono" placeholder="TELEFONO"></td>
 						<td>CP:</td>
-						<td><input type="text" class="input is-small" ng-model="cp" placeholder="CP"></td>
+						<td><input maxlength="5" type="number" class="input is-small" ng-model="cliente.cp" placeholder="CP"></td>
 					</tr>
 					<tr>
 						<td>Contacto:</td>
-						<td colspan="3"><input type="text" class="input is-small" ng-model="contacto" placeholder="CONTACTO"></td>
+						<td colspan="3"><input type="text" class="input is-small" ng-model="cliente.contacto" placeholder="CONTACTO"></td>
 					</tr>
 					<tr>
 						<td>RFC:</td>
-						<td><input type="text" class="input is-small" ng-model="rfc" placeholder="RFC"></td>
+						<td><input maxlength="20" type="text" class="input is-small" ng-model="cliente.rfc" placeholder="RFC"></td>
 						<td>CURP:</td>
-						<td><input type="text" class="input is-small" ng-model="curp" placeholder="CURP"></td>
+						<td><input maxlength="20" type="text" class="input is-small" ng-model="cliente.curp" placeholder="CURP" required></td>
 					</tr>
 					<tr>
 						<td>Cliente:</td>
@@ -606,7 +606,7 @@
       				</select>
             </td>
 						<td>Crédito:</td>
-						<td><input type="text" class="input is-small" ng-model="diascredito" placeholder="DIAS DE CREDITO"></td>
+						<td><input type="number" class="input is-small" ng-model="cliente.dcredito" placeholder="DIAS DE CREDITO"></td>
 					</tr>
 					<tr>
 						<td>Revisión:</td>
@@ -658,18 +658,18 @@
 					</tr>
 					<tr>
 						<td>Email:</td>
-						<td colspan="2"><input type="text" class="input is-small" ng-model="email" placeholder="EMAIL"></td>
+						<td colspan="2"><input type="text" class="input is-small" ng-model="cliente.email" placeholder="EMAIL"></td>
             <td></td>
 					</tr>
 					<tr>
 						<td>No Proveedor:</td>
-						<td><input type="text" class="input is-small" ng-model="noproveedor" placeholder="PROVEEDOR"></td>
+						<td><input type="text" class="input is-small" ng-model="cliente.num_proveedor" placeholder="PROVEEDOR"></td>
             <td colspan="2"></td>
 					</tr>
 					<tr>
 						<td>Observaciones:</td>
 						<td colspan="3">
-              <textarea ng-model="notas" id="tacliente"></textarea>
+              <textarea ng-model="cliente.notas" id="tacliente"></textarea>
             </td>
 					</tr>
 				</table>

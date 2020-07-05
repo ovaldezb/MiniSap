@@ -12,6 +12,7 @@ var pathVend = pathCliente+'vendedor/';
 var pathUsr = pathCliente+'usuarios/';
 var pathAcc = pathCliente+'access/';
 var pathRepo = pathCliente+'reportes/';
+var pathLinea = pathCliente + 'api/linea/';
 var app = angular.module("myApp", ["ngRoute"]);
 app.config(function($routeProvider) {
     $routeProvider
@@ -50,6 +51,9 @@ app.config(function($routeProvider) {
     })
     .when("/rven",{
       templateUrl : pathRepo+'rventas'
+    })
+    .when("/line",{
+      templateUrl : pathCliente+'linea'
     });
 });
 
@@ -70,9 +74,14 @@ app.controller('myCtrlIndex', function($scope,$http,$location,$window)
   $scope.sucursalEmpresa = '';
   $scope.init = function()
   {
+    $scope.loadEmpresas();  
+  }
+
+  $scope.loadEmpresas = function(){
     $http.get(pathEmpr+'getemppermbyusr/'+$scope.idusuario,{responseType:'json'}).
     then(function(res)
     {
+      console.log(res);
       if(res.data.length > 0)
       {
         $scope.lstEmprPerm = res.data;
@@ -143,6 +152,7 @@ app.controller('myCtrlIndex', function($scope,$http,$location,$window)
 
   $scope.selectEmpresa = function()
   {
+    $scope.loadEmpresas(); 
     $scope.isEmpPermActiv = true;
   }
 

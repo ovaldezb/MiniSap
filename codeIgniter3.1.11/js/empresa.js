@@ -78,11 +78,6 @@ app.controller('myCtrlEmpresa', function($scope,$http)
     $scope.idSelEmp = idSelEmp;
     $scope.indexRowEmp = indexRowEmp;
     $scope.idEmpresa = idEmpresa;
-    console.log($scope.idSelEmp+' '+$scope.indexRowEmp+' '+$scope.idEmpresa);
-    console.log($scope.lstEmpresas[$scope.indexRowEmp].NOMBRE);
-    var tabla = document.getElementById("tablaempresas");
-    var row = tabla.getElementsByTagName("tr")[0];
-    console.log(row);
   }
 
   $scope.preguntaEliminar = function()
@@ -101,7 +96,6 @@ app.controller('myCtrlEmpresa', function($scope,$http)
   	$http.get(pathEmpr+'loadbyid/'+$scope.idEmpresa, {responseType: 'json'}).
     then(function(res)
   	{
-      console.log(res);
   		if(res.data.length > 0)
   		{
   			$scope.nombre = res.data[0].NOMBRE;
@@ -111,7 +105,7 @@ app.controller('myCtrlEmpresa', function($scope,$http)
   			$('#regimen').val(res.data[0].ID_REGIMEN);
   			$scope.cuenta_resultado = res.data[0].CUENTA_RESULTADO;
   			$scope.resultado_anterior = res.data[0].RESULTADO_ANTERIOR;
-        var digxcta = res.data[0].DIGITO_X_CUENTA.toString().split("");
+        var digxcta = String(res.data[0].DIGITO_X_CUENTA).split("");
   			$scope.dig1 = digxcta[0];
   			$scope.dig2 = digxcta[1];
   			$scope.dig3 = digxcta[2];
@@ -144,7 +138,7 @@ app.controller('myCtrlEmpresa', function($scope,$http)
     {
       $http.post(pathEmpr+'save',dataEmpresa).
       then(function(res)
-      {
+      {        
         if(res.data.length > 0) {
           var nvaEmpresa =
           {
@@ -195,7 +189,6 @@ app.controller('myCtrlEmpresa', function($scope,$http)
   		   alert('Empresa elimnada exitosamente');
   		}else {
         alert('Ocurrió un problema, no se pudo eliminar la Empresa');
-        console.log(res);
       }
       $scope.closeAvisoBorrar();
   	}).catch(function(err){

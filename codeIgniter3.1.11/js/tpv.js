@@ -48,27 +48,33 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
   $scope.pago_cheque = 0.00;
   $scope.pago_vales = 0.00;
   $scope.promocion = '';
-  $scope.clave = '';
-  $scope.nombre = '';
-  $scope.domicilio = '';
-  $scope.contacto = '';
-  $scope.rfc = '';
-  $scope.curp = '';
-  $scope.tipo_cliente = '';
-  $scope.diascredito = '';
-  $scope.revision = '';
-  $scope.pagos = '';
-  $scope.vendedor = '';
-  $scope.cfdi = '';
-  $scope.email = '';
-  $scope.noproveedor = '';
-  $scope.notas = '';
   $scope.modalVerfClte = false;
   $scope.showLstClte = false;
   $scope.btnVerifClte = 'Actualizar';
   $scope.idempresa = '';
   $scope.idsucursal = '';
   $scope.aniofiscal = '';
+  $scope.cliente = {
+    clave:"",
+    nombre:"",
+    domicilio:"",
+    telefono:"",
+    cp:"",
+    contacto:"",
+    rfc:"",
+    curp:"",
+    dcredito:0,
+    email:"",
+    num_proveedor:"",
+    notas:"",
+    id_tipo_cliente:"",
+    revision:"",
+    pagos:"",
+    id_forma_pago:"",
+    id_vendedor:"",
+    id_uso_cfdi:"",
+    idempresa:""
+  };
   $scope.init = function()
   {
       $('#regcompra').prop('disabled',true);
@@ -448,6 +454,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
           $('#listaVendedores').show();
         }else {
           $scope.lstVendedor = [];
+          $('#listaVendedores').hide();
         }
       }).catch(function(err)
       {
@@ -612,27 +619,25 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
         $http.get(pathClte+'loadbyidverfi/'+$scope.idcliente,{responseType:'json'}).
         then(function(res)
         {
-          console.log(res);
           if(res.data.length > 0)
           {
-            $scope.clave = res.data[0].CLAVE;
-            $scope.nombre = res.data[0].NOMBRE;
-            $scope.domicilio = res.data[0].DOMICILIO;
-            $scope.telefono = res.data[0].TELEFONO;
-            $scope.cp = res.data[0].CP;
-            $scope.contacto = res.data[0].CONTACTO;
-            $scope.rfc = res.data[0].RFC;
-            $scope.curp = res.data[0].CURP;
-            //$scope.tipo_cliente = res.data[0].TIPO_CLIENTE;
+            $scope.cliente.clave = res.data[0].CLAVE;
+            $scope.cliente.nombre = res.data[0].NOMBRE;
+            $scope.cliente.domicilio = res.data[0].DOMICILIO;
+            $scope.cliente.telefono = res.data[0].TELEFONO;
+            $scope.cliente.cp = res.data[0].CP;
+            $scope.cliente.contacto = res.data[0].CONTACTO;
+            $scope.cliente.rfc = res.data[0].RFC;
+            $scope.cliente.curp = res.data[0].CURP;
             $('#id_tipo_cliente').val(res.data[0].ID_TIPO_CLIENTE);
             $('#revision').val(res.data[0].ID_REVISION);
             $('#pagos').val(res.data[0].ID_PAGOS);
             $('#id_forma_pago').val(res.data[0].ID_FORMA_PAGO);
             $('#id_vendedor').val(res.data[0].ID_VENDEDOR);
             $('#id_uso_cfdi').val(res.data[0].ID_USO_CFDI);
-            $scope.email = res.data[0].EMAIL;
-            $scope.noproveedor = res.data[0].NUM_PROVEEDOR;
-            $scope.notas = res.data[0].NOTAS;
+            $scope.cliente.email = res.data[0].EMAIL;
+            $scope.cliente.num_proveedor = res.data[0].NUM_PROVEEDOR;
+            $scope.cliente.notas = res.data[0].NOTAS;
             $scope.btnVerifClte = 'Actualizar';
           }
         }).
@@ -642,72 +647,69 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
         });
       }else{
         $scope.btnVerifClte = 'Agregar';
+        $scope.cliente.nombre = $scope.nombre_cliente;
       }
       $scope.modalVerfClte = true;
   }
 
   $scope.closeVerifClte = function()
   {
-    $scope.clave = '';
-    $scope.nombre = '';
-    $scope.domicilio = '';
-    $scope.telefono = '';
-    $scope.cp = '';
-    $scope.contacto = '';
-    $scope.rfc = '';
-    $scope.curp = '';
-    $scope.tipo_cliente = '';
-    $scope.diascredito = '';
-    $scope.revision = '';
-    $scope.pagos = '';
-    $scope.forma_pago = '';
-    $scope.vendedor = '';
-    $scope.cfdi = '';
-    $scope.email = '';
-    $scope.noproveedor = '';
-    $scope.notas = '';
+    $scope.cliente.clave = '';
+    $scope.cliente.nombre = '';
+    $scope.cliente.domicilio = '';
+    $scope.cliente.telefono = '';
+    $scope.cliente.cp = '';
+    $scope.cliente.contacto = '';
+    $scope.cliente.rfc = '';
+    $scope.cliente.curp = '';
+    $scope.cliente.id_tipo_cliente = '';
+    $scope.cliente.dcredito = 0;
+    $scope.cliente.revision = '';
+    $scope.cliente.pagos = '';
+    $scope.cliente.id_forma_pago = '';
+    $scope.cliente.id_vendedor = '';
+    $scope.cliente.id_uso_cfdi = '';
+    $scope.cliente.email = '';
+    $scope.cliente.num_proveedor = '';
+    $scope.cliente.notas = '';
     $scope.modalVerfClte = false;
   }
 
   $scope.enviaDatosCliente = function()
   {
-    var  row, dataClte;
-    dataClte = {
-      //clave:$scope.clave,
-      nombre:$scope.nombre,
-      domicilio:$scope.domicilio,
-      cp:$scope.cp,
-      telefono:$scope.telefono,
-      contacto:$scope.contacto,
-      rfc:$scope.rfc,
-      curp:$scope.curp,
-      id_tipo_cliente:$('#id_tipo_cliente').val(),
-      revision:$('#revision').val(),
-      pagos:$('#pagos').val(),
-      id_forma_pago:$('#id_forma_pago').val(),
-      id_vendedor:$('#id_vendedor').val(),
-      id_uso_cfdi:$('#id_uso_cfdi').val(),
-      email:$scope.email,
-      num_proveedor:$scope.noproveedor,
-      notas:$scope.notas,
-      dcredito:$scope.diascredito,
-      idempresa:$scope.idempresa
-    };
+    $scope.cliente.id_tipo_cliente=$('#id_tipo_cliente').val();
+    $scope.cliente.revision=$('#revision').val();
+    $scope.cliente.pagos=$('#pagos').val();
+    $scope.cliente.id_forma_pago=$('#id_forma_pago').val();
+    $scope.cliente.id_vendedor=$('#id_vendedor').val();
+    $scope.cliente.id_uso_cfdi=$('#id_uso_cfdi').val();
+    $scope.cliente.idempresa = $scope.idempresa;
+
     if($scope.btnVerifClte == 'Agregar')
     {
-      var nextId, idCliente, respuesta;
-      $http.post(pathClte+'save', dataClte).
+      $http.get(pathUtils+'incremento/CLTE/'+$scope.idempresa+'/4').
       then(function(res)
       {
-
-      }).catch(function(err) {
+        $scope.cliente.clave = res.data[0].VALOR;
+        $http.post(pathClte+'save', $scope.cliente).
+        then(function(res)
+        {
+          alert('Se agregó correctamente el cliente');
+          $scope.claveclte = $scope.cliente.clave;
+          $scope.closeVerifClte();
+        }).catch(function(err) {
+          console.log(err);
+        });
+      }).catch(function(err)
+      {
         console.log(err);
       });
      }else{
-       $http.put(pathClte+'update/'+$scope.idCliente, dataClte).
+       $http.put(pathClte+'update/'+$scope.idcliente, $scope.cliente).
        then(function(res)
        {
-
+         alert('Se actualizó correctamente el cliente');
+         $scope.closeVerifClte();
        }).catch(function(err)
        {
          console.log(err);
