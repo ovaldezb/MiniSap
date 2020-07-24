@@ -43,6 +43,9 @@ app.config(function($routeProvider) {
     .when("/tpv", {
         templateUrl : pathCliente+'tpv'
     })
+    .when("/vend", {
+        templateUrl : pathCliente+'vendedor'
+    })
     .when("/user", {
         templateUrl : pathCliente+'usuarios'
     })
