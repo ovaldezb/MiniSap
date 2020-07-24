@@ -42,6 +42,7 @@
   	</div>
 	</nav>
 	<div class="box" ng-show="isDivEmpActivo">
+		<form name="myForm">
 		<div class="box">
 			<div class="columns">
 				<div class="column is-1">
@@ -49,7 +50,7 @@
 				</div>
 				<div class="column is-6">
 					<div class="control has-icons-left has-icons-right">
-						<input ng-model="nombre" class="input is-small" type="text" placeholder="Nombre de la empresa" required>
+						<input ng-model="emp.nombre" class="input is-small" type="text" placeholder="Nombre de la empresa" required>
 						<span class="icon is-small is-left">
 						  <i class="far fa-building"></i>
 						</span>
@@ -62,7 +63,7 @@
 				</div>
 				<div class="column is-6">
 					<div class="control has-icons-left has-icons-right">
-						<input ng-model="domicilio" class="input is-small" placeholder="Domicilio" required>
+						<input ng-model="emp.domicilio" class="input is-small" placeholder="Domicilio" required>
 						<span class="icon is-small is-left">
 						  <i class="fas fa-home"></i>
 						</span>
@@ -75,19 +76,23 @@
 				</div>
 				<div class="column is-2">
 					<div class="control has-icons-left">
-						<input ng-model="rfc" class="input is-small" type="input" placeholder="RFC" maxlength="20" required>
+						<input ng-model="emp.rfc" class="input is-small" type="input" placeholder="RFC" maxlength="20" required>
 						<span class="icon is-small is-left">
 						  <i class="fas fa-id-card-alt"></i>
 						</span>
 					</div>
 				</div>
-				<div class="column is-2">
+				<div class="column is-narrow">
+				<label class="label">CP</label>
+				</div>
+				<div class="column is-narrow" style="width:146px;">
+					<input ng-model="emp.cp" class="input is-small" type="input" placeholder="CP" maxlength="5" required>
 				</div>
 				<div class="column is-narrow">
 					<label class="label">Ejercicio Fiscal</label>
 				</div>
 				<div class="column is-1">
-					<input id="ef" ng-model="ejercicio_fiscal" ng-keyup="validaEF()" class="input is-small" type="number" maxlength="4" required>
+					<input id="ef" ng-model="emp.ejercicio_fiscal" ng-keyup="validaEF()" class="input is-small" type="number" maxlength="4" required>
 				</div>
 			</div>
 			<div class="columns">
@@ -107,8 +112,7 @@
 					</div>
 				</div>
 			</div>
-		</div>
-
+		</div>							
 		<div class="box">
 			<h4 class="title is-5 has-text-centered">Registro Contable</h4>
 			<div class="columns ">
@@ -116,16 +120,16 @@
 					<label class="label">Dígitos por Cuenta</label>
 				</div>
 				<div class="column is-narrow" style="width: <?php echo $size1 ?>px;">
-					<input id="dig1" ng-model="dig1" class="input is-small" type="input" maxlength="1">
+					<input id="dig1" ng-model="emp.dig1" class="input is-small" type="input" maxlength="1">
 				</div>
 				<div class="column is-narrow" style="width: <?php echo $size1 ?>px;">
-					<input id="dig2" ng-model="dig2" class="input is-small" type="input" maxlength="1">
+					<input id="dig2" ng-model="emp.dig2" class="input is-small" type="input" maxlength="1">
 				</div>
 				<div class="column is-narrow" style="width: <?php echo $size1 ?>px;">
-					<input id="dig3" ng-model="dig3" class="input is-small" type="input" maxlength="1">
+					<input id="dig3" ng-model="emp.dig3" class="input is-small" type="input" maxlength="1">
 				</div>
 				<div class="column is-narrow" style="width: <?php echo $size1 ?>px;">
-					<input id="dig4" ng-model="dig4" class="input is-small" type="input" maxlength="1">
+					<input id="dig4" ng-model="emp.dig4" class="input is-small" type="input" maxlength="1">
 				</div>
 			</div>
 			<div class="columns">
@@ -133,7 +137,7 @@
 					<label class="label">Cuenta para resultado del Ejercicio</label>
 				</div>
 				<div class="column is-1">
-					<input id="cuenta_resultado" ng-model="cuenta_resultado" ng-keyup="validaCR()" class="input is-small" type="input" maxlength="4">
+					<input id="cuenta_resultado" ng-model="emp.cuenta_resultado" ng-keyup="validaCR()" class="input is-small" type="input" maxlength="4">
 				</div>
 			</div>
 			<div class="columns">
@@ -141,19 +145,20 @@
 					<label class="label">Resultado de Ejercicios Anteriores</label>
 				</div>
 				<div class="column is-1">
-					<input id="resultado_anterior" ng-model="resultado_anterior" ng-keyup="validaRA()" class="input is-small" type="input" maxlength="4">
+					<input id="resultado_anterior" ng-model="emp.resultado_anterior" ng-keyup="validaRA()" class="input is-small" type="input" maxlength="4">
 				</div>
 			</div>
 
 			<div class="field is-grouped">
 				<div class="control">
-					<button id="add" class="button is-link" ng-click="submitForm();">{{actnBton}}</button>
+					<button id="add" class="button is-link" ng-click="submitForm();" ng-disabled="myForm.$invalid">{{actnBton}}</button>
 				</div>
 				<div class="control">
 					<button  class="button is-ligth" ng-click="cancelar();">Cancelar</button>
 				</div>
 			</div>
 		</div>
+		</form>
 	</div>
 	<div class="container" style="border: 2px solid black" ng-show="!isDivEmpActivo">
 		<table style="width:100%">
@@ -164,6 +169,7 @@
 							<td>#</td>
 							<td ng-click="orderByMe('NOMBRE')">NOMBRE</td>
 							<td ng-click="orderByMe('RFC')">RFC</td>
+							<td ng-click="orderByMe('RFC')">CP</td>
 						</tr>
 					</table>
 				</td>
@@ -172,10 +178,11 @@
 				<td>
 					<div style="width:100%; height:590px; overflow:auto;">
 						<table id="tablaempresas" class="table is-hoverable" style="width:100%">
-							<tr ng-repeat="x in lstEmpresas | orderBy:myOrderBy:sortDir" ng-click="selectRowEmpresa(x.RFC,$index,x.ID_EMPRESA)" ng-class="{selected: x.RFC === idSelEmp}">
+							<tr ng-repeat="x in lstEmpresas | orderBy:myOrderBy:sortDir" ng-dblclick="update()" ng-click="selectRowEmpresa(x.RFC,$index,x.ID_EMPRESA)" ng-class="{selected: x.RFC === idSelEmp}">
 								<td>{{$index+1}}</td>
 								<td>{{x.NOMBRE}}</td>
 								<td>{{x.RFC}}</td>
+								<td>{{x.CP}}</td>
 							</tr>
 						</table>
 					</div>

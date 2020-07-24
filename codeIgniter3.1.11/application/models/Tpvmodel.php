@@ -28,7 +28,7 @@ class Tpvmodel extends CI_model
 							to_char("PRECIO_COMPRA",\'L999,999,999.00\') AS "PRECIO_COMPRA_DISP",
 							"PRECIO_COMPRA",
 							"IVA",
-							TRIM("UNIDAD_MEDIDAD") as "UNIDAD_MEDIDAD",
+							TRIM("UNIDAD_MEDIDA") as "UNIDAD_MEDIDA",
 							SUM(S."STOCK") as "STOCK",
 							"IMAGEN","ES_PROMO","ES_DESCUENTO","PRECIO_PROMO","PRECIO_DESCUENTO","TIPO_PS"
 							FROM "PRODUCTO" as P INNER JOIN  "PRODUCTO_SUCURSAL" as S
@@ -40,7 +40,7 @@ class Tpvmodel extends CI_model
 							GROUP BY P."ID_PRODUCTO",
 											"DESCRIPCION","CODIGO","PRECIO_LISTA",
 											"PRECIO_COMPRA", "IVA",
-											"UNIDAD_MEDIDAD","IMAGEN",
+											"UNIDAD_MEDIDA","IMAGEN",
 											"ES_PROMO","ES_DESCUENTO","PRECIO_PROMO","PRECIO_DESCUENTO","TIPO_PS"
 							ORDER BY "DESCRIPCION"';
 		$result = pg_prepare($this->conn, "selectquery", $query);
@@ -60,7 +60,7 @@ class Tpvmodel extends CI_model
 							"PRECIO_LISTA",
 							to_char("PRECIO_COMPRA",\'L999,999,999.00\') AS "PRECIO_COMPRA_DISP",
 							"PRECIO_COMPRA","IVA",
-							TRIM("UNIDAD_MEDIDAD") as "UNIDAD_MEDIDAD",
+							TRIM("UNIDAD_MEDIDA") as "UNIDAD_MEDIDA",
 							SUM(S."STOCK") as "STOCK",
 							"IMAGEN","ES_PROMO","ES_DESCUENTO","PRECIO_PROMO","PRECIO_DESCUENTO","TIPO_PS"
 							FROM "PRODUCTO" as P INNER JOIN  "PRODUCTO_SUCURSAL" as S
@@ -70,7 +70,7 @@ class Tpvmodel extends CI_model
 							AND P."ID_EMPRESA" = $1
 							GROUP BY P."ID_PRODUCTO","DESCRIPCION","CODIGO",
 											"PRECIO_LISTA","PRECIO_COMPRA", "IVA",
-											"UNIDAD_MEDIDAD","IMAGEN",
+											"UNIDAD_MEDIDA","IMAGEN",
 											"ES_PROMO",
 											"ES_DESCUENTO",
 											"PRECIO_PROMO",
@@ -118,6 +118,28 @@ class Tpvmodel extends CI_model
 		pg_prepare($this->conn,"select_stock",$query);
 		$result = pg_fetch_all(pg_execute($this->conn, "select_stock", array($idProducto)));
 		return json_encode($result,JSON_NUMERIC_CHECK);
+	}
+
+	function getventabyid($idVenta){
+		$query = 'SELECT * FROM "VENTAS" WHERE "ID_VENTA" = $1';
+		pg_prepare($this->conn,"select_venta",$query);
+		$result = pg_fetch_all(pg_execute($this->conn,"select_venta",array($idVenta)));
+		return json_decode(json_encode($result,JSON_NUMERIC_CHECK),false);
+	}
+
+	function getventadetallebyid($idVenta){
+		$query = 'SELECT VP."CANTIDAD",VP."PRECIO",VP."IMPORTE",
+					TRIM(P."DESCRIPCION") as "DESCRIPCION",TRIM(P."UNIDAD_MEDIDA") as "UNIDAD_MEDIDA", TRIM(P."COD_CFDI") as "COD_CFDI",
+					P."IVA",TRIM(P."UNIDAD_SAT") as "UNIDAD_SAT",
+					CASE WHEN P."IEPS" IS NULL THEN \'0\' ELSE P."IEPS" END as "IEPS",TRIM(I."NOMBRE") as "TIPOFACTOR",
+					TRIM(P."CODIGO") as "CODIGO"
+				FROM "VENTAS_PRODUCTO" as VP
+				INNER JOIN "PRODUCTO" as P ON VP."ID_PRODUCTO" = P."ID_PRODUCTO"
+				INNER JOIN "IEPS" as I on P."ID_IEPS" = I."ID_IEPS"
+				WHERE VP."ID_VENTA" = $1';				
+		pg_prepare($this->conn,"select_venta_prod",$query);
+		$result = pg_fetch_all(pg_execute($this->conn,"select_venta_prod",array($idVenta)));		
+		return json_decode(json_encode($result,JSON_NUMERIC_CHECK),false);
 	}
 }
 ?>

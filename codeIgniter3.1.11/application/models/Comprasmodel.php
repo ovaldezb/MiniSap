@@ -74,13 +74,13 @@ class Comprasmodel extends CI_model
 							"DESCUENTO",
 							"IVA",
 							"TIPO_ORDENCOMPRA",
-							"NOTAS",
+							C."NOTAS",
 							"DIAS_PAGO"
 							FROM "COMPRAS" AS C INNER  JOIN "PROVEEDORES" AS P
 							ON C."CLAVE_PROVEEDOR" = P."CLAVE"
 							WHERE "ID_COMPRA" = $1';
-		$result = pg_prepare($this->conn,"selectquery",$query);
-		$result = pg_fetch_all(pg_execute($this->conn, "selectquery", array($id_compra)));
+		pg_prepare($this->conn,"selectquery",$query);
+		$result = pg_fetch_all(pg_execute($this->conn, "selectquery", array($id_compra)));		
 		return json_encode($result,JSON_NUMERIC_CHECK);
 	}
 

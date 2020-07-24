@@ -6,13 +6,21 @@ app.controller('myCtrlLinea', function ($scope, $http) {
     $scope.isListaActivo = true;
     $scope.modalBorraLinea = false;
     $scope.lineaBorrar = "";
-    $scope.init = function () {        
-        $scope.IdEmpresa = 1;        
-        $scope.getListaLinea();
+    $scope.idempresa = 0;        
+    $scope.init = function () {                
+        $http.get(pathAcc + 'getdata', { responseType: 'json' })
+            .then(function (res) {
+				if (res.data.value == 'OK') {
+					$scope.idempresa = res.data.idempresa;
+                    $scope.getListaLinea();	
+				}
+			}).catch(function (err) {
+				console.log(err);
+			});        
     }
 
     $scope.getListaLinea = function(){
-        $http.get(pathLinea + $scope.IdEmpresa, { responseType: 'json' })
+        $http.get(pathLinea + $scope.idempresa, { responseType: 'json' })
         .then(res => {                
             if (res.data.length > 0) {                    
                 $scope.lstLinea = res.data;
@@ -27,6 +35,8 @@ app.controller('myCtrlLinea', function ($scope, $http) {
     }
 
     $scope.cancelLinea = function () {
+        $scope.msjBoton="Agregar";
+        $scope.nombre = "";
         $scope.isListaActivo = true;
     }
 
@@ -37,11 +47,10 @@ app.controller('myCtrlLinea', function ($scope, $http) {
 
     $scope.addLinea = function(){
         if($scope.msjBoton=="Agregar"){
-            $http.post(pathLinea,JSON.stringify({NOMBRE:$scope.nombre,ID_EMPRESA:$scope.IdEmpresa}))
+            $http.post(pathLinea,JSON.stringify({NOMBRE:$scope.nombre,ID_EMPRESA:$scope.idempresa}))
             .then(res => {                
                 if(res.status = '200'){
-                    alert('La línea se ha insertado');
-                    $scope.nombre = "";
+                    alert('La línea se ha insertado');                    
                     $scope.cancelLinea();
                     $scope.getListaLinea();
                 }
@@ -53,9 +62,7 @@ app.controller('myCtrlLinea', function ($scope, $http) {
             $http.put(pathLinea+'/'+$scope.lstLinea[$scope.indexRowLinea].ID_LINEA,JSON.stringify({NOMBRE:$scope.nombre}))
             .then(res => {
                 if(res.status == 200){
-                    alert("La línea se ha actualizado");
-                    $scope.nombre = "";
-                    $scope.msjBoton="Agregar"
+                    alert("La línea se ha actualizado");                    
                     $scope.cancelLinea();
                     $scope.getListaLinea();
                 }
@@ -68,7 +75,7 @@ app.controller('myCtrlLinea', function ($scope, $http) {
 
     $scope.updateLinea = function(){
 
-        $http.get(pathLinea + $scope.IdEmpresa+'/'+$scope.lstLinea[$scope.indexRowLinea].ID_LINEA, { responseType: 'json' })
+        $http.get(pathLinea + $scope.idempresa+'/'+$scope.lstLinea[$scope.indexRowLinea].ID_LINEA, { responseType: 'json' })
         .then(res => {                      
             if (res.data.length > 0) {                    
                 $scope.nombre = res.data[0].NOMBRE;

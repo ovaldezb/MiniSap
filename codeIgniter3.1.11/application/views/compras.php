@@ -35,13 +35,13 @@
 						<label class="label">Proveedor:<label>
 					</div>
 					<div class="column is-1">
-						<input type="text" class="input is-small" ng-model="docprev">
+						<input type="text" class="input is-small" ng-model="docprev" id="docprev">
 					</div>
 					<div class="column is-1">
-						<input type="text" class="input is-small" ng-model="claveprov" ng-keyup="buscaprovbyclave($event)" placeholder="Clave Proveedor">
+						<input type="text" class="input is-small" ng-model="claveprov" id="claveprov" ng-keyup="buscaprovbyclave($event)" placeholder="Clave Proveedor">
 					</div>
 					<div class="column is-4">
-						<input type="text" class="input is-small"  ng-model="proveedor" ng-keyup="buscaprovbynombre($event)" placeholder="Nombde del Proveedor">
+						<input type="text" class="input is-small"  ng-model="proveedor" id="proveedor" ng-keyup="buscaprovbynombre($event)" placeholder="Nombde del Proveedor">
 					</div>
 				</div>
 				<div class="table-container" style="display:none; width:43%;margin-left:215px;margin-top:-25px" id="buscaprov">
@@ -74,7 +74,7 @@
 						<label class="label">Documento:<label>
 					</div>
 					<div class="column is-1">
-						<input type="text" class="input is-small" ng-model="numdoc" placeholder="No Documento" required>
+						<input type="text" class="input is-small" ng-model="numdoc" id="numdoc" placeholder="No Documento" required>
 					</div>
 					<div class="column is-narrow">
 						<div class="control">
@@ -136,7 +136,7 @@
 						<label class="label">Desc %</label>
 					</div>
 					<div class="column is-narrow" style="width:100px">
-						<input type="number" class="input is-small" value="" ng-model="descuento" ng-keyup="validaDescto()" style="text-align:center;">
+						<input type="number" class="input is-small" value="" ng-model="descuento" id="descuento" ng-keyup="validaDescto()" style="text-align:center;">
 					</div>
 					<div class="column is-narrow">
 						<label class="label">Iva %</label>
@@ -164,11 +164,11 @@
 				<i class="fas fa-edit" title="Edita el producto seleccionado de la lista"></i>
 			</span>
 			</a>
-			<a ng-click="registrar();">
+			<!--a ng-click="registrar();">
 			<span class="icon has-text-success">
 				<i class="fas fa-file-export" title="Registra los productos de la lista"></i>
 			</span>
-			</a>
+			</a-->
 		</div>
 		<div class="column is-3">
 		</div>
@@ -194,7 +194,7 @@
 					<td>Descripción</td>
 					<td align="center">Cantidad</td>
 					<td align="center">U/Medida</td>
-					<td align="center">Precio</td>
+					<td align="center">Precio Compra</td>
 					<td align="center">Descuento</td>
 					<td align="center" rowspan="2">
 						<figure class="media-left" style="display: none;" id="imgfig">
@@ -232,8 +232,8 @@
 							</div>
 						</div>
 					</td>
-					<td><input type="text" class="input is-small" id="unidad" ng-model="unidad" style="text-align:right;" disabled></td>
-					<td><input type="number" class="input is-small" id="precio" ng-model="precio" disabled style="text-align:right;" required></td>
+					<td align="center"><label class="label">{{unidad}}</label></td>
+					<td><input type="number" class="input is-small" id="precio" ng-model="precio" disabled style="text-align:center;" required></td>
 					<td><input type="text" class="input is-small" id="desctoprod" ng-model="desctoprod" ng-blur="validaDcto()" style="text-align:right;" disabled></td>
 				</tr>
 			</table>
@@ -278,7 +278,7 @@
 									<tr ng-repeat="x in lstaprdctbusq" ng-click="selectProdBus($index,x.IMAGEN)">
 										<td>{{x.DESCRIPCION}}</td>
 										<td>{{x.CODIGO}}</td>
-										<td>{{x.UNIDAD_MEDIDAD}}</td>
+										<td>{{x.UNIDAD_MEDIDA}}</td>
 										<td align="center">{{x.PRECIO_COMPRA_DISP}}</td>
 										<td align="center">{{x.STOCK}}</td>
 									</tr>
@@ -387,7 +387,8 @@
 		</div>
 			<div id="divbtnCancel" class="columns">
 				<div class="column">
-					<button type="button" class="button is-primary" id="btnCancel" ng-click="btnCancel()">{{msgBton}}</button>
+					<button type="button" class="button is-info" id="btnCancel" ng-show="btnCompHide" ng-disabled="listaproductos.length == 0" ng-click="registrar()" >Comprar</button>
+					<button type="button" class="button is-danger" id="btnCancel" ng-click="btnCancel()">{{msgBton}}</button>
 				</div>
 			</div>
 		</div>
@@ -414,8 +415,8 @@
 			<tr>
 				<td>
 					<div style="width:100%; height:650px; overflow:auto;">
-						<table class="table is-hoverable" id="compras" style="width:100%" >
-							<tr ng-repeat="x in listaCompras | orderBy:myOrderBy:sortDir" ng-click="selectRowCompra(x.ID_COMPRA,$index)" ng-class="{selected: x.ID_COMPRA === idSelCompra}">
+						<table class="table is-hoverable" id="tblcompras" style="width:100%" >
+							<tr ng-repeat="x in listaCompras | orderBy:myOrderBy:sortDir" ng-click="selectRowCompra(x.ID_COMPRA,$index)" ng-dblclick="despliegaCompra()" ng-class="{selected: x.ID_COMPRA ===  idSelCompra}">
 								<td align="center" style="width:11%">{{x.FECHA_COMPRA}}</td>
 								<td align="right"  style="width:10%">{{x.DOCUMENTO}}</td>
 								<td align="center" style="width:20%">{{x.PROVEEDOR}}</td>

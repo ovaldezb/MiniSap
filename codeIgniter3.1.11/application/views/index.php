@@ -252,6 +252,7 @@
 <script src="../js/repmovalm.js"></script>
 <script src="../js/rventas.js"></script>
 <script src="../js/linea.js"></script>
+<script src="../js/datosfactura.js"></script>
 <script>
 
 /*var acc = document.getElementsByClassName("accordion");

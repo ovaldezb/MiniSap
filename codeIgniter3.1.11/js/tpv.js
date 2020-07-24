@@ -33,6 +33,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
   $scope.dsctoValor = 0;
   $scope.impuestos = 0;
   $scope.nombre_cliente = '';
+  $scope.rfc_cliente = '';
   $scope.idcliente = '';
   $scope.claveclte = '';
   $scope.idvendedor = '';
@@ -54,6 +55,30 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
   $scope.idempresa = '';
   $scope.idsucursal = '';
   $scope.aniofiscal = '';
+  $scope.req_factura = false;
+  $scope.modalReqFact = false;
+  $scope.lstMoneda = [];
+  $scope.lstMetpago = [];
+  $scope.lstFormpago = [];
+  $scope.lstUsocfdi = [];
+
+  $scope.fact = {
+    idventa:'',
+    cliente:'',
+    rfc:'',
+    serie:'',
+    folio:'',
+    usocfdi:'',
+    moneda:'MXN',
+    tipocambio:1,
+    formapago:"01",
+    metodopago:'PUE',
+    req_factura:false,
+    idempresa:'',
+    idsucursal:'',
+    isavailable:false,
+    isfacturable:false
+  };
   $scope.cliente = {
     clave:"",
     nombre:"",
@@ -85,14 +110,17 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
           $scope.idempresa = res.data.idempresa;
           $scope.idsucursal = res.data.idsucursal;
           $scope.aniofiscal = res.data.aniofiscal;
+          $scope.fact.idempresa = res.data.idempresa;
+          $scope.fact.idsucursal = res.data.idsucursal;
+          $scope.getsucdisponible();
           $scope.getNextDocTpv();
         }
       }).catch(function(err){
         console.log(err);
-      });
-
+      });      
+      $scope.getUsoCfdi();
   }
-
+  
   $scope.getNextDocTpv = function(){
 		$http.get(pathUtils+'incremento/TPVS/'+$scope.idempresa+'/7').
 		then(function(res)
@@ -111,6 +139,63 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
   $interval(function () {
         $scope.hora = DisplayCurrentTime();
     }, 1000);
+
+  $scope.getMoneda = function(){
+    $http.get(pathUtils+'getmoneda',{responseType:'json'}).
+    then(res => {
+      if(res.data.length > 0){
+        $scope.lstMoneda = res.data;
+      }
+    }).catch(err =>	{
+			console.log(err);
+		});
+  }
+
+  $scope.getMetPago = function(){
+    $http.get(pathUtils+'getmetpag',{responseType:'json'}).
+    then(res => {
+      if(res.data.length > 0){
+        $scope.lstMetpago = res.data;
+      }
+    }).catch(err =>	{
+			console.log(err);
+		});
+  }
+
+  $scope.getFormPago = function(){
+    $http.get(pathUtils+'getformpag',{responseType:'json'}).
+    then(res => {
+      if(res.data.length > 0){
+        $scope.lstFormpago = res.data;
+      }
+    }).catch(err =>	{
+			console.log(err);
+		});
+  }
+
+  $scope.getUsoCfdi = function(){
+    $http.get(pathUtils+'getusocfdi',{responseType:'json'}).
+    then(res => {
+      if(res.data.length > 0){
+        $scope.lstUsocfdi = res.data;
+      }
+    }).catch(err =>	{
+			console.log(err);
+		});
+  }
+
+  $scope.getsucdisponible = function(){
+    $http.get(pathCreaFact+'getdatacfdi/'+$scope.idempresa+'/'+$scope.idsucursal,{responseType:'json'}).
+    then(res => {
+      if(res.data.status == 'ok'){
+        $scope.fact.isavailable = true;
+      }else{
+        $scope.fact.isavailable = false;
+      }
+    }).catch(err =>	{
+			console.log(err);
+		});
+  }
 
   $scope.setSelected = function(indexRowCompra,idSelCompra)
   {
@@ -173,7 +258,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
         {
           $scope.prod_desc = res.data[0].DESCRIPCION;
           $scope.precio = Number(res.data[0].PRECIO_LISTA).toFixed(2);
-          $scope.unidad = res.data[0].UNIDAD_MEDIDAD;
+          $scope.unidad = res.data[0].UNIDAD_MEDIDA;
           $scope.imagePath = res.data[0].IMAGEN;
           $scope.iva = res.data[0].IVA;
           if($scope.imagePath!='')
@@ -214,7 +299,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
     {
       $scope.codigo_prodto = $scope.lstProdBusqueda[idxRowListaBusq].CODIGO;
       $scope.prod_desc = $scope.lstProdBusqueda[idxRowListaBusq].DESCRIPCION;
-      $scope.unidad = $scope.lstProdBusqueda[idxRowListaBusq].UNIDAD_MEDIDAD;
+      $scope.unidad = $scope.lstProdBusqueda[idxRowListaBusq].UNIDAD_MEDIDA;
       $scope.precio = $scope.lstProdBusqueda[idxRowListaBusq].PRECIO_LISTA;
       $scope.id_producto = $scope.lstProdBusqueda[idxRowListaBusq].ID_PRODUCTO;
       $scope.imagePath = $scope.lstProdBusqueda[idxRowListaBusq].IMAGEN;
@@ -430,9 +515,12 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
     {
       $scope.claveclte = $scope.lstCliente[indxRowClte].CLAVE.trim();
       $scope.nombre_cliente = $scope.lstCliente[indxRowClte].NOMBRE;
-      $scope.idcliente = $scope.lstCliente[indxRowClte].ID_CLIENTE;
+      $scope.rfc_cliente = $scope.lstCliente[indxRowClte].RFC.trim();
+      $scope.fact.usocfdi = $scope.lstCliente[indxRowClte].USO_CFDI;
+      $scope.cliente.id_uso_cfdi = $scope.lstCliente[indxRowClte].ID_USO_CFDI;
+      $scope.idcliente = $scope.lstCliente[indxRowClte].ID_CLIENTE;            
       $scope.lstCliente = [];
-      $scope.showLstClte = false;
+      $scope.showLstClte = false;      
     }
 
     $scope.closeClteSearch = function()
@@ -479,6 +567,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
 
     $scope.iniciaRegistrarCompra = function()
     {
+      
       if($scope.docto == '')
       {
         alert('El campo Documento debe estar lleno');
@@ -491,9 +580,20 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
         alert('Debe agregar al menos un producto');
         return;
       }
+      console.log($scope.nombre_cliente);
+      if($scope.nombre_cliente != ''){
+        $scope.getMoneda();
+        $scope.getMetPago();
+        $scope.getFormPago();  
+        $scope.fact.isfacturable = true;    
+      }else{
+        $scope.fact.isfacturable = false;
+      }
+      console.log($scope.fact.isfacturable);
       $scope.rgstracompra = true;
     }
 
+    
     $scope.calculaCambio = function()
     {
       if(isNaN($scope.pago_efectivo))
@@ -521,7 +621,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
     }
 
     $scope.registraCompra = function()
-    {
+    { 
       if(Number($scope.pago_efectivo) - Number($scope.cambio) + Number($scope.pago_tarjeta) + Number($scope.pago_cheque) + Number($scope.pago_vales) > Number($scope.total))
       {
         alert('La cantidad a cobrar es mayor que el Importe Total');
@@ -532,7 +632,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
         alert('La cantidad a cobrar es menor que el Importe Total, no se puede registrar la compra');
         return;
       }
-
+      
       var dataVenta =
       {
         documento:$scope.docto,
@@ -541,7 +641,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
         fechaventa:formatDateInsert(new Date()),
         aniofiscal:$scope.aniofiscal,
         idempresa:$scope.idempresa,
-        idtipopago:$('#tipopago').val(),
+        idformapago:$scope.fact.formapago,
         pagoefectivo:$scope.pago_efectivo,
         pagotarjeta:$scope.pago_tarjeta,
         pagocheques:$scope.pago_cheque,
@@ -559,12 +659,18 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
       {
         $scope.idVenta = res.data[0].registra_venta;
         $scope.registraVentaProd();
+        if($scope.fact.req_factura){
+          $scope.registraFactura(); 
+        }else{
+          alert('La venta se registro exitosamente');
+        }        
         $scope.lstProdCompra = [];
         $scope.total = 0.0;
         $scope.cambio = 0.0;
         $scope.docto = '';
         $scope.idcliente = '';
         $scope.nombre_cliente = '';
+        $scope.rfc_cliente = '';
         $scope.claveclte = '';
         $scope.idvendedor = '';
         $scope.nombre_vendedor = '';
@@ -577,7 +683,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
         $scope.rgstracompra = false;
         $('#regcompra').prop('disabled',true);
         $scope.getNextDocTpv();
-        alert('La venta se registro exitosamente');
+        
       }).
       catch(function(err)
       {
@@ -610,6 +716,26 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
           console.log(err);
         });
       }
+    }
+
+    $scope.registraFactura = function(){
+      $scope.fact.cliente = $scope.nombre_cliente;
+      $scope.fact.rfc = $scope.rfc_cliente;
+      $scope.fact.idventa = $scope.idVenta;
+      $scope.fact.folio = $scope.docto;
+      
+      $http.post(pathCreaFact+'creacfdi',$scope.fact)
+          .then(res =>{
+            if(res.data.status=="success"){
+              alert('La venta se registro exitosamente y se creó la factura');
+            }else{
+              alert('Error al generar la factura:\n'+res.data.error);
+            }
+          })
+          .catch(function(err)
+          {
+            console.log(err);
+          });
     }
 
   $scope.VerificarCliente = function()
@@ -754,6 +880,11 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
     $scope.cancelVenta = function()
     {
       $scope.rgstracompra = false;
+      $scope.fact.req_factura = false;
+    }
+
+    $scope.closeReqFact = function(){
+      $scope.modalReqFact = false;
     }
 });
 

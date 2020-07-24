@@ -373,6 +373,7 @@ class CI_Upload {
 	 */
 	public function do_upload($field = 'userfile')
 	{
+		
 		// Is $_FILES[$field] set? If not, no reason to continue.
 		if (isset($_FILES[$field]))
 		{
@@ -407,7 +408,7 @@ class CI_Upload {
 			// errors will already be set by validate_upload_path() so just return FALSE
 			return FALSE;
 		}
-
+		
 		// Was the file able to be uploaded? If not, determine the reason why.
 		if ( ! is_uploaded_file($_file['tmp_name']))
 		{
@@ -881,7 +882,7 @@ class CI_Upload {
 	 * @return	bool
 	 */
 	public function is_allowed_filetype($ignore_mime = FALSE)
-	{
+	{		
 		if ($this->allowed_types === '*')
 		{
 			return TRUE;
@@ -899,7 +900,7 @@ class CI_Upload {
 		{
 			return FALSE;
 		}
-
+		
 		// Images get some additional checks
 		if (in_array($ext, array('gif', 'jpg', 'jpeg', 'jpe', 'png'), TRUE) && @getimagesize($this->file_temp) === FALSE)
 		{
@@ -912,10 +913,8 @@ class CI_Upload {
 		}
 
 		if (isset($this->_mimes[$ext]))
-		{
-			return is_array($this->_mimes[$ext])
-				? in_array($this->file_type, $this->_mimes[$ext], TRUE)
-				: ($this->_mimes[$ext] === $this->file_type);
+		{			
+			return is_array($this->_mimes[$ext]) ? in_array($this->file_type, $this->_mimes[$ext], TRUE) : ($this->_mimes[$ext] === $this->file_type);			
 		}
 
 		return FALSE;
@@ -1227,9 +1226,11 @@ class CI_Upload {
 		if (function_exists('finfo_file'))
 		{
 			$finfo = @finfo_open(FILEINFO_MIME);
+			var_dump($finfo);
 			if (is_resource($finfo)) // It is possible that a FALSE value is returned, if there is no magic MIME database file found on the system
 			{
 				$mime = @finfo_file($finfo, $file['tmp_name']);
+				var_dump($mime);
 				finfo_close($finfo);
 
 				/* According to the comments section of the PHP manual page,
@@ -1238,6 +1239,7 @@ class CI_Upload {
 				 */
 				if (is_string($mime) && preg_match($regexp, $mime, $matches))
 				{
+					var_dump($matches);
 					$this->file_type = $matches[1];
 					return;
 				}

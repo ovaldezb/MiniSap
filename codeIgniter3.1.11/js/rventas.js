@@ -46,7 +46,7 @@ app.controller('repControlVentas',function($scope,$http)
 
   $scope.getDataLinea = function()
   {
-    $http.get(pathUtils+'lineaempr/'+$scope.idempresa,{responseType:'json'}).
+    $http.get(pathLinea + $scope.idempresa,{responseType:'json'}).
     then((res)=>{
       if(res.data.length > 0){
         $scope.lstlinea = res.data;

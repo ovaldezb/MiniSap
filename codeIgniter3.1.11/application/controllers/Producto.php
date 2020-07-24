@@ -8,6 +8,7 @@ class Producto extends CI_Controller
 
 		$this->load->model('catalogosmodel');
 		$this->load->model('productomodel');
+		$this->load->model('lineamodel');		
 		$this->load->helper('url');
 		$this->load->library('session');
 	}
@@ -15,7 +16,7 @@ class Producto extends CI_Controller
 	function index() {
 		if(isset($_SESSION['username']))
     {
-			$data['lineas'] = $this->catalogosmodel->get_linea();
+			$data['lineas'] = $this->lineamodel->read($_SESSION['idempresa']);
 			$data['monedas'] = $this->catalogosmodel->get_monedas();
 			$data['iepss'] = $this->catalogosmodel->get_ieps();
 			$data['umedidas'] = $this->catalogosmodel->get_unidad_medida();
@@ -55,9 +56,9 @@ class Producto extends CI_Controller
 		$data['espromo'],
 		strlen($data['preciopromo'])>0?$data['preciopromo']:NULL,
 		$data['esdescnt'],
-		strlen($data['preciodescnt'])>0?$data['preciodescnt']:NULL,
-		$data['maxstock'],
-		$data['minstock'],
+		strlen($data['preciodescnt']) > 0 ? $data['preciodescnt']:NULL,
+		strlen($data['maxstock'])  > 0 ? $data['maxstock']:NULL,
+		strlen($data['minstock'])  > 0 ? $data['minstock']:NULL,
 		$data['estasaexenta'],
 		$data['notas'],
 		$data['img'],

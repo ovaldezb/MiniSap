@@ -14,41 +14,41 @@ class Reportemodel extends CI_model
   function get_reporte_mov_almacen($idEmpresa,$anio_fiscal,$fecIni,$fecFin,$linea)
   {
     $query = 'SELECT CO."ID_PRODUCTO",TRIM(CO."CODIGO") as "CODIGO",CO."DESCRIPCION",
-							CO."CANT_COMP",
-							CO."IMP_TOT_COMP",
-							CASE WHEN  VE."CANT_VENTA" IS NULL THEN 0 ELSE VE."CANT_VENTA"  END as "CANT_VENTA",
-							CASE WHEN  VE."IMPO_TOT_VTA" IS NULL THEN 0 ELSE VE."IMPO_TOT_VTA"  END as "IMPO_TOT_VTA",
-							CASE WHEN  VE."CANT_VENTA" IS NULL THEN CO."CANT_COMP" ELSE (CO."CANT_COMP" - VE."CANT_VENTA")  END as "CANT_EXIST",
-							CO."PRECIO_LISTA",
-							CASE WHEN  VE."CANT_VENTA" IS NULL THEN CO."CANT_COMP"*CO."PRECIO_LISTA" ELSE (CO."CANT_COMP" - VE."CANT_VENTA")*CO."PRECIO_LISTA"  END as "IMPO_EXIST"
-							FROM
-									(SELECT P."ID_PRODUCTO",
-									P."CODIGO",
-									P."DESCRIPCION",P."PRECIO_LISTA",
-									SUM(CP."CANTIDAD") as "CANT_COMP",
-									SUM(CP."IMPORTE_TOTAL") as "IMP_TOT_COMP"
-									FROM "COMPRAS" as C
-									INNER JOIN "COMPRA_PRODUCTO" as CP on C."ID_COMPRA" = CP."ID_COMPRA"
-									INNER JOIN "PRODUCTO" as P on P."ID_PRODUCTO" = CP."ID_PRODUCTO"
-									WHERE C."ID_EMPRESA" = $1
-									AND C."FECHA_COMPRA" >= $2
-									AND C."FECHA_COMPRA" <= $3
-									AND C."ANIO_FISCAL" = $4
-									AND P."ID_LINEA" = $5
-									GROUP BY P."ID_PRODUCTO",P."CODIGO",P."DESCRIPCION",P."PRECIO_LISTA"
-									ORDER BY P."DESCRIPCION") as CO
-							LEFT JOIN
-									(SELECT VP."ID_PRODUCTO",SUM(VP."CANTIDAD") as "CANT_VENTA",SUM(VP."IMPORTE") as "IMPO_TOT_VTA"
-							    FROM "VENTAS" as V
-									INNER JOIN "VENTAS_PRODUCTO" as VP on V."ID_VENTA" = VP."ID_VENTA"
-									INNER JOIN "PRODUCTO" as P on P."ID_PRODUCTO" = VP."ID_PRODUCTO"
-									WHERE V."ID_EMPRESA" = $6
-									AND V."FECHA_VENTA" >= $7
-									AND V."FECHA_VENTA" <= $8
-									AND V."ANIO_FISCAL" = $9
-									AND P."ID_LINEA" = $10
-									GROUP BY VP."ID_PRODUCTO") as VE
-							ON CO."ID_PRODUCTO" = VE."ID_PRODUCTO"';
+					CO."CANT_COMP",
+					CO."IMP_TOT_COMP",
+					CASE WHEN  VE."CANT_VENTA" IS NULL THEN 0 ELSE VE."CANT_VENTA"  END as "CANT_VENTA",
+					CASE WHEN  VE."IMPO_TOT_VTA" IS NULL THEN 0 ELSE VE."IMPO_TOT_VTA"  END as "IMPO_TOT_VTA",
+					CASE WHEN  VE."CANT_VENTA" IS NULL THEN CO."CANT_COMP" ELSE (CO."CANT_COMP" - VE."CANT_VENTA")  END as "CANT_EXIST",
+					CO."PRECIO_LISTA",
+					CASE WHEN  VE."CANT_VENTA" IS NULL THEN CO."CANT_COMP"*CO."PRECIO_LISTA" ELSE (CO."CANT_COMP" - VE."CANT_VENTA")*CO."PRECIO_LISTA"  END as "IMPO_EXIST"
+					FROM
+							(SELECT P."ID_PRODUCTO",
+							P."CODIGO",
+							P."DESCRIPCION",P."PRECIO_LISTA",
+							SUM(CP."CANTIDAD") as "CANT_COMP",
+							SUM(CP."IMPORTE_TOTAL") as "IMP_TOT_COMP"
+							FROM "COMPRAS" as C
+							INNER JOIN "COMPRA_PRODUCTO" as CP on C."ID_COMPRA" = CP."ID_COMPRA"
+							INNER JOIN "PRODUCTO" as P on P."ID_PRODUCTO" = CP."ID_PRODUCTO"
+							WHERE C."ID_EMPRESA" = $1
+							AND C."FECHA_COMPRA" >= $2
+							AND C."FECHA_COMPRA" <= $3
+							AND C."ANIO_FISCAL" = $4
+							AND P."ID_LINEA" = $5
+							GROUP BY P."ID_PRODUCTO",P."CODIGO",P."DESCRIPCION",P."PRECIO_LISTA"
+							ORDER BY P."DESCRIPCION") as CO
+					LEFT JOIN
+							(SELECT VP."ID_PRODUCTO",SUM(VP."CANTIDAD") as "CANT_VENTA",SUM(VP."IMPORTE") as "IMPO_TOT_VTA"
+						FROM "VENTAS" as V
+							INNER JOIN "VENTAS_PRODUCTO" as VP on V."ID_VENTA" = VP."ID_VENTA"
+							INNER JOIN "PRODUCTO" as P on P."ID_PRODUCTO" = VP."ID_PRODUCTO"
+							WHERE V."ID_EMPRESA" = $6
+							AND V."FECHA_VENTA" >= $7
+							AND V."FECHA_VENTA" <= $8
+							AND V."ANIO_FISCAL" = $9
+							AND P."ID_LINEA" = $10
+							GROUP BY VP."ID_PRODUCTO") as VE
+					ON CO."ID_PRODUCTO" = VE."ID_PRODUCTO"';
     pg_prepare($this->conn,"qry_mov_almac",$query);
     $result = pg_fetch_all(pg_execute($this->conn,"qry_mov_almac",array($idEmpresa,$fecIni,$fecFin,$anio_fiscal,$linea,$idEmpresa,$fecIni,$fecFin,$anio_fiscal,$linea)));
     return json_encode($result,JSON_NUMERIC_CHECK);

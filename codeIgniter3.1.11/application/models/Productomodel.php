@@ -56,7 +56,7 @@ class Productomodel extends CI_model
 				"CODIGO" =$1,
 				"DESCRIPCION" =$2,
 				"ID_LINEA" =$3,
-				"UNIDAD_MEDIDAD" =$4,
+				"UNIDAD_MEDIDA" =$4,
 				"ES_EQUIVALENTE" =$5,
 				"EQUIVALENCIA" =$6,
 				"COD_CFDI" =$7,

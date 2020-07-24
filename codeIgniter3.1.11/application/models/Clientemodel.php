@@ -13,7 +13,12 @@ class Clientemodel extends CI_model
 
 	function get_clientes_by_empresa($idEmpresa)
 	{
-		$query = 'SELECT * FROM "CLIENTE" WHERE "ACTIVO" = true AND "ID_EMPRESA" = $1 ORDER BY "CLAVE"';
+		$query = 'SELECT C."ID_CLIENTE",C."NOMBRE",TRIM(C."CLAVE") as "CLAVE", U."CLAVE" as "USO_CFDI",C."ID_USO_CFDI",C."RFC"
+				FROM "CLIENTE" as C
+				INNER JOIN "USO_CFDI" as U ON C."ID_USO_CFDI" = U."ID_CFDI" 				
+				WHERE C."ACTIVO" = true 
+				AND C."ID_EMPRESA" = $1 
+				ORDER BY C."CLAVE"';
 		pg_prepare($this->conn, "my_query", $query);
 		$result =  pg_fetch_all(pg_execute($this->conn, "my_query", array($idEmpresa)));
 		return json_encode($result,JSON_NUMERIC_CHECK);
@@ -36,7 +41,7 @@ class Clientemodel extends CI_model
 		TRIM(DS1."NOMBRE") as "REVISION",
 		C."ID_REVISION",C."ID_VENDEDOR",C."ID_TIPO_CLIENTE",
 		TRIM(DS2."NOMBRE") as "PAGOS",
-		C."ID_PAGOS",C."ID_FORMA_PAGO",C."ID_USO_CFDI",
+		C."ID_PAGOS",C."ID_FORMA_PAGO",C."ID_USO_CFDI", TRIM(UC."CLAVE") as "CLAVE_CFDI",
 		TRIM(FP."DESCRIPCION") as "FORMA_PAGO",
 		V."NOMBRE" as "VENDEDOR",
 		UC."DESCRIPCION" as "CFDI",
@@ -57,11 +62,13 @@ class Clientemodel extends CI_model
 
 	function get_clientes_by_nombre($idempresa,$nombre)
 	{
-		$query = 'SELECT * FROM "CLIENTE"
-							WHERE UPPER("NOMBRE")
-							LIKE UPPER($1)
-							AND "ID_EMPRESA" = $2
-							AND "ACTIVO" = true';
+		$query = 'SELECT C."ID_CLIENTE",C."NOMBRE",TRIM(C."CLAVE") as "CLAVE", U."CLAVE" as "USO_CFDI",C."ID_USO_CFDI",C."RFC"
+				FROM "CLIENTE" as C
+				INNER JOIN "USO_CFDI" as U ON C."ID_USO_CFDI" = U."ID_CFDI"
+				WHERE UPPER(C."NOMBRE")
+				LIKE UPPER($1)
+				AND C."ID_EMPRESA" = $2
+				AND C."ACTIVO" = true';
 		$result = pg_prepare($this->conn, "my_query", $query);
 		$result =  pg_fetch_all(pg_execute($this->conn, "my_query", array($nombre,$idempresa)));
 		return json_encode($result,JSON_NUMERIC_CHECK);

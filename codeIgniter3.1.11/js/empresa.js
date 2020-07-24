@@ -9,16 +9,22 @@ app.controller('myCtrlEmpresa', function($scope,$http)
   $scope.idEmpresa = '';
   $scope.descEmpBorrar = '';
   $scope.actnBton = 'Agregar';
-  $scope.nombre = '';
-  $scope.domicilio = '';
-  $scope.rfc = '';
-  $scope.ejercicio_fiscal = '';
-  $scope.dig1 = '';
-  $scope.dig2 = '';
-  $scope.dig3 = '';
-  $scope.dig4 = '';
-  $scope.cuenta_resultado = '';
-  $scope.resultado_anterior = '';
+  $scope.emp = {
+    nombre:'',
+    domicilio:'',
+    rfc:'',
+    cp:'',
+    ejercicio_fiscal:'',
+    dig1:'',
+    dig2:'',
+    dig3:'',
+    dig4:'',
+    digxcta:'',
+    cuenta_resultado:'',
+    resultado_anterior:'',
+    regimen:'',
+    idEmpresa:''
+  }
 
   $scope.init = function()
   {
@@ -98,18 +104,19 @@ app.controller('myCtrlEmpresa', function($scope,$http)
   	{
   		if(res.data.length > 0)
   		{
-  			$scope.nombre = res.data[0].NOMBRE;
-  			$scope.domicilio = res.data[0].DOMICILIO;
-  			$scope.rfc = res.data[0].RFC;
-  			$scope.ejercicio_fiscal = res.data[0].EJER_FISC;
+  			$scope.emp.nombre = res.data[0].NOMBRE;
+  			$scope.emp.domicilio = res.data[0].DOMICILIO;
+        $scope.emp.rfc = res.data[0].RFC;
+        $scope.emp.cp = res.data[0].CP;
+  			$scope.emp.ejercicio_fiscal = res.data[0].EJER_FISC;
   			$('#regimen').val(res.data[0].ID_REGIMEN);
-  			$scope.cuenta_resultado = res.data[0].CUENTA_RESULTADO;
-  			$scope.resultado_anterior = res.data[0].RESULTADO_ANTERIOR;
+  			$scope.emp.cuenta_resultado = res.data[0].CUENTA_RESULTADO;
+  			$scope.emp.resultado_anterior = res.data[0].RESULTADO_ANTERIOR;
         var digxcta = String(res.data[0].DIGITO_X_CUENTA).split("");
-  			$scope.dig1 = digxcta[0];
-  			$scope.dig2 = digxcta[1];
-  			$scope.dig3 = digxcta[2];
-  			$scope.dig4 = digxcta[3];
+  			$scope.emp.dig1 = digxcta[0];
+  			$scope.emp.dig2 = digxcta[1];
+  			$scope.emp.dig3 = digxcta[2];
+  			$scope.emp.dig4 = digxcta[3];
         $scope.isDivEmpActivo = true;
         $scope.actnBton = 'Actualizar';
   		}
@@ -121,7 +128,7 @@ app.controller('myCtrlEmpresa', function($scope,$http)
 
   $scope.submitForm = function()
   {
-    var dataEmpresa =
+    /*var dataEmpresa =
     {
       nombre:$scope.nombre,
       domicilio:$scope.domicilio,
@@ -132,18 +139,22 @@ app.controller('myCtrlEmpresa', function($scope,$http)
       cuenta_resultado:$scope.cuenta_resultado,
       resultado_anterior:$scope.resultado_anterior,
       idempresa:$scope.idEmpresa
-    };
+    };*/
+    $scope.emp.idEmpresa = $scope.idEmpresa;
+    $scope.emp.digxcta = $scope.emp.dig1+$scope.emp.dig2+$scope.emp.dig3+$scope.emp.dig4;
+    $scope.emp.regimen = $('#regimen').val();
 
     if($scope.actnBton == 'Agregar')
     {
-      $http.post(pathEmpr+'save',dataEmpresa).
+      $http.post(pathEmpr+'save',$scope.emp).
       then(function(res)
       {        
         if(res.data.length > 0) {
           var nvaEmpresa =
           {
-            NOMBRE:$scope.nombre,
-            RFC:$scope.rfc,
+            NOMBRE:$scope.emp.nombre,
+            RFC:$scope.emp.rfc,
+            CP:$scope.emp.cp,
             ID_EMPRESA:res.data[0].crea_empresa
           };
           $scope.lstEmpresas.push(nvaEmpresa);
@@ -154,16 +165,17 @@ app.controller('myCtrlEmpresa', function($scope,$http)
     		console.log(err);
     	});
     }else {
-      $http.put(pathEmpr+'update/'+$scope.idEmpresa,dataEmpresa).
+      $http.put(pathEmpr+'update/'+$scope.idEmpresa,$scope.emp).
       then(function(res)
     	{
     		if(res.status== 200 && res.data.value == 'OK')
     		{
           var dataUpdate =
           {
-            NOMBRE:$scope.nombre,
-            RFC:$scope.rfc,
-            ID_EMPRESA:$scope.idEmpresa
+            NOMBRE:$scope.emp.nombre,
+            RFC:$scope.emp.rfc,
+            CP:$scope.emp.cp,
+            ID_EMPRESA:$scope.emp.idEmpresa
           };
           $scope.lstEmpresas[$scope.indexRowEmp] = dataUpdate;
           $scope.selectRowEmpresa($scope.lstEmpresas[0].RFC,0,$scope.lstEmpresas[0].ID_EMPRESA);
@@ -206,16 +218,17 @@ app.controller('myCtrlEmpresa', function($scope,$http)
     $scope.isDivEmpActivo = false;
     $scope.actnBton = 'Agregar';
     $('#regimen').val(1);
-    $scope.nombre = '';
-    $scope.domicilio = '';
-    $scope.rfc = '';
-    $scope.ejercicio_fiscal = '';
-    $scope.dig1 = '';
-    $scope.dig2 = '';
-    $scope.dig3 = '';
-    $scope.dig4 = '';
-    $scope.cuenta_resultado = '';
-    $scope.resultado_anterior = '';
+    $scope.emp.nombre = '';
+    $scope.emp.domicilio = '';
+    $scope.emp.rfc = '';
+    $scope.emp.cp = '';
+    $scope.emp.ejercicio_fiscal = '';
+    $scope.emp.dig1 = '';
+    $scope.emp.dig2 = '';
+    $scope.emp.dig3 = '';
+    $scope.emp.dig4 = '';
+    $scope.emp.cuenta_resultado = '';
+    $scope.emp.resultado_anterior = '';
   }
 
 });

@@ -37,6 +37,8 @@ app.controller('myCtrlProducto', function($scope,$http)
   $scope.idempresa = '';
   $scope.idemprcodigo = '';
   $scope.idsucursal = '';
+  $scope.linea = '';
+  $scope.lstlinea = [];
 
   $scope.init = function printProducto()
   {
@@ -47,6 +49,7 @@ app.controller('myCtrlProducto', function($scope,$http)
         $scope.idemprcodigo = res.data.id_empr_codigo;
         $scope.idsucursal = res.data.idsucursal;
         $scope.getDataInit();
+        $scope.getDataLinea();
       }
     }).catch(function(err){
       console.log(err);
@@ -69,7 +72,20 @@ app.controller('myCtrlProducto', function($scope,$http)
   	})
   	.catch(function(err) {
   		console.log(err);
-  	});
+    });    
+  }
+
+  $scope.getDataLinea = function()
+  {
+    $http.get(pathLinea + $scope.idempresa,{responseType:'json'}).
+    then((res)=>{
+      if(res.data.length > 0){
+        $scope.lstlinea = res.data;
+        $scope.linea = res.data[0].ID_LINEA;
+      }
+    }).catch((err)=>{
+      console.log(err);
+    });
   }
 
   $scope.selectRowProducto = function(idSelCompra, indexRowCompra,idProducto)
@@ -116,8 +132,8 @@ app.controller('myCtrlProducto', function($scope,$http)
       {
         $scope.codigo = res.data[0].CODIGO.trim();
         $scope.nombre = res.data[0].DESCRIPCION.trim();
-        $('#linea').val(res.data[0].ID_LINEA);
-        $('#umedida').val(res.data[0].UNIDAD_MEDIDAD.trim());
+        $scope.linea =  res.data[0].ID_LINEA;
+        $('#umedida').val(res.data[0].UNIDAD_MEDIDA.trim());
         $scope.esequiv = res.data[0].ES_COMPUESTO=='t'?true:false;
         $scope.equivalencia = res.data[0].EQUIVALENCIA;
         $scope.codigocfdi = res.data[0].COD_CFDI;
@@ -160,7 +176,7 @@ app.controller('myCtrlProducto', function($scope,$http)
     {
       codigo:$scope.codigo,
   		nombre:$scope.nombre,
-  		linea:$('#linea').val(),
+  		linea:$scope.linea,
   		unidadmedida:$('#umedida').val(),
   		esequiv:String($scope.esequiv),
   		equivalencia:$scope.equivalencia,
@@ -193,7 +209,7 @@ app.controller('myCtrlProducto', function($scope,$http)
       then(function(res)
       {
         console.log(res);
-        $('#message').html(res.data);
+        
         if(res.data.length > 0)
         {
           nvoProd =
@@ -370,7 +386,7 @@ app.controller('myCtrlProducto', function($scope,$http)
   {
   	$scope.codigo = '';
   	$scope.nombre = '';
-  	$('#linea').val(1);
+  	$scope.linea = $scope.lstlinea[0].ID_LINEA;
   	$('#umedida').val('Pieza');
     $scope.esdescnt = false;
     $scope.esequiv = false;
@@ -382,8 +398,8 @@ app.controller('myCtrlProducto', function($scope,$http)
   	$scope.iva = '';
   	$scope.preciopromo = '';
   	$scope.preciodescnt = '';
-  	$scope.maxstock = '';
-  	$scope.minstock = '';
+  	$scope.maxstock = 0;
+  	$scope.minstock = 0;
   	$scope.estasaexenta = false;
   	$scope.notas = '';
   	$scope.cfdidesc = '';

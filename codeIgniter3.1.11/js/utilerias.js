@@ -118,13 +118,13 @@ function habilitar(activar,all)
   $('#codigo').prop('disabled',activar);
   $('#descripcion').prop('disabled',activar);
   $('#unidad').prop('disabled',activar);
-  $('#desctoprod').prop('disabled',activar);
+  $('#desctoprod').prop('disabled',activar);  
 	if(all){
     $('#desctoprod').prop('disabled',activar);
     $('#precio').prop('disabled',activar);
     $('#cantidad').prop('disabled',activar);
     $('#mascant').prop('disabled',activar);
-    $('#mencant').prop('disabled',activar);
+	$('#mencant').prop('disabled',activar);	
 	}
 }
 
@@ -173,9 +173,9 @@ function doFilter(filter,nombre_tabla)
 	 {
 		 td = tabla.rows[i].cells;
 		 for (j = 0; j < td.length; j++)
-		 {
+		 {			 
 			 if (td[j].innerHTML.toUpperCase().indexOf(filter.toUpperCase()) > -1)
-			 {
+			 {				
 				 found = true;
 			 }
 		 }

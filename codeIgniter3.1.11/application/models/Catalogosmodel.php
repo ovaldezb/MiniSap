@@ -31,6 +31,12 @@ class Catalogosmodel extends CI_model
 		return ($result);
 	}
 
+	function get_forma_pago_js() {
+		$query = 'SELECT * FROM "FORMA_PAGO"';
+		$result = pg_fetch_all(pg_query($this->conn, $query));
+		return json_encode($result);
+	}
+
 	function get_vendedor()
 	{
 		$query = 'SELECT * FROM "VENDEDOR"';
@@ -43,6 +49,13 @@ class Catalogosmodel extends CI_model
 		$query = 'SELECT * FROM "USO_CFDI"';
 		$result = pg_fetch_all(pg_query($this->conn, $query));
 		return ($result);
+	}
+
+	function get_uso_cfdi_js()
+	{
+		$query = 'SELECT * FROM "USO_CFDI"';
+		$result = pg_fetch_all(pg_query($this->conn, $query));
+		return json_encode($result,JSON_NUMERIC_CHECK);
 	}
 
 	function get_regimenes()
@@ -92,6 +105,19 @@ class Catalogosmodel extends CI_model
 		$query = 'SELECT * FROM "MONEDA"';
 		$result = pg_fetch_all(pg_query($this->conn, $query));
 		return $result;
+	}
+
+	function get_moneda_json()
+	{
+		$query = 'SELECT "ID_MONEDA",TRIM("NOMBRE") as "NOMBRE", "CODIGO" FROM "MONEDA"';
+		$result = pg_fetch_all(pg_query($this->conn, $query));
+		return json_encode($result,JSON_NUMERIC_CHECK);
+	}
+
+	function get_metodo_pago(){
+		$query = 'SELECT * FROM "METODO_PAGO"';
+		$result = pg_fetch_all(pg_query($this->conn, $query));
+		return json_encode($result,JSON_NUMERIC_CHECK);
 	}
 
 	function get_ieps()

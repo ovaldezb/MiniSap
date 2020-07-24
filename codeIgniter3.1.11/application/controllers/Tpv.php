@@ -56,7 +56,7 @@ class Tpv extends CI_Controller
 			$data['fechaventa'],
 			$data['aniofiscal'],
 			$data['idempresa'],
-			$data['idtipopago'],
+			$data['idformapago'],
 			$data['pagoefectivo'],
 			$data['pagotarjeta'],
 			$data['pagocheques'],

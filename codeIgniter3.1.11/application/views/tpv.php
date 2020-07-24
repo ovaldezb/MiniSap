@@ -197,7 +197,7 @@
 								<button class="button is-info is-small" ng-click="decrease()" id="mencant">-</button>
 							</div>
 							<div class="control">
-								<input type="text" class="input is-small" ng-model="cantidad" id="cantidad" ng-keyup="manualenter()" onfocus="this.select();" required>
+								<input type="text" class="input is-small" ng-model="cantidad" id="cantidad" style="text-align:center;" ng-keyup="manualenter()" onfocus="this.select();" required>
 							</div>
 							<div class="control">
 								<button class="button is-info is-small" ng-click="increase()" id="mascant" >+</button>
@@ -441,11 +441,9 @@
 							<label class="label">Pago:</label>
 						</td>
 						<td style="vertical-align:middle">
-							<select id="tipopago">
-<?php foreach ($tipo_pagos as $tipo_pago) { ?>
-								<option value=<?php echo $tipo_pago['ID_TIPO_PAGO']?>><?php echo $tipo_pago['DESCRIPCION'] ?></option>
-<?php }?>
-							</select>
+							<div class="select is-small">
+							<select ng-model="fact.formapago" ng-options="x.CLAVE as x.DESCRIPCION for x in lstFormpago"></select>
+							</div>
 						</td>
 						<td>&nbsp;</td>
 						<td style="vertical-align:middle"><label class="label">Tarjeta:</label></td>
@@ -453,12 +451,14 @@
 							<input type="text" class="input" ng-model="pago_tarjeta" style="text-align:right; font-size: 20px; color: red;font-weight: bold;" onfocus="this.select()">
 						</td>
 						<td align="right" style="vertical-align:middle">
+						<div class="select is-small">
 							<select id="idtarjea">
 								<option value="">Elija una opción</option>
 <?php foreach ($tarjetas as $tarjeta) { ?>
 								<option value=<?php echo $tarjeta['ID_TARJETA']?>><?php echo $tarjeta['NOMBRE'] ?></option>
 <?php }?>
 							</select>
+							</div>
 						</td>
 					</tr>
 					<tr>
@@ -470,17 +470,24 @@
 							<input type="text" class="input" ng-model="pago_cheque" style="text-align:right; font-size: 20px; color: red;font-weight: bold;" onfocus="this.select()">
 						</td>
 						<td align="right" style="vertical-align:middle">
+						<div class="select is-small">
 							<select name="banco" id="banco">
 								<option value="">Elija una opción</option>
 <?php foreach ($bancos as $banco) { ?>
 						<option value=<?php echo $banco['ID_BANCO']?>><?php echo $banco['DESCRIPCION'] ?></option>
 <?php }?>
 						</select>
+						</div>
 						</td>
 					</tr>
 					<tr>
 						<td colspan="2" style="vertical-align:middle">
-							<input type="checkbox" ng-model="req_factura"> Factura No: <input type="text" ng-model="num_factura"  size="6">&nbsp;&nbsp;&nbsp;Desglosar Iva: <input type="checkbox" ng-model="desgl_iva">
+							<div ng-show="fact.isavailable">
+							<input type="checkbox" ng-model="fact.req_factura" ng-disabled="!fact.isfacturable" title="{{fact.isfacturable?'Puede facturar':'Para poder facturar debe tener un cliente'}}"> Requiere Factura: 	
+							</div>						
+							<div ng-show="!fact.isavailable">
+								<label class="label">La sucursal no puede facturar</label>
+							</div>
 						</td>
 						<td>&nbsp;</td>
 						<td style="vertical-align:middle">
@@ -490,15 +497,57 @@
 							<input type="text" class="input is-small" ng-model="pago_vales" style="text-align:right; font-size: 20px; color: red;font-weight: bold;" onfocus="this.select()">
 						</td>
 						<td align="right" style="vertical-align:middle">
+						<div class="select is-small">
 							<select id="idvales" >
 								<option value="">Elija una opción</option>
 <?php foreach ($vales as $vale) { ?>
 								<option value="<?php echo $vale['ID_VALE']?>" title="<?php echo $vale['EMPRESA']?>"><?php echo $vale['NOMBRE'] ?></option>
 <?php }?>
 							</select>
+							</div>
 						</td>
-					</tr>
-				</table>
+					</tr>					
+				</table>				
+			</div>
+			<div style="display:{{fact.req_factura ? 'block':'none'}}; width:100%; border: 2px solid red">
+				<div class="columns" >	
+					<div class="column is-narrow" style="width:131px"><label class="label">Serie:</label></div>
+					<div class="column"><input type="text" ng-model="fact.serie" class="input is-small"></div>
+					<div class="column is-narrow"><label class="label">Folio:</label></div>
+					<div class="column">{{docto}}</div>
+				</div>
+				<div class="columns">
+					<div class="column is-narrow" style="width:131px"><label class="label">Cliente:</label></div>
+					<div class="column">{{nombre_cliente}}</div>
+					<div class="column is-narrow"><label class="label">RFC:</label></div>
+					<div class="column">{{rfc_cliente}}</div>
+				</div>
+				<div class="columns">
+					<div class="column is-narrow" style="width:131px"><label class="label">Uso CFDI:</label></div>
+					<div class="column" >
+						<div class="select is-small">
+						<select ng-model="fact.usocfdi" ng-options="x.CLAVE as x.DESCRIPCION for x in lstUsocfdi"></select>
+						</div>
+					</div>
+				</div>
+				<div class="columns">
+					<div class="column is-narrow" style="width:131px"><label class="label">Moneda:</label></div>
+					<div class="column is-narrow">
+						<div class="select is-small">
+						<select class="select is-small" ng-model="fact.moneda" ng-options="x.CODIGO as x.NOMBRE for x in lstMoneda"></select>
+						</div>
+					</div>
+					<div class="column is-narrow"><label class="label">Tipo de Cambio:</label></div>
+					<div class="column is-narrow" style="width:100px"><input type="number" class="input is-small" ng-model="fact.tipocambio" required ></div>
+				</div>
+				<div class="columns">
+					<div class="column is-narrow" style="width:131px"><label class="label">Metodo Pago:</label></div>
+					<div class="column">
+						<div class="select is-small">
+							<select class="select is-small" ng-model="fact.metodopago" ng-options="x.MET_PAGO as x.DESCRIPCION for x in lstMetpago"></select>
+						</div>
+					</div>
+				</div>
 			</div>
 	   	</section>
 	   	<footer class="modal-card-foot">
@@ -508,6 +557,7 @@
 	   	</footer>
 	  </div>
 	</div>
+
 	<div class="{{modalVerifProdSuc ? 'modal is-active' : 'modal' }}" id="avisoborrar">
 		<div class="modal-background"></div>
 		<div class="modal-card">
@@ -631,7 +681,7 @@
 						<td colspan="3">
               <select name="id_forma_pago" id="id_forma_pago">
       <?php foreach($forma_pago as $fp) {?>
-      					<option value='<?php echo $fp['ID_FORMA_PAG']?>'><?php echo trim($fp['CLAVE'])?> <?php echo trim($fp['DESCRIPCION'])?></option>
+      					<option value='<?php echo $fp['ID_FORMA_PAGO']?>'><?php echo trim($fp['CLAVE'])?> <?php echo trim($fp['DESCRIPCION'])?></option>
       <?php }?>
       				</select>
             </td>
@@ -649,12 +699,10 @@
 					<tr>
 						<td>Uso CFDI:</td>
 						<td colspan="3">
-              <select name="id_uso_cfdi" id="id_uso_cfdi">
-      <?php 		foreach($uso_cfdi as $ucfdi) {?>
-      					<option value='<?php echo $ucfdi['ID_CFDI']?>'><?php echo trim($ucfdi['CLAVE'])?> <?php echo trim($ucfdi['DESCRIPCION'])?></option>
-      <?php 		}?>
-      				</select>
-            </td>
+						<div class="select is-small">
+						<select class="select is-small" ng-model="cliente.id_uso_cfdi" ng-options="x.ID_CFDI as x.DESCRIPCION for x in lstUsocfdi"></select>
+						</div>
+            			</td>
 					</tr>
 					<tr>
 						<td>Email:</td>

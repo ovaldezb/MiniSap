@@ -79,14 +79,10 @@
 							<div class="column is-narrow" style="width: 150px;">
 								<div class="control">
 									<div class="select is-small">
-										<select name="linea" id="linea">
-<?php	foreach ($lineas as $linea) { ?>
-										<option value=<?php echo $linea['ID_LINEA'] ?>><?php echo $linea['NOMBRE']?></option>
-<?php	} ?>
-									</select>
+										<select ng-model="linea" ng-options="x.ID_LINEA as x.NOMBRE for x in lstlinea"></select>	
+									</div>
 								</div>
 							</div>
-						</div>
 						<div class="column is-1">
 						</div>
 						<div class="column is-narrow">
@@ -419,7 +415,7 @@
 									<col width='20%'>
 									<col width='20%'>
 									<col width='20%'>
-									<tr ng-repeat="x in lstPrdcts | orderBy:myOrderBy:sortDir" ng-click="selectRowProducto(x.CODIGO,$index,x.ID_PRODUCTO)" ng-class="{selected: x.CODIGO === idSelProd}">
+									<tr ng-repeat="x in lstPrdcts | orderBy:myOrderBy:sortDir" ng-click="selectRowProducto(x.CODIGO,$index,x.ID_PRODUCTO)" ng-class="{selected: x.CODIGO === idSelProd}" ng-dblclick="update()">
 										<td>{{x.DESCRIPCION}}</td>
 										<td align="right">{{x.CODIGO}}</td>
 										<td align="right">${{x.PRECIO_LISTA | number:2}}</td>

@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class LineaModel extends CI_model
+class Lineamodel extends CI_model
 {
 	private $conn;
 
@@ -16,7 +16,7 @@ class LineaModel extends CI_model
         $query = 'SELECT "ID_LINEA","ID_EMPRESA",TRIM("NOMBRE") as "NOMBRE" FROM "LINEA" WHERE "ID_EMPRESA" = $1 AND "ACTIVO" = true ORDER BY "ID_LINEA"';
 		pg_prepare($this->conn, "my_query", $query);
 		$result =  pg_fetch_all(pg_execute($this->conn, "my_query", array($idEmpresa)));
-		return $result;		
+		return json_encode($result,JSON_NUMERIC_CHECK);		
 	}
 	
 	function readById($idEmpresa,$idLinea){

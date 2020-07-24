@@ -13,15 +13,15 @@ class Compras extends CI_Controller
 	function index()
 	{
 		if(isset($_SESSION['username']))
-    {
+    	{
 			/*Validacion de acceso*/
 			$data['tipopago'] = $this->catalogosmodel->get_tipo_pago();
 			$data['monedas'] = $this->catalogosmodel->get_monedas();
 			$this->load->view('compras',$data);
 		}else {
 			$error['error'] = '';
-      $this->load->view('login',$error);
-    }
+      		$this->load->view('login',$error);
+    	}
 	}
 
 	function registracompra()

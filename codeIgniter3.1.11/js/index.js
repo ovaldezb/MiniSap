@@ -13,6 +13,8 @@ var pathUsr = pathCliente+'usuarios/';
 var pathAcc = pathCliente+'access/';
 var pathRepo = pathCliente+'reportes/';
 var pathLinea = pathCliente + 'api/linea/';
+var pathCreaFact = pathCliente + 'creacfdixml/';
+var pathCFDI = pathCliente + 'datosfactura/';
 var app = angular.module("myApp", ["ngRoute"]);
 app.config(function($routeProvider) {
     $routeProvider
@@ -54,6 +56,9 @@ app.config(function($routeProvider) {
     })
     .when("/line",{
       templateUrl : pathCliente+'linea'
+    })
+    .when("/crfc",{
+      templateUrl : pathCliente+'datosfactura'
     });
 });
 
@@ -80,8 +85,7 @@ app.controller('myCtrlIndex', function($scope,$http,$location,$window)
   $scope.loadEmpresas = function(){
     $http.get(pathEmpr+'getemppermbyusr/'+$scope.idusuario,{responseType:'json'}).
     then(function(res)
-    {
-      console.log(res);
+    {      
       if(res.data.length > 0)
       {
         $scope.lstEmprPerm = res.data;
