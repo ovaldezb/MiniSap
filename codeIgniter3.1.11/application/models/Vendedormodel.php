@@ -25,16 +25,14 @@ class Vendedormodel extends CI_model
 		return json_encode($result);
 	}
 
-	function crea_vendedor($nombre,$idempresa,$idarea,$idpuesto,$idtitulo)
-	{
+	function crea_vendedor($nombre,$idempresa,$idarea,$idpuesto,$idtitulo){
 	   $pstmt = 'SELECT * FROM crea_vendedor($1,$2,$3,$4,$5)';
 	   pg_prepare($this->conn,"insertquery",$pstmt);
 	   $result = pg_fetch_all(pg_execute($this->conn, "insertquery", array($nombre,$idempresa,$idarea,$idpuesto,$idtitulo)));
 	   return json_encode($result);
 	}
 	   
-	function update_vendedor($id_vendedor,$nombre,$idarea,$idpuesto,$idtitulo)
-	{
+	function update_vendedor($id_vendedor,$nombre,$idarea,$idpuesto,$idtitulo)	{
 		$result = pg_prepare($this->conn,"updatequery",'UPDATE "CLIENTE" SET
 		"NOMBRE"=$1,
 		"ID_AREA"=$2,
@@ -45,8 +43,7 @@ class Vendedormodel extends CI_model
 		return $result;
 	}
 
-	function delete_vendedor($_idVendedor)
-	{
+	function delete_vendedor($_idVendedor){
 		$query = 'UPDATE "VENDEDOR" SET "ACTIVO" = false WHERE "ID_VENDEDOR" = $1';
 		$result = pg_prepare($this->conn,"deletequery",$query);
 		$result = pg_execute($this->conn,"deletequery",array($_idVendedor));

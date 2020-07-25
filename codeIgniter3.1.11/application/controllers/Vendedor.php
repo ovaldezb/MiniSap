@@ -11,10 +11,8 @@ class Vendedor extends CI_Controller
 		$this->load->library('session');
 	}
 
-	function index()
-	{
-		if(isset($_SESSION['username']))
-		{
+	function index(){
+		if(isset($_SESSION['username'])){
 			$data['area'] = $this->catalogosmodel->get_areas();
 			$data['titulo'] = $this->catalogosmodel->get_titulos();
 			$data['puesto'] = $this->catalogosmodel->get_puestos();
@@ -27,8 +25,7 @@ class Vendedor extends CI_Controller
 
 	}
 
-	function getvendedores($idempresa,$nombre)
-	{
+	function getvendedores($idempresa,$nombre){
 		if($nombre == 'vacio'){
 			$data = $this->vendedormodel->get_vendedores($idempresa);
 		}
@@ -41,29 +38,25 @@ class Vendedor extends CI_Controller
 			->set_output($data);
 	}	
 
-	function save()
-	{
+	function save(){
 		$data = json_decode(file_get_contents("php://input"),true);
 		$result = $this->vendedormodel->crea_vendedor(
-		$data['nombre'],
-		$data['id_area'],
-		$data['id_puesto'],
-		$data['id_titulo'],
-		$data['idempresa']);
+			$data['nombre'],
+			$data['id_area'],
+			$data['id_puesto'],
+			$data['id_titulo'],
+			$data['idempresa']);
 		return $this->output
 		->set_content_type('application/json')
 		->set_output($result);
 	}
 
-	function delete($id)
-	{
+	function delete($id){
 		$result = $this->vendedormodel->delete_vendedor($id);
-		if($result)
-		{
+		if($result){
 			$res = 'OK';
 		}
-		else
-		{
+		else{
 			$res = 'Error';
 		}
 		return $this->output
@@ -71,20 +64,20 @@ class Vendedor extends CI_Controller
 			->set_output(json_encode(array('value'=>$res)));
 	}
 
-	function update($id)
-	{
+	function update($id){
 		$data = json_decode(file_get_contents("php://input"),true);
 		$result = $this->vendedormodel->update_vendedor($id,
-		$data['nombre'],
-		$data['id_area'],
-		$data['id_puesto'],
-		$data['id_titulo'],
-		$data['idempresa']);
+			$data['nombre'],
+			$data['id_area'],
+			$data['id_puesto'],
+			$data['id_titulo'],
+			$data['idempresa']);
 		if($result){
 			return $this->output
 			->set_content_type('application/json')
 			->set_output(json_encode(array('value'=>'El vendedor se actualizo correctamente')));
-		}else{
+		}
+		else{
 			return $this->output
 			->set_content_type('application/json')
 			->set_output(json_encode(array('value'=>'Error')));
