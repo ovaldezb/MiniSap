@@ -7,9 +7,7 @@
 		<nav class="level">
 			<div class="level-left">
 				<div class="level-item">
-					<p class="subtitle is-5">
-	        	<strong>Filtro:</strong>
-	      	</p>
+					<p class="subtitle is-5"><strong>Filtro:</strong></p>
 				</div>
 				<div class="level-item">
 					<input name="filtrocliente" class="input is-small" type="input" onKeyUp="doFilter(this.value,'tblClientes');" title="Ingrese cualquier dato que desee encontrar, Ej. nombre, código, precio ">

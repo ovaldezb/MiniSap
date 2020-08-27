@@ -10,15 +10,15 @@
 		<div class="level-left">
 			<div class="level-item">
 				<p class="subtitle is-5">
-        	<strong>Filtro:</strong>
-      	</p>
+        			<strong>Filtro:</strong>
+      			</p>
 			</div>
 			<div class="level-item">
 				<input name="producto" class="input is-small" type="input" onKeyUp="doFilter(this.value,'tablaempresas');" title="Ingrese cualquier dato que desee encontrar, Ej. nombre, código, precio ">
 			</div>
 		</div>
 		<div class="level-right">
-	    <p class="level-item">
+	    	<p class="level-item">
 				<a ng-click="openDivAgregar()">
 					<span class="icon has-text-success">
 						<i title="Agregar una nueva empresa" class="fas fa-plus-square" ></i>
@@ -39,7 +39,7 @@
 					</span>
 				</a>
 			</p>
-  	</div>
+  		</div>
 	</nav>
 	<div class="box" ng-show="isDivEmpActivo">
 		<form name="myForm">
@@ -169,7 +169,7 @@
 							<td>#</td>
 							<td ng-click="orderByMe('NOMBRE')">NOMBRE</td>
 							<td ng-click="orderByMe('RFC')">RFC</td>
-							<td ng-click="orderByMe('RFC')">CP</td>
+							<td>CP</td>
 						</tr>
 					</table>
 				</td>
@@ -188,6 +188,7 @@
 					</div>
 				</td>
 			</tr>
+		</table>
 	</div>
 	<div class="{{isAvsoBrrarActv ? 'modal is-active' : 'modal'}}" id="avisoborrar">
 	  <div class="modal-background"></div>

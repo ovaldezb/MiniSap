@@ -78,3 +78,13 @@ tr.spaceUnder>th {
   width: 450px;
   height: 100px;
 }
+
+a{
+  text-decoration: none;
+  color: #444;
+  transition: 300ms all;
+}
+
+a:hover{
+  color: #f13e3e;
+}

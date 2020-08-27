@@ -49,6 +49,12 @@ class Access extends CI_Controller {
     }
   }
 
+  function modproc(){
+    return $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($this->procesosmodel->get_modulos_procesos_by_usuario($usuario['ID_USUARIO'])));
+  }
+
   public function logout()
   {
     $this->session->sess_destroy();
@@ -87,7 +93,7 @@ class Access extends CI_Controller {
     }
     return $this->output
             ->set_content_type('application/json')
-            ->set_output(json_encode($data));;
+            ->set_output(json_encode($data));
   }
 
 }

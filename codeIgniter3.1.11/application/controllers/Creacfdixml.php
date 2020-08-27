@@ -1,19 +1,42 @@
 <?php
 //defined('BASEPATH') OR exit('No direct script access allowed');
-defined('FCPATH') OR exit('No direct script access allowed');
-require_once FCPATH.'sw-sdk/SWSDK.php';
+    defined('FCPATH') OR exit('No direct script access allowed');
+    require_once FCPATH.'sw-sdk/SWSDK.php';
+    require_once APPPATH."/third_party/dompdf/autoload.inc.php";
+    
+    require_once FCPATH.'vendor/phpmailer/phpmailer/src/PHPMailer.php';
+    require_once FCPATH.'vendor/phpmailer/phpmailer/src/SMTP.php';
+    require_once FCPATH.'vendor/phpmailer/phpmailer/src/Exception.php';
+
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\SMTP;
+    use PHPMailer\PHPMailer\Exception;
+
     use SWServices\Stamp\StampService as StampService;
-        
+    use Dompdf\Dompdf;
+
+    error_reporting(E_STRICT | E_ALL);
+
+    
+
 class Creacfdixml extends CI_Controller
 {
     
     function __construct() {
         parent::__construct();						
-        //$this->load->helper('url');
+        $this->load->helper('url');
         $this->load->model('facturamodel');
         $this->load->model('empresamodel');
+        $this->load->model('clientemodel');
         $this->load->model('tpvmodel');        
         $this->load->library('crearcfdi');
+        $this->load->library('xml2pdf');    
+        $this->load->model('catalogosmodel');     
+    }
+
+
+    function index(){
+        $this->load->view('listafacturas');
     }
 
     function creacfdi(){
@@ -29,6 +52,7 @@ class Creacfdixml extends CI_Controller
         $moneda = $data['moneda'];
         $tipoCambio = $data['tipocambio'];
         $metodopago =  $data['metodopago'];
+        $idCliente = $data['idCliente'];        
         $cfdi = $this->facturamodel->getDataCFDI($idEmpresa,$idSucursal);         
         $archivoCerPem = $cfdi[0]->RUTA_PEM;
         $archivoKeyPem = $cfdi[0]->RUTA_KEY;
@@ -99,7 +123,7 @@ class Creacfdixml extends CI_Controller
             $stamp = StampService::Set($params);
             $result = json_decode(json_encode($stamp::StampV4($sellado)),false);            
             if($result->status == "success"){
-                $dataSAT = array($nombre,$rfc,$result->data->fechaTimbrado,$result->data->qrCode,$result->data->cfdi);
+                $dataSAT = array($nombre,$rfc,$result->data->fechaTimbrado,$result->data->qrCode,$result->data->cfdi,$folio,number_format($importe,3,'.',''),$result->data->cadenaOriginalSAT,$idCliente,$idEmpresa);
                 $this->facturamodel->saveCFDISAT($dataSAT);
                 return $this->output
 		        ->set_content_type('application/json')
@@ -109,15 +133,13 @@ class Creacfdixml extends CI_Controller
 		        ->set_content_type('application/json')
                 ->set_output(json_encode(array("status"=>"fail","error"=>$result->messageDetail,"xml"=>$sellado)));
             }
-            
-                
-            
-            }
+        }
         catch(Exception $e){
             header('Content-type: text/plain');
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }        
     }
+    
 
     function getdatacfdi($idEmpresa,$idSucursal){
         $result = $this->facturamodel->getDataCFDI($idEmpresa,$idSucursal); 
@@ -134,22 +156,95 @@ class Creacfdixml extends CI_Controller
         }
     }
 
-    /*function sellaCFDI($xml_string, $cadena, $file_xml){
-        try{        
-            $xml_doc = new DOMDocument();
-            $xml_doc->loadXML($xml_string);            
-            shell_exec('xsltproc ../cadenaoriginal/cadenaoriginal_3_3.xslt '.$file_xml.' > cadenaoriginal.txt');            
-            $params = array('cadenaOriginal'=>'cadenaoriginal.txt','archivoCerPem'=>'00001000000504470826.pem','archivoKeyPem'=>'key.pem');        
-            $sello = SignService::ObtenerSello($params);
-            unlink('cadenaoriginal.txt');
-            $c = $xml_doc->getElementsByTagNameNS('http://www.sat.gob.mx/cfd/3', 'Comprobante')->item(0); 
-            $c->setAttribute('Sello', $sello->sello);
-            return $xml_doc->saveXML();
-        }catch(Exception $e){
-            header("HTTP/1.0 500");
-            die($e->getMessage());
-        }
-    }*/
+    function getfacturaby($forma,$idfactura,$idCliente,$idEmpresa){
+
+        $result = json_decode($this->facturamodel->get_factura_by_id($idfactura),false); 
+        $cliente = json_decode($this->clientemodel->get_cliente_by_id($idCliente),false);
+        $empresa = json_decode($this->empresamodel->get_empresa_by_id($idEmpresa),false);
+        $formapago = json_decode($this->catalogosmodel->get_forma_pago_js(),false);
+        $uso_cfdi = json_decode(json_encode($this->catalogosmodel->get_uso_cfdi()),false);
+        $cadenaSat = 'Aqui va la cadena SAT desde Controller';
+        file_put_contents($result[0]->FOLIO.'.png',base64_decode($result[0]->QR_CODE));
+        $url = FCPATH.$result[0]->FOLIO.'.png';        
+        $res = $this->xml2pdf->convierte($result[0]->CFDI,$cliente,$empresa,$formapago,$uso_cfdi,$cadenaSat,$url);        
+        $dompdf = new DOMPDF();
+        $dompdf->loadHtml($res);
+        $dompdf->setPaper('A4', "portrait");
+        $dompdf->render();
+        $filenamepdf = FCPATH.'pdfs/'.$result[0]->RFC.'.pdf';
+        $filenamexml = FCPATH.'pdfs/'.$result[0]->RFC.'.xml';
+        $filenamezip = FCPATH.'pdfs/'.$result[0]->FOLIO.'.zip'; 
+        $output = $dompdf->output();
+        file_put_contents($filenamepdf, $output); //$dompdf->output()
+        $xml_doc = new DOMDocument('1.0','utf-8');
+        $xml_doc->loadXML($result[0]->CFDI);      
+        $xml_doc->formatOutput = TRUE;  
+        $xml_doc->preserveWhiteSpace = false;
+        $xml_doc->save($filenamexml);
+
+        $zip = new ZipArchive();
+        $zip->open($filenamezip, ZIPARCHIVE::CREATE); 
+        $zip->addFile($filenamepdf,basename($filenamepdf)); 
+        $zip->addFile($filenamexml,basename($filenamexml)); 
+        $zip->close();     
+        if($forma==1){ /* 1 para Attach, 2 para Email*/
+            try{
+                ob_clean();   
+                header('Content-Type: application/zip');
+                header('Content-Disposition: attachment; filename="'.basename($filenamezip).'"');
+                header('Content-Length: ' . filesize($filenamezip));
+                header("Pragma: no-cache");
+                header("Expires: 0");
+                flush();
+                readfile($filenamezip);             
+            }catch(\Exception $e){
+                unlink($filenamepdf);
+                unlink($filenamexml);        
+                unlink($filenamezip);
+            }            
+        }else{
+            try{
+                $email = new PHPMailer(true);
+                $email->CharSet = 'UTF-8';
+                $email->SetFrom('no-reply@rts-soft.net', 'RTS'); //Name is optional
+                $email->Subject   = 'Factura: '.$result[0]->FOLIO;
+                $email->Body      = '<p>Adjunto se encuentra su factura en formato PDF y XML</p>';
+                $email->addAddress( 'omar.valdez.becerril@gmail.com','Omar Valdez' );
+                $email->addAddress( 'omar.valdez@protonmail.com','Omar Valdez' );                
+                $email->IsHTML(true); 
+                $file_to_attach = $filenamezip; 
+                $email->AddAttachment( $file_to_attach , basename($filenamezip));            
+                if(!$email->send()) {
+                    return $this->output
+                        ->set_content_type('application/json')
+                        ->set_output(json_encode(array('value'=>'error')));
+                } else {
+                    return $this->output
+                        ->set_content_type('application/json')
+                        ->set_output(json_encode(array('value'=>'OK')));
+                }
+            }catch(\Exception $e){
+                return $this->output
+                        ->set_content_type('application/json')
+                        ->set_output(json_encode(array('value'=>$e)));
+            }finally{
+                unlink($filenamepdf);
+                unlink($filenamexml);        
+                unlink($filenamezip); 
+            }
+        }               
+    }
+ 
+    function sendemail($idfactura,$idCliente,$idEmpresa){
+        
+    }
+
+    function getfacbydate($fecIni,$fecFin){
+        return $this->output
+            ->set_content_type('application/json')
+            ->set_output($this->facturamodel->get_facturas_by_dates($fecIni));
+        
+    }
 }
 
 ?>

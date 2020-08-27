@@ -17,17 +17,17 @@ class Uploadcatalog extends CI_Controller {
 
         public function load()
         {			
-                $result =   $this->csvreader->parse_file('/var/www/html/codeigniter3.1.11/uploads/MedSAT.csv');
-                
-                $count = 0;			
-                foreach($result as $item){
-                        if($count != 0){
-                                $this->catalogosmodel->inserta_item_medidas($item['CLAVE'],$item['DESCRIPCION'],$item['DESCAP']);
-                        }
-                        $count++;
-                }
-                $data['total'] =  $count;
-                $this->load->view('upload_catalog1', $data);
+			$result =   $this->csvreader->parse_file('/var/www/html/codeigniter3.1.11/uploads/MedSAT.csv');
+			
+			$count = 0;			
+			foreach($result as $item){
+				if($count != 0){
+					$this->catalogosmodel->inserta_item_medidas($item['CLAVE'],$item['DESCRIPCION'],$item['DESCAP']);
+				}
+				$count++;
+			}
+			$data['total'] =  $count;
+			$this->load->view('upload_catalog1', $data);
         }
 }
 ?>

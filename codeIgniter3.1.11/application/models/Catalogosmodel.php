@@ -31,6 +31,8 @@ class Catalogosmodel extends CI_model
 		return ($result);
 	}
 
+	
+
 	function get_forma_pago_js() {
 		$query = 'SELECT * FROM "FORMA_PAGO"';
 		$result = pg_fetch_all(pg_query($this->conn, $query));

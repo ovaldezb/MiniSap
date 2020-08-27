@@ -23,8 +23,23 @@
   Timbrado de facturas
 
 
-sudo chown -R apache:apache    /var/www/html/core                 
+sudo chown -R apache:apache    /var/www/html/core
 sudo chown -R apache:apache    /var/www/html/paty
 
 sudo chown -R  hheisego:hheisego /var/www/html/core
 sudo chown -R  hheisego:hheisego /var/www/html/paty
+
+
+en sw-sdk se cambio SWServices\Toolkit\SignService
+se cambio el Upload.php de las librerias
+se cambio el mimes.php de la config
+se agrego la tabla DATOS_CFDI
+se agrego la tabla FACTURA_CFDI
+se agrego la tabla METODO_PAGO
+se modifico la tabla EMPRESA
+se modifico la tabla PRODUCTO
+se modifico la tabla VENTAS
+se modifico la tabla FORMA_PAGO
+se modificó el SP de crear empresa
+se modificó el SP de registra_venta
+

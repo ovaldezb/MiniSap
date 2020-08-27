@@ -12,7 +12,7 @@ class Facturamodel extends CI_model
     }
     
     function saveCFDI($arrayCFDI){
-        $query = 'INSERT INTO "DATOS_CFDI" VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)';
+        $query = 'INSERT INTO "DATOS_CFDI" VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)';
         pg_prepare($this->conn,"inserta_cfdi",$query);
         $res = pg_execute($this->conn,"inserta_cfdi",$arrayCFDI);
         return $res;
@@ -54,10 +54,24 @@ class Facturamodel extends CI_model
     }
 
     function saveCFDISAT($arrayCFDISAT){
-        $query = 'INSERT INTO "FACTURA_CFDI" ("CLIENTE","RFC","FECHA_TIMBRADO","QR_CODE","CFDI","CANCELADO") VALUES($1,$2,$3,$4,$5,false)';
+        $query = 'INSERT INTO "FACTURA_CFDI" ("CLIENTE","RFC","FECHA_TIMBRADO","QR_CODE","CFDI","FOLIO","IMPORTE","CADENA_SAT","ID_CLIENTE","ID_EMPRESA","CANCELADO") VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,false)';
         pg_prepare($this->conn,"inserta_cfdi",$query);
         $res = pg_execute($this->conn,"inserta_cfdi",$arrayCFDISAT);
         return $res;
+    }
+
+    function get_facturas_by_dates($fechas){
+        $query = 'SELECT "ID_FACTURA","CLIENTE","RFC","FECHA_TIMBRADO","FOLIO","ID_CLIENTE","ID_EMPRESA" FROM "FACTURA_CFDI" WHERE "CANCELADO" = false';
+        pg_prepare($this->conn,"select_facturas_date",$query);
+        $result = pg_fetch_all(pg_execute($this->conn,"select_facturas_date",array()));        
+        return json_encode($result);
+    }
+
+    function get_factura_by_id($idfactura){
+        $query = 'SELECT * FROM "FACTURA_CFDI" WHERE "ID_FACTURA" = $1';
+        pg_prepare($this->conn,"select_facturas_id",$query);
+        $result = pg_fetch_all(pg_execute($this->conn,"select_facturas_id",array($idfactura)));        
+        return json_encode($result);
     }
    
 

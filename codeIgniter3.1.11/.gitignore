@@ -1,0 +1,9 @@
+*.afm
+*.json
+*.xslt
+/application/third_party
+/cadenaoriginal
+/cfdi
+/mpdf
+/phpqrcode
+/sw-sdk

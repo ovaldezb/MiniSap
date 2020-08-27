@@ -32,8 +32,8 @@ class Empresamodel extends CI_model
 				A."ID_REGIMEN", A."DIGITO_X_CUENTA", A."CUENTA_RESULTADO", A."RESULTADO_ANTERIOR", B."EJER_FISC"
 				FROM "EMPRESA" A, "EMP_EJER_FISC" B
 				WHERE A."ID_EMPRESA" = $1 AND A."ID_EMPRESA" = B."ID_EMPRESA" ORDER BY A."ID_EMPRESA" LIMIT 1';
-		pg_prepare($this->conn, "my_query", $query);
-		$result =  pg_fetch_all(pg_execute($this->conn, "my_query", array($_id)));
+		pg_prepare($this->conn, "my_query1", $query);
+		$result =  pg_fetch_all(pg_execute($this->conn, "my_query1", array($_id)));
 		return json_encode($result,JSON_NUMERIC_CHECK);
 	}
 

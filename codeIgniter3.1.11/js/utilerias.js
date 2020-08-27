@@ -177,6 +177,7 @@ function doFilter(filter,nombre_tabla)
 			 if (td[j].innerHTML.toUpperCase().indexOf(filter.toUpperCase()) > -1)
 			 {				
 				 found = true;
+				 break;
 			 }
 		 }
 		 if (found) {
