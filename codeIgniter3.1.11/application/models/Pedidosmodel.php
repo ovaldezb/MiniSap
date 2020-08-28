@@ -11,129 +11,44 @@ class Pedidosmodel extends CI_model
 		$this->conn = $this->postgresdb->getConn();
 	}
 
-	function get_items($idEmpresa,$desc,$tipo_req)
-	{
-		if($tipo_req == 'C')
-		{
-			$condition = 'AND "TIPO_PS" = \'P\' ';
-		}else {
-			$condition = ' ';
-		}
 
-		$query = 'SELECT P."ID_PRODUCTO",
-							"DESCRIPCION",
-							TRIM("CODIGO") as "CODIGO",
-							to_char("PRECIO_LISTA",\'L999,999,999.00\') as "PREC_LISTA_DISP",
-							"PRECIO_LISTA",
-							to_char("PRECIO_COMPRA",\'L999,999,999.00\') AS "PRECIO_COMPRA_DISP",
-							"PRECIO_COMPRA",
-							"IVA",
-							TRIM("UNIDAD_MEDIDA") as "UNIDAD_MEDIDA",
-							SUM(S."STOCK") as "STOCK",
-							"IMAGEN","ES_PROMO","ES_DESCUENTO","PRECIO_PROMO","PRECIO_DESCUENTO","TIPO_PS"
-							FROM "PRODUCTO" as P INNER JOIN  "PRODUCTO_SUCURSAL" as S
-							ON P."ID_PRODUCTO" = S."ID_PRODUCTO"
-							WHERE UPPER("DESCRIPCION") LIKE  UPPER($1)'
-							. $condition .
-							'AND P."ACTIVO" = true
-							AND P."ID_EMPRESA" = $2
-							GROUP BY P."ID_PRODUCTO",
-											"DESCRIPCION","CODIGO","PRECIO_LISTA",
-											"PRECIO_COMPRA", "IVA",
-											"UNIDAD_MEDIDA","IMAGEN",
-											"ES_PROMO","ES_DESCUENTO","PRECIO_PROMO","PRECIO_DESCUENTO","TIPO_PS"
-							ORDER BY "DESCRIPCION"';
-		$result = pg_prepare($this->conn, "selectquery", $query);
-		$result =  pg_fetch_all(pg_execute($this->conn, "selectquery", array($desc,$idEmpresa)));
-		return json_encode($result,JSON_NUMERIC_CHECK);
-	}
-
-	function get_items_vacio($idEmpresa,$tipo_req)
+	function registra_pedido($documento,$idcliente,$idvendedor,$fechapedido,$aniofiscal,$idempresa,$idtipopago,$importe,$idsucursal)
 	{
-		if($tipo_req == 'C')
-		{
-				$condition = 'WHERE "TIPO_PS" = \'P\' ';
-		}else {
-			$condition = ' ';
-		}
-		$query = 'SELECT P."ID_PRODUCTO","DESCRIPCION",TRIM("CODIGO") as "CODIGO",to_char("PRECIO_LISTA",\'L999,999,999.00\') as "PREC_LISTA_DISP",
-							"PRECIO_LISTA",
-							to_char("PRECIO_COMPRA",\'L999,999,999.00\') AS "PRECIO_COMPRA_DISP",
-							"PRECIO_COMPRA","IVA",
-							TRIM("UNIDAD_MEDIDA") as "UNIDAD_MEDIDA",
-							SUM(S."STOCK") as "STOCK",
-							"IMAGEN","ES_PROMO","ES_DESCUENTO","PRECIO_PROMO","PRECIO_DESCUENTO","TIPO_PS"
-							FROM "PRODUCTO" as P INNER JOIN  "PRODUCTO_SUCURSAL" as S
-							ON P."ID_PRODUCTO" = S."ID_PRODUCTO" '
-							.$condition.
-							'AND P."ACTIVO" = true
-							AND P."ID_EMPRESA" = $1
-							GROUP BY P."ID_PRODUCTO","DESCRIPCION","CODIGO",
-											"PRECIO_LISTA","PRECIO_COMPRA", "IVA",
-											"UNIDAD_MEDIDA","IMAGEN",
-											"ES_PROMO",
-											"ES_DESCUENTO",
-											"PRECIO_PROMO",
-											"PRECIO_DESCUENTO","TIPO_PS"
-							ORDER BY "DESCRIPCION"';
-		pg_prepare($this->conn,"select_prod_vacio",$query);
-		$result =  pg_fetch_all(pg_execute($this->conn,"select_prod_vacio",array($idEmpresa)));
-		return json_encode($result,JSON_NUMERIC_CHECK);
-	}
-
-	function registra_pedido($documento,$idcliente,$idvendedor,$fechaventa,$aniofiscal,$idempresa,$idtipopago,
-													$pagoefectivo,$pagotarjeta,$pagocheques,$pagovales,$idtarjea,$idbanco,$idvales,$importe,$cambio,$idsucursal)
-	{
-		$pstmt = 'SELECT * FROM registra_pedido($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17)';
+		$pstmt = 'SELECT * FROM registra_pedido($1,$2,$3,$4,$5,$6,$7,$8,false)';
 		pg_prepare($this->conn,"prstmt",$pstmt);
-		$result = pg_fetch_all(pg_execute($this->conn, "prstmt", array($documento,$idcliente,$idvendedor,$fechaventa,$aniofiscal,$idempresa,$idtipopago,
-																																		$pagoefectivo,$pagotarjeta,$pagocheques,$pagovales,$idtarjea,$idbanco,$idvales,$importe,$cambio,$idsucursal)));
+		$result = pg_fetch_all(pg_execute($this->conn, "prstmt", array($documento,$idcliente,$idvendedor,$fechapedido,$aniofiscal,$idempresa,$importe,$idsucursal)));
 		return json_encode($result);
 	}
 
-	function registra_pedido_producto($idventa,$idProducto,$cantidad,$precio,$importe,$idsucursal,$tipo_ps)
+	function registra_pedido_producto($idventa,$idProducto,$cantidad,$precio,$importe,$idsucursal)
 	{
-		$pstmt = 'SELECT * FROM pedido_producto($1,$2,$3,$4,$5,$6,$7)';
+		$pstmt = 'SELECT * FROM pedido_producto($1,$2,$3,$4,$5,$6)';
 		pg_prepare($this->conn,"prstmt",$pstmt);
-		$result = pg_fetch_all(pg_execute($this->conn, "prstmt", array($idventa,$idProducto,$cantidad,$precio,$importe,$idsucursal,$tipo_ps)));
+		$result = pg_fetch_all(pg_execute($this->conn, "prstmt", array($idventa,$idProducto,$cantidad,$precio,$importe,$idsucursal)));
 		return json_encode($result);
 	}
 
-	function get_items_by_suc($idProducto,$idSucursal)
-	{
-		$query = 'SELECT P."TIPO_PS", "STOCK"
-		FROM "PRODUCTO" as P INNER JOIN "PRODUCTO_SUCURSAL" As PS
-		ON P."ID_PRODUCTO" = PS."ID_PRODUCTO"
-		WHERE P."ID_PRODUCTO" = $1 AND "ID_SUCURSAL" = $2 AND P."ACTIVO" = true';
-		pg_prepare($this->conn,"select_stock",$query);
-		$result = pg_fetch_all(pg_execute($this->conn, "select_stock", array($idProducto,$idSucursal)));
-		return json_encode($result,JSON_NUMERIC_CHECK);
-	}
-
-	function get_productos_for_each_sucursal($idProducto)
-	{
-		$query = 'SELECT A."STOCK",TRIM(B."ALIAS") as "ALIAS", B."DIRECCION"
-		FROM "PRODUCTO_SUCURSAL" as A INNER JOIN "SUCURSALES" as B
-		ON A."ID_SUCURSAL" = B."ID_SUCURSAL" WHERE A."ID_PRODUCTO" = $1';
-		pg_prepare($this->conn,"select_stock",$query);
-		$result = pg_fetch_all(pg_execute($this->conn, "select_stock", array($idProducto)));
-		return json_encode($result,JSON_NUMERIC_CHECK);
-	}
-
-	function getventabyid($idVenta){
-		$query = 'SELECT * FROM "VENTAS" WHERE "ID_VENTA" = $1';
+	function getpedidobyid($idVenta){
+		$query = 'SELECT * FROM "PEDIDO" WHERE "ID_PEDIDO" = $1';
 		pg_prepare($this->conn,"select_venta",$query);
 		$result = pg_fetch_all(pg_execute($this->conn,"select_venta",array($idVenta)));
 		return json_decode(json_encode($result,JSON_NUMERIC_CHECK),false);
 	}
 
-	function getventadetallebyid($idVenta){
+	function get_pedidos($aniofiscal){
+		$query = 'SELECT * FROM "PEDIDOS" WHERE "ANIO_FISCAL" = $1';
+		pg_prepare($this->conn,"select_venta",$query);
+		$result = pg_fetch_all(pg_execute($this->conn,"select_venta",array($aniofiscal)));
+		return json_encode($result,JSON_NUMERIC_CHECK);
+	}
+
+	function getpedidodetallebyid($idVenta){
 		$query = 'SELECT VP."CANTIDAD",VP."PRECIO",VP."IMPORTE",
 					TRIM(P."DESCRIPCION") as "DESCRIPCION",TRIM(P."UNIDAD_MEDIDA") as "UNIDAD_MEDIDA", TRIM(P."COD_CFDI") as "COD_CFDI",
 					P."IVA",TRIM(P."UNIDAD_SAT") as "UNIDAD_SAT",
 					CASE WHEN P."IEPS" IS NULL THEN \'0\' ELSE P."IEPS" END as "IEPS",TRIM(I."NOMBRE") as "TIPOFACTOR",
 					TRIM(P."CODIGO") as "CODIGO"
-				FROM "VENTAS_PRODUCTO" as VP
+				FROM "PEDIDOS_PRODUCTO" as VP
 				INNER JOIN "PRODUCTO" as P ON VP."ID_PRODUCTO" = P."ID_PRODUCTO"
 				INNER JOIN "IEPS" as I on P."ID_IEPS" = I."ID_IEPS"
 				WHERE VP."ID_VENTA" = $1';				

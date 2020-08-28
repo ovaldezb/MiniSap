@@ -7,7 +7,7 @@
 </div>
 <br>
 
-<div class="container"  ng-app="myTpv" ng-controller="myCtrlTpv" data-ng-init="init()">
+<div class="container"  ng-controller="myCtrlTpv" data-ng-init="init()">
 	<div class="columns is-gapless">
 		<div class="column is-8">
 			<div class="box">
@@ -324,7 +324,7 @@
 						</table>
 					</div>
 				</div>
-				<button class="button is-info is-rounded" ng-click="iniciaRegistrarCompra()" id="regcompra">Registrar Compra</button>
+				<button class="button is-info is-rounded" ng-click="iniciaRegistrarCompra()" id="regcompra">Registrar Venta</button>
 			</div>
 		</div>
 		<div class="column is-4" style="border:2px solid green">

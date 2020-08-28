@@ -14,7 +14,7 @@ class Pedidos extends CI_Controller
 	function index()
 	{
 		if(isset($_SESSION['username']))
-    {
+    	{
 			$data['tipo_pagos'] = $this->catalogosmodel->get_tipo_pago();
 			$data['bancos'] = $this->catalogosmodel->get_bancos();
 			$data['tarjetas'] = $this->catalogosmodel->get_tarjetas();
@@ -28,8 +28,8 @@ class Pedidos extends CI_Controller
 			$this->load->view('pedidos',$data);
 		}else {
 			$error['error'] = '';
-      $this->load->view('login',$error);
-    }
+      		$this->load->view('login',$error);
+    	}
 	}
 
 	/*function getitems($idEmpresa,$desc,$tipo_req)
@@ -49,54 +49,61 @@ class Pedidos extends CI_Controller
 	function registrapedido()
 	{
 		$data = json_decode(file_get_contents("php://input"),true);
-		$result = $this->tpvmodel->registra_pedido(
+		$result = $this->pedidosmodel->registra_pedido(
 			$data['documento'],
 			$data['idcliente'],
 			$data['idvendedor'],
 			$data['fechapedido'],
 			$data['aniofiscal'],
 			$data['idempresa'],
+			$data['idformapago'],
 			$data['importe'],
-			$data['idsucursal'],
-			$data['vendido']
+			$data['idsucursal']
 		);
 		return $this->output
 					 ->set_content_type('application/json')
 					 ->set_output($result);
 	}
 
-	function registraventaprod()
+	function registrapedidoprod()
 	{
 		$data = json_decode(file_get_contents("php://input"),true);
-		$result = $this->tpvmodel->registra_venta_producto(
-			$data['idventa'],
+		$result = $this->pedidosmodel->registra_pedido_producto(
+			$data['idpedido'],
 			$data['idProducto'],
 			$data['cantidad'],
 			$data['precio'],
 			$data['importe'],
-			$data['idsucursal'],
-			$data['tipops']
+			$data['idsucursal']
 		);
 		return $this->output
 					 ->set_content_type('application/json')
 					 ->set_output($result);
 	}
 
-	function getitemsbyprodsuc($idProducto,$idSucursal)
+	function getpedidos($anioFiscal){
+		$result = $this->pedidosmodel->get_pedidos($anioFiscal);
+		return $this->output
+				->set_content_type('application/json')
+				->set_output($result);
+
+	}
+
+	/*function getitemsbyprodsuc($idProducto,$idSucursal)
 	{
 		$result = $this->tpvmodel->get_items_by_suc($idProducto,$idSucursal);
 		return $this->output
 					 ->set_content_type('application/json')
 					 ->set_output($result);
-	}
+	}*/
 
-	function getproductosforsucursal($idProducto)
+	/*function getproductosforsucursal($idProducto)
 	{
 		$result = $this->tpvmodel->get_productos_for_each_sucursal($idProducto);
 		return $this->output
 					 ->set_content_type('application/json')
 					 ->set_output($result);
-	}
+	}*/
 
 }
 ?>

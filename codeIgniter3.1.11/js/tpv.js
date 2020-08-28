@@ -809,7 +809,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
     $scope.cliente.pagos=$('#pagos').val();
     $scope.cliente.id_forma_pago=$('#id_forma_pago').val();
     $scope.cliente.id_vendedor=$('#id_vendedor').val();
-    $scope.cliente.id_uso_cfdi=$('#id_uso_cfdi').val();
+    //$scope.cliente.id_uso_cfdi=$('#id_uso_cfdi').val();
     $scope.cliente.idempresa = $scope.idempresa;
 
     if($scope.btnVerifClte == 'Agregar')

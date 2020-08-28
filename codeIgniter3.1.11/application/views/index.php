@@ -247,6 +247,7 @@
 <script src="../js/sucursal.js"></script>
 <script src="../js/compras.js"></script>
 <script src="../js/tpv.js"></script>
+<script src="../js/pedidos.js"></script>
 <script src="../js/usuarios.js"></script>
 <script src="../js/logout.js"></script>
 <script src="../js/repmovalm.js"></script>

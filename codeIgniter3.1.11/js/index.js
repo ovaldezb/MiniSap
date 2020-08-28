@@ -15,6 +15,7 @@ var pathRepo = pathCliente+'reportes/';
 var pathLinea = pathCliente + 'api/linea/';
 var pathCreaFact = pathCliente + 'creacfdixml/';
 var pathCFDI = pathCliente + 'datosfactura/';
+var pathPedi = pathCliente + 'pedidos/';
 var app = angular.module("myApp", ["ngRoute"]);
 app.config(function($routeProvider) {
     $routeProvider
@@ -59,6 +60,9 @@ app.config(function($routeProvider) {
     })
     .when("/crfc",{
       templateUrl : pathCliente+'datosfactura'
+    })
+    .when("/pedi",{
+      templateUrl : pathCliente+'pedidos'
     });
 });
 
