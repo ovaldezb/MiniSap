@@ -1,6 +1,7 @@
 *.afm
 *.json
 *.xslt
+.DS_Store
 /application/third_party
 /cadenaoriginal
 /cfdi
