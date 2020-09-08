@@ -346,7 +346,7 @@
 						<h1 class="title is-4 has-text-white" >Documento: </h1>
 					</div>
 					<div class="column has-text-right">
-						<h1 class="title is-2 has-text-white" >{{docto}}</h1>
+						<h1 class="title is-4 has-text-white" >{{docto}}</h1>
 					</div>
 				</div>
 

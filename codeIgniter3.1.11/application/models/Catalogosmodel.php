@@ -74,11 +74,18 @@ class Catalogosmodel extends CI_model
 		return $result;
 	}
 
-	function get_tipo_pago()
+	/*function get_tipo_pago()
 	{
 		$query = 'SELECT * FROM "TIPO_PAGO"';
 		$result = pg_fetch_all(pg_query($this->conn, $query));
 		return $result;
+	}*/
+
+	function get_tipo_pago()
+	{
+		$query = 'SELECT * FROM "TIPO_PAGO"';
+		$result = pg_fetch_all(pg_query($this->conn, $query));
+		return json_encode($result,JSON_NUMERIC_CHECK);
 	}
 
 	function get_alcance_prov()
@@ -202,6 +209,24 @@ class Catalogosmodel extends CI_model
 		pg_prepare($this->conn,"qry_linea_emp",$query);
 		$result = pg_fetch_all(pg_execute($this->conn,"qry_linea_emp",array($idEmpresa)));
 		return json_encode($result,JSON_NUMERIC_CHECK);
+	}
+
+	function get_areas(){
+		$query = 'SELECT * FROM "AREA"';
+		$result = pg_fetch_all(pg_query($this->conn, $query));
+		return $result;
+	}
+
+	function get_titulos(){
+		$query = 'SELECT * FROM "TITULO"';
+		$result = pg_fetch_all(pg_query($this->conn, $query));
+		return $result;
+	}
+
+	function get_puestos(){
+		$query = 'SELECT * FROM "PUESTO"';
+		$result = pg_fetch_all(pg_query($this->conn, $query));
+		return $result;
 	}
 
 }

@@ -106,5 +106,27 @@ class Tpv extends CI_Controller
 					 ->set_output($result);
 	}
 
+	/* las ventas contienen los datos de una factura */
+	function getfacturas($idEmpresa,$idAnioFiscal){
+		$result = $this->tpvmodel->getfacturas(array($idEmpresa,$idAnioFiscal));
+		return $this->output
+					 ->set_content_type('application/json')
+					 ->set_output($result);
+	}
+
+	function getfactdetbyid($idventa){
+		$result = $this->tpvmodel->getventadetallebyid($idventa);
+		return $this->output
+					 ->set_content_type('application/json')
+					 ->set_output(json_encode($result));
+	}
+
+	function eliminafact($idventa,$idsucursal){
+		$result = $this->tpvmodel->eliminaFacturaById($idventa,$idsucursal);
+		return $this->output
+					->set_content_type('application/json')
+					->set_output($result);
+	}
+
 }
 ?>

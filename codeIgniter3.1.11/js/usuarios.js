@@ -19,13 +19,12 @@ app.controller('myCtrlUsuarios', function($scope,$http)
     $http.get(pathUsr+'getusrs',{responseType:'json'}).
     then(function(res)
     {
-      console.log(res);
       if(res.data.length > 0)
       {
         $scope.lstUsuarios = res.data;
       }
-    }).
-    catch(function(err)
+    })
+    .catch(function(err)
     {
       console.log(err);
     });

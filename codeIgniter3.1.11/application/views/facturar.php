@@ -2,12 +2,12 @@
 <input type="hidden" id="updtTblComp" value="F">
 <div class="container">
   <div class="notification" align="center">
-    <h1 class="title is-1">Registro de Pedidos</h1>
+    <h1 class="title is-1">Facturas</h1>
   </div>
 </div>
-<div class="container"  ng-controller="myCtrlPedi" data-ng-init="init()">
+<div class="container"  ng-controller="myCtrlFacturacion" data-ng-init="init()">
 	<div class="container">
-		<div class="box" id="barranavegacion" ng-show="!isCapturaPedido">
+		<div class="box" id="barranavegacion" ng-show="!isCapturaFactura">
 			<nav class="level">
 				<div class="level-left">
 					<div class="level-item">
@@ -18,26 +18,24 @@
 					</div>
 				</div>
 				<div class="level-right">
-					<p class="level-item"><a ng-click="agregaPEdido();"><span class="icon has-text-success"><i class="fas fa-plus-square" title="Agrega Pedido"></i></span></a></p>
-					<p class="level-item"><a ng-click="abrePedido()"><span class="icon has-text-info"><i class="fas fa-edit" title="Ver Pedido"></i></span></a></p>
-					<p class="level-item"><a ng-click="preguntaElimnaPedido()"><span class="icon has-text-danger"><i class="far fa-trash-alt" title="Elimna Pedido"></i></span></a></p>
+					<p class="level-item"><a ng-click="agregaFactura();"><span class="icon has-text-success"><i class="fas fa-plus-square" title="Agrega Pedido"></i></span></a></p>
+					<p class="level-item"><a ng-click="abreFactura()"><span class="icon has-text-info"><i class="fas fa-edit" title="Ver Factura"></i></span></a></p>
+					<p class="level-item"><a ng-click="preguntaElimnaFactura()"><span class="icon has-text-danger"><i class="far fa-trash-alt" title="Elimna Pedido"></i></span></a></p>
 				</div>
 			</nav>
 		</div>
-		<div class="table-container is-centered" style="margin:auto 0px" id="lstclientes" ng-show="!isCapturaPedido">
+		<div class="table-container is-centered" style="margin:auto 0px" id="lstclientes" ng-show="!isCapturaFactura">
 			<table border="1" style="width:100%">
 				<tr>
 					<td>
 						<table style="width:100%">
-							
 							<thead>
 								<tr style="background:LightSlateGray;">
-									<td align="center" style="color:white" >DOCUMENTO</td>
-									<td align="center" style="color:white" >CLIENTE</td>
-									<td align="center" style="color:white" >FECHA PEDIDO</td>
-									<td align="center" style="color:white" ">IMPORTE</td>
-									<td align="center" style="color:white" >VENDEDOR</td>
-									<td align="center" style="color:white" >VENDIDO</td>
+									<td style="color:white;text-align:center;" >DOCUMENTO</td>
+									<td style="color:white;text-align:center;" >CLIENTE</td>
+									<td style="color:white;text-align:center;" >FECHA PEDIDO</td>
+									<td style="color:white;text-align:center;" >IMPORTE</td>
+									<td style="color:white;text-align:center;" >VENDEDOR</td>
 								</tr>
 							</thead>
 						</table>
@@ -47,52 +45,49 @@
 					<td>
 						<div style="width:100%; height:500px; overflow:auto;">
 							<table class="table is-hoverable" style="width:100%" id="tblClientes">
-								<tr ng-repeat="x in lstPedidos" ng-click="selectRowPedido(x.DOCUMENTO,$index)" ng-class="{selected: x.DOCUMENTO === idDocumento}">
-									<td align="center">{{x.DOCUMENTO}}</td>
-									<td align="center">{{x.CLIENTE}}</td>
-									<td align="center">{{x.FECHA_PEDIDO}}</td>
-									<td align="center">{{x.IMPORTE}}</td>
-									<td align="center">{{x.VENDEDOR}}</td>
-									<td align="center">{{x.VENDIDO=='f' ? 'No' : 'Si'}}</td>
+								<tr ng-repeat="x in lstFacturas" ng-click="selectRowFactura(x.DOCUMENTO,$index)" ng-class="{selected: x.DOCUMENTO === idDocumento}">
+									<td style="text-align:center;">{{x.DOCUMENTO}}</td>
+									<td style="text-align:center;">{{x.CLIENTE}}</td>
+									<td style="text-align:center;">{{x.FECHA_VENTA}}</td>
+									<td style="text-align:center;">{{x.IMPORTE | currency}}</td>
+									<td style="text-align:center;">{{x.VENDEDOR}}</td>
 								</tr>
 							</table>
 						</div>
 					</td>
-				</tr>
+			</tr>
 			</table>
 		</div>
 	</div>
-	<div class="container" ng-show="isCapturaPedido">
+	<div class="container" ng-show="isCapturaFactura">
 		<div class="columns is-gapless">
 			<div class="column is-8">
 				<div class="box">
 					<div class="columns">
 						<div class="column is-narrow" style="width:200px">
-							<div class="columns">
-								<div class="column is-narrow" style="width:70px">
-									<label class="label">Pedido</label>
+							<div class="columns is-gapless">
+								<div class="column is-narrow" style="width:70px;margin-left:-15px">
+									<label class="label">Numero</label>
 								</div>
-								<div class="column is-narrow" style="width:130px">
-									<p class="control is-expanded has-icons-left">
-										<input class="input is-small" type="text" ng-model="pedido.docto" id="docto" placeholder="Docto" required>
-										<span class="icon is-small is-left">
-											<i class="fas fa-file"></i>
-										</span>
-									</p>
+								<div class="column is-narrow" style="width:100px">
+									<input class="input is-small" type="text" ng-model="factura.docto" id="docto" placeholder="Docto" required>
+								</div>
+								<div class="column is-narrow" style="width:30px">
+									<input type="text" class="input is-small" ng-model="tcaptura" ng-keyup="entrydata()" onKeyUp="this.value = this.value.toUpperCase();"/>
 								</div>
 							</div>
 							<div class="columns">
-								<div class="column is-narrow" style="width:70px">
+								<div class="column is-narrow" style="width:70px;margin-left:-15px">
 									<label for="mooneda" class="label">Moneda</label>
 								</div>
 								<div class="column is-narrow" style="width:130px">
 									<div class="select is-small">
-										<select class="select is-small" ng-model="pedido.idmoneda" ng-options="x.ID_MONEDA as x.NOMBRE for x in lstMoneda"></select>
+										<select class="select is-small" ng-model="factura.idmoneda" ng-options="x.ID_MONEDA as x.NOMBRE for x in lstMoneda"></select>
 									</div>
 								</div>
 							</div>
 							<div class="columns">
-								<div class="column is-narrow">
+								<div class="column is-narrow" style="margin-left:-15px">
 									<p class="control">
 									<label class="label">Captura Rápida</label>
 									<input type="checkbox" ng-model="captura_rapida" ng-click="capturaRapida()" name="caprap" >
@@ -102,7 +97,7 @@
 						</div>
 						<div class="column">
 							<div class="columns is-gapless is-multiline">
-								<div class="column is-narrow" style="width:80px">
+								<div class="column is-narrow" style="width:60px;margin-left:20px">
 									<label class="label">Cliente</label>
 								</div>
 								<div class="column is-narrow" style="width:90px">
@@ -163,13 +158,12 @@
 									</table>
 								</div>
 							</div>
-
 							<div class="columns is-gapless is-multiline">
 								<div class="column is-narrow" style="width:80px">
 									<label class="label">Vendedor</label>
 								</div>
 								<div class="column is-2">
-									<input type="text" ng-model="pedido.idvendedor" class="input is-small">
+									<input type="text" ng-model="factura.idvendedor" class="input is-small">
 								</div>
 								<div class="column is-6">
 									<div class="field has-addons">
@@ -226,11 +220,11 @@
 								</div>
 							</div>
 							<div class="columns">
-								<div class="column is-narrow" style="80px">
+								<div class="column is-narrow" style="width:80px">
 									<label class="label">Contacto</label>
 								</div>
 								<div class="column is-narrow">
-									<input type="text" class="input is-small" ng-model="pedido.contacto" required>
+									<input type="text" class="input is-small" ng-model="factura.contacto" required>
 								</div>
 							</div>
 							<div class="columns">
@@ -239,32 +233,54 @@
 								</div>
 								<div class="column is-narrow" style="width:130px">
 									<div class="select is-small">
-										<select ng-model="pedido.tpago" ng-options="x.ID_TIPO_PAGO as x.DESCRIPCION for x in lstTipopago"></select>
+										<select ng-model="factura.tpago" ng-options="x.ID_TIPO_PAGO as x.DESCRIPCION for x in lstTipopago"></select>
 									</div>
 								</div>
 								<div class="column is-narrow" style="width:78px;margin-left:-25px">
-									<input type="number" class="input is-small" value="0" ng-model="pedido.dias">
+									<input type="number" class="input is-small" value="0" ng-model="factura.dias">
 								</div>
-								<div class="column is-narrow" style="width:95px;margin-left:-20px">dias</div>
-								<div class="column is-narrow" style="width:70px">
-									<label for="entregar" class="label">Entregar</label>
+								<div class="column is-narrow" style="width:55px;margin-left:-20px">dias</div>
+								<div class="column is-narrow" style="width:82px;margin-right:-20px">
+									<label class="label">% Desc</label>
 								</div>
-								<div class="column is-narrow" style="width:156px">
-									<input type="text" class="input is-small" id="fechaentrega" ng-model="fechaentrega" ng-blur="fecEntrega()">
+								<div class="column is-narrow" style="width:75px;margin-rigth:-10px">
+									<input type="number" class="input is-small" ng-model="factura.descuento" style="text-align:center">
+								</div>
+								<div class="column is-narrow" style="width:40px;margin-rigth:-10px">
+									<label for="entregar" class="label">Iva</label>
+								</div>
+								<div class="column is-narrow" style="width:75px">
+									<input type="number" class="input is-small" id="iva" ng-model="factura.iva" style="text-align:center">
 								</div>
 							</div>
 							<div class="columns">
 								<div class="column is-narrow" style="width:160px">
-									<label for="mpago" class="label">Metodo de Pago</label>
+									<label for="mpago" class="label">Forma de Pago</label>
 								</div>
 								<div class="colummn is-narrow select is-small" style="width:188px">									
-									<select ng-model="pedido.fpago" ng-options="x.ID_FORMA_PAGO as x.DESCRIPCION for x in lstFormpago"></select>
+									<select ng-model="factura.fpago" ng-options="x.CLAVE as x.DESCRIPCION for x in lstFormpago"></select>
 								</div>
 								<div class="colummnvis-narrow" style="width:60px;margin-left:10px">
 									<label for="cuenta" class="label">Cuenta</label>
 								</div>
 								<div class="colummn is-narrow" style="width:135px">
-									<input type="text" class="input is-small" ng-model="pedido.cuenta" >
+									<input type="text" class="input is-small" ng-model="factura.cuenta" >
+								</div>
+							</div>
+							<div class="columns">
+								<div class="column is-narrow">
+									<label class="label">Uso del CFDI</label>
+								</div>
+								<div class="column is-narrow">
+									<select ng-model="factura.cfdi" ng-options="x.ID_CFDI as x.CLAVE+' '+x.DESCRIPCION for x in lstUsocfdi "></select>
+								</div>
+							</div>
+							<div class="columns">
+								<div class="column is-narrow" style="width:80px">
+									<label class="label">Metodo</label>
+								</div>
+								<div class="column is-narrow">
+									<select ng-model="factura.mpago" ng-options="x.ID_MET_PAGO as x.MET_PAGO+' '+x.DESCRIPCION for x in lstMetpago"></select>
 								</div>
 							</div>
 						</div>
@@ -423,8 +439,8 @@
 												<tr ng-repeat="p in lstProdCompra" ng-click="setSelected($index,p.CODIGO)" ng-class="{selected: p.CODIGO === idSelCompra}">
 													<td>{{p.DESCRIPCION}}</td>
 													<td align="center">{{p.CANTIDAD}}</td>
-													<td align="center">{{p.UNIDAD}}</td>
-													<td align="right">$ {{p.PRECIO_LISTA | number:2}}</td>
+													<td align="center">{{p.UNIDAD_MEDIDA}}</td>
+													<td align="right">$ {{p.PRECIO | number:2}}</td>
 													<td align="right">$ {{p.IMPORTE | number:2}}</td>
 												</tr>
 											</table>
@@ -434,13 +450,12 @@
 							</table>
 						</div>
 					</div>
-					<button class="button is-info is-rounded" ng-click="registraPedido()" ng-disabled="regpedido" ng-show="!isImprimir">Registrar Pedido</button>
-					<button class="button is-info is-rounded" ng-click="imprimePedido('pedido')" ng-disabled="" ng-show="isImprimir">Imprimir</button>
-					<button class="button is-dark is-rounded" ng-click="cancelaPedido()">Cerrar</button>
+					<button class="button is-info is-rounded" ng-click="registraFactura()" ng-disabled="regfactura">Registrar</button>
+					<button class="button is-dark is-rounded" ng-click="cierraFactura()">Cerrar</button>
 				</div>
 			</div>
 			<div class="column is-4" style="border:2px solid green">
-				<div class="box box-color" >
+				<div class="box box-color">
 					<div class="columns">
 						<div class="column has-text-right">
 							<h1 class="title is-5">{{fechaPantalla}}</h1>
@@ -458,14 +473,14 @@
 							<h1 class="title is-4 has-text-white" >Documento: </h1>
 						</div>
 						<div class="column has-text-right">
-							<h1 class="title is-4 has-text-white" >{{pedido.docto}}</h1>
+							<h1 class="title is-4 has-text-white" >{{factura.docto}}</h1>
 						</div>
 					</div>
 
 					<hr class="hr" style="margin-bottom:0;">
 					<div class="columns">
 						<div class="column">
-							<h1 class="title  has-text-success is-2 has-text-centered is-family-sans-serif is-size-3" >$ {{pedido.total | number:2}}</h1>
+							<h1 class="title  has-text-success is-2 has-text-centered is-family-sans-serif is-size-3" >$ {{factura.total | number:2}}</h1>
 						</div>
 					</div>
 					<div class="columns" style="height:130px">
@@ -520,7 +535,7 @@
 							<label class="label">Total:</label>
 						</div>
 						<div class="column">
-							<label>$ {{pedido.total | number:2}}</label>
+							<label>$ {{factura.total | number:2}}</label>
 						</div>
 					</div>
 				</div>
@@ -697,23 +712,60 @@
 	    </footer>
 	  </div>
 	</div>
-	<div class="modal is-active" ng-show="pregElimiPedi">
-	  <div class="modal-background"></div>
-	  <div class="modal-card">
-	    <header class="modal-card-head">
-	      <p class="modal-card-title">Advertencia</p>
-	      <button class="delete" aria-label="close" ng-click="cerrarEliminaPedido()"></button>
-	    </header>
-	    <section class="modal-card-body">
-	      ¿Está seguro que desea eliminar el Pedido <b>{{doctoEliminar}}</b>?
-	    </section>
-	    <footer class="modal-card-foot">
-	      <button class="button is-success" ng-click="borraPedido()">Si</button>
-	      <button class="button" ng-click="cerrarEliminaPedido()">No</button>
-	    </footer>
-	  </div>
+	<div class="modal is-active" ng-show="showInputData">
+		<div class="modal-background"></div>
+		<div class="modal-card" style="width:1100px">
+			<header class="modal-card-head">
+				<p class="modal-card-title">Seleccionar Pedido</p>
+				<button class="delete" aria-label="close" ng-click="closeInputData()"></button>
+			</header>
+			<section class="modal-card-body">
+				<table class="table is-bordered" style="width:100%">
+					<tr>
+						<td style="text-align:center;width:60px">Documento</td>
+						<td style="text-align:center;width:150px">Cliente</td>
+						<td style="text-align:center;width:120px">Fecha Pedido</td>
+						<td style="text-align:center;width:80px">Importe</td>
+						<td style="text-align:center;width:100px">Vendedor</td>
+					</tr>
+				</table>
+				<div style="width:100%; height:500px; overflow:auto; margin-top:-24px; border:2px solid black">
+					<table class="table is-hoverable" style="width:100%" id="tblClientes">
+						<tr ng-repeat="x in lstPedidos" ng-click="selectRowPedido(x.DOCUMENTO,$index)" ng-class="{selected: x.DOCUMENTO === idDocumento}">
+							<td style="text-align:center;width:60px">{{x.DOCUMENTO}}</td>
+							<td style="text-align:center;width:150px">{{x.CLIENTE}}</td>
+							<td style="text-align:center;width:120px">{{x.FECHA_PEDIDO}}</td>
+							<td style="text-align:right;width:80px">{{x.IMPORTE | currency}}</td>
+							<td style="text-align:right;width:100px">{{x.VENDEDOR}}</td>
+						</tr>
+					</table>
+				</div>
+			</section>
+			<footer class="modal-card-foot">
+				<button class="button is-success" ng-click="seleccionarPedido()">Seleccionar</button>
+				<button class="button" ng-click="closeInputData()">Cerrar</button>
+			</footer>
+		</div>
 	</div>
-	<table style="width: 100%; display:none" id="pedido">
+
+	<div class="modal is-active" ng-show="showEliminaFactura">
+		<div class="modal-background"></div>
+		<div class="modal-card">
+			<header class="modal-card-head">
+				<p class="modal-card-title">Eliminar Factura</p>
+				<button class="delete" aria-label="close" ng-click="closeEliminaFactura()"></button>
+			</header>
+			<section class="modal-card-body">
+				<p>Está seguro que desea eliminar la factura <strong>{{factura.docto}}</strong>?</p>
+			</section>
+			<footer class="modal-card-foot">
+				<button class="button is-success" ng-click="eliminarFactura()">Si</button>
+				<button class="button" ng-click="closeEliminaFactura()">No</button>
+			</footer>
+		</div>
+	</div>
+	
+	<table style="width: 100%; display:none" id="factura">
 		<tbody>
 			<tr>
 			<td style="width: 107.067px">Logo</td>
@@ -740,8 +792,8 @@
 						<tr ng-repeat="p in lstProdCompra">
 							<td style="width: 200px; text-align: center">{{p.DESCRIPCION}}</td>
 							<td style="width: 73.8px; text-align: center">{{p.CANTIDAD}}</td>
-							<td style="width: 81.2px; text-align: center">{{p.UNIDAD}}</td>
-							<td style="width: 128px; text-align: right">$ {{p.PRECIO_LISTA | number:2}}</td>
+							<td style="width: 81.2px; text-align: center">{{p.UNIDAD_MEDIDA}}</td>
+							<td style="width: 128px; text-align: right">$ {{p.PRECIO | number:2}}</td>
 							<td style="width: 104px; text-align: right">$ {{p.IMPORTE | number:2}}</td>
 						</tr>
 					</tbody>

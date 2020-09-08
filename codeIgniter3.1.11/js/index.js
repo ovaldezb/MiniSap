@@ -16,6 +16,7 @@ var pathLinea = pathCliente + 'api/linea/';
 var pathCreaFact = pathCliente + 'creacfdixml/';
 var pathCFDI = pathCliente + 'datosfactura/';
 var pathPedi = pathCliente + 'pedidos/';
+var pathFacturacion = pathCliente + 'facturacion/';
 var app = angular.module("myApp", ["ngRoute"]);
 app.config(function($routeProvider) {
     $routeProvider
@@ -63,12 +64,19 @@ app.config(function($routeProvider) {
     })
     .when("/pedi",{
       templateUrl : pathCliente+'pedidos'
+    })
+    .when("/fact",{
+      templateUrl : pathCliente+'facturacion'
+    })
+    .when("/vend",{
+      templateUrl : pathVend
     });
 });
 
 app.controller('myCtrlIndex', function($scope,$http,$location,$window)
 {
   $scope.idusuario = $('#idusuario').val();
+  $scope.usuario = $('#nombreusuario').val();
   $scope.lstEmprPerm = [];
   $scope.lstFYEmpr = [];
   $scope.lstSucursal = [];
@@ -89,14 +97,17 @@ app.controller('myCtrlIndex', function($scope,$http,$location,$window)
   $scope.loadEmpresas = function(){
     $http.get(pathEmpr+'getemppermbyusr/'+$scope.idusuario,{responseType:'json'}).
     then(function(res)
-    {      
+    {
       if(res.data.length > 0)
       {
         $scope.lstEmprPerm = res.data;
         $scope.idEmpresaSelected = $scope.lstEmprPerm[0].ID_EMPRESA;
         $scope.indxdSelEmp = 0;
         $scope.obtieneFYEmp($scope.idEmpresaSelected);
-      }else {
+      }else if($scope.usuario == 'Administrador') {
+        $window.location.href = $window.location.href + 'empr';
+        $scope.isEmpPermActiv = false; 
+      }else{
         alert('El usuario no tiene Empresas asignadas, favor de contactar a su administrador!')
       }
     }).catch(function(err)

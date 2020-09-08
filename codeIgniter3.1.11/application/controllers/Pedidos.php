@@ -32,33 +32,26 @@ class Pedidos extends CI_Controller
     	}
 	}
 
-	/*function getitems($idEmpresa,$desc,$tipo_req)
-	{
-		if($desc != 'vacio'){
-			$nvodesc = str_replace("%20"," ",$desc);
-			$data = $this->tpvmodel->get_items($idEmpresa,'%'.$nvodesc.'%',$tipo_req);
-		}else
-		{
-			$data = $this->tpvmodel->get_items_vacio($idEmpresa,$tipo_req);
-		}
-		return $this->output
-            ->set_content_type('application/json')
-            ->set_output($data);
-	}*/
-
 	function registrapedido()
 	{
 		$data = json_decode(file_get_contents("php://input"),true);
-		$result = $this->pedidosmodel->registra_pedido(
-			$data['documento'],
+		$result = $this->pedidosmodel->registra_pedido(array(
+			$data['docto'],
 			$data['idcliente'],
 			$data['idvendedor'],
 			$data['fechapedido'],
 			$data['aniofiscal'],
 			$data['idempresa'],
-			$data['idformapago'],
-			$data['importe'],
-			$data['idsucursal']
+			$data['total'],
+			$data['idsucursal'],
+			$data['fpago'],
+			$data['tpago'],
+			$data['contacto'],
+			$data['cuenta'],
+			$data['dias'],
+			$data['idmoneda'],
+			$data['fechaentrega']
+			)
 		);
 		return $this->output
 					 ->set_content_type('application/json')
@@ -81,29 +74,34 @@ class Pedidos extends CI_Controller
 					 ->set_output($result);
 	}
 
-	function getpedidos($anioFiscal){
-		$result = $this->pedidosmodel->get_pedidos($anioFiscal);
+	function getpedidos($idempresa,$anioFiscal){
+		$result = $this->pedidosmodel->get_pedidos($idempresa,$anioFiscal);
 		return $this->output
 				->set_content_type('application/json')
 				->set_output($result);
-
 	}
 
-	/*function getitemsbyprodsuc($idProducto,$idSucursal)
-	{
-		$result = $this->tpvmodel->get_items_by_suc($idProducto,$idSucursal);
+	function getpedidobyid($idpedido){
+		$result = $this->pedidosmodel->getpedidobyid($idpedido);
 		return $this->output
-					 ->set_content_type('application/json')
-					 ->set_output($result);
-	}*/
+				->set_content_type('application/json')
+				->set_output($result);
+	}
 
-	/*function getproductosforsucursal($idProducto)
-	{
-		$result = $this->tpvmodel->get_productos_for_each_sucursal($idProducto);
+	function getpedidetallebyid($idpedido){
+		$result = $this->pedidosmodel->getpedidodetallebyid($idpedido);
 		return $this->output
-					 ->set_content_type('application/json')
-					 ->set_output($result);
-	}*/
+				->set_content_type('application/json')
+				->set_output($result);
+	}
+
+	function elimpedidobyid($idpedido){
+		$result = $this->pedidosmodel->eliminapedido($idpedido);
+		return $this->output
+				->set_content_type('application/json')
+				->set_output($result);
+	}
+
 
 }
 ?>

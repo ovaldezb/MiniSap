@@ -4,7 +4,6 @@
   <meta http-equiv="Last-Modified" content="0">
   <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
   <meta http-equiv="Pragma" content="no-cache">
-  <!--script src="https://unpkg.com/axios/dist/axios.min.js"></script-->
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
@@ -100,9 +99,10 @@
 </head>
 <body ng-app="myApp" ng-controller="myCtrlIndex" data-ng-init="init()">
   <input type="hidden" id="idusuario" name="idusuario" value="<?php echo $idusuario ?>">
+  <input type="hidden" id="nombreusuario" name="nombreusuario" value="<?php echo $nombre ?>">
   <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
-      <a class="navbar-item" href="https://bulma.io">
+      <a class="navbar-item" >
         <img src="../img/cercanias.png" alt="Sistema de Gesti&oacute;n Empresarial" width="40" height="28">
       </a>
     </div>
@@ -151,7 +151,7 @@
       </div>
     </div>
   </nav>
-  <br><br><br>
+  <br><br>
   <div class="columns">
     <div class="column is-one-fifth">
       <aside class="menu" style="width:100%; height:890px; overflow:auto;">
@@ -254,6 +254,8 @@
 <script src="../js/rventas.js"></script>
 <script src="../js/linea.js"></script>
 <script src="../js/datosfactura.js"></script>
+<script src="../js/facturar.js"></script>
+<script src="../js/vendedores.js"></script>
 <script>
 
 /*var acc = document.getElementsByClassName("accordion");

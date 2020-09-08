@@ -1,4 +1,4 @@
-app.controller('myCtrlPedi', function($scope,$http,$interval)
+app.controller('myCtrlFacturacion', function($scope,$http,$interval)
 {
   $scope.fecha = formatDatePrint(new Date());
   $scope.fechaPantalla = formatDatePantalla(new Date());
@@ -18,6 +18,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval)
   $scope.lstVendedor = [];
   $scope.lstPrdSucExis = [];
   $scope.idDocumento = '';
+  $scope.indexRowFactura = '';
   $scope.indexRowPedido = '';
   $scope.idPedido = 0;
   $scope.importeNeto = 0;
@@ -31,24 +32,25 @@ app.controller('myCtrlPedi', function($scope,$http,$interval)
   $scope.modalConsProdSuc = false;
   $scope.modalVerifProdSuc = false;
   $scope.isVerifExis = false;
+  $scope.showEliminaFactura = false;
   $scope.modalVerfClte = false;
   $scope.showLstClte = false;
-  $scope.isImprimir = false;
   $scope.btnVerifClte = 'Actualizar';
+  $scope.tcaptura = 'D';
   $scope.idempresa = '';
   $scope.lstMoneda = [];
   $scope.lstMetpago = [];
   $scope.lstFormpago = [];
   $scope.lstTipopago = [];
   $scope.lstUsocfdi = [];
-  $scope.lstPedidos = [];
-  $scope.isCapturaPedido = false;
-  $scope.regpedido = true;
+  $scope.lstFacturas = [];
+  $scope.isCapturaFactura = false;
+  $scope.regfactura = true;
   $scope.imprimir = true;
   $scope.pregElimiPedi = false;
   $scope.doctoEliminar = '';
-  $scope.fechaentrega = '';
-  $scope.pedido = {
+  $scope.showInputData = false;
+  $scope.factura = {
     docto : '',
     idcliente : '',
     idvendedor : '',
@@ -62,8 +64,11 @@ app.controller('myCtrlPedi', function($scope,$http,$interval)
     cuenta: '',
     dias : '',
     tpago : 1,
-    fpago : 1,
-    fechaentrega:''
+    fpago : '01',
+    mpago : 1,
+    iva : '',
+    descuento : 0,
+    cfdi:1
   };
 
   $scope.producto = {
@@ -105,50 +110,35 @@ app.controller('myCtrlPedi', function($scope,$http,$interval)
   };
   $scope.init = function()
   {
-      var foopicker = new FooPicker({
-      id: 'fechaentrega',
-      dateFormat: 'dd/MM/yyyy'
-      });
-
-      $scope.regpedido = true;
-      $('#codigo_prodto').prop('disabled',true);
-      $http.get(pathAcc+'getdata',{responseType:'json'}).
-      then(function(res){
-        if(res.data.value=='OK'){
-          $scope.pedido.idempresa = res.data.idempresa;
-          $scope.pedido.idsucursal = res.data.idsucursal;
-          $scope.pedido.aniofiscal = res.data.aniofiscal;
-          $scope.getNextDocPedido();
-          $scope.getpedidos();
-          $scope.getMoneda();
-          $scope.getFormPago();
-          $scope.getTipoPago();
-        }
-      }).catch(function(err){
-        console.log(err);
-      });      
-      $scope.getUsoCfdi();
-  }
-
-  $scope.getpedidos = function(){
-    $http.get(pathPedi+'getpedidos/'+$scope.pedido.idempresa+'/'+$scope.pedido.aniofiscal,{responseType:'json'})
-        .then(res => {
-          if(res.data.length > 0){
-            $scope.lstPedidos = res.data;
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
+    $scope.regfactura = true;
+    $('#codigo_prodto').prop('disabled',true);
+    $http.get(pathAcc+'getdata',{responseType:'json'}).
+    then(function(res){
+      if(res.data.value=='OK'){
+        $scope.factura.idempresa = res.data.idempresa;
+        $scope.factura.idsucursal = res.data.idsucursal;
+        $scope.factura.aniofiscal = res.data.aniofiscal;
+        $scope.getfacturas();
+        $scope.getNextDocTpv();
+        $scope.getUsoCfdi();
+        $scope.getMoneda();
+        $scope.getFormPago();
+        $scope.getTipoPago();
+        $scope.getMetPago();
+      }
+    }).catch(function(err){
+      console.log(err);
+    });      
   }
   
-  $scope.getNextDocPedido = function(){
-		$http.get(pathUtils+'incremento/PEDI/'+$scope.pedido.idempresa+'/7').
+  $scope.getNextDocTpv = function(){
+    
+		$http.get(pathUtils+'incremento/TPVS/'+$scope.factura.idempresa+'/7').
 		then(function(res)
 		{
 			if(res.data.length > 0)
 			{
-				$scope.pedido.docto = res.data[0].VALOR;
+				$scope.factura.docto = res.data[0].VALOR;
 				$scope.doctoTmp = res.data[0].VALOR;
 			}
 		}).catch(function(err)
@@ -199,7 +189,6 @@ app.controller('myCtrlPedi', function($scope,$http,$interval)
     then(res => {
       if(res.data.length > 0){
         $scope.lstTipopago = res.data;
-        console.log($scope.lstTipopago);
       }
     }).catch(err =>	{
 			console.log(err);
@@ -217,11 +206,82 @@ app.controller('myCtrlPedi', function($scope,$http,$interval)
 		});
   }
 
+  $scope.getfacturas = function(){
+    $http.get(pathTpv+'getfacturas/'+$scope.factura.idempresa+'/'+$scope.factura.aniofiscal,{responseType:'json'})
+        .then(res => {
+          if(res.data.length > 0){
+            $scope.lstFacturas = res.data;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+  }
+
+  $scope.getFacturaDetalleyId = function(idFactura){
+    $http.get(pathTpv+'getfactdetbyid/'+idFactura,{responseType:'json'})
+        .then(res => {
+          if(res.data.length > 0){
+            $scope.lstProdCompra = res.data;
+            $scope.calculaValoresMostrar();
+            $scope.regfactura = true;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+  }
+
+  $scope.eliminarFactura = function(){
+    $http.delete(pathTpv+'eliminafact/'+$scope.lstFacturas[$scope.indexRowFactura].ID_VENTA+'/'+$scope.factura.idsucursal)
+        .then(res=>{
+          console.log(res);
+          $scope.lstFacturas.splice($scope.indexRowFactura,1);
+          $scope.showEliminaFactura = false;
+        })
+        .catch(err =>{
+          console.log(err);
+        });
+  }
+
+  $scope.entrydata = function(){
+    if($scope.tcaptura == 'P' || $scope.tcaptura == 'p'){
+      $scope.showInputData = true;
+      $scope.getpedidos();
+    }
+  }
+
+  $scope.closeInputData = function(){
+    $scope.showInputData = false;
+  }
+
+  $scope.abreFactura = function(){
+    $scope.isCapturaFactura = true;
+    $scope.regfactura = true;
+    $scope.factura.docto = $scope.lstFacturas[$scope.indexRowFactura].DOCUMENTO;
+    $scope.nombre_cliente = $scope.lstFacturas[$scope.indexRowFactura].CLIENTE;
+    $scope.claveclte = $scope.lstFacturas[$scope.indexRowFactura].CLAVE;
+    $scope.factura.idvendedor = $scope.lstFacturas[$scope.indexRowFactura].CODIGO_VENDEDOR;
+    $scope.nombre_vendedor = $scope.lstFacturas[$scope.indexRowFactura].VENDEDOR;
+    $scope.factura.fpago = $scope.lstFacturas[$scope.indexRowFactura].CVE_FORMA_PAGO;
+    $scope.getFacturaDetalleyId($scope.lstFacturas[$scope.indexRowFactura].ID_VENTA);
+    
+  }
+
+  $scope.agregaFactura = function(){
+    $scope.isCapturaFactura = true;
+  }
+
+  $scope.cierraFactura = function(){
+    $scope.isCapturaFactura = false;
+    $scope.limpiar();
+  }
+
   $scope.VerificarCliente = function()
   {
       if($scope.claveclte != '')
       {
-        $http.get(pathClte+'loadbyidverfi/'+$scope.pedido.idcliente,{responseType:'json'}).
+        $http.get(pathClte+'loadbyidverfi/'+$scope.factura.idcliente,{responseType:'json'}).
         then(function(res)
         {
           if(res.data.length > 0)
@@ -294,11 +354,11 @@ app.controller('myCtrlPedi', function($scope,$http,$interval)
     $scope.cliente.id_forma_pago=$('#id_forma_pago').val();
     $scope.cliente.id_vendedor=$('#id_vendedor').val();
     //$scope.cliente.id_uso_cfdi=$('#id_uso_cfdi').val();
-    $scope.cliente.idempresa = $scope.pedido.idempresa;
+    $scope.cliente.idempresa = $scope.factura.idempresa;
 
     if($scope.btnVerifClte == 'Agregar')
     {
-      $http.get(pathUtils+'incremento/CLTE/'+$scope.pedido.idempresa+'/4').
+      $http.get(pathUtils+'incremento/CLTE/'+$scope.factura.idempresa+'/4').
       then(function(res)
       {
         $scope.cliente.clave = res.data[0].VALOR;
@@ -316,7 +376,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval)
         console.log(err);
       });
      }else{
-       $http.put(pathClte+'update/'+$scope.pedido.idcliente, $scope.cliente).
+       $http.put(pathClte+'update/'+$scope.factura.idcliente, $scope.cliente).
        then(function(res)
        {
          alert('Se actualizó correctamente el cliente');
@@ -328,6 +388,40 @@ app.controller('myCtrlPedi', function($scope,$http,$interval)
     }
   }
 
+  $scope.seleccionarPedido = function(){
+    $http.get(pathPedi+'getpedidobyid/'+$scope.lstPedidos[$scope.indexRowPedido].ID_PEDIDO)
+        .then(res=>{
+          $scope.factura.docto = res.data[0].DOCUMENTO;
+          $scope.claveclte = res.data[0].CLAVE;
+          $scope.nombre_cliente = res.data[0].CLIENTE;
+          $scope.factura.idvendedor = res.data[0].ID_VENDEDOR;
+          $scope.nombre_vendedor = res.data[0].VENDEDOR;
+          $scope.factura.contacto = res.data[0].CONTACTO;
+          $scope.factura.tpago = res.data[0].ID_TIPO_PAGO;
+          $scope.factura.fpago = res.data[0].ID_FORMA_PAGO;
+          $scope.factura.cuenta = res.data[0].CUENTA == null ? '' : res.data[0].CUENTA.trim();
+          $scope.factura.idmoneda = res.data[0].ID_MONEDA;
+        })
+        .catch(err=>{
+          console.log(err);
+        });
+    
+    $http.get(pathPedi+'getpedidetallebyid/'+$scope.lstPedidos[$scope.indexRowPedido].ID_PEDIDO)
+        .then(res=>{
+          $scope.lstProdCompra = res.data;
+          $scope.calculaValoresMostrar();
+        })
+        .catch(err=>{
+          console.log(err);
+        });
+    $scope.closeInputData();
+  }
+
+  $scope.selectRowFactura = function(docuento, indexRowFactura)
+  {
+    $scope.idDocumento = docuento;
+    $scope.indexRowFactura = indexRowFactura;
+  }
 
   $scope.selectRowPedido = function(docuento, indexRowPedido)
   {
@@ -414,7 +508,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval)
       }
     	$('#dispsearch').show();
     	var searchword = $scope.producto.prod_desc !='' ? $scope.producto.prod_desc : 'vacio';
-    	$http.get(pathTpv+'getitems/'+$scope.pedido.idempresa+'/'+searchword+'/V', {responseType: 'json'}).
+    	$http.get(pathTpv+'getitems/'+$scope.factura.idempresa+'/'+searchword+'/V', {responseType: 'json'}).
     	then(function(res)
     	{
     		if(res.status == '200')
@@ -451,7 +545,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval)
       $('#mascant').prop('disabled',false);
       $scope.closeDivSearch();
 
-      $http.get(pathTpv+'getitemsbyprodsuc/'+$scope.producto.id_producto+'/'+$scope.pedido.idsucursal).
+      $http.get(pathTpv+'getitemsbyprodsuc/'+$scope.producto.id_producto+'/'+$scope.factura.idsucursal).
       then(function(res)
       {
         if(res.data.length > 0)
@@ -495,7 +589,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval)
         $('#cantidad').focus();
         return;
       }
-      $scope.regpedido = false;
+      
       importe = $scope.producto.esDscto ?  Number($scope.cantidad * $scope.producto.precio * (1-$scope.producto.descuento/100)) : Number($scope.cantidad * $scope.producto.precio);
       var dataCompra =
       {
@@ -557,7 +651,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval)
 
     $scope.editaProducto = function()
     {
-      $scope.id_producto = $scope.lstProdCompra[$scope.indexRowCompra].producto.id_producto;
+      $scope.producto.id_producto = $scope.lstProdCompra[$scope.indexRowCompra].id_producto;
       $scope.producto.codigo_prodto = $scope.lstProdCompra[$scope.indexRowCompra].CODIGO;
       $scope.producto.prod_desc = $scope.lstProdCompra[$scope.indexRowCompra].DESCRIPCION;
       $scope.producto.unidad = $scope.lstProdCompra[$scope.indexRowCompra].UNIDAD;
@@ -571,7 +665,6 @@ app.controller('myCtrlPedi', function($scope,$http,$interval)
       $scope.producto.descuento = $scope.lstProdCompra[$scope.indexRowCompra].DESCUENTO;
       //$scope.tipo_ps = $scope.lstProdCompra[$scope.indexRowCompra].TIPO_PS;
      
-
       if($scope.producto.imagePath!='')
       {
         $('#imgfig').show();
@@ -588,13 +681,13 @@ app.controller('myCtrlPedi', function($scope,$http,$interval)
       {
         $scope.setSelected($scope.lstProdCompra[0].CODIGO,0);
       }else{
-        $scope.regpedido = true;
+        $scope.regfactura = true;
       }
     }
 
     $scope.calculaValoresMostrar = function()
     {
-      $scope.pedido.total = 0;
+      $scope.factura.total = 0;
       $scope.importeNeto = 0;
       $scope.impuestos = 0;
       $scope.dsctoValor = 0;
@@ -603,19 +696,20 @@ app.controller('myCtrlPedi', function($scope,$http,$interval)
 
       for(var i=0;i<$scope.lstProdCompra.length;i++)
       {
-        $scope.pedido.total += Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) ;
-        $scope.dsctoValor += Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) * ($scope.lstProdCompra[i].ESDSCTO ? Number($scope.lstProdCompra[i].DESCUENTO/100) : 0);
-        $scope.importeNeto = $scope.pedido.total   / (1+Number($scope.lstProdCompra[i].IVA/100));
+        $scope.factura.total += Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO) ;
+        $scope.dsctoValor += Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO) * ($scope.lstProdCompra[i].ESDSCTO ? Number($scope.lstProdCompra[i].DESCUENTO/100) : 0);
+        $scope.importeNeto = $scope.factura.total   / (1+Number($scope.lstProdCompra[i].IVA/100));
         $scope.impuestos = ($scope.importeNeto) * Number($scope.lstProdCompra[i].IVA/100);
       }
-      $scope.pedido.total = $scope.pedido.total - $scope.dsctoValor;
+      $scope.factura.total = $scope.factura.total - $scope.dsctoValor;
+      $scope.regfactura = $scope.factura.total <= 0;
     }
 
     $scope.buscacliente = function(event)
     {
       var searchword;
       searchword = $scope.nombre_cliente != '' ? $scope.nombre_cliente : 'vacio';
-      $http.get(pathClte+'loadbynombre/'+$scope.pedido.idempresa +'/'+searchword).
+      $http.get(pathClte+'loadbynombre/'+$scope.factura.idempresa +'/'+searchword).
       then(function(res)
       {
         if(res.data.length > 0)
@@ -637,7 +731,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval)
       $scope.nombre_cliente = $scope.lstCliente[indxRowClte].NOMBRE;
       $scope.rfc_cliente = $scope.lstCliente[indxRowClte].RFC.trim();
       $scope.cliente.id_uso_cfdi = $scope.lstCliente[indxRowClte].ID_USO_CFDI;      
-      $scope.pedido.idcliente = $scope.lstCliente[indxRowClte].ID_CLIENTE;           
+      $scope.factura.idcliente = $scope.lstCliente[indxRowClte].ID_CLIENTE;           
       $scope.lstCliente = [];
       $scope.showLstClte = false;      
     }
@@ -652,7 +746,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval)
     {
       var searchword;
       searchword = $scope.nombre_vendedor != '' ? $scope.nombre_vendedor : 'vacio';
-      $http.get(pathVend+'getvendedores/'+$scope.pedido.idempresa+'/'+searchword).
+      $http.get(pathVend+'getvendedores/'+$scope.factura.idempresa+'/'+searchword).
       then(function(res)
       {
         if(res.data.length > 0)
@@ -671,7 +765,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval)
 
     $scope.seleccionaVendedor = function(indxRowClte)
     {
-      $scope.pedido.idvendedor = $scope.lstVendedor[indxRowClte].ID_VENDEDOR;
+      $scope.factura.idvendedor = $scope.lstVendedor[indxRowClte].ID_VENDEDOR;
       $scope.nombre_vendedor = $scope.lstVendedor[indxRowClte].NOMBRE;
 
       $scope.lstVendedor = [];
@@ -683,29 +777,44 @@ app.controller('myCtrlPedi', function($scope,$http,$interval)
       $scope.lstVendedor = [];
       $('#listaVendedores').hide();
     }
-
-    $scope.fecEntrega = function(){
-      var e = jQuery.Event("keydown");
-      e.which = 13; // # Some key code value
-      $("#fechaInicio").trigger(e);
-      $scope.pedido.fechaentrega = formatFecQuery($('#fechaentrega').val(),'ini');
-      $scope.fechaentrega = $('#fechaInicio').val();
-    }
     
-    $scope.registraPedido = function()
+    $scope.registraFactura = function()
     { 
-      $scope.pedido.fechapedido = formatDateInsert(new Date());
-      $scope.pedido.dias = $scope.pedido.dias == '' ? null : $scope.pedido.dias;
-      $scope.pedido.cuenta = $scope.pedido.cuenta == '' ? null : $scope.pedido.cuenta;
-      $http.put(pathPedi+'registrapedido',$scope.pedido).
+      var dataVenta =
+      {
+        documento:$scope.factura.docto,
+        idcliente:$scope.factura.idcliente,
+        idvendedor:$scope.factura.idvendedor,
+        fechaventa:formatDateInsert(new Date()),
+        aniofiscal:$scope.factura.aniofiscal,
+        idempresa:$scope.fctura.idempresa,
+        idformapago:$scope.factura.fpago,
+        pagoefectivo:0,
+        pagotarjeta:0,
+        pagocheques:0,
+        pagovales:0,
+        idtarjea:$('#idtarjea').val()=='' ? null : $('#idtarjea').val(),
+        idbanco:$('#banco').val()=='' ? null : $('#banco').val(),
+        idvales:$('#idvales').val()=='' ? null : $('#idvales').val(),
+        importe:$scope.total,
+        cambio:$scope.cambio,
+        idsucursal:$scope.idsucursal
+      }
+
+      $http.put(pathTpv+'registraventa',dataVenta).
       then(function(res)
       {
-        $scope.idPedido = res.data[0].registra_pedido;
-        $scope.registraPedidoProd();
-        alert('El pedido se registro exitosamente');
-        $scope.isImprimir = true;
-        $scope.getpedidos();
-        //$scope.limpiar();
+        $scope.idVenta = res.data[0].registra_venta;
+        $scope.registraVentaProd();
+        if($scope.fact.req_factura){
+          $scope.registraFactura(); 
+        }else{
+          alert('La venta se registro exitosamente');
+        }        
+        $scope.limpiar();
+        $scope.
+        $scope.getNextDocTpv();
+        
       }).
       catch(function(err)
       {
@@ -713,21 +822,21 @@ app.controller('myCtrlPedi', function($scope,$http,$interval)
       });
     }
 
-    $scope.registraPedidoProd = function()
+    $scope.registraVentaProd = function()
     {
-      var pediProd = {};
+      var ventaProd = {};
       for(var i=0;i<$scope.lstProdCompra.length;i++)
       {
-        pediProd =
+        ventaProd =
         {
           idpedido:$scope.idPedido,
           idProducto:$scope.lstProdCompra[i].ID_PRODUCTO,
           cantidad:$scope.lstProdCompra[i].CANTIDAD,
           precio:$scope.lstProdCompra[i].PRECIO_LISTA,
           importe:$scope.lstProdCompra[i].IMPORTE,
-          idsucursal:$scope.pedido.idsucursal
+          idsucursal:$scope.factura.idsucursal
         }
-        $http.put(pathPedi+'registrapedidoprod',pediProd).
+        $http.put(pathPedi+'registrapedidoprod',ventaProd).
         then(function(res)
         {
           /*se insertó con éxito*/
@@ -756,113 +865,39 @@ app.controller('myCtrlPedi', function($scope,$http,$interval)
         console.log(err);
       });
     }
-
-    $scope.abrePedido = function(){
-      $http.get(pathPedi+'getpedidobyid/'+$scope.lstPedidos[$scope.indexRowPedido].ID_PEDIDO,{responseType:'json'})
-          .then(res=>{
-            if(res.data.length > 0){
-              $scope.pedido.docto = res.data[0].DOCUMENTO;
-              $scope.claveclte = res.data[0].CLAVE;
-              $scope.nombre_cliente = res.data[0].CLIENTE;
-              $scope.pedido.idvendedor  = res.data[0].ID_VENDEDOR;
-              $scope.nombre_vendedor  = res.data[0].VENDEDOR;
-              $scope.pedido.contacto = res.data[0].CONTACTO;
-              $scope.pedido.cuenta = res.data[0].CUENTA == null ? '' :res.data[0].CUENTA ;
-              $scope.pedido.dias = res.data[0].DIAS == null ? '' :res.data[0].DIAS ;
-              $scope.pedido.idmoneda = res.data[0].ID_MONEDA;
-              $scope.pedido.tpago = res.data[0].ID_TIPO_PAGO;
-              $scope.pedido.fpago = res.data[0].ID_FORMA_PAGO;
-              $scope.fechaentrega = res.data[0].FECHA_ENTREGA;
-              $scope.isCapturaPedido = true;
-              $scope.isImprimir = true;
-            }
-          })
-          .catch(err=>{
-            console.log(err);
-          });
-
-      $http.get(pathPedi+'getpedidetallebyid/'+$scope.lstPedidos[$scope.indexRowPedido].ID_PEDIDO,{responseType:'json'})
-          .then(res=>{
-            if(res.data.length > 0){
-              $scope.lstProdCompra = res.data;
-              $scope.calculaValoresMostrar();
-            }
-          })
-          .catch(err=>{
-            console.log(err);
-          });
-    }
-
-    $scope.preguntaElimnaPedido = function(){
-      $scope.doctoEliminar = $scope.lstPedidos[$scope.indexRowPedido].DOCUMENTO;
-      $scope.pregElimiPedi = true;
-    }
-
-    $scope.cerrarEliminaPedido = function(){
-      $scope.pregElimiPedi = false;
-    }
-
-    $scope.borraPedido = function(){
-      $http.delete(pathPedi+'elimpedidobyid/'+$scope.lstPedidos[$scope.indexRowPedido].ID_PEDIDO)
-          .then(res => {
-            $scope.pregElimiPedi = false;
-            $scope.getpedidos();
-          })
-          .catch(err => {
-            console.log(err);
-          });
-    }
-
-    $scope.orderByMe = function(valorOrden)
-    {
-      $scope.orderBy = valorOrden;
-      $scope.sortDir = !$scope.sortDir;
-    }
-
-    $scope.agregaPEdido = function(){
-      $scope.isCapturaPedido = true;
-      $scope.getNextDocPedido();
-    }
-
-    $scope.cancelaPedido = function(){
-      $scope.isCapturaPedido = false;
-      $scope.isImprimir = false;
-      $scope.limpiar();
-    }
     
     $scope.closeVerifProdSuc = function(){
       $scope.modalVerifProdSuc = false;
     }
 
-    $scope.imprimePedido = function(printSectionId) {
-      var innerContents = document.getElementById(printSectionId).innerHTML;
-      var popupWinindow = window.open('', '_blank', 'width=600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
-      popupWinindow.document.open();
-      popupWinindow.document.write('<html><head><link rel="stylesheet" type="text/css" href="style.css" /></head><body onload="window.print()">' + innerContents + '</html>');
-      popupWinindow.document.close();
+    $scope.preguntaElimnaFactura = function(){
+      $scope.factura.docto = $scope.lstFacturas[$scope.indexRowFactura].DOCUMENTO;
+      $scope.showEliminaFactura = true;
+    }
+
+    $scope.closeEliminaFactura = function(){
+      $scope.showEliminaFactura = false;
     }
 
     $scope.limpiar = function(){
-      $scope.lstProdCompra = [];
+        $scope.lstProdCompra = [];
         $scope.total = 0.0;
         $scope.cambio = 0.0;
-        $scope.pedido.docto = '';
-        $scope.pedido.idcliente = '';
+        $scope.factura.docto = '';
+        $scope.factura.idcliente = '';
         $scope.nombre_cliente = '';
         $scope.rfc_cliente = '';
         $scope.claveclte = '';
-        $scope.pedido.idvendedor = '';
+        $scope.factura.idvendedor = '';
         $scope.nombre_vendedor = '';
         $scope.impuestos = 0.0;
         $scope.importeNeto = 0.0;
-        $scope.regpedido = true;
-        $scope.pedido.contacto = '';
-        $scope.pedido.fechaentrega = '';
-        $scope.fechaentrega = '';
-        $scope.pedido.dias = '';
-        $scope.pedido.cuenta = '';
-        $scope.pedido.idmoneda = 1;
-        $scope.pedido.total = '';
+        $scope.regfactura = true;
+        $scope.factura.contacto = '';
+        $scope.factura.dias = '';
+        $scope.factura.cuenta = '';
+        $scope.factura.idmoneda = 1;
+        $scope.factura.total = '';
     }
 
 });

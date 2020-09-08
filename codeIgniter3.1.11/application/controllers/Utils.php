@@ -46,5 +46,11 @@ class Utils extends CI_Controller
             ->set_output($this->catalogosmodel->get_uso_cfdi_js());
   }
 
+  function gettipopago(){
+    return $this->output
+            ->set_content_type('application/json')
+            ->set_output($this->catalogosmodel->get_tipo_pago());
+  }
+
 }
 ?>

@@ -141,5 +141,24 @@ class Tpvmodel extends CI_model
 		$result = pg_fetch_all(pg_execute($this->conn,"select_venta_prod",array($idVenta)));		
 		return json_decode(json_encode($result,JSON_NUMERIC_CHECK),false);
 	}
+
+	function getfacturas($arrayData){
+		$query = 'SELECT V."ID_VENTA", V."DOCUMENTO",V."CODIGO_VENDEDOR",
+		V."FECHA_VENTA",V."IMPORTE", C."CLAVE", C."NOMBRE" as "CLIENTE", E."NOMBRE" as "VENDEDOR", V."CVE_FORMA_PAGO"
+		FROM "VENTAS" as V
+		INNER JOIN "CLIENTE" as C ON C."ID_CLIENTE" = V."CODIGO_CLIENTE"
+		INNER JOIN "VENDEDOR" as E ON E."ID_VENDEDOR" = V."CODIGO_VENDEDOR"
+		WHERE V."ID_EMPRESA" = $1 AND V."ANIO_FISCAL" = $2';
+		pg_prepare($this->conn,"select_fact",$query);
+		$result = pg_fetch_all(pg_execute($this->conn,"select_fact",$arrayData));
+		return json_encode($result);
+	}
+
+	function eliminaFacturaById($idventa,$idsucursal){
+		$query = 'SELECT * FROM eliminar_factura($1,$2)';
+		pg_prepare($this->conn,"elimina",$query);
+		$result = pg_execute($this->conn,"elimina",array($idventa,$idsucursal));
+		return json_encode($result);
+	}
 }
 ?>
