@@ -60,7 +60,6 @@ app.controller('myCtrlProducto', function($scope,$http)
     $http.get(pathProd+'load/'+$scope.idempresa,{responseType: 'json'}).
     then(function(res)
   	{
-      console.log(res);
   		if(res.data.length > 0)
   		{
   			$scope.lstPrdcts = res.data;
@@ -221,7 +220,7 @@ app.controller('myCtrlProducto', function($scope,$http)
             ID_PRODUCTO:res.data[0].crea_producto
           };
           $scope.lstPrdcts.push(nvoProd);
-          alert('El producto se insertó correctamente '+res.data[0].crea_producto);
+          swal('El producto se insertó correctamente '+res.data[0].crea_producto);
       		$scope.cancelar();
         }
       }).
@@ -245,13 +244,13 @@ app.controller('myCtrlProducto', function($scope,$http)
             ID_PRODUCTO:$scope.lstPrdcts[$scope.indexRowProd].ID_PRODUCTO
           };
           $scope.lstPrdcts[$scope.indexRowProd] = actProd;
-    			alert('El producto se actualizó correctamente');
+    			swal('El producto se actualizó correctamente');
           $scope.btnAccion = 'Agregar';
           $scope.selectRowProducto($scope.lstPrdcts[0].CODIGO,0,$scope.lstPrdcts[0].ID_PRODUCTO);
       		$scope.cancelar();
     		}else
     		{
-    			alert('Error,  no se puedo actualizar el producto');
+    			swal('Error,  no se puedo actualizar el producto');
     		}
     	}).
       catch(function(err)
@@ -271,7 +270,7 @@ app.controller('myCtrlProducto', function($scope,$http)
   			{
   				$scope.lstPrdcts.splice($scope.indexRowProd,1);
           $scope.selectRowProducto($scope.lstPrdcts[0].CODIGO,0,$scope.lstPrdcts[0].ID_PRODUCTO);
-  				alert('Producto elimnado exitosamente');
+  				swal('Producto elimnado exitosamente');
           $scope.closeAvisoBorrar();
   			}
   		}
@@ -280,11 +279,12 @@ app.controller('myCtrlProducto', function($scope,$http)
   	})
   }
 
-  $scope.openImageWnd = function()
+  $scope.openImageWnd = function(event)
   {
+    if(event.clientX==0) return;
   	if($scope.codigo =='')
   	{
-  		alert('Para cargar una imagen, debe ingresar el código del producto primero.');
+  		swal('Para cargar una imagen, debe ingresar el código del producto primero.');
   		$('#codigo').focus();
   		return;
   	}else
@@ -295,8 +295,7 @@ app.controller('myCtrlProducto', function($scope,$http)
 
   $scope.ejecutagetitem = function(event)
   {
-    if(event.keyCode == 13 && $scope.cfdidesc!='')
-    {
+  if(event.keyCode == 13 && $scope.cfdidesc!=''){
       $scope.getItemsSAT();
     }
   }

@@ -46,7 +46,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval)
   $scope.lstFacturas = [];
   $scope.isCapturaFactura = false;
   $scope.regfactura = true;
-  $scope.imprimir = true;
+  $scope.isImprimir = true;
   $scope.pregElimiPedi = false;
   $scope.doctoEliminar = '';
   $scope.showInputData = false;
@@ -207,7 +207,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval)
   }
 
   $scope.getfacturas = function(){
-    $http.get(pathTpv+'getfacturas/'+$scope.factura.idempresa+'/'+$scope.factura.aniofiscal,{responseType:'json'})
+    $http.get(pathFactura+'getfacturas/'+$scope.factura.idempresa+'/'+$scope.factura.aniofiscal,{responseType:'json'})
         .then(res => {
           if(res.data.length > 0){
             $scope.lstFacturas = res.data;
@@ -270,10 +270,12 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval)
 
   $scope.agregaFactura = function(){
     $scope.isCapturaFactura = true;
+    $scope.isImprimir = false;
   }
 
   $scope.cierraFactura = function(){
     $scope.isCapturaFactura = false;
+    $scope.isImprimir = true;
     $scope.limpiar();
   }
 
@@ -365,7 +367,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval)
         $http.post(pathClte+'save', $scope.cliente).
         then(function(res)
         {
-          alert('Se agregó correctamente el cliente');
+          swal('Se agregó correctamente el cliente');
           $scope.claveclte = $scope.cliente.clave;
           $scope.closeVerifClte();
         }).catch(function(err) {
@@ -379,7 +381,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval)
        $http.put(pathClte+'update/'+$scope.factura.idcliente, $scope.cliente).
        then(function(res)
        {
-         alert('Se actualizó correctamente el cliente');
+         swal('Se actualizó correctamente el cliente');
          $scope.closeVerifClte();
        }).catch(function(err)
        {
@@ -437,7 +439,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval)
 		}else
 		{
 			$scope.cantidad = $scope.counter;
-			alert('Sólo se aceptan números');
+			swal('Sólo se aceptan números');
 		}
 	}
 
@@ -493,7 +495,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval)
           }
         }else
         {
-          alert('No existe un producto y/o servicio con el código '+$scope.producto.codigo_prodto);
+          swal('No existe un producto y/o servicio con el código '+$scope.producto.codigo_prodto);
         }
       }).
       catch();
@@ -578,13 +580,13 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval)
       var cantDscto = 0;
       if(Number($scope.cantidad) == 0)
       {
-        alert('La cantidad debe ser mayor a 0');
+        swal('La cantidad debe ser mayor a 0');
         $('#cantidad').focus();
         return;
       }
       if(Number($scope.cantidad) > Number($scope.producto.cantProd) && $scope.tipo_ps == 'P')
       {
-        alert('La cantidad de productos ['+$scope.cantidad+'] seleccionados es mayor a la existencia ['+$scope.producto.cantProd+']');
+        swal('La cantidad de productos ['+$scope.cantidad+'] seleccionados es mayor a la existencia ['+$scope.producto.cantProd+']');
         $scope.cantidad = $scope.producto.cantProd;
         $('#cantidad').focus();
         return;
@@ -787,18 +789,22 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval)
         idvendedor:$scope.factura.idvendedor,
         fechaventa:formatDateInsert(new Date()),
         aniofiscal:$scope.factura.aniofiscal,
-        idempresa:$scope.fctura.idempresa,
-        idformapago:$scope.factura.fpago,
-        pagoefectivo:0,
+        idempresa:$scope.factura.idempresa,
+        idtipopago:$scope.factura.tpago,
+        //idformapago:$scope.factura.fpago,
+        pagoefectivo:$scope.factura.tpago == 1 ? $scope.total : 0,
         pagotarjeta:0,
         pagocheques:0,
         pagovales:0,
-        idtarjea:$('#idtarjea').val()=='' ? null : $('#idtarjea').val(),
-        idbanco:$('#banco').val()=='' ? null : $('#banco').val(),
-        idvales:$('#idvales').val()=='' ? null : $('#idvales').val(),
+        idtarjea:null,
+        idbanco:null,
+        idvales:null,
         importe:$scope.total,
-        cambio:$scope.cambio,
-        idsucursal:$scope.idsucursal
+        cambio:0,
+        idsucursal:$scope.idsucursal,
+        formapago:$scope.factura.fpago,
+        usocfdi:$scope.factura.cfdi,
+        metodopago:$scope.factura.mpago
       }
 
       $http.put(pathTpv+'registraventa',dataVenta).
@@ -806,17 +812,11 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval)
       {
         $scope.idVenta = res.data[0].registra_venta;
         $scope.registraVentaProd();
-        if($scope.fact.req_factura){
-          $scope.registraFactura(); 
-        }else{
-          alert('La venta se registro exitosamente');
-        }        
+        swal('La factura se registró exitosamente');     
         $scope.limpiar();
-        $scope.
-        $scope.getNextDocTpv();
-        
-      }).
-      catch(function(err)
+        $scope.getNextDocTpv(); 
+      })
+      .catch(function(err)
       {
         console.log(err);
       });

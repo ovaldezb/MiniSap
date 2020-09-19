@@ -49,14 +49,14 @@ class Tpv extends CI_Controller
 	function registraventa()
 	{
 		$data = json_decode(file_get_contents("php://input"),true);
-		$result = $this->tpvmodel->registra_venta(
+		$result = $this->tpvmodel->registra_venta(array(
 			$data['documento'],
 			$data['idcliente'],
 			$data['idvendedor'],
 			$data['fechaventa'],
 			$data['aniofiscal'],
 			$data['idempresa'],
-			$data['idformapago'],
+			$data['idtipopago'],
 			$data['pagoefectivo'],
 			$data['pagotarjeta'],
 			$data['pagocheques'],
@@ -66,7 +66,9 @@ class Tpv extends CI_Controller
 			$data['idvales'],
 			$data['importe'],
 			$data['cambio'],
-			$data['idsucursal']
+			$data['idsucursal'],
+			$data['facturado'],
+			$data['idfactura'])
 		);
 		return $this->output
 					 ->set_content_type('application/json')
@@ -106,23 +108,15 @@ class Tpv extends CI_Controller
 					 ->set_output($result);
 	}
 
-	/* las ventas contienen los datos de una factura */
-	function getfacturas($idEmpresa,$idAnioFiscal){
-		$result = $this->tpvmodel->getfacturas(array($idEmpresa,$idAnioFiscal));
+	function getdataoper($aniofiscal,$fecIni,$fecFin){
+		$result = $this->tpvmodel->dataOperByDate(array($aniofiscal,str_replace("%20"," ",$fecIni),str_replace("%20"," ",$fecFin)));
 		return $this->output
-					 ->set_content_type('application/json')
-					 ->set_output($result);
+					->set_content_type('application/json')
+					->set_output($result);
 	}
 
-	function getfactdetbyid($idventa){
-		$result = $this->tpvmodel->getventadetallebyid($idventa);
-		return $this->output
-					 ->set_content_type('application/json')
-					 ->set_output(json_encode($result));
-	}
-
-	function eliminafact($idventa,$idsucursal){
-		$result = $this->tpvmodel->eliminaFacturaById($idventa,$idsucursal);
+	function updventa($idventa,$idfactura){
+		$result = $this->tpvmodel->updateventatrue($idfactura,$idventa);
 		return $this->output
 					->set_content_type('application/json')
 					->set_output($result);

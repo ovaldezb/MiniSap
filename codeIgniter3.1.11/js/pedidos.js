@@ -81,6 +81,11 @@ app.controller('myCtrlPedi', function($scope,$http,$interval)
       promocion : 0
   };
 
+  $scope.empresa ={
+    nombre : '',
+    domicilio:'',
+    rfc:''
+  };
 
   $scope.cliente = {
     clave:"",
@@ -199,7 +204,6 @@ app.controller('myCtrlPedi', function($scope,$http,$interval)
     then(res => {
       if(res.data.length > 0){
         $scope.lstTipopago = res.data;
-        console.log($scope.lstTipopago);
       }
     }).catch(err =>	{
 			console.log(err);
@@ -305,7 +309,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval)
         $http.post(pathClte+'save', $scope.cliente).
         then(function(res)
         {
-          alert('Se agregó correctamente el cliente');
+          swal('Se agregó correctamente el cliente');
           $scope.claveclte = $scope.cliente.clave;
           $scope.closeVerifClte();
         }).catch(function(err) {
@@ -319,7 +323,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval)
        $http.put(pathClte+'update/'+$scope.pedido.idcliente, $scope.cliente).
        then(function(res)
        {
-         alert('Se actualizó correctamente el cliente');
+         swal('Se actualizó correctamente el cliente');
          $scope.closeVerifClte();
        }).catch(function(err)
        {
@@ -343,7 +347,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval)
 		}else
 		{
 			$scope.cantidad = $scope.counter;
-			alert('Sólo se aceptan números');
+			swal('Sólo se aceptan números');
 		}
 	}
 
@@ -399,7 +403,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval)
           }
         }else
         {
-          alert('No existe un producto y/o servicio con el código '+$scope.producto.codigo_prodto);
+          swal('No existe un producto y/o servicio con el código '+$scope.producto.codigo_prodto);
         }
       }).
       catch();
@@ -484,13 +488,13 @@ app.controller('myCtrlPedi', function($scope,$http,$interval)
       var cantDscto = 0;
       if(Number($scope.cantidad) == 0)
       {
-        alert('La cantidad debe ser mayor a 0');
+        swal('La cantidad debe ser mayor a 0');
         $('#cantidad').focus();
         return;
       }
       if(Number($scope.cantidad) > Number($scope.producto.cantProd) && $scope.tipo_ps == 'P')
       {
-        alert('La cantidad de productos ['+$scope.cantidad+'] seleccionados es mayor a la existencia ['+$scope.producto.cantProd+']');
+        swal('La cantidad de productos ['+$scope.cantidad+'] seleccionados es mayor a la existencia ['+$scope.producto.cantProd+']');
         $scope.cantidad = $scope.producto.cantProd;
         $('#cantidad').focus();
         return;
@@ -702,7 +706,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval)
       {
         $scope.idPedido = res.data[0].registra_pedido;
         $scope.registraPedidoProd();
-        alert('El pedido se registro exitosamente');
+        swal('El pedido se registro exitosamente');
         $scope.isImprimir = true;
         $scope.getpedidos();
         //$scope.limpiar();
@@ -773,6 +777,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval)
               $scope.pedido.tpago = res.data[0].ID_TIPO_PAGO;
               $scope.pedido.fpago = res.data[0].ID_FORMA_PAGO;
               $scope.fechaentrega = res.data[0].FECHA_ENTREGA;
+              $scope.cliente.domicilio = res.data[0].DOMICILIO;
               $scope.isCapturaPedido = true;
               $scope.isImprimir = true;
             }
@@ -791,6 +796,20 @@ app.controller('myCtrlPedi', function($scope,$http,$interval)
           .catch(err=>{
             console.log(err);
           });
+
+      $http.get(pathEmpr+'loadbyid/'+$scope.pedido.idempresa,{responseType:'json'})
+          .then(res => {
+            if(res.data.length > 0){
+              $scope.empresa.nombre = res.data[0].NOMBRE;
+              $scope.empresa.domicilio = res.data[0].DOMICILIO;
+              $scope.empresa.rfc = res.data[0].RFC;
+              console.log($scope.empresa.nombre);
+            }
+          })
+          .catch(err =>{
+            console.log(err);
+          });
+        
     }
 
     $scope.preguntaElimnaPedido = function(){

@@ -148,7 +148,7 @@ app.controller('myCtrlProveedor', function($scope,$http)
             ID_PROVEEDOR:res.data[0].crea_proveedor
           };
           $scope.lstProveedor.push(dataRowProvA);
-    			alert('El nuevo proveedor ha sido almacenado');
+    			swal('El nuevo proveedor ha sido almacenado');
     			$scope.cancelar();
     		}
     	}).catch(function(err) {
@@ -162,10 +162,10 @@ app.controller('myCtrlProveedor', function($scope,$http)
     		if(res.status==200 && res.data.value=='OK')
     		{
           $scope.selectRowProveedor($scope.lstProveedor[$scope.indexRowProv].RFC,$scope.indexRowProv,$scope.lstProveedor[$scope.indexRowProv].ID_PROVEEDOR);
-    			alert('El proveedor se actualizó correctamente');
+    			swal('El proveedor se actualizó correctamente');
     		}else
     		{
-    			alert('Error,  no se puedo actualizar el proveedor');
+    			swal('Error,  no se puedo actualizar el proveedor');
     		}
     		$scope.cancelar();
     	}).catch(function(err)
@@ -190,7 +190,7 @@ app.controller('myCtrlProveedor', function($scope,$http)
         $scope.lstProveedor.splice($scope.indexRowProv,1);
         $scope.selectRowProveedor($scope.lstProveedor[0].RFC,0,$scope.lstProveedor[0].ID_PROVEEDOR);
         $scope.closeAvisoBorrar();
-				alert('Cliente elimnado exitosamente');
+				swal('Cliente elimnado exitosamente');
   		}
   	}).catch(function(err){
   		console.log(err)

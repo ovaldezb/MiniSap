@@ -121,7 +121,7 @@
 				<div class="column is-3"></div>
 				<div class="column is-2">
 					<div class="control" id="cargarimg">
-						<button  ng-click="openImageWnd();" class="button is-primary">Agregar Imagen</button>
+						<button  ng-click="openImageWnd($event);" id="btnAddImg" class="button is-primary">Agregar Imagen</button>
 					</div>
 				</div>
 			</div>
@@ -143,7 +143,7 @@
 				<div class="field-label is-normal">
 					<label class="label">Descripción</label>
 				</div>
-				<input  ng-model="cfdidesc" class="input is-small" ng-keyup="ejecutagetitem($event)" type="text" placeholder="DESCRIPCIÓN">
+				<input  ng-model="cfdidesc" class="input is-small" ng-keyup="ejecutagetitem($event)" id="cfdidesc" type="text" placeholder="DESCRIPCIÓN">
 				<div class="control">
 					<button class="button is-primary is-small" ng-click="getItemsSAT();">Verificar</button>
 				</div>

@@ -37,11 +37,11 @@
 					<div class="column is-1">
 						<input type="text" class="input is-small" ng-model="docprev" id="docprev">
 					</div>
-					<div class="column is-1">
-						<input type="text" class="input is-small" ng-model="claveprov" id="claveprov" ng-keyup="buscaprovbyclave($event)" placeholder="Clave Proveedor">
+					<div class="column is-narrow" style="width:135px">
+						<input type="text" class="input is-small" ng-model="claveprov" ng-keyup="buscaprovbyclave($event)" placeholder="Clave Proveedor">
 					</div>
 					<div class="column is-4">
-						<input type="text" class="input is-small"  ng-model="proveedor" id="proveedor" ng-keyup="buscaprovbynombre($event)" placeholder="Nombde del Proveedor">
+						<input type="text" class="input is-small"  ng-model="proveedor" ng-keyup="buscaprovbynombre($event)" placeholder="Nombde del Proveedor">
 					</div>
 				</div>
 				<div class="table-container" style="display:none; width:43%;margin-left:215px;margin-top:-25px" id="buscaprov">
@@ -74,15 +74,14 @@
 						<label class="label">Documento:<label>
 					</div>
 					<div class="column is-1">
-						<input type="text" class="input is-small" ng-model="numdoc" id="numdoc" placeholder="No Documento" required>
+						<input type="text" class="input is-small" ng-model="numdoc" placeholder="No Documento" required>
 					</div>
 					<div class="column is-narrow">
 						<div class="control">
 							<div class="select is-small">
 								<select name="tipopago" id="tipopago" onchange="cambiotp()">
-<?php 	foreach ($tipopago as $tp) { ?>
-									<option value=<?php echo $tp['ID_TIPO_PAGO'] ?>><?php echo $tp['DESCRIPCION']?></option>
-<?php	} ?>
+								<option value="1">Contado</option>
+								<option value="2">Cr&eacute;dito</option>
 								</select>
 							</div>
 						</div>
@@ -164,11 +163,6 @@
 				<i class="fas fa-edit" title="Edita el producto seleccionado de la lista"></i>
 			</span>
 			</a>
-			<!--a ng-click="registrar();">
-			<span class="icon has-text-success">
-				<i class="fas fa-file-export" title="Registra los productos de la lista"></i>
-			</span>
-			</a-->
 		</div>
 		<div class="column is-3">
 		</div>
@@ -224,8 +218,8 @@
 							<div class="control">
 								<button class="button is-info is-small" ng-click="decrease()" id="mencant" disabled>-</button>
 							</div>
-							<div class="control">
-								<input type="text" class="input is-small" ng-model="cantidad" id="cantidad" ng-keyup="manualenter()" disabled onfocus="this.select();" required style="text-align:center">
+							<div class="control" style="width:40px">
+								<input type="number" class="input is-small" ng-model="cantidad" id="cantidad" ng-keyup="manualenter()" disabled onfocus="this.select();" required style="text-align:center">
 							</div>
 							<div class="control">
 								<button class="button is-info is-small" ng-click="increase()" id="mascant" disabled>+</button>
@@ -234,7 +228,7 @@
 					</td>
 					<td align="center"><label class="label">{{unidad}}</label></td>
 					<td><input type="number" class="input is-small" id="precio" ng-model="precio" disabled style="text-align:center;" required></td>
-					<td><input type="text" class="input is-small" id="desctoprod" ng-model="desctoprod" ng-blur="validaDcto()" style="text-align:right;" disabled></td>
+					<td><input type="number" class="input is-small" id="desctoprod" ng-model="desctoprod" ng-blur="validaDcto()" style="text-align:right;" disabled></td>
 				</tr>
 			</table>
 			<div class="table-container" style="display:none" id="dispsearch">
@@ -387,7 +381,7 @@
 		</div>
 			<div id="divbtnCancel" class="columns">
 				<div class="column">
-					<button type="button" class="button is-info" id="btnCancel" ng-show="btnCompHide" ng-disabled="listaproductos.length == 0" ng-click="registrar()" >Comprar</button>
+					<button type="button" class="button is-info" id="btnRegistrar" ng-show="btnCompHide" ng-disabled="listaproductos.length == 0" ng-click="registrar()" >Comprar</button>
 					<button type="button" class="button is-danger" id="btnCancel" ng-click="btnCancel()">{{msgBton}}</button>
 				</div>
 			</div>

@@ -6,7 +6,7 @@
 	<div class="notification" >
 		<h1 class="title has-text-centered">Administración de Empresas</h1>
 	</div>
-	<nav class="level">
+	<nav class="level" ng-show="!isDivEmpActivo">
 		<div class="level-left">
 			<div class="level-item">
 				<p class="subtitle is-5">
@@ -50,7 +50,7 @@
 				</div>
 				<div class="column is-6">
 					<div class="control has-icons-left has-icons-right">
-						<input ng-model="emp.nombre" class="input is-small" type="text" placeholder="Nombre de la empresa" required>
+						<input ng-model="emp.nombre" class="input is-small" onKeyUp="this.value = this.value.toUpperCase();" type="text" placeholder="Nombre de la empresa" required>
 						<span class="icon is-small is-left">
 						  <i class="far fa-building"></i>
 						</span>

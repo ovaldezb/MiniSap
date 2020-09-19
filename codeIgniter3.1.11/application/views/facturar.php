@@ -31,11 +31,16 @@
 						<table style="width:100%">
 							<thead>
 								<tr style="background:LightSlateGray;">
-									<td style="color:white;text-align:center;" >DOCUMENTO</td>
-									<td style="color:white;text-align:center;" >CLIENTE</td>
-									<td style="color:white;text-align:center;" >FECHA PEDIDO</td>
-									<td style="color:white;text-align:center;" >IMPORTE</td>
-									<td style="color:white;text-align:center;" >VENDEDOR</td>
+									<td style="color:white;text-align:center;">DOCUMENTO</td>									
+									<td style="color:white;text-align:center;">FECHA</td>
+									<td style="color:white;text-align:center;">CLIENTE</td>
+									<td style="color:white;text-align:center;">IMPORTE</td>
+									<td style="color:white;text-align:center;">SALDO</td>
+									<td style="color:white;text-align:center;">FORMA DE PAGO</td>
+									<td style="color:white;text-align:center;">REVISION</td>
+									<td style="color:white;text-align:center;">VENCE</td>
+									<td style="color:white;text-align:center;">PEDIDO</td>
+									<td style="color:white;text-align:center;">VENDEDOR</td>
 								</tr>
 							</thead>
 						</table>
@@ -46,10 +51,15 @@
 						<div style="width:100%; height:500px; overflow:auto;">
 							<table class="table is-hoverable" style="width:100%" id="tblClientes">
 								<tr ng-repeat="x in lstFacturas" ng-click="selectRowFactura(x.DOCUMENTO,$index)" ng-class="{selected: x.DOCUMENTO === idDocumento}">
-									<td style="text-align:center;">{{x.DOCUMENTO}}</td>
+									<td style="text-align:center;">{{x.DOCUMENTO}}</td>									
+									<td style="text-align:center;">{{x.FECHA_FACTURA}}</td>
 									<td style="text-align:center;">{{x.CLIENTE}}</td>
-									<td style="text-align:center;">{{x.FECHA_VENTA}}</td>
 									<td style="text-align:center;">{{x.IMPORTE | currency}}</td>
+									<td style="text-align:center;">{{x.SALDO | currency}}</td>
+									<td style="text-align:center;">{{x.ID_TIPO_PAGO == 1 ? 'Contado':'Crédito'}}</td>
+									<td style="text-align:center;">{{x.FECHA_REVISION}}</td>
+									<td style="text-align:center;">{{x.FECHA_VENCIMIENTO}}</td>
+									<td style="text-align:center;">&nbsp;</td>
 									<td style="text-align:center;">{{x.VENDEDOR}}</td>
 								</tr>
 							</table>
@@ -237,7 +247,7 @@
 									</div>
 								</div>
 								<div class="column is-narrow" style="width:78px;margin-left:-25px">
-									<input type="number" class="input is-small" value="0" ng-model="factura.dias">
+									<input type="number" class="input is-small" value="0" ng-model="factura.dias" ng-disabled="factura.tpago == 1">
 								</div>
 								<div class="column is-narrow" style="width:55px;margin-left:-20px">dias</div>
 								<div class="column is-narrow" style="width:82px;margin-right:-20px">
@@ -450,7 +460,7 @@
 							</table>
 						</div>
 					</div>
-					<button class="button is-info is-rounded" ng-click="registraFactura()" ng-disabled="regfactura">Registrar</button>
+					<button class="button is-info is-rounded" ng-click="registraFactura()" ng-disabled="regfactura" >Registrar</button>
 					<button class="button is-dark is-rounded" ng-click="cierraFactura()">Cerrar</button>
 				</div>
 			</div>

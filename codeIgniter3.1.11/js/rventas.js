@@ -68,7 +68,7 @@ app.controller('repControlVentas',function($scope,$http)
         $scope.fechaImpresion = formatHoraReporte(new Date());
       }else{
         $scope.lstRepmalmcn = [];
-        alert('No se encuentran datos para los parámetros elegidos');
+        swal('No se encuentran datos para los parámetros elegidos');
       }
     }).
     catch((err)=>{

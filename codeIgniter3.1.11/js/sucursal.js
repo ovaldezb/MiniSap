@@ -5,17 +5,19 @@ app.controller('myCtrlSucursal', function($scope,$http)
   $scope.isAvsoBrrarActv = false;
   $scope.isDivSucActivo = false;
   $scope.sortDir = false;
-  $scope.clave = '';
-  $scope.direccion = '';
-  $scope.responsable = '';
-  $scope.telefono = '';
-  $scope.cp = '';
-  $scope.alias = '';
-  $scope.notas = '';
   $scope.idSelSuc = '';
   $scope.idxRowSuc = '';
   $scope.idSucursal = '';
   $scope.idempresa = '';
+  $scope.suc = {
+    clave:'',
+    direccion:'',
+    responsable:'',
+    telefono:'',
+    cp:'',
+    alias:'',
+    notas:''
+  };
 
   $scope.init = function() {
     $http.get(pathAcc+'getdata',{responseType:'json'}).
@@ -55,13 +57,13 @@ app.controller('myCtrlSucursal', function($scope,$http)
   {
     var dataSuc =
     {
-      clave:$scope.clave,
-      direccion:$scope.direccion,
-      responsable:$scope.responsable,
-      telefono:$scope.telefono,
-      cp:$scope.cp,
-      alias:$scope.alias,
-      notas:$scope.notas,
+      clave:$scope.suc.clave,
+      direccion:$scope.suc.direccion,
+      responsable:$scope.suc.responsable,
+      telefono:$scope.suc.telefono,
+      cp:$scope.suc.cp,
+      alias:$scope.suc.alias,
+      notas:$scope.suc.notas,
       idempresa:$scope.idempresa
     };
 
@@ -74,15 +76,16 @@ app.controller('myCtrlSucursal', function($scope,$http)
         {
           var dataSucAdd =
           {
-            CLAVE:$scope.clave,
-            DIRECCION:$scope.direccion,
-            RESPONSABLE:$scope.responsable,
-            CP:$scope.cp,
+            CLAVE:$scope.suc.clave,
+            DIRECCION:$scope.suc.direccion,
+            RESPONSABLE:$scope.suc.responsable,
+            ALIAS:$scope.suc.alias,
+            CP:$scope.suc.cp,
             ID_SUCURSAL:res.data[0].crea_sucursal
           };
           $scope.lstSucursal.push(dataSucAdd);
           $scope.selectRowSucursal($scope.lstSucursal[0].CLAVE,0,$scope.lstSucursal[0].ID_SUCURSAL);
-          alert('La nueva sucursal ha sido almacenada');
+          swal('La nueva sucursal ha sido almacenada');
           $scope.cancelar();
         }
       }).catch(function(err)
@@ -98,14 +101,15 @@ app.controller('myCtrlSucursal', function($scope,$http)
         {
           var dataSucUpdt =
           {
-            CLAVE:$scope.clave,
-            DIRECCION:$scope.direccion,
-            RESPONSABLE:$scope.responsable,
-            CP:$scope.cp,
+            CLAVE:$scope.suc.clave,
+            DIRECCION:$scope.suc.direccion,
+            RESPONSABLE:$scope.suc.responsable,
+            CP:$scope.suc.cp,
+            ALIAS:$scope.suc.alias,
             ID_SUCURSAL:$scope.idSucursal
           };
           $scope.lstSucursal[$scope.idxRowSuc] = dataSucUpdt;
-          alert('Se actualizó correctamente la sucursal');
+          swal('Se actualizó correctamente la sucursal');
           $scope.btnAccion = 'Agregar';
           $scope.cancelar();
         }
@@ -123,13 +127,13 @@ app.controller('myCtrlSucursal', function($scope,$http)
     {
       if(res.data.length > 0)
       {
-        $scope.clave = res.data[0].CLAVE.trim();
-        $scope.direccion = res.data[0].DIRECCION;
-        $scope.responsable = res.data[0].RESPONSABLE!=null?res.data[0].RESPONSABLE.trim():'';
-        $scope.telefono = res.data[0].TELEFONO!=null?res.data[0].TELEFONO:'';
-        $scope.cp = res.data[0].CP!=null?res.data[0].CP:'';
-        $scope.alias = res.data[0].ALIAS!=null?res.data[0].ALIAS.trim():'';
-        $scope.notas = res.data[0].NOTAS!=null?res.data[0].NOTAS:'';
+        $scope.suc.clave = res.data[0].CLAVE.trim();
+        $scope.suc.direccion = res.data[0].DIRECCION;
+        $scope.suc.responsable = res.data[0].RESPONSABLE!=null?res.data[0].RESPONSABLE.trim():'';
+        $scope.suc.telefono = res.data[0].TELEFONO!=null?res.data[0].TELEFONO:'';
+        $scope.suc.cp = res.data[0].CP!=null?res.data[0].CP:'';
+        $scope.suc.alias = res.data[0].ALIAS!=null?res.data[0].ALIAS.trim():'';
+        $scope.suc.notas = res.data[0].NOTAS!=null?res.data[0].NOTAS:'';
         $scope.isDivSucActivo = true;
         $scope.btnAccion = 'Actualizar';
       }
@@ -153,8 +157,7 @@ app.controller('myCtrlSucursal', function($scope,$http)
         }else {
           $scope.lstSucursal = [];
         }
-
-        alert('Se ha eliminado correctamente la sucursal');
+        swal('Se ha eliminado correctamente la sucursal');
         $scope.closeAvisoBorrar();
       }
     }).catch(function(err)
@@ -191,12 +194,12 @@ app.controller('myCtrlSucursal', function($scope,$http)
   $scope.cancelar = function()
   {
     $scope.isDivSucActivo = false;
-    $scope.clave = '';
-    $scope.direccion = '';
-    $scope.responsable = '';
-    $scope.telefono = '';
-    $scope.cp = '';
-    $scope.alias = '';
-    $scope.notas = '';
+    $scope.suc.clave = '';
+    $scope.suc.direccion = '';
+    $scope.suc.responsable = '';
+    $scope.suc.telefono = '';
+    $scope.suc.cp = '';
+    $scope.suc.alias = '';
+    $scope.suc.notas = '';
   }
 });

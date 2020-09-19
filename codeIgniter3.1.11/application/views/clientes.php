@@ -45,12 +45,12 @@
 			<div class="column is-narrow" style="width:114px">
 				<input maxlength="5" class="input is-small" ng-model="cp" ng-keyup="validaCP()" onfocus="this.select()" type="input" placeholder="Código Postal" required>
 			</div>
-			<div class="column is-narrow" style="width:140px">
+			<div class="column is-narrow" style="width:70px">
 			</div>
 			<div class="column is-narrow" style="width:80px">
 				<label class="label">Teléfono</label>
 			</div>
-			<div class="column is-narrow" style="width:110px">
+			<div class="column is-narrow" style="width:115px">
 				<input ng-model="telefono" class="input is-small" type="input" placeholder="Teléfono" maxlength="10" required>
 			</div>
 		</div>
@@ -125,7 +125,7 @@
 			<div class="column is-2">
 				<select name="id_forma_pago" id="id_forma_pago">
 <?php foreach($forma_pago as $fp) {?>
-					<option value='<?php echo $fp['ID_FORMA_PAG']?>'><?php echo trim($fp['CLAVE'])?> <?php echo trim($fp['DESCRIPCION'])?></option>
+					<option value="<?php echo $fp['ID_FORMA_PAGO']?>"><?php echo trim($fp['CLAVE'])?> <?php echo trim($fp['DESCRIPCION'])?></option>
 <?php }?>
 				</select>
 			</div>
@@ -171,14 +171,6 @@
 			</div>
 			<div class="column is-2">
 				<input id="email" name="email" ng-model="email" class="input is-small" type="input" placeholder="Email">
-			</div>
-		</div>
-		<div class="columns">
-			<div class="column is-1">
-				<label class="label">Número Proveedor</label>
-			</div>
-			<div class="column is-2">
-				<input id="num_proveedor" ng-model="num_proveedor" name="num_proveedor" class="input is-small" type="input" placeholder="Número Proveedor">
 			</div>
 		</div>
 		<div class="columns">

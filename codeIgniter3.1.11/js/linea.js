@@ -50,7 +50,7 @@ app.controller('myCtrlLinea', function ($scope, $http) {
             $http.post(pathLinea,JSON.stringify({NOMBRE:$scope.nombre,ID_EMPRESA:$scope.idempresa}))
             .then(res => {                
                 if(res.status = '200'){
-                    alert('La línea se ha insertado');                    
+                    swal('La línea se ha insertado');                    
                     $scope.cancelLinea();
                     $scope.getListaLinea();
                 }
@@ -62,7 +62,7 @@ app.controller('myCtrlLinea', function ($scope, $http) {
             $http.put(pathLinea+'/'+$scope.lstLinea[$scope.indexRowLinea].ID_LINEA,JSON.stringify({NOMBRE:$scope.nombre}))
             .then(res => {
                 if(res.status == 200){
-                    alert("La línea se ha actualizado");                    
+                    swal("La línea se ha actualizado");                    
                     $scope.cancelLinea();
                     $scope.getListaLinea();
                 }
@@ -91,7 +91,7 @@ app.controller('myCtrlLinea', function ($scope, $http) {
         $http.delete(pathLinea +$scope.lstLinea[$scope.indexRowLinea].ID_LINEA)
         .then(res => {
             if(res.status == 200){
-                alert("La línea ha sido eliminada");
+                swal("La línea ha sido eliminada");
                 $scope.getListaLinea();
                 $scope.cerrarBorraLinea();
             }

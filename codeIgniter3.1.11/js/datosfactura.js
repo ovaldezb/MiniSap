@@ -68,7 +68,7 @@ app.controller('myCtrlDatosFactura', function($scope,$http){
         $http.post(pathCFDI+'save',$scope.factura)
             .then(res =>{
                 if(res.status==200){
-                    alert('Todo salio de maravilla');
+                    swal('La factura se almacenó correctamente','Felicidades!','success');
                 }
             })
             .catch(err =>{

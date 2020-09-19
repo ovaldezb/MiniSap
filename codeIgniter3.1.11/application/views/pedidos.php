@@ -28,16 +28,21 @@
 			<table border="1" style="width:100%">
 				<tr>
 					<td>
-						<table style="width:100%">
-							
+						<table class="table" style="width:100%">
+							<col width="9%"> 
+							<col width="25%">
+							<col width="15%">
+							<col width="15%">
+							<col width="26%">
+							<col width="10%">
 							<thead>
 								<tr style="background:LightSlateGray;">
-									<td align="center" style="color:white" >DOCUMENTO</td>
-									<td align="center" style="color:white" >CLIENTE</td>
-									<td align="center" style="color:white" >FECHA PEDIDO</td>
-									<td align="center" style="color:white" ">IMPORTE</td>
-									<td align="center" style="color:white" >VENDEDOR</td>
-									<td align="center" style="color:white" >VENDIDO</td>
+									<td style="color:white; text-align:left; ">DOCUMENTO</td>
+									<td style="color:white; text-align:center;">CLIENTE</td>
+									<td style="color:white; text-align:center;">FECHA PEDIDO</td>
+									<td style="color:white; text-align:center;">IMPORTE</td>
+									<td style="color:white; text-align:center;">VENDEDOR</td>
+									<td style="color:white; text-align:center;">VENDIDO</td>
 								</tr>
 							</thead>
 						</table>
@@ -46,14 +51,20 @@
 				<tr>
 					<td>
 						<div style="width:100%; height:500px; overflow:auto;">
-							<table class="table is-hoverable" style="width:100%" id="tblClientes">
+							<table class="table is-striped" style="width:100%" id="tblClientes">
+								<col width="8%"> 
+								<col width="25%">
+								<col width="17%">
+								<col width="15%">
+								<col width="25%">
+								<col width="10%">
 								<tr ng-repeat="x in lstPedidos" ng-click="selectRowPedido(x.DOCUMENTO,$index)" ng-class="{selected: x.DOCUMENTO === idDocumento}">
-									<td align="center">{{x.DOCUMENTO}}</td>
-									<td align="center">{{x.CLIENTE}}</td>
-									<td align="center">{{x.FECHA_PEDIDO}}</td>
-									<td align="center">{{x.IMPORTE}}</td>
-									<td align="center">{{x.VENDEDOR}}</td>
-									<td align="center">{{x.VENDIDO=='f' ? 'No' : 'Si'}}</td>
+									<td style="text-align:center;">{{x.DOCUMENTO}}</td>
+									<td style="text-align:center;">{{x.CLIENTE}}</td>
+									<td style="text-align:center;">{{x.FECHA_PEDIDO | date : "dd-MM-y"}}</td>
+									<td style="text-align:center;">{{x.IMPORTE | currency}}</td>
+									<td style="text-align:center;">{{x.VENDEDOR}}</td>
+									<td style="text-align:center;">{{x.VENDIDO=='f' ? 'No' : 'Si'}}</td>
 								</tr>
 							</table>
 						</div>
@@ -715,19 +726,56 @@
 	</div>
 	<table style="width: 100%; display:none" id="pedido">
 		<tbody>
+			<tr>`
+				<td style="width: 107.067px">Logo</td>
+				<td style="width: 414.933px">
+					<table style="border:2px solid black">
+						<tr>
+							<td colspan="2">EMPRESA</td>
+						</tr>
+						<tr>
+							<td>Nombre:</td>
+							<td>{{empresa.nombre}}</td>
+						</tr>
+						<tr>
+							<td>Domicilio:</td>
+							<td>{{empresa.domicilio}}</td>
+						</tr>
+						<tr>
+							<td>RFC:</td>
+							<td>{{empresa.rfc}}</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr><td>&nbsp;</td></tr>
 			<tr>
-			<td style="width: 107.067px">Logo</td>
-			<td style="width: 414.933px">Datos de la empresa</td>
+				<td style="width: 100%" colspan="2">
+					<table tyle="border:2px solid black">
+						<tr>
+							<td colspan="2">CLIENTE</td>
+						</tr>
+						<tr>
+							<td>Nombre:</td>
+							<td>{{nombre_cliente}}</td>
+						</tr>
+						<tr>
+							<td>Domicilio:</td>
+							<td>{{cliente.domicilio}}</td>
+						</tr>
+						<tr>
+							<td>Contacto:</td>
+							<td>{{pedido.contacto}}</td>
+						</tr>
+					</table>
+				</td>
 			</tr>
 			<tr>
-			<td style="width: 100%" colspan="2">Datos del cliente</td>
-			</tr>
-			<tr>
-			<td style="width: 100%" colspan="2">&nbsp;</td>
+				<td style="width: 100%" colspan="2">&nbsp;</td>
 			</tr>
 			<tr>
 			<td style="width: 100%" colspan="2">
-				<div style="border: 2px solid black; height: 400px; width: 100%;">
+				<div style="border: 2px solid black; height: 350px; width: 100%;">
 				<table style="width: 100%" >
 					<tbody>
 						<tr>

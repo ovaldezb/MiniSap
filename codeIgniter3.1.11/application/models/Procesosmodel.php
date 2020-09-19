@@ -17,7 +17,8 @@ class Procesosmodel extends CI_model
               FROM "PROCESOS" as PR
               INNER JOIN "USUARIO_PROCESO" as UP ON PR."ID_PROCESO" = UP."ID_PROCESO"
               INNER JOIN "MODULOS" as M ON M."ID_MODULO" = PR."ID_MODULO"
-              WHERE UP."ID_USUARIO" = $1';
+              WHERE UP."ID_USUARIO" = $1
+              AND PR."RUTA" IS NOT NULL ';
     pg_prepare($this->conn,"sel_mod_proc_user",$query);
     $result = pg_fetch_all(pg_execute($this->conn,"sel_mod_proc_user",array($idusuario)));
 		return $result;

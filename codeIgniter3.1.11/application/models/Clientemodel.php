@@ -13,9 +13,13 @@ class Clientemodel extends CI_model
 
 	function get_clientes_by_empresa($idEmpresa)
 	{
-		$query = 'SELECT C."ID_CLIENTE",C."NOMBRE",TRIM(C."CLAVE") as "CLAVE", U."CLAVE" as "USO_CFDI",C."ID_USO_CFDI",C."RFC"
+		$query = 'SELECT C."ID_CLIENTE",C."NOMBRE",TRIM(C."CLAVE") as "CLAVE", 
+					U."CLAVE" as "USO_CFDI",
+					C."ID_USO_CFDI",
+					C."RFC", 
+					C."DIAS_CREDITO"
 				FROM "CLIENTE" as C
-				INNER JOIN "USO_CFDI" as U ON C."ID_USO_CFDI" = U."ID_CFDI" 				
+				LEFT JOIN "USO_CFDI" as U ON C."ID_USO_CFDI" = U."ID_CFDI" 				
 				WHERE C."ACTIVO" = true 
 				AND C."ID_EMPRESA" = $1 
 				ORDER BY C."CLAVE"';
@@ -45,7 +49,7 @@ class Clientemodel extends CI_model
 		TRIM(FP."DESCRIPCION") as "FORMA_PAGO",
 		V."NOMBRE" as "VENDEDOR",
 		UC."DESCRIPCION" as "CFDI",
-		TRIM(C."EMAIL") AS "EMAIL",TRIM(C."NUM_PROVEEDOR") as "NUM_PROVEEDOR",C."NOTAS"
+		TRIM(C."EMAIL") AS "EMAIL",C."NOTAS"
 		FROM "CLIENTE" as C
 		INNER JOIN "VENDEDOR" as V ON C."ID_VENDEDOR" = V."ID_VENDEDOR"
 		INNER JOIN "TIPO_CLIENTE" as TC ON TC."ID_TIPO_CLTE" = C."ID_TIPO_CLIENTE"
@@ -62,9 +66,10 @@ class Clientemodel extends CI_model
 
 	function get_clientes_by_nombre($idempresa,$nombre)
 	{
-		$query = 'SELECT C."ID_CLIENTE",C."NOMBRE",TRIM(C."CLAVE") as "CLAVE", U."CLAVE" as "USO_CFDI",C."ID_USO_CFDI",C."RFC"
+		$query = 'SELECT C."ID_CLIENTE",C."NOMBRE",TRIM(C."CLAVE") as "CLAVE", 
+					U."CLAVE" as "USO_CFDI",C."ID_USO_CFDI",C."RFC", C."DIAS_CREDITO"
 				FROM "CLIENTE" as C
-				INNER JOIN "USO_CFDI" as U ON C."ID_USO_CFDI" = U."ID_CFDI"
+				LEFT JOIN "USO_CFDI" as U ON C."ID_USO_CFDI" = U."ID_CFDI"
 				WHERE UPPER(C."NOMBRE")
 				LIKE UPPER($1)
 				AND C."ID_EMPRESA" = $2
@@ -75,11 +80,11 @@ class Clientemodel extends CI_model
 	}
 
 
-	function crea_cliente($clave,$nombre,$domicilio,$cp,$telefono, $contacto, $rfc, $curp, $id_tipo_cliente, $revision, $pagos, $id_forma_pago, $id_vendedor,$id_uso_cfdi,$email,$num_proveedor,$notas,$diascred,$idempresa)
+	function crea_cliente($clave,$nombre,$domicilio,$cp,$telefono, $contacto, $rfc, $curp, $id_tipo_cliente, $revision, $pagos, $id_forma_pago, $id_vendedor,$id_uso_cfdi,$email,$notas,$diascred,$idempresa)
 	 {
-		$pstmt = 'SELECT * FROM crea_cliente($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19)';
+		$pstmt = 'SELECT * FROM crea_cliente($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18)';
 		pg_prepare($this->conn,"insertquery",$pstmt);
-		$result = pg_fetch_all(pg_execute($this->conn, "insertquery", array($clave,$nombre,$domicilio,$cp,$telefono, $contacto, $rfc, $curp, $id_tipo_cliente, $revision, $pagos, $id_forma_pago, $id_vendedor,$id_uso_cfdi,$email,$num_proveedor,$notas,$diascred,$idempresa)));
+		$result = pg_fetch_all(pg_execute($this->conn, "insertquery", array($clave,$nombre,$domicilio,$cp,$telefono, $contacto, $rfc, $curp, $id_tipo_cliente, $revision, $pagos, $id_forma_pago, $id_vendedor,$id_uso_cfdi,$email,$notas,$diascred,$idempresa)));
 		return json_encode($result);
 	}
 
@@ -91,7 +96,7 @@ class Clientemodel extends CI_model
 		return $result;
 	}
 
-	function update_cliente($id_cliente,$nombre,$domicilio,$cp,$telefono, $contacto, $rfc, $curp, $id_tipo_cliente, $revision, $pagos, $id_forma_pago, $id_vendedor,$id_uso_cfdi,$email,$num_proveedor,$notas,$diascred)
+	function update_cliente($id_cliente,$nombre,$domicilio,$cp,$telefono, $contacto, $rfc, $curp, $id_tipo_cliente, $revision, $pagos, $id_forma_pago, $id_vendedor,$id_uso_cfdi,$email,$notas,$diascred)
 	{
 		$result = pg_prepare($this->conn,"updatequery",'UPDATE "CLIENTE" SET
 		"NOMBRE"=$1,
@@ -108,11 +113,10 @@ class Clientemodel extends CI_model
 		"ID_VENDEDOR"=$12,
 		"ID_USO_CFDI"=$13,
 		"EMAIL"=$14,
-		"NUM_PROVEEDOR"=$15,
-		"NOTAS"= $16,
-		"DIAS_CREDITO" = $17
-		WHERE "ID_CLIENTE"=$18');
-		$result = pg_execute($this->conn,"updatequery",array($nombre,$domicilio,$cp,$telefono, $contacto, $rfc, $curp, $id_tipo_cliente, $revision, $pagos, $id_forma_pago, $id_vendedor,$id_uso_cfdi,$email,$num_proveedor,$notas,$diascred,$id_cliente));
+		"NOTAS"= $15,
+		"DIAS_CREDITO" = $16
+		WHERE "ID_CLIENTE"=$17');
+		$result = pg_execute($this->conn,"updatequery",array($nombre,$domicilio,$cp,$telefono, $contacto, $rfc, $curp, $id_tipo_cliente, $revision, $pagos, $id_forma_pago, $id_vendedor,$id_uso_cfdi,$email,$notas,$diascred,$id_cliente));
 		return $result;
 	}
 

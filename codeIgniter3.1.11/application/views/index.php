@@ -6,6 +6,7 @@
   <meta http-equiv="Pragma" content="no-cache">
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
   <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 	<script src="../js/utilerias.js"></script>
@@ -151,8 +152,8 @@
       </div>
     </div>
   </nav>
-  <br><br>
-  <div class="columns">
+  
+  <div class="columns" style="margin-top:50px">
     <div class="column is-one-fifth">
       <aside class="menu" style="width:100%; height:890px; overflow:auto;">
 <?php

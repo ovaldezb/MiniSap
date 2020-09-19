@@ -72,12 +72,12 @@ app.controller('myCtrlUsuarios', function($scope,$http)
     {
       if($scope.password == '' || $scope.cpassword=='')
       {
-        alert('La contraseña y su confirmación son requeridas');
+        swal('La contraseña y su confirmación son requeridas');
         return;
       }
       if($scope.password != $scope.cpassword)
       {
-        alert('La contraseña no coincide');
+        swal('La contraseña no coincide');
         $scope.password ='';
         $scope.cpassword = '';
         return;
@@ -86,7 +86,7 @@ app.controller('myCtrlUsuarios', function($scope,$http)
     }else {
       if($scope.password != '' && $scope.password != $scope.cpassword)
       {
-        alert('La contraseña no coincide');
+        swal('La contraseña no coincide');
         $scope.password ='';
         $scope.cpassword = '';
         return;
@@ -122,14 +122,14 @@ app.controller('myCtrlUsuarios', function($scope,$http)
       {
         if(res.data[0].crea_usuario == -1)
         {
-          alert('El usuario '+$scope.username+' ya existe, favor de elegir otro');
+          swal('El usuario '+$scope.username+' ya existe, favor de elegir otro');
           return;
         }else {
           $scope.idUsuario = res.data[0].crea_usuario;
           $scope.insertaModulos();
           $scope.insertaEmpPerm();
           $scope.cerrarAddUser();
-          alert('El usuario se insertó correctamente');
+          swal('El usuario se insertó correctamente');
           var usrData = {
             ID_USUARIO:$scope.idUsuario,
             NOMBRE:$scope.nombre,
@@ -163,10 +163,10 @@ app.controller('myCtrlUsuarios', function($scope,$http)
     {
       if(res.data[0].actualiza_usuario == -1)
       {
-        alert('El usuario '+$scope.username+' ya existe, favor de elegir otro');
+        swal('El usuario '+$scope.username+' ya existe, favor de elegir otro');
         return;
       }else {
-        alert('El usuario se actualizó correctamente');
+        swal('El usuario se actualizó correctamente');
         var usrData = {
           ID_USUARIO:$scope.idUsuario,
           NOMBRE:$scope.nombre,
@@ -288,7 +288,7 @@ app.controller('myCtrlUsuarios', function($scope,$http)
   {
     if($scope.idUsuario =='')
     {
-      alert('Seleccione un usuario');
+      swal('Seleccione un usuario');
       return;
     }
     $scope.modlAddUser = true;
@@ -345,7 +345,7 @@ app.controller('myCtrlUsuarios', function($scope,$http)
   {
     if($scope.idUsuario =='')
     {
-      alert('Seleccione un usuario');
+      swal('Seleccione un usuario');
       return;
     }
     $http.delete(pathUsr+'eliminausrproc/'+$scope.idUsuario).
@@ -374,7 +374,7 @@ app.controller('myCtrlUsuarios', function($scope,$http)
           });
         }
       }
-      alert('Se actualizaron los permisos')
+      swal('Se actualizaron los permisos')
     }).catch(function(err)
     {
       console.log(err);
@@ -392,7 +392,7 @@ app.controller('myCtrlUsuarios', function($scope,$http)
     $http.delete(pathUsr+'eliminausr/'+$scope.idUsuario).
     then(function(res)
     {
-      alert('El usuario se eliminó');
+      swal('El usuario se eliminó');
       $scope.lstUsuarios.splice($scope.indexUsr,1);
       $scope.lstModlUser = [];
       $scope.lstProcesos = [];

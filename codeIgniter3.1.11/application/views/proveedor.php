@@ -53,7 +53,7 @@
 			<div class="column is-1">
 				<input id="cp" ng-model="cp" class="input is-small" value="" type="text" placeholder="CP" maxlength="5" required>
 			</div>
-			<div class="column is-narrow" style="width:146px">
+			<div class="column is-narrow" style="width:100px">
 			</div>
 			<div class="column is-narrow" style="width:75px">
 				<label class="label">Teléfono:</label>
@@ -63,7 +63,7 @@
 			</div>
 		</div>
 		<div class="columns">
-			<div class="column is-narrow" style="width:110px">
+			<div class="column is-narrow" style="width:95px">
 				<label class="label">Contacto:</label>
 			</div>
 			<div class="column is-4">
@@ -90,7 +90,7 @@
 			<div class="column is-1">
 				<label class="label">Proveedor:</label>
 			</div>
-			<div class="column is-narrow" style="width:190px">
+			<div class="column is-narrow" style="width:175px">
 				<div class="control">
 					<div class="select is-small">
 						<select name="id_tipo_prov" id="id_tipo_prov" required>
@@ -101,10 +101,10 @@
 					</div>
 				</div>
 			</div>
-			<div class="column is-narrow" style="width:141px">
+			<div class="column is-narrow" style="width:150px">
 				<label class="label">Días de crédito:</label>
 			</div>
-			<div class="column is-1">
+			<div class="column is-1" style="margin-left:-15px;">
 				<input id="dias_cred" ng-model="dias_cred" type="number" class="input is-small" maxlength="4" required>
 			</div>
 		</div>
@@ -140,7 +140,7 @@
 			<div class="column is-narrow" style="width:70px">
 				<label class="label">Cuenta:</label>
 			</div>
-			<div class="column is-narrow">
+			<div class="column is-narrow" style="width:150px">
 				<input name="cuenta" ng-model="cuenta" type="number" class="input is-small" maxlength="20" placeholder="Cuenta" required>
 			</div>
 		</div>

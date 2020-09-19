@@ -331,16 +331,14 @@
 			<div class="box box-color" >
 				<div class="columns">
 					<div class="column has-text-right">
-						<h1 class="title is-5">{{fechaPantalla}}</h1>
+						<h1 class="title is-7">{{fechaPantalla}} {{hora}}</h1>
 					</div>
 				</div>
 				<div class="columns">
-					<div class="column has-text-right">
-						<h1 class="title is-6">{{hora}}</h1>
+					<div class="column" style="display:flex;justify-content: flex-end">
+						<button class="button is-info" ng-click="abreOperaciones()">Operaciones</button>
 					</div>
 				</div>
-				<hr class="hr" style="margin-bottom:0;">
-
 				<div class="columns" style="background:#000033;">
 					<div class="column">
 						<h1 class="title is-4 has-text-white" >Documento: </h1>
@@ -442,7 +440,7 @@
 						</td>
 						<td style="vertical-align:middle">
 							<div class="select is-small">
-							<select ng-model="fact.formapago" ng-options="x.CLAVE as x.DESCRIPCION for x in lstFormpago"></select>
+								<select ng-model="fact.tipopago" ng-options="x.ID_TIPO_PAGO as x.DESCRIPCION for x in lstTipopago"></select>
 							</div>
 						</td>
 						<td>&nbsp;</td>
@@ -450,7 +448,7 @@
 						<td>
 							<input type="text" class="input" ng-model="pago_tarjeta" style="text-align:right; font-size: 20px; color: red;font-weight: bold;" onfocus="this.select()">
 						</td>
-						<td align="right" style="vertical-align:middle">
+						<td style="text-align:right;vertical-align:middle">
 						<div class="select is-small">
 							<select id="idtarjea">
 								<option value="">Elija una opción</option>
@@ -463,13 +461,15 @@
 					</tr>
 					<tr>
 						<td style="vertical-align:middle"><label class="label">Efectivo:</label></td>
-						<td><input type="text" class="input" ng-model="pago_efectivo" id="pago_efectivo" style="text-align:right; font-size: 20px; color: red;font-weight: bold;" onclick="this.select()" ng-keyup="calculaCambio()" ></td>
+						<td>
+							<input type="number" class="input is-small" ng-model="pago_efectivo" id="pago_efectivo" style="text-align:right; font-size: 20px; color: red;font-weight: bold;" onclick="this.select()" ng-keyup="calculaCambio()" >
+						</td>
 						<td>&nbsp;</td>
 						<td style="vertical-align:middle"><label class="label">Cheque:</label></td>
 						<td>
 							<input type="text" class="input" ng-model="pago_cheque" style="text-align:right; font-size: 20px; color: red;font-weight: bold;" onfocus="this.select()">
 						</td>
-						<td align="right" style="vertical-align:middle">
+						<td style="text-align:right; vertical-align:middle">
 						<div class="select is-small">
 							<select name="banco" id="banco">
 								<option value="">Elija una opción</option>
@@ -482,8 +482,11 @@
 					</tr>
 					<tr>
 						<td colspan="2" style="vertical-align:middle">
+							<div ng-show="fact.tipopago==2" style="margin-top:5px;width:100px;margin-left:70px">
+								<input type="text" class="input is-small" ng-model="fact.documento" disabled>
+							</div>
 							<div ng-show="fact.isavailable">
-							<input type="checkbox" ng-model="fact.req_factura" ng-disabled="!fact.isfacturable" title="{{fact.isfacturable?'Puede facturar':'Para poder facturar debe tener un cliente'}}"> Requiere Factura: 	
+								<input type="checkbox" ng-model="fact.req_factura" ng-disabled="!fact.isfacturable" title="{{fact.isfacturable?'Puede facturar':'Para poder facturar debe tener un cliente'}}"> Requiere Factura: 	
 							</div>						
 							<div ng-show="!fact.isavailable">
 								<label class="label">La sucursal no puede facturar</label>
@@ -510,7 +513,7 @@
 				</table>				
 			</div>
 			<div style="display:{{fact.req_factura ? 'block':'none'}}; width:100%; border: 2px solid red">
-				<div class="columns" >	
+				<div class="columns" style="margin-top:5px">	
 					<div class="column is-narrow" style="width:131px"><label class="label">Serie:</label></div>
 					<div class="column"><input type="text" ng-model="fact.serie" class="input is-small"></div>
 					<div class="column is-narrow"><label class="label">Folio:</label></div>
@@ -556,6 +559,151 @@
 	     	<button class="button is-danger" ng-click="cancelVenta()">Cancelar</button>
 	   	</footer>
 	  </div>
+	</div>
+
+	<div class="{{isOperaciones ? 'modal is-active' : 'modal' }}">
+		<div class="modal-background"></div>
+		<div class="modal-card">
+			<header class="modal-card-head">
+				<p class="modal-card-title">Consulta de operaciones</p>
+				<button class="delete" aria-label="close" ng-click="closeOperaciones();"></button>
+			</header>
+			<section class="modal-card-body">
+				<div class="columns">
+					<div class="column">
+						<div class="columns" style="margin-top:-20px;margin-bottom:-25px">
+							<div class="column">
+								<label class="label">Ventas del {{fechaCorte}} Caja - {{noCaja}}</label>
+							</div>
+						</div>
+						<div class="columns">
+							<div class="column">
+								<table class="table is-bordered" style="margin-bottom:-10px; width:100%">
+									<col width="35%">
+									<col width="15%">
+									<col width="20%">
+									<col width="30%">
+									<tr>
+										<td>Documento</td>
+										<td>Part</td>
+										<td>FP</td>
+										<td>Importe</td>
+									</tr>
+								</table>
+								<div style="overflow:auto; height:200px;">
+									<table class="table is-bordered" style="width:100%">
+										<col width="45%">
+										<col width="20%">
+										<col width="15%">
+										<col width="20%">
+										<tr ng-repeat="x in lstVentas">
+											<td>{{x.DOCUMENTO.trim()}}</td>
+											<td>{{x.COUNT}}</td>
+											<td>{{x.ID_TIPO_PAGO == '1' ? 'EF':'CR'}}</td>
+											<td style="text-align:right;">{{x.IMPORTE | currency}}</td>
+										</tr>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="column">
+						<div class="columns" style="margin-bottom:30px">
+							<nav class="level">
+								<div class="level-right">
+									<p class="level-item">
+										<a ng-click="corteCaja()">
+											<span class="icon has-text-success">
+												<i title="Corte de caja" class="fas fa-funnel-dollar"></i>
+											</span>
+										</a>
+									</p>
+									<p class="level-item">
+										<a ng-click="eliminaCorteCaja()">
+											<span class="icon has-text-danger">
+												<i title="Cancela partida" class="fas fa-times"></i>
+											</span>
+										</a>
+									</p>
+									<p class="level-item">
+										<a ng-click="update()">
+											<span class="icon has-text-info">
+												<i title="Editar una partida" class="fas fa-edit" ></i>
+											</span>
+										</a>
+									</p>
+									<p class="level-item">
+										<a ng-click="printCorte()">
+											<span class="icon has-text-info">
+												<i title="Imprime Corte" class="fas fa-print"></i>
+											</span>
+										</a>
+									</p>
+								</div>
+							</nav>
+						</div>
+						<div class="columns">
+							<div class="column totales">
+								<table style="width:100%">
+									<col with="40%">
+									<col with="20%">
+									<col with="40%">
+									<tr>
+										<td>Operaciones</td>
+										<td>&nbsp;</td>
+										<td style="text-align:right;">{{lstVentas.length}}</td>
+									</tr>
+									<tr>
+										<td>Canceladas</td>
+										<td>&nbsp;</td>
+										<td style="text-align:right;">0</td>
+									</tr>
+									<tr>
+										<td colspan="3">&nbsp;</td>
+									</tr>
+									<tr>
+										<td>En efectivo:</td>
+										<td>&nbsp;</td>
+										<td style="text-align:right;">{{pagos[0].EFECTIVO | currency}}</td>
+									</tr>
+									<tr>
+										<td>Con tarjeta:</td>
+										<td>&nbsp;</td>
+										<td style="text-align:right;">{{pagos[0].TARJETA | currency}}</td>
+									</tr>
+									<tr>
+										<td>Con cheque:</td>
+										<td>&nbsp;</td>
+										<td style="text-align:right;">{{pagos[0].CHEQUE | currency}}</td>
+									</tr>
+									<tr>
+										<td>Con vales:</td>
+										<td>&nbsp;</td>
+										<td style="text-align:right;">{{pagos[0].VALES | currency}}</td>
+									</tr>
+									<tr>
+										<td colspan="3">&nbsp;</td>
+									</tr>
+									<tr>
+										<td style="text-align:right;">Contado:</td>
+										<td>&nbsp;</td>
+										<td style="text-align:right;">{{tipopago[0].sum | currency}}</td>
+									</tr>
+									<tr>
+										<td style="text-align:right;">Crédito:</td>
+										<td>&nbsp;</td>
+										<td style="text-align:right;">{{tipopago[1].sum | currency}}</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+			<footer class="modal-card-foot">
+				<button class="button" ng-click="closeOperaciones();">Cerrar</button>
+			</footer>
+		</div>
 	</div>
 
 	<div class="{{modalVerifProdSuc ? 'modal is-active' : 'modal' }}" id="avisoborrar">
@@ -655,7 +803,7 @@
       <?php	} ?>
       				</select>
             </td>
-						<td>Crédito:</td>
+						<td>Días Crédito:</td>
 						<td><input type="number" class="input is-small" ng-model="cliente.dcredito" placeholder="DIAS DE CREDITO"></td>
 					</tr>
 					<tr>
@@ -679,22 +827,22 @@
 					<tr>
 						<td>Forma Pago:</td>
 						<td colspan="3">
-              <select name="id_forma_pago" id="id_forma_pago">
-      <?php foreach($forma_pago as $fp) {?>
-      					<option value='<?php echo $fp['ID_FORMA_PAGO']?>'><?php echo trim($fp['CLAVE'])?> <?php echo trim($fp['DESCRIPCION'])?></option>
-      <?php }?>
-      				</select>
-            </td>
+							<select name="id_forma_pago" id="id_forma_pago">
+<?php foreach($forma_pago as $fp) {?>
+								<option value='<?php echo $fp['ID_FORMA_PAGO']?>'><?php echo trim($fp['CLAVE'])?> <?php echo trim($fp['DESCRIPCION'])?></option>
+<?php }?>
+							</select>
+						</td>
 					</tr>
 					<tr>
 						<td>Vendedor:</td>
 						<td colspan="3">
-              <select name="id_vendedor" id="id_vendedor">
-      <?php	foreach($vendedor as $vend) {?>
-      					<option value='<?php echo $vend['ID_VENDEDOR']?>'><?php echo trim($vend['NOMBRE'])?></option>
-      <?php	}?>
-      				</select>
-            </td>
+              				<select name="id_vendedor" id="id_vendedor">
+<?php	foreach($vendedor as $vend) {?>
+      							<option value='<?php echo $vend['ID_VENDEDOR']?>'><?php echo trim($vend['NOMBRE'])?></option>
+<?php	}?>
+      						</select>
+            			</td>
 					</tr>
 					<tr>
 						<td>Uso CFDI:</td>
@@ -707,18 +855,18 @@
 					<tr>
 						<td>Email:</td>
 						<td colspan="2"><input type="text" class="input is-small" ng-model="cliente.email" placeholder="EMAIL"></td>
-            <td></td>
+            			<td></td>
 					</tr>
 					<tr>
 						<td>No Proveedor:</td>
 						<td><input type="text" class="input is-small" ng-model="cliente.num_proveedor" placeholder="PROVEEDOR"></td>
-            <td colspan="2"></td>
+            			<td colspan="2"></td>
 					</tr>
 					<tr>
 						<td>Observaciones:</td>
 						<td colspan="3">
-              <textarea ng-model="cliente.notas" id="tacliente"></textarea>
-            </td>
+              				<textarea ng-model="cliente.notas" id="tacliente"></textarea>
+            			</td>
 					</tr>
 				</table>
 	    </section>

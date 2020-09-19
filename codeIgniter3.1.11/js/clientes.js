@@ -13,7 +13,6 @@ app.controller('myCtrlClientes', function($scope,$http)
   $scope.curp = '';
   $scope.dcredito = 0;
   $scope.email = '';
-  $scope.num_proveedor = '';
   $scope.notas = '';
   $scope.sortDir = false;
   $scope.idSelCompra = '';
@@ -77,7 +76,7 @@ app.controller('myCtrlClientes', function($scope,$http)
   {
     if(isNaN($scope.cp))
     {
-      alert('Sólo se permiten números');
+      swal('Sólo se permiten números');
       $('#cp').focus();
     }
   }
@@ -125,7 +124,6 @@ app.controller('myCtrlClientes', function($scope,$http)
       id_vendedor:$('#id_vendedor').val(),
       id_uso_cfdi:$('#id_uso_cfdi').val(),
       email:$scope.email,
-      num_proveedor:$scope.num_proveedor,
       notas:$scope.notas,
       dcredito:$scope.dcredito,
       idempresa:$scope.idempresa
@@ -148,7 +146,7 @@ app.controller('myCtrlClientes', function($scope,$http)
           $scope.lstCliente.push(row);
           $scope.cancelCliente();
           $scope.getNextDocClte();
-          alert('El cliente se insertó correctamente');
+          swal('El cliente se insertó correctamente');
         }
       }).catch(function(err) {
         console.log(err);
@@ -166,11 +164,11 @@ app.controller('myCtrlClientes', function($scope,$http)
             CURP:$scope.curp,
             ID_CLIENTE:$scope.idCliente
           };
+          swal('Cliente actualizado correctamente');
           $scope.lstCliente[$scope.indexRowCliente] = row;
           $scope.msjBoton = 'Agregar';
     			$scope.cancelCliente();
           $scope.selectRowCliente($scope.lstCliente[$scope.indexRowCliente].CLAVE,$scope.indexRowCliente,$scope.lstCliente[$scope.indexRowCliente].ID_CLIENTE);
-          alert(res.data.value);
     		}
     	}).catch(function(err)
     	{
@@ -190,7 +188,7 @@ app.controller('myCtrlClientes', function($scope,$http)
   			{
           $scope.lstCliente.splice($scope.indexRowCliente,1);
           $scope.selectRowCliente($scope.lstCliente[0].CLAVE,0,$scope.lstCliente[0].ID_CLIENTE);
-  				alert('Cliente elimnado exitosamente');
+  				swal('Cliente elimnado exitosamente');
           $scope.modalBorraClte = false;
   			}
   		}
@@ -216,7 +214,6 @@ app.controller('myCtrlClientes', function($scope,$http)
         $scope.curp = res.data[0].CURP.trim();
         $scope.cp = res.data[0].CP;
         $scope.email = res.data[0].EMAIL.trim();
-        $scope.num_proveedor = res.data[0].NUM_PROVEEDOR.trim();
         $scope.notas = res.data[0].NOTAS;
         $scope.dcredito = res.data[0].DIAS_CREDITO;
         $("#id_tipo_cliente").val(res.data[0].ID_TIPO_CLIENTE);
@@ -262,7 +259,6 @@ app.controller('myCtrlClientes', function($scope,$http)
   	$('#id_vendedor').val('1');
   	$('#id_uso_cfdi').val('1');
   	$scope.email = '';
-  	$scope.num_proveedor = '';
   	$scope.notas = '';
     $scope.dcredito = 0;
   }

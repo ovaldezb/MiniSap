@@ -64,7 +64,7 @@ app.controller('myCtrlVendedores', function($scope,$http)
           if(res.data.res == 'ok') {
             $scope.getDataInit();
             $scope.cancelVendedor();
-            alert('El vendedor se insertó correctamente');
+            swal('El vendedor se insertó correctamente');
           }
         }).catch(function(err) {
           console.log(err);
@@ -83,7 +83,7 @@ app.controller('myCtrlVendedores', function($scope,$http)
           $scope.msjBoton = 'Agregar';
           $scope.cancelVendedor();
           $scope.selectRowVendedor($scope.indexRowVendedor,$scope.lstVendedor[$scope.indexRowVendedor].ID_VENDEDOR);
-          alert(res.data.value);
+          swal('El vendedor se actualizó corrctamente!');
         }
       }).catch(function(err){
         console.log(err);
@@ -99,7 +99,7 @@ app.controller('myCtrlVendedores', function($scope,$http)
           if(res.data.value=='OK'){
             $scope.lstVendedor.splice($scope.indexRowVendedor,1);
             $scope.selectRowVendedor(0,$scope.lstVendedor[0].ID_VENDEDOR);
-            alert('Vendedor eliminado exitosamente');
+            swal('Vendedor eliminado exitosamente');
             $scope.modalBorraClte = false;
           }
         }

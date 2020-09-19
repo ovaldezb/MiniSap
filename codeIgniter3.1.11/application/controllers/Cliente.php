@@ -22,8 +22,8 @@ class Cliente extends CI_Controller
 			$this->load->view('clientes',$data);
 		}else {
 			$error['error'] = '';
-      $this->load->view('login',$error);
-    }
+      		$this->load->view('login',$error);
+		}
 	}
 
 	function loadByEmpresa($idEmpresa)
@@ -84,7 +84,6 @@ class Cliente extends CI_Controller
 		$data['id_vendedor'],
 		$data['id_uso_cfdi'],
 		$data['email'],
-		$data['num_proveedor'],
 		$data['notas'],
 		$data['dcredito'],
 		$data['idempresa']);
@@ -95,7 +94,6 @@ class Cliente extends CI_Controller
 
 	function delete($id)
 	{
-
 		$result = $this->clientemodel->delete_cliente($id);
 		if($result)
 		{
@@ -128,7 +126,6 @@ class Cliente extends CI_Controller
 		$data['id_vendedor'],
 		$data['id_uso_cfdi'],
 		$data['email'],
-		$data['num_proveedor'],
 		$data['notas'],
 		$data['dcredito']);
 		if($result){

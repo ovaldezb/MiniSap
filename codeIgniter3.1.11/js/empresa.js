@@ -48,7 +48,7 @@ app.controller('myCtrlEmpresa', function($scope,$http)
   {
     if(isNaN($scope.ejercicio_fiscal))
     {
-      alert('Sólo se aceptan números');
+      swal('Sólo se aceptan números');
       $scope.ejercicio_fiscal = '';
       $('#ef').focus();
     }
@@ -60,7 +60,7 @@ app.controller('myCtrlEmpresa', function($scope,$http)
     {
       $('#cuenta_resultado').focus();
       $scope.cuenta_resultado = '';
-      alert('Sólo se aceptan números');
+      swal('Sólo se aceptan números');
     }
   }
 
@@ -70,7 +70,7 @@ app.controller('myCtrlEmpresa', function($scope,$http)
     {
       $('#resultado_anterior').focus();
       $scope.resultado_anterior = '';
-      alert('Sólo se aceptan números');
+      swal('Sólo se aceptan números');
     }
   }
 
@@ -158,7 +158,7 @@ app.controller('myCtrlEmpresa', function($scope,$http)
             ID_EMPRESA:res.data[0].crea_empresa
           };
           $scope.lstEmpresas.push(nvaEmpresa);
-          alert('La nueva empresa ha sido almacenada');
+          swal('La nueva empresa ha sido almacenada');
           $scope.cancelar();
         }
     	}).catch(function(err) {
@@ -179,7 +179,7 @@ app.controller('myCtrlEmpresa', function($scope,$http)
           };
           $scope.lstEmpresas[$scope.indexRowEmp] = dataUpdate;
           $scope.selectRowEmpresa($scope.lstEmpresas[0].RFC,0,$scope.lstEmpresas[0].ID_EMPRESA);
-    			alert('La empresa se actualizó correctamente');
+    			swal('La empresa se actualizó correctamente');
     			$scope.cancelar();
     		}
     	}).
@@ -198,9 +198,9 @@ app.controller('myCtrlEmpresa', function($scope,$http)
   		{
         $scope.lstEmpresas.splice($scope.indexRowEmp,1);
         $scope.cancelar();
-  		   alert('Empresa elimnada exitosamente');
+  		   swal('Empresa elimnada exitosamente');
   		}else {
-        alert('Ocurrió un problema, no se pudo eliminar la Empresa');
+        swal('Ocurrió un problema, no se pudo eliminar la Empresa');
       }
       $scope.closeAvisoBorrar();
   	}).catch(function(err){

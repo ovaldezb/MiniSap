@@ -17,6 +17,7 @@ var pathCreaFact = pathCliente + 'creacfdixml/';
 var pathCFDI = pathCliente + 'datosfactura/';
 var pathPedi = pathCliente + 'pedidos/';
 var pathFacturacion = pathCliente + 'facturacion/';
+var pathFactura = pathCliente + 'factura/';
 var app = angular.module("myApp", ["ngRoute"]);
 app.config(function($routeProvider) {
     $routeProvider
@@ -108,7 +109,7 @@ app.controller('myCtrlIndex', function($scope,$http,$location,$window)
         $window.location.href = $window.location.href + 'empr';
         $scope.isEmpPermActiv = false; 
       }else{
-        alert('El usuario no tiene Empresas asignadas, favor de contactar a su administrador!')
+        swal('El usuario no tiene Empresas asignadas, favor de contactar a su administrador!')
       }
     }).catch(function(err)
     {
@@ -179,7 +180,7 @@ app.controller('myCtrlIndex', function($scope,$http,$location,$window)
   {
     if($scope.nombreEmpresa == '')
     {
-      alert('Debe seleccionar una empresa');
+      swal('Debe seleccionar una empresa');
       return;
     }
     $scope.isEmpPermActiv = false;
@@ -203,7 +204,7 @@ app.controller('myCtrlIndex', function($scope,$http,$location,$window)
     then((res)=>{
       if(res.data.value == 'OK')
       {
-        alert('Se actualizó la sucursal!');
+        swal('Se actualizó la sucursal!');
       }
     }).catch((err)=>{
       console.log(err);

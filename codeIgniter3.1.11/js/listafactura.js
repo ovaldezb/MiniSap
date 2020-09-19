@@ -58,7 +58,7 @@ app.controller('myCtrlLisfact', function($scope,$http)
         $http.get(pathCreaFact+'getfacturaby/2/'+idFactura+'/'+idCliente+'/'+idEmpresa)
             .then(res=>{                
                 if(res.data.value=="OK"){
-                    alert('El correo fue enviado');
+                    swal('El correo fue enviado');
                 }
             })
             .catch(err=>{

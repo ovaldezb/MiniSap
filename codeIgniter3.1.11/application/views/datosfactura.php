@@ -22,7 +22,7 @@
         <col width="40%">
         <col width="40%">
         <col width="20%">
-        <tr style="display:{{rowMatriz?'table-row':'none'}};">
+        <!--tr style="display:{{rowMatriz?'table-row':'none'}};">
             <td style="text-align=center; vertical-align:middle;"><label class="label">Matriz</label></td>
             <td>
                 <p><label class="label">Nombre:</label>{{nombre}}</p>
@@ -33,7 +33,7 @@
             <td align="center" style="vertical-align:middle;">
                 <button class="button is-success" ng-click="enviar(-1,0)">{{btnMtrix}}</button> 
             </td>
-        </tr>        
+        </tr-->        
         <tr ng-repeat="suc in lstSucCerts" style="display:{{suc.FORMA?'table-row':'none'}};">
             <td style="vertical-align:middle;">
                 <p><label class="label">{{suc.ALIAS}}</label></p>

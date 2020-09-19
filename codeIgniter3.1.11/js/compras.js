@@ -56,7 +56,7 @@ app.controller('myCtrlCompras', function ($scope, $http) {
 					$scope.aniofiscal = res.data.aniofiscal;
 					$scope.idsucursal = res.data.idsucursal;
 					$scope.getDataInit();
-					$scope.getNextDocCompra();
+					//$scope.getNextDocCompra();
 				}
 
 			}).catch(function (err) {
@@ -75,7 +75,7 @@ app.controller('myCtrlCompras', function ($scope, $http) {
 			});
 	}
 
-	$scope.getNextDocCompra = function () {
+	/*$scope.getNextDocCompra = function () {
 		$http.get(pathUtils + 'incremento/CMPR/' + $scope.idempresa + '/6').
 			then(function (res) {
 				if (res.data.length > 0) {
@@ -85,7 +85,7 @@ app.controller('myCtrlCompras', function ($scope, $http) {
 			}).catch(function (err) {
 				console.log(err);
 			});
-	}
+	}*/
 
 	$scope.increase = function () {
 		$scope.counter += 1;
@@ -102,7 +102,7 @@ app.controller('myCtrlCompras', function ($scope, $http) {
 			$scope.counter = Number($scope.cantidad);
 		} else {
 			$scope.cantidad = $scope.counter;
-			alert('Sólo se aceptan números');
+			swal('Sólo se aceptan números','','warning');
 		}
 	}
 
@@ -118,7 +118,7 @@ app.controller('myCtrlCompras', function ($scope, $http) {
 							$scope.claveprov = res.data[0].CLAVE.trim();
 							$scope.proveedor = res.data[0].NOMBRE.trim();
 						} else {
-							alert('La clave del proveedor no existe, puede hacer una búsqueda por nombre');
+							swal('La clave del proveedor no existe, puede hacer una búsqueda por nombre');
 							$scope.claveprov = '';
 							$scope.proveedor = '';
 							$('#proveedor').focus();
@@ -191,7 +191,7 @@ app.controller('myCtrlCompras', function ($scope, $http) {
 							$('#imgfig').show();
 						}
 					} else {
-						alert('No existe un producto y/o servicio con el código ' + $scope.codigo);
+						swal('No existe un producto y/o servicio con el código ' + $scope.codigo);
 					}
 				}).
 				catch();
@@ -213,7 +213,7 @@ app.controller('myCtrlCompras', function ($scope, $http) {
 
 	$scope.validaDcto = function () {
 		if (isNaN($scope.desctoprod)) {
-			alert('Sólo se aceptan números');
+			swal('Sólo se aceptan números');
 			$scope.desctoprod = 0;
 			$('#desctoprod').focus();
 		}
@@ -222,12 +222,12 @@ app.controller('myCtrlCompras', function ($scope, $http) {
 	$scope.agregar = function () {
 		$scope.suma = 0;
 		if ($scope.iva == '') {
-			alert('Debe ingresar el Iva');
+			swal('Debe ingresar el Iva');
 			$('#iva').focus();
 			return;
 		}
 		if ($scope.cantidad == 0) {
-			alert('La cantidad debe ser mayor a 0');
+			swal('La cantidad debe ser mayor a 0');
 			$('#cantidad').focus();
 			return;
 		}
@@ -289,13 +289,13 @@ app.controller('myCtrlCompras', function ($scope, $http) {
 
 	$scope.validaIva = function () {
 		if (isNaN($scope.iva)) {
-			alert('Sólo se permiten números');
+			swal('Sólo se permiten números');
 			$scope.iva = '';
 			$('#iva').focus();
 			return;
 		}
 		if ($scope.iva < 0) {
-			alert('Sólo se permiten números positivos');
+			swal('Sólo se permiten números positivos');
 			$scope.iva = '';
 			$('#iva').focus();
 			return;
@@ -309,7 +309,7 @@ app.controller('myCtrlCompras', function ($scope, $http) {
 
 	$scope.validaDescto = function () {
 		if (isNaN($scope.descuento)) {
-			alert('Sólo se permiten números');
+			swal('Sólo se permiten números');
 			$scope.descuento = '';
 			$('#descuento').focus();
 		} else {
@@ -329,17 +329,17 @@ app.controller('myCtrlCompras', function ($scope, $http) {
 		var dataCompra;
 		var hoy = new Date();
 		if ($scope.claveprov == '') {
-			alert('La clave del proveedor es necesaria');
+			swal('La clave del proveedor es necesaria');
 			$('#claveprov').focus();
 			return;
 		}
 		if ($scope.numdoc == '') {
-			alert('El número de documento es requerido');
+			swal('El número de documento es requerido');
 			$('#numdoc').focus();
 			return;
 		}
 		if ($scope.listaproductos.length == 0) {
-			alert('Debe agregar al menos un elemento a comprar');
+			swal('Debe agregar al menos un elemento a comprar');
 			return;
 		}
 
@@ -405,9 +405,9 @@ app.controller('myCtrlCompras', function ($scope, $http) {
 					$('#tipopago').val(1);
 					$('#moneda').val(1);
 					$scope.isAgrgaCompra = false;
-					$scope.getNextDocCompra();
+					//$scope.getNextDocCompra();
 					$scope.limpiarBox1();
-					alert('Se registro la compra exitosamente');
+					swal('Se registro la compra exitosamente','Felicidades!','success');
 				}
 			}).
 			catch(function (err) {
@@ -418,6 +418,7 @@ app.controller('myCtrlCompras', function ($scope, $http) {
 	$scope.regtracompraprod = function () {
 		var i;
 		for (i = 0; i < $scope.listaproductos.length; i++) {
+			console.log($scope.listaproductos[i]);
 			$http.put(pathCmpr + 'regcompraprdcto/', {
 				idcompra: $scope.idcompra,
 				idproducto: $scope.listaproductos[i].IDPRODUCTO,
@@ -441,12 +442,13 @@ app.controller('myCtrlCompras', function ($scope, $http) {
 
 
 	$scope.editaProducto = function () {
-		$scope.codigo = $scope.listaproductos[$scope.idxRowProd].CODIGO.trim();
+		console.log($scope.listaproductos[$scope.idxRowProd]);
+		$scope.codigo = $scope.listaproductos[$scope.idxRowProd].CODIGO;
 		$scope.descripcion = $scope.listaproductos[$scope.idxRowProd].DESCRIPCION + ' ';
 		$scope.cantidad = $scope.listaproductos[$scope.idxRowProd].CANTIDAD;
 		$scope.unidad = $scope.listaproductos[$scope.idxRowProd].UNIDAD.trim();
 		$scope.descuento = $scope.listaproductos[$scope.idxRowProd].DESCTO;
-		$scope.precio = ' ' + $scope.listaproductos[$scope.idxRowProd].PRECIO;
+		$scope.precio = $scope.listaproductos[$scope.idxRowProd].PRECIO;
 		$scope.imagePath = $scope.listaproductos[$scope.idxRowProd].IMG;
 		$('#imgfig').show();
 		$('#updtTable').val('T');
@@ -456,7 +458,7 @@ app.controller('myCtrlCompras', function ($scope, $http) {
 
 	$scope.validaTC = function () {
 		if (isNaN($scope.tipocambio)) {
-			alert('Sólo se permiten números');
+			swal('Sólo se permiten números');
 			$('#tipocambio').focus();
 		}
 	}
@@ -525,7 +527,7 @@ app.controller('myCtrlCompras', function ($scope, $http) {
 			then(function (res) {
 				if (res.status == "200") {
 					if (Number(res.data[0].borra_compra) >= 1) {
-						alert('Se ha eliminado la compra');
+						swal('Se ha eliminado la compra');
 						$scope.listaCompras.splice($scope.indexRowCompra, 1);
 						$scope.closeAvisoBorrar();
 					}

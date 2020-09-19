@@ -74,6 +74,10 @@ tr.spaceUnder>th {
 .bd-empperm{border:2px solid #f5f5f5;position:relative}.empperm::before,
 .bd-empperm::before{background:#ffdd57;border-radius:2px 2px 0 0;bottom:100%;color:rgba(0,0,0,.7);content:"Empresas Permitidas";display:inline-block;font-size:7px;font-weight:700;left:-1px;letter-spacing:1px;margin-left:-1px;padding:3px 5px;position:absolute;text-transform:uppercase;vertical-align:top}
 
+.totales,
+.bd-totales{border:2px solid #f5f5f5;position:relative}.totales::before,
+.bd-totales::before{background:#ffdd57;border-radius:2px 2px 0 0;bottom:100%;color:rgba(0,0,0,.7);content:"Totales";display:inline-block;font-size:7px;font-weight:700;left:-1px;letter-spacing:1px;margin-left:-1px;padding:3px 5px;position:absolute;text-transform:uppercase;vertical-align:top}
+
 #tacliente{
   width: 450px;
   height: 100px;

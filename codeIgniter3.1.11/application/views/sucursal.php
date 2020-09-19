@@ -43,27 +43,27 @@
   <div class="box" ng-show="isDivSucActivo">
     <form name="myForm">
       <div class="columns">
-        <div class="column is-1">
+        <div class="column is-narrow" style="width:111px">
           <label class="label">Clave:</label>
         </div>
         <div class="column is-1">
-          <input type="text" name="clave" ng-model="clave" class="input is-small" required placeholder="Clave">
+          <input type="text" name="clave" ng-model="suc.clave" class="input is-small" required placeholder="Clave">
         </div>
       </div>
       <div class="columns is-multiline">
-        <div class="column is-1">
+        <div class="column is-narrow" style="width:111px">
           <label class="label">Dirección:</label>
         </div>
         <div class="column is-4">
-          <textarea class="textarea" ng-model="direccion" name="direccion" ></textarea>
+          <textarea class="textarea" ng-model="suc.direccion" name="direccion" rows="2"></textarea>
         </div>
       </div>
       <div class="columns">
-        <div class="column is-1">
+        <div class="column is-narrow" style="width:111px">
           <label class="label">CP:</label>
         </div>
         <div class="column is-2">
-          <input type="text" name="cp" ng-model="cp" class="input is-small"  maxlength="5" placeholder="Código Postal">
+          <input type="text" name="cp" ng-model="suc.cp" class="input is-small"  maxlength="5" placeholder="Código Postal">
         </div>
       </div>
       <div class="columns">
@@ -71,23 +71,23 @@
           <label class="label">Responsable:</label>
         </div>
         <div class="column is-2">
-          <input type="text" name="responsable" ng-model="responsable" class="input is-small" placeholder="Responsable" >
+          <input type="text" name="responsable" ng-model="suc.responsable" class="input is-small" placeholder="Responsable" >
         </div>
       </div>
       <div class="columns">
-        <div class="column is-1">
+        <div class="column is-narrow" style="width:111px">
           <label class="label">Teléfono:</label>
         </div>
         <div class="column is-2">
-          <input type="text" name="telefono" ng-model="telefono" class="input is-small" placeholder="Teléfono"  maxlength="10">
+          <input type="text" name="telefono" ng-model="suc.telefono" class="input is-small" placeholder="Teléfono"  maxlength="10">
         </div>
       </div>
       <div class="columns">
-        <div class="column is-1">
+        <div class="column is-narrow" style="width:111px">
           <label class="label">Alias:</label>
         </div>
         <div class="column is-2">
-          <input type="text" name="alias" ng-model="alias" class="input is-small" placeholder="Alias" required>
+          <input type="text" name="alias" ng-model="suc.alias" class="input is-small" placeholder="Alias" required>
         </div>
       </div>
       <div class="columns">
@@ -97,7 +97,7 @@
       </div>
       <div class="columns is-gapless is-multiline is-mobile">
         <div class="column is-5" style="margin-top:-20px">
-          <textarea class="textarea" name="notas" ng-model="notas"></textarea>
+          <textarea class="textarea" name="notas" ng-model="suc.notas"></textarea>
         </div>
       </div>
       <div class="field is-grouped">
@@ -123,7 +123,7 @@
               <td align="center"><a ng-click="orderByMe('CLAVE')">CLAVE</a></td>
               <td align="center"><a ng-click="orderByMe('DIRECCION')">DIRECCIÓN</a></td>
               <td align="center"><a ng-click="orderByMe('RESPONSABLE')">RESPONSABLE</a></td>
-              <td align="center"><a ng-click="orderByMe('CP')">CP</a></td>
+              <td align="center"><a ng-click="orderByMe('CP')">ALIAS</a></td>
             </tr>
           </table>
         </td>
@@ -137,10 +137,10 @@
               <col width="30%">
               <col width="10%">
               <tr ng-repeat="x in lstSucursal | orderBy:myOrderBy:sortDir" ng-click="selectRowSucursal(x.CLAVE,$index,x.ID_SUCURSAL)" ng-class="{selected: x.CLAVE === idSelSuc}">
-                <td align="center">{{x.CLAVE.trim()}}</td>
+                <td align="center">{{x.CLAVE}}</td>
                 <td align="center">{{x.DIRECCION}}</td>
                 <td align="center">{{x.RESPONSABLE.trim()}}</td>
-                <td align="center">{{x.CP}}</td>
+                <td align="center">{{x.ALIAS}}</td>
               </tr>
             </table>
           </div>
