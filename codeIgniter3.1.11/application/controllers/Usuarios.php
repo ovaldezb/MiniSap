@@ -5,6 +5,7 @@ class Usuarios extends CI_Controller {
   function __construct() {
     parent::__construct();
     $this->load->model('usuariomodel');
+    $this->load->model('procesosmodel');
     $this->load->helper('url');
     $this->load->library('session');
   }
@@ -154,6 +155,12 @@ class Usuarios extends CI_Controller {
     return $this->output
             ->set_content_type('application/json')
             ->set_output($this->usuariomodel->elimina_usuario($idusuario));
+  }
+
+  function permusrproc($idusuario,$idproceso){
+    return $this->output
+            ->set_content_type('application/json')
+            ->set_output($this->procesosmodel->get_perm_by_proc_usr($idusuario,$idproceso));
   }
 
 }

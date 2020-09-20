@@ -163,6 +163,7 @@
   {
     $modulo = $key['MODULO'];
     $ruta = $key['RUTA'];
+    $idproc = $key['ID_PROCESO'];
     if($modulo != $modulotmp)
     {
       if($isFinModulo)
@@ -171,11 +172,11 @@
 <?php }?>
         <h2><?php echo $key['MODULO']?></h2>
         <ul class="menu-list">
-          <li><a href="#!<?php echo $key['RUTA']?>"><?php echo $key['PROCESO']?></a></li>
+          <li><a href="#!<?php echo $key['RUTA']?>/<?php echo $idproc ?>" ><?php echo $key['PROCESO']?></a></li>
 <?php
       $isFinModulo = true;
     }else if($ruta !=null) {?>
-          <li><a href="#!<?php echo $key['RUTA']?>"><?php echo $key['PROCESO']?></a></li>
+          <li><a href="#!<?php echo $key['RUTA']?>/<?php echo $idproc ?>"><?php echo $key['PROCESO']?></a></li>
 <?php
     }
     $modulotmp = $modulo;?>

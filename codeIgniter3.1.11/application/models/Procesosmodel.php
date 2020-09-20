@@ -13,7 +13,7 @@ class Procesosmodel extends CI_model
 
   function get_modulos_procesos_by_usuario($idusuario)
   {
-    $query = 'SELECT M."NOMBRE" as "MODULO",PR."NOMBRE" as "PROCESO",TRIM(PR."RUTA") as "RUTA"
+    $query = 'SELECT M."NOMBRE" as "MODULO",PR."NOMBRE" as "PROCESO",TRIM(PR."RUTA") as "RUTA", UP."ID_PROCESO"
               FROM "PROCESOS" as PR
               INNER JOIN "USUARIO_PROCESO" as UP ON PR."ID_PROCESO" = UP."ID_PROCESO"
               INNER JOIN "MODULOS" as M ON M."ID_MODULO" = PR."ID_MODULO"
@@ -22,6 +22,13 @@ class Procesosmodel extends CI_model
     pg_prepare($this->conn,"sel_mod_proc_user",$query);
     $result = pg_fetch_all(pg_execute($this->conn,"sel_mod_proc_user",array($idusuario)));
 		return $result;
+  }
+
+  function get_perm_by_proc_usr($idusuario,$idproceso){
+    $query = 'SELECT * FROM "USUARIO_PROCESO" WHERE "ID_USUARIO" = $1 AND "ID_PROCESO" = $2';
+    pg_prepare($this->conn,"sel_usr",$query);
+    $result = pg_fetch_all(pg_execute($this->conn,"sel_usr",array($idusuario,$idproceso)));
+    return json_encode($result);
   }
 
 }

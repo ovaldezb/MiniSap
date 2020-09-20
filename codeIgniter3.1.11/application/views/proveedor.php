@@ -16,10 +16,12 @@
 			</div>
 		</div>
 		<div class="level-right">
-			<p class="level-item"><a ng-click="openDivAgregar()"><span class="icon has-text-success"><i title="Agrega un nuevo Proveedor" class="fas fa-plus-square" ></i></span></a></p>
-			<p class="level-item"><a ng-click="update()"><span class="icon has-text-info"><i title="Edita un Proveedor" class="fas fa-edit" ></i></span></a></p>
+			<p class="level-item" ng-show="permisos.alta">
+				<a ng-click="openDivAgregar()"><span class="icon has-text-success"><i title="Agrega un nuevo Proveedor" class="fas fa-plus-square" ></i></span></a></p>
+			<p class="level-item" ng-show="permisos.modificacion">
+				<a ng-click="update()"><span class="icon has-text-info"><i title="Edita un Proveedor" class="fas fa-edit" ></i></span></a></p>
 			<p class="level-item">
-				<a ng-click="preguntaEliminar()">
+				<a ng-click="preguntaEliminar()" ng-show="permisos.baja">
 					<span class="icon has-text-danger">
 						<i title="Elimna un Proveedor" class="far fa-trash-alt"></i>
 					</span>

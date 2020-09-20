@@ -1,4 +1,4 @@
-app.controller('myCtrlSucursal', function($scope,$http)
+app.controller('myCtrlSucursal', function($scope,$http,$routeParams)
 {
   $scope.lstSucursal = [];
   $scope.btnAccion = 'Agregar';
@@ -9,6 +9,14 @@ app.controller('myCtrlSucursal', function($scope,$http)
   $scope.idxRowSuc = '';
   $scope.idSucursal = '';
   $scope.idempresa = '';
+  $scope.idUsuario = '';
+  $scope.idProceso = $routeParams.idproc;
+  $scope.permisos = {
+    alta: false,
+    baja: false,
+    modificacion:false,
+    consulta:false
+  };
   $scope.suc = {
     clave:'',
     direccion:'',
@@ -24,7 +32,9 @@ app.controller('myCtrlSucursal', function($scope,$http)
     then(function(res){
       if(res.data.value=='OK'){
         $scope.idempresa = res.data.idempresa;
+        $scope.idUsuario = res.data.idusuario;
         $scope.getDataInit();
+        $scope.permisos();
       }
     }).catch(function(err){
       console.log(err);
@@ -44,6 +54,18 @@ app.controller('myCtrlSucursal', function($scope,$http)
       }
     }).catch(function(err)
     {
+      console.log(err);
+    });
+  }
+
+  $scope.permisos = function(){
+    $http.get(pathUsr+'permusrproc/'+$scope.idUsuario+'/'+$scope.idProceso)
+    .then(res =>{
+      $scope.permisos.alta = res.data[0].A == 't';
+      $scope.permisos.baja = res.data[0].B == 't';
+      $scope.permisos.modificacion = res.data[0].M == 't';
+      $scope.permisos.consulta = res.data[0].C == 't';
+    }).catch(err => {
       console.log(err);
     });
   }

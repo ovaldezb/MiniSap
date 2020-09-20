@@ -87,7 +87,7 @@ class Access extends CI_Controller {
   {
     if(isset( $_SESSION['idempresa'])){
       $idEmpresa = $_SESSION['idempresa'];
-      $data = array('value'=>'OK','idempresa'=>$_SESSION['idempresa'],'id_empr_codigo'=>str_pad('E',7-mb_strlen($idEmpresa),'0').$idEmpresa,'aniofiscal'=>$_SESSION['aniofiscal'],'idsucursal'=>$_SESSION['idsucursal']);
+      $data = array('value'=>'OK','idempresa'=>$_SESSION['idempresa'],'id_empr_codigo'=>str_pad('E',7-mb_strlen($idEmpresa),'0').$idEmpresa,'aniofiscal'=>$_SESSION['aniofiscal'],'idsucursal'=>$_SESSION['idsucursal'],'idusuario'=>$_SESSION['idusuario']);
     }else {
       $data = array('value'=>'ERROR');
     }

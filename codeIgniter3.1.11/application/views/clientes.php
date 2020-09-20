@@ -14,9 +14,12 @@
 				</div>
 			</div>
 			<div class="level-right">
-				<p class="level-item"><a ng-click="agregaCliente();"><span class="icon has-text-success"><i class="fas fa-plus-square" title="Agrega Cliente"></i></span></a></p>
-				<p class="level-item"><a ng-click="editaCliente()"><span class="icon has-text-info"><i class="fas fa-edit" title="Edita Cliente"></i></span></a></p>
-				<p class="level-item"><a ng-click="preguntaElimnaCliente()"><span class="icon has-text-danger"><i class="far fa-trash-alt" title="Elimna Cliente"></i></span></a></p>
+				<p class="level-item" ng-show="permisos.alta">
+					<a ng-click="agregaCliente();"><span class="icon has-text-success"><i class="fas fa-plus-square" title="Agrega Cliente"></i></span></a></p>
+				<p class="level-item" ng-show="permisos.modificacion">
+					<a ng-click="editaCliente()"><span class="icon has-text-info"><i class="fas fa-edit" title="Edita Cliente"></i></span></a></p>
+				<p class="level-item" ng-show="permisos.baja">
+					<a ng-click="preguntaElimnaCliente()"><span class="icon has-text-danger"><i class="far fa-trash-alt" title="Elimna Cliente"></i></span></a></p>
 			</div>
 		</nav>
 	</div>

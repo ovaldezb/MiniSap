@@ -7,10 +7,13 @@
   <div class="box" id="barranavegacion">
     <nav class="level">
 			<div class="level-left">
-				<p class="level-item"><a ng-click="agregarUsuario();"><span class="icon has-text-success"><i class="far fa-file" title="Agrega Nuevo Usuario"></i></span></a></p>
-				<p class="level-item"><a ng-click="preguntaElimUser()"><span class="icon has-text-danger"><i class="far fa-trash-alt" title="Elimina el usuarios selecionado"></i></span></a></p>
-				<p class="level-item"><a ng-click="visualizaUsr()"><span class="icon has-text-info"><i class="fas fa-folder-open" title="Visualizar el Usuario seleccionado"></i></span></a></p>
-			</div>
+				<p class="level-item" ng-show="permisos.alta">
+          <a ng-click="agregarUsuario();"><span class="icon has-text-success"><i class="far fa-file" title="Agrega Nuevo Usuario"></i></span></a></p>
+				<p class="level-item" ng-show="permisos.modificacion">
+          <a ng-click="visualizaUsr()"><span class="icon has-text-info"><i class="fas fa-folder-open" title="Visualizar el Usuario seleccionado"></i></span></a></p>
+        <p class="level-item" ng-show="permisos.baja">
+          <a ng-click="preguntaElimUser()"><span class="icon has-text-danger"><i class="far fa-trash-alt" title="Elimina el usuarios selecionado"></i></span></a></p>
+      </div>
 		</nav>
   </div>
   <div id="maindisplay" class="box">

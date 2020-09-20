@@ -1,4 +1,4 @@
-app.controller('myCtrlEmpresa', function($scope,$http)
+app.controller('myCtrlEmpresa', function($scope,$http,$routeParams)
 {
   $scope.lstEmpresas = [];
   $scope.isDivEmpActivo = false;
@@ -9,6 +9,14 @@ app.controller('myCtrlEmpresa', function($scope,$http)
   $scope.idEmpresa = '';
   $scope.descEmpBorrar = '';
   $scope.actnBton = 'Agregar';
+  $scope.idUsuario = '';
+  $scope.idProceso = $routeParams.idproc;
+  $scope.permisos = {
+    alta: false,
+    baja: false,
+    modificacion:false,
+    consulta:false
+  };
   $scope.emp = {
     nombre:'',
     domicilio:'',
@@ -28,6 +36,20 @@ app.controller('myCtrlEmpresa', function($scope,$http)
 
   $scope.init = function()
   {
+    $http.get(pathAcc+'getdata',{responseType:'json'}).
+    then(function(res){
+      if(res.data.value=='OK'){
+        //$scope.idempresa = res.data.idempresa;
+        $scope.idUsuario = res.data.idusuario;
+        $scope.getEmpresas();
+        $scope.permisos();
+      }
+    }).catch(function(err){
+      console.log(err);
+    });
+  }
+
+  $scope.getEmpresas = function(){
     $http.get(pathEmpr+'load', {responseType: 'json'})
   	.then(function(res)
   	{
@@ -35,6 +57,7 @@ app.controller('myCtrlEmpresa', function($scope,$http)
   		{
   			$scope.lstEmpresas = res.data;
         $scope.selectRowEmpresa($scope.lstEmpresas[0].RFC,0,$scope.lstEmpresas[0].ID_EMPRESA);
+        $scope.permisos();
   		}else {
         $scope.lstEmpresas = [];
       }
@@ -42,6 +65,18 @@ app.controller('myCtrlEmpresa', function($scope,$http)
   	.catch(function(err) {
   		console.log(err);
   	});
+  }
+
+  $scope.permisos = function(){
+    $http.get(pathUsr+'permusrproc/'+$scope.idUsuario+'/'+$scope.idProceso)
+    .then(res =>{
+      $scope.permisos.alta = res.data[0].A == 't';
+      $scope.permisos.baja = res.data[0].B == 't';
+      $scope.permisos.modificacion = res.data[0].M == 't';
+      $scope.permisos.consulta = res.data[0].C == 't';
+    }).catch(err => {
+      console.log(err);
+    });
   }
 
   $scope.validaEF = function()

@@ -18,21 +18,21 @@
 			</div>
 		</div>
 		<div class="level-right">
-	    	<p class="level-item">
+	    	<p class="level-item" ng-show="permisos.alta">
 				<a ng-click="openDivAgregar()">
 					<span class="icon has-text-success">
 						<i title="Agregar una nueva empresa" class="fas fa-plus-square" ></i>
 					</span>
 				</a>
 			</p>
-			<p class="level-item">
+			<p class="level-item" ng-show="permisos.modificacion">
 				<a ng-click="update()">
 					<span class="icon has-text-info">
 						<i title="Editar una empresa" class="fas fa-edit" ></i>
 					</span>
 				</a>
 			</p>
-			<p class="level-item">
+			<p class="level-item" ng-show="permisos.baja">
 				<a ng-click="preguntaEliminar()">
 					<span class="icon has-text-danger">
 						<i title="Elimnar una empresa" class="far fa-trash-alt"></i>

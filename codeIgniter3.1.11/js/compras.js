@@ -1,4 +1,4 @@
-app.controller('myCtrlCompras', function ($scope, $http) {
+app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 	$scope.counter = 0;
 	$scope.cantidad = 0;
 	$scope.iva = '';
@@ -44,6 +44,13 @@ app.controller('myCtrlCompras', function ($scope, $http) {
 	$scope.aniofiscal = '';
 	$scope.notas = '';
 	$scope.btnCompHide = true;
+	$scope.idProceso = $routeParams.idproc;
+	$scope.permisos = {
+		alta: false,
+		baja: false,
+		modificacion:false,
+		consulta:false
+	};
 
 	$scope.init = function () {
 		var hoy = new Date();
@@ -55,8 +62,9 @@ app.controller('myCtrlCompras', function ($scope, $http) {
 					$scope.idempresa = res.data.idempresa;
 					$scope.aniofiscal = res.data.aniofiscal;
 					$scope.idsucursal = res.data.idsucursal;
+					$scope.idUsuario = res.data.idusuario;
 					$scope.getDataInit();
-					//$scope.getNextDocCompra();
+					$scope.permisos();
 				}
 
 			}).catch(function (err) {
@@ -75,28 +83,30 @@ app.controller('myCtrlCompras', function ($scope, $http) {
 			});
 	}
 
-	/*$scope.getNextDocCompra = function () {
-		$http.get(pathUtils + 'incremento/CMPR/' + $scope.idempresa + '/6').
-			then(function (res) {
-				if (res.data.length > 0) {
-					$scope.numdoc = res.data[0].VALOR;
-					$scope.numdocTmp = res.data[0].VALOR;
-				}
-			}).catch(function (err) {
-				console.log(err);
-			});
-	}*/
+	$scope.permisos = function(){
+		$http.get(pathUsr+'permusrproc/'+$scope.idUsuario+'/'+$scope.idProceso)
+		.then(res =>{
+		  $scope.permisos.alta = res.data[0].A == 't';
+		  $scope.permisos.baja = res.data[0].B == 't';
+		  $scope.permisos.modificacion = res.data[0].M == 't';
+		  $scope.permisos.consulta = res.data[0].C == 't';
+		}).catch(err => {
+		  console.log(err);
+		});
+	}
 
 	$scope.increase = function () {
 		$scope.counter += 1;
 		$scope.cantidad = $scope.counter;
 	}
+	
 	$scope.decrease = function () {
 		if ($scope.counter > 0) {
 			$scope.counter = $scope.counter - 1;
 			$scope.cantidad = $scope.counter;
 		}
 	}
+	
 	$scope.manualenter = function () {
 		if (!isNaN($scope.cantidad)) {
 			$scope.counter = Number($scope.cantidad);
@@ -111,24 +121,22 @@ app.controller('myCtrlCompras', function ($scope, $http) {
 		if (event.keyCode == 13) {
 			$http.get(pathPrve + 'getprvdorclave/' + $scope.claveprov, {
 				responseType: 'json'
-			}).
-				then(function (res) {
-					if (res.status == '200') {
-						if (res.data != false) {
-							$scope.claveprov = res.data[0].CLAVE.trim();
-							$scope.proveedor = res.data[0].NOMBRE.trim();
-						} else {
-							swal('La clave del proveedor no existe, puede hacer una búsqueda por nombre');
-							$scope.claveprov = '';
-							$scope.proveedor = '';
-							$('#proveedor').focus();
-						}
-
+			})
+			.then(function (res) {
+				if (res.status == '200') {
+					if (res.data != false) {
+						$scope.claveprov = res.data[0].CLAVE.trim();
+						$scope.proveedor = res.data[0].NOMBRE.trim();
+					} else {
+						swal('La clave del proveedor no existe, puede hacer una búsqueda por nombre');
+						$scope.claveprov = '';
+						$scope.proveedor = '';
+						$('#proveedor').focus();
 					}
-				}).
-				catch(function (err) {
-					console.log(err);
-				});
+				}
+			}).catch(function (err) {
+				console.log(err);
+			});
 		}
 	}
 

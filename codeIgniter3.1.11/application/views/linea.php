@@ -14,21 +14,21 @@
       </div>
     </div>
     <div class="level-right">
-          <p class="level-item">
+      <p class="level-item" ng-show="permisos.alta">
         <a ng-click="openDivAgregar()">
           <span class="icon has-text-success">
             <i title="Agregar una nueva línea" class="fas fa-plus-square" ></i>
           </span>
         </a>
       </p>
-      <p class="level-item">
+      <p class="level-item" ng-show="permisos.modificacion">
         <a ng-click="updateLinea()">
           <span class="icon has-text-info">
             <i title="Editar una linea" class="fas fa-edit" ></i>
           </span>
         </a>
       </p>
-      <p class="level-item">
+      <p class="level-item" ng-show="permisos.baja">
         <a ng-click="preguntaEliminar()">
           <span class="icon has-text-danger">
             <i title="Elimnar una linea" class="far fa-trash-alt"></i>
@@ -55,7 +55,7 @@
             </tr>
             <tr>
                 <td>
-                    <div style="width:100%; height:590px; overflow:auto;">
+                    <div style="width:100%; height:500px; overflow:auto;">
                         <table id="tablalinea" class="table is-hoverable" style="width:100%">                        
                             <col width="20%">
                             <col width="80%">

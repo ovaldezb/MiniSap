@@ -1,4 +1,4 @@
-app.controller('myCtrlPedi', function($scope,$http,$interval)
+app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
 {
   $scope.fecha = formatDatePrint(new Date());
   $scope.fechaPantalla = formatDatePantalla(new Date());
@@ -48,6 +48,14 @@ app.controller('myCtrlPedi', function($scope,$http,$interval)
   $scope.pregElimiPedi = false;
   $scope.doctoEliminar = '';
   $scope.fechaentrega = '';
+  $scope.idUsuario = '';
+  $scope.idProceso = $routeParams.idproc;
+  $scope.permisos = {
+    alta: false,
+    baja: false,
+    modificacion:false,
+    consulta:false
+  };
   $scope.pedido = {
     docto : '',
     idcliente : '',
@@ -123,11 +131,13 @@ app.controller('myCtrlPedi', function($scope,$http,$interval)
           $scope.pedido.idempresa = res.data.idempresa;
           $scope.pedido.idsucursal = res.data.idsucursal;
           $scope.pedido.aniofiscal = res.data.aniofiscal;
+          $scope.idUsuario = res.data.idusuario;
           $scope.getNextDocPedido();
           $scope.getpedidos();
           $scope.getMoneda();
           $scope.getFormPago();
           $scope.getTipoPago();
+          $scope.permisos();
         }
       }).catch(function(err){
         console.log(err);
@@ -161,6 +171,18 @@ app.controller('myCtrlPedi', function($scope,$http,$interval)
 			console.log(err);
 		});
 	}
+
+  $scope.permisos = function(){
+    $http.get(pathUsr+'permusrproc/'+$scope.idUsuario+'/'+$scope.idProceso)
+    .then(res =>{
+      $scope.permisos.alta = res.data[0].A == 't';
+      $scope.permisos.baja = res.data[0].B == 't';
+      $scope.permisos.modificacion = res.data[0].M == 't';
+      $scope.permisos.consulta = res.data[0].C == 't';
+    }).catch(err => {
+      console.log(err);
+    });
+  }
 
   $interval(function () {
         $scope.hora = DisplayCurrentTime();

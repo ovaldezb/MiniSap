@@ -18,9 +18,12 @@
 				</div>
 			</div>
 			<div class="level-right">
-				<p class="level-item"><a ng-click="agregarcompra();"><span class="icon has-text-success"><i class="fas fa-plus-square" title="Nueva Compra"></i></span></a></p>
-				<p class="level-item"><a ng-click="preguntaelimcomp()"><span class="icon has-text-danger"><i class="far fa-trash-alt" title="Elimina Compra"></i></span></a></p>
-				<p class="level-item"><a ng-click="despliegaCompra()"><span class="icon has-text-info"><i class="fas fa-folder-open" title="Visualiza Compra"></i></span></a></p>
+				<p class="level-item" ng-show="permisos.alta">
+					<a ng-click="agregarcompra();"><span class="icon has-text-success"><i class="fas fa-plus-square" title="Nueva Compra"></i></span></a></p>
+				<p class="level-item" ng-show="permisos.modificacion">
+					<a ng-click="despliegaCompra()"><span class="icon has-text-info"><i class="fas fa-folder-open" title="Visualiza Compra"></i></span></a></p>
+				<p class="level-item" ng-show="permisos.baja">
+					<a ng-click="preguntaelimcomp()"><span class="icon has-text-danger"><i class="far fa-trash-alt" title="Elimina Compra"></i></span></a></p>
 				<p class="level-item"><span class="icon has-text-info"><i class="fas fa-print" title="Imprime Compras"></i></span></p>
 			</div>
 		</nav>

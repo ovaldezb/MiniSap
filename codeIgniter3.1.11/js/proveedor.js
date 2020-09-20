@@ -1,5 +1,5 @@
 
-app.controller('myCtrlProveedor', function($scope,$http)
+app.controller('myCtrlProveedor', function($scope,$http,$routeParams)
 {
   $scope.lstProveedor = [];
   $scope.isDivProvActivo = false;
@@ -24,6 +24,14 @@ app.controller('myCtrlProveedor', function($scope,$http)
   $scope.sortDir = true;
   $scope.myOrderBy = '';
   $scope.idempresa = '';
+  $scope.idUsuario = '';
+  $scope.idProceso = $routeParams.idproc;
+  $scope.permisos = {
+    alta: false,
+    baja: false,
+    modificacion:false,
+    consulta:false
+  };
 
   $scope.init = function()
   {
@@ -31,7 +39,9 @@ app.controller('myCtrlProveedor', function($scope,$http)
     then(function(res){
       if(res.data.value=='OK'){
         $scope.idempresa = res.data.idempresa;
+        $scope.idUsuario = res.data.idusuario;
         $scope.getDataInit();
+        $scope.permisos();
       }
     }).catch(function(err){
       console.log(err);
@@ -55,6 +65,18 @@ app.controller('myCtrlProveedor', function($scope,$http)
   	});
   }
 
+  $scope.permisos = function(){
+    $http.get(pathUsr+'permusrproc/'+$scope.idUsuario+'/'+$scope.idProceso)
+    .then(res =>{
+      $scope.permisos.alta = res.data[0].A == 't';
+      $scope.permisos.baja = res.data[0].B == 't';
+      $scope.permisos.modificacion = res.data[0].M == 't';
+      $scope.permisos.consulta = res.data[0].C == 't';
+    }).catch(err => {
+      console.log(err);
+    });
+  }
+  
   $scope.selectRowProveedor = function(idSelProv,indexRowProv,idProveedor)
   {
     $scope.idSelProv = idSelProv;

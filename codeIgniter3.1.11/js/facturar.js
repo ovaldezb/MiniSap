@@ -1,4 +1,4 @@
-app.controller('myCtrlFacturacion', function($scope,$http,$interval)
+app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams)
 {
   $scope.fecha = formatDatePrint(new Date());
   $scope.fechaPantalla = formatDatePantalla(new Date());
@@ -49,7 +49,15 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval)
   $scope.isImprimir = true;
   $scope.pregElimiPedi = false;
   $scope.doctoEliminar = '';
+  $scope.idUsuario = '';
   $scope.showInputData = false;
+  $scope.idProceso = $routeParams.idproc;
+  $scope.permisos = {
+    alta: false,
+    baja: false,
+    modificacion:false,
+    consulta:false
+  };
   $scope.factura = {
     docto : '',
     idcliente : '',
@@ -115,6 +123,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval)
     $http.get(pathAcc+'getdata',{responseType:'json'}).
     then(function(res){
       if(res.data.value=='OK'){
+        $scope.idUsuario = res.data.idusuario;
         $scope.factura.idempresa = res.data.idempresa;
         $scope.factura.idsucursal = res.data.idsucursal;
         $scope.factura.aniofiscal = res.data.aniofiscal;
@@ -125,6 +134,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval)
         $scope.getFormPago();
         $scope.getTipoPago();
         $scope.getMetPago();
+        $scope.permisos();
       }
     }).catch(function(err){
       console.log(err);
@@ -132,7 +142,6 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval)
   }
   
   $scope.getNextDocTpv = function(){
-    
 		$http.get(pathUtils+'incremento/TPVS/'+$scope.factura.idempresa+'/7').
 		then(function(res)
 		{
@@ -146,6 +155,18 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval)
 			console.log(err);
 		});
 	}
+
+  $scope.permisos = function(){
+    $http.get(pathUsr+'permusrproc/'+$scope.idUsuario+'/'+$scope.idProceso)
+    .then(res =>{
+      $scope.permisos.alta = res.data[0].A == 't';
+      $scope.permisos.baja = res.data[0].B == 't';
+      $scope.permisos.modificacion = res.data[0].M == 't';
+      $scope.permisos.consulta = res.data[0].C == 't';
+    }).catch(err => {
+      console.log(err);
+    });
+  }
 
   $interval(function () {
         $scope.hora = DisplayCurrentTime();

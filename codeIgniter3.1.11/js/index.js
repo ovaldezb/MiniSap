@@ -27,49 +27,49 @@ app.config(function($routeProvider) {
     .when("/clss", {
         templateUrl : pathCliente+'access/logout'
     })
-    .when("/clte", {
+    .when("/clte/:idproc", {
       templateUrl:    pathCliente+'cliente'
     })
-    .when("/empr", {
+    .when("/empr/:idproc", {
         templateUrl : pathCliente+'empresa'
     })
-    .when("/prod", {
-        templateUrl : pathCliente+'producto'
+    .when("/prod/:idproc", {
+        templateUrl : pathProd //pathCliente+'producto'
     })
-    .when("/prve", {
+    .when("/prve/:idproc", {
         templateUrl : pathCliente+'proveedor'
     })
-    .when("/sucr", {
+    .when("/sucr/:idproc", {
         templateUrl : pathCliente+'sucursal'
     })
-    .when("/cmpr", {
+    .when("/cmpr/:idproc", {
         templateUrl : pathCliente+'compras'
     })
-    .when("/tpv", {
+    .when("/tpv/:idproc", {
         templateUrl : pathCliente+'tpv'
     })
-    .when("/user", {
+    .when("/user/:idproc", {
         templateUrl : pathCliente+'usuarios'
     })
-    .when("/mval",{
+    .when("/mval/:idproc",{
       templateUrl : pathRepo+'rmovalmc'
     })
-    .when("/rven",{
+    .when("/rven/:idproc",{
       templateUrl : pathRepo+'rventas'
     })
-    .when("/line",{
+    .when("/line/:idproc",{
       templateUrl : pathCliente+'linea'
     })
-    .when("/crfc",{
+    .when("/crfc/:idproc",{
       templateUrl : pathCliente+'datosfactura'
     })
-    .when("/pedi",{
+    .when("/pedi/:idproc",{
       templateUrl : pathCliente+'pedidos'
     })
-    .when("/fact",{
+    .when("/fact/:idproc",{
       templateUrl : pathCliente+'facturacion'
     })
-    .when("/vend",{
+    .when("/vend/:idproc",{
       templateUrl : pathVend
     });
 });

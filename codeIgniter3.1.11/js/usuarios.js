@@ -1,4 +1,4 @@
-app.controller('myCtrlUsuarios', function($scope,$http)
+app.controller('myCtrlUsuarios', function($scope,$http,$routeParams)
 {
   $scope.lstProcesos = [];
   $scope.lstEmprPerm = [];
@@ -11,11 +11,32 @@ app.controller('myCtrlUsuarios', function($scope,$http)
   $scope.indexUsr = '';
   $scope.btnAccion = 'Aceptar';
   $scope.allModules = true;
-
   $scope.nomModule = '';
   $scope.userElim = '';
+  $scope.idUsuario = '';
+  $scope.idProceso = $routeParams.idproc;
+  $scope.permisos = {
+    alta: false,
+    baja: false,
+    modificacion:false,
+    consulta:false
+  };
+
   $scope.init = function()
   {
+    $http.get(pathAcc+'getdata',{responseType:'json'}).
+    then(function(res){
+      if(res.data.value=='OK'){
+        $scope.idUsuario = res.data.idusuario;
+        $scope.getUsers();
+        $scope.permisos();
+      }
+    }).catch(function(err){
+      console.log(err);
+    });
+  }
+
+  $scope.getUsers = function(){
     $http.get(pathUsr+'getusrs',{responseType:'json'}).
     then(function(res)
     {
@@ -26,6 +47,18 @@ app.controller('myCtrlUsuarios', function($scope,$http)
     })
     .catch(function(err)
     {
+      console.log(err);
+    });
+  }
+
+  $scope.permisos = function(){
+    $http.get(pathUsr+'permusrproc/'+$scope.idUsuario+'/'+$scope.idProceso)
+    .then(res =>{
+      $scope.permisos.alta = res.data[0].A == 't';
+      $scope.permisos.baja = res.data[0].B == 't';
+      $scope.permisos.modificacion = res.data[0].M == 't';
+      $scope.permisos.consulta = res.data[0].C == 't';
+    }).catch(err => {
       console.log(err);
     });
   }
