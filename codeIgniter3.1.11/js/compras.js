@@ -53,6 +53,14 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 	};
 
 	$scope.init = function () {
+		var foopicker = new FooPicker({
+			id: 'fechacompra',
+			dateFormat: 'dd/MM/yyyy'
+			});
+		var foopicker = new FooPicker({
+			id: 'fechapago',
+			dateFormat: 'dd/MM/yyyy'
+			});
 		var hoy = new Date();
 		$('#fechacompra').val(formatDatePrint(hoy));
 		$('#fechapago').val(formatDatePrint(hoy));
@@ -267,14 +275,18 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 			$scope.listaproductos[$scope.idxRowProd] = producto;
 			$('#updtTable').val('F')
 		}
-
+		var descProm = 0;
+		var suma = 0;
 		for (var i = 0; i < $scope.listaproductos.length; i++) {
-			$scope.suma = Number(Number($scope.suma) + Number($scope.listaproductos[i].IMPORTE)).toFixed(2);
+			$scope.suma += Number($scope.listaproductos[i].IMPORTE);
+			descProm += Number($scope.listaproductos[i].DESCTO);
 		}
 		/*Hace el descuento*/
-		$scope.suma = Number($scope.suma * Number(1 - $scope.descuento / 100)).toFixed(2);
+		//$scope.suma = Number($scope.suma * Number(1 - $scope.descuento / 100)).toFixed(2);
+		$scope.suma = Number($scope.suma).toFixed(2);
 		$scope.ivapaga = Number($scope.suma * $scope.iva / 100).toFixed(2);
 		$scope.total = Number(Number($scope.suma) + Number($scope.ivapaga)).toFixed(2);
+		$scope.descuento = Number(descProm / $scope.listaproductos.length).toFixed(2);
 		$scope.cantidad = 0;
 		$scope.counter = 0;
 		$scope.desctoprod = 0;		
@@ -513,11 +525,12 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 			then(function (res) {
 				$scope.listaproductos = res.data;
 				$scope.suma = 0;
+				var descProm = 0;
 				for (var i = 0; i < $scope.listaproductos.length; i++) {
 					$scope.suma += Number($scope.listaproductos[i].IMPORTE);
+					descProm += Number($scope.listaproductos[i].DESCTO);
 				}
-
-				$scope.suma = Number($scope.suma * Number(1 - $scope.descuento / 100)).toFixed(2);
+				$scope.descuento = Number( descProm / $scope.listaproductos.length ).toFixed(2);
 				$scope.ivapaga = Number($scope.suma * $scope.iva / 100).toFixed(2);
 				$scope.total = Number(Number($scope.suma) + Number($scope.ivapaga)).toFixed(2);
 			}).catch(function (err) {
@@ -562,7 +575,6 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 	}
 
 	$scope.btnCancel = function () {
-		//$('#divdisplay').hide();
 		$scope.isAgrgaCompra = false;
 		$scope.limpiarBox1();
 		$scope.listaproductos = [];

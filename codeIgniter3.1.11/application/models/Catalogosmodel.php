@@ -229,5 +229,12 @@ class Catalogosmodel extends CI_model
 		return $result;
 	}
 
+	function inserta_producto($arrayProd){
+		$query = 'SELECT * FROM inserta_producto($1,$2)';
+		pg_prepare($this->conn,"insert_prod",$query);
+		$result = pg_fetch_all(pg_execute($this->conn,"insert_prod",$arrayProd));
+		return $result;//json_encode(array('result'=>$result));
+	}
+
 }
 ?>

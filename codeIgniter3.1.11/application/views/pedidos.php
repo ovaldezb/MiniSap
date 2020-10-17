@@ -42,7 +42,7 @@
 							<col width="26%">
 							<col width="10%">
 							<thead>
-								<tr style="background:LightSlateGray;">
+								<tr class="tbl-header">
 									<td style="color:white; text-align:left; ">DOCUMENTO</td>
 									<td style="color:white; text-align:center;">CLIENTE</td>
 									<td style="color:white; text-align:center;">FECHA PEDIDO</td>

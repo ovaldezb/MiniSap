@@ -176,7 +176,7 @@
 		</form>
 	</div>
 
-	<div style="border: 2px solid black" ng-show="!isDivProvActivo">
+	<div style="border: 2px solid black;width:80%;margin:0 auto;" ng-show="!isDivProvActivo">
 		<table style="width:100%">
 			<tr>
 				<td>

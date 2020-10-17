@@ -23,7 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://ready2solve.club/core/';
+$config['base_url'] = 'https://ready2solve.club/paty/';
 
 /*
 |--------------------------------------------------------------------------

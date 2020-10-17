@@ -2,7 +2,7 @@
 //defined('BASEPATH') OR exit('No direct script access allowed');
     defined('FCPATH') OR exit('No direct script access allowed');
     require_once FCPATH.'sw-sdk/SWSDK.php';
-    require_once APPPATH."/third_party/dompdf/autoload.inc.php";
+    require_once APPPATH."third_party/dompdf/autoload.inc.php";
     
     require_once FCPATH.'vendor/phpmailer/phpmailer/src/PHPMailer.php';
     require_once FCPATH.'vendor/phpmailer/phpmailer/src/SMTP.php';

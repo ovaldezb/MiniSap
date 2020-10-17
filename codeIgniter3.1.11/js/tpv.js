@@ -62,6 +62,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
   $scope.aniofiscal = '';
   $scope.req_factura = false;
   $scope.modalReqFact = false;
+  $scope.listaVendedores = false;
   $scope.lstMoneda = [];
   $scope.lstMetpago = [];
   $scope.lstFormpago = [];
@@ -580,10 +581,10 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
         if(res.data.length > 0)
         {
           $scope.lstVendedor = res.data;
-          $('#listaVendedores').show();
+          $scope.listaVendedores = true;
         }else {
           $scope.lstVendedor = [];
-          $('#listaVendedores').hide();
+          $scope.listaVendedores = false;
         }
       }).catch(function(err)
       {
@@ -596,14 +597,13 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
       $scope.idvendedor = $scope.lstVendedor[indxRowClte].ID_VENDEDOR;
       $scope.nombre_vendedor = $scope.lstVendedor[indxRowClte].NOMBRE;
       $scope.idvendedor = $scope.lstVendedor[indxRowClte].ID_VENDEDOR;
-      $scope.lstVendedor = [];
-      $('#listaVendedores').hide();
+      $scope.closeVendSearch();
     }
 
     $scope.closeVendSearch = function()
     {
       $scope.lstVendedor = [];
-      $('#listaVendedores').hide();
+      $scope.listaVendedores = false;
     }
 
     $scope.iniciaRegistrarCompra = function()
@@ -713,8 +713,8 @@ app.controller('myCtrlTpv', function($scope,$http,$interval)
         aniofiscal:$scope.aniofiscal,
         idsucursal:$scope.idsucursal,
         formapago:null,
-        usocfdi:scope.fact.req_factura ? $scope.fact.usocfdi : null,
-        metodopago:scope.fact.req_factura ? $scope.fact.metodopago : null
+        usocfdi:$scope.fact.req_factura ? $scope.fact.usocfdi : null,
+        metodopago:$scope.fact.req_factura ? $scope.fact.metodopago : null
       };
 
       if($scope.fact.tipopago==2){

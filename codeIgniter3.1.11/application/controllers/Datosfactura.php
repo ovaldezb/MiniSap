@@ -50,7 +50,7 @@ class Datosfactura extends CI_Controller
               $config['allowed_types'] = array('cer','key');
               $config['max_size'] = 5000;
               $config['file_name'] = $_FILES['files']['name'][$i];
-              $this->load->library('upload'); //,$config
+              $this->load->library('upload'); 
               $this->upload->initialize($config);
               if(!file_exists($config['upload_path']))
               {
@@ -91,8 +91,7 @@ class Datosfactura extends CI_Controller
             unlink($keyOutFile);
             $data['errorKey'] = 'Hubo un error, los archivos no son los correctos y/o la contraseña no coincide';
             $this->load->view('datosfactura',$data);
-        }
-        
+        } 
     }
 }
 

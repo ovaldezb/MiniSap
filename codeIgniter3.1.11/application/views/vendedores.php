@@ -45,7 +45,7 @@
 		</div>
 	</form>
 	</div>
-	<div class="table-container is-centered" id="lstvendedores" ng-show="!isAddOpen">
+	<div class="table-container is-centered" id="lstvendedores" ng-show="!isAddOpen" style="width:60%;margin: 0 auto;">
 		<table border="1" style="width:100%">
 			<tr>
 				<td>

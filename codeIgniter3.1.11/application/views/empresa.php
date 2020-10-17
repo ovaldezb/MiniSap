@@ -160,26 +160,34 @@
 		</div>
 		</form>
 	</div>
-	<div class="container" style="border: 2px solid black" ng-show="!isDivEmpActivo">
+	<div class="container" style="border: 2px solid black; width:80%" ng-show="!isDivEmpActivo">
 		<table style="width:100%">
 			<tr>
 				<td>
-					<table class="table" style="width:100%">
-						<tr style="background-color:CornflowerBlue; color:Ivory;">
-							<td>#</td>
-							<td ng-click="orderByMe('NOMBRE')">NOMBRE</td>
-							<td ng-click="orderByMe('RFC')">RFC</td>
-							<td>CP</td>
+					<table class="table is-bordered" style="width:100%">
+						<col width="15%">
+						<col width="45%">
+						<col width="20%">
+						<col width="20%">
+						<tr class="tbl-header">
+							<td style="text-align:center">#</td>
+							<td style="text-align:center" ng-click="orderByMe('NOMBRE')">NOMBRE</td>
+							<td style="text-align:center" ng-click="orderByMe('RFC')">RFC</td>
+							<td style="text-align:center">CP</td>
 						</tr>
 					</table>
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<div style="width:100%; height:590px; overflow:auto;">
-						<table id="tablaempresas" class="table is-hoverable" style="width:100%">
+					<div style="width:100%; height:510px; overflow:auto;">
+						<table id="tablaempresas" class="table is-hoverable is-bordered" style="width:100%">
+							<col width="15%">
+							<col width="45%">
+							<col width="20%">
+							<col width="20%">
 							<tr ng-repeat="x in lstEmpresas | orderBy:myOrderBy:sortDir" ng-dblclick="update()" ng-click="selectRowEmpresa(x.RFC,$index,x.ID_EMPRESA)" ng-class="{selected: x.RFC === idSelEmp}">
-								<td>{{$index+1}}</td>
+								<td style="text-align:center">{{$index+1}}</td>
 								<td>{{x.NOMBRE}}</td>
 								<td>{{x.RFC}}</td>
 								<td>{{x.CP}}</td>

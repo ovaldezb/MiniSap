@@ -30,7 +30,6 @@ class CSVReader {
                             $arr[$keys[$j]] =   $new_values[$j];
                         }
                     }
-
                     $content[$i]=   $arr;
                     $i++;
                 }

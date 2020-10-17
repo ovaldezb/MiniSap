@@ -92,3 +92,23 @@ a{
 a:hover{
   color: #f13e3e;
 }
+
+.tbl-header{
+  background-color:CornflowerBlue; 
+  color:Ivory;
+}
+
+.tbl-header-seek{
+  background-color:Crimson; 
+  color:Ivory;
+  font-size: 14px;
+}
+
+fieldset{
+  display: inline;
+  vertical-align: top;
+  padding: .5em .8em;
+  margin: .8em .5em 0 0;
+  border: 1px solid #999;
+  text-decoration: solid;
+}

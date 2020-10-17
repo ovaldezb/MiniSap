@@ -28,42 +28,60 @@
 			</nav>
 		</div>
 		<div class="table-container is-centered" style="margin:auto 0px" id="lstclientes" ng-show="!isCapturaFactura">
-			<table border="1" style="width:100%">
+			<table style="width:99.5%">
 				<tr>
 					<td>
-						<table style="width:100%">
-							<thead>
-								<tr style="background:LightSlateGray;">
-									<td style="color:white;text-align:center;">DOCUMENTO</td>									
-									<td style="color:white;text-align:center;">FECHA</td>
-									<td style="color:white;text-align:center;">CLIENTE</td>
-									<td style="color:white;text-align:center;">IMPORTE</td>
-									<td style="color:white;text-align:center;">SALDO</td>
-									<td style="color:white;text-align:center;">FORMA DE PAGO</td>
-									<td style="color:white;text-align:center;">REVISION</td>
-									<td style="color:white;text-align:center;">VENCE</td>
-									<td style="color:white;text-align:center;">PEDIDO</td>
-									<td style="color:white;text-align:center;">VENDEDOR</td>
-								</tr>
-							</thead>
+						<table class="table is-bordered" style="width:100%">							
+							<col width="9%">
+							<col width="9%">
+							<col width="14%">
+							<col width="8%">
+							<col width="8%">
+							<col width="10%">
+							<col width="10%">
+							<col width="10%">
+							<col width="10%">
+							<col width="12%">
+							<tr class="tbl-header">
+								<td style="text-align:center;font-size:12px">DOCUMENTO</td>									
+								<td style="text-align:center;font-size:12px">FECHA</td>
+								<td style="text-align:center;font-size:12px">CLIENTE</td>
+								<td style="text-align:center;font-size:12px">IMPORTE</td>
+								<td style="text-align:center;font-size:12px">SALDO</td>
+								<td style="text-align:center;font-size:12px">FORMA DE PAGO</td>
+								<td style="text-align:center;font-size:12px">REVISION</td>
+								<td style="text-align:center;font-size:12px">VENCE</td>
+								<td style="text-align:center;font-size:12px">PEDIDO</td>
+								<td style="text-align:center;font-size:12px">VENDEDOR</td>
+							</tr>							
 						</table>
 					</td>
 				</tr>
 				<tr>
 					<td>
 						<div style="width:100%; height:500px; overflow:auto;">
-							<table class="table is-hoverable" style="width:100%" id="tblClientes">
+							<table class="table is-bordered is-hoverable" style="width:100%" id="tblClientes">
+								<col width="9%">
+								<col width="9%">
+								<col width="14%">
+								<col width="8%">
+								<col width="8%">
+								<col width="10%">
+								<col width="10%">
+								<col width="10%">
+								<col width="10%">
+								<col width="12%">
 								<tr ng-repeat="x in lstFacturas" ng-click="selectRowFactura(x.DOCUMENTO,$index)" ng-class="{selected: x.DOCUMENTO === idDocumento}">
-									<td style="text-align:center;">{{x.DOCUMENTO}}</td>									
-									<td style="text-align:center;">{{x.FECHA_FACTURA}}</td>
-									<td style="text-align:center;">{{x.CLIENTE}}</td>
-									<td style="text-align:center;">{{x.IMPORTE | currency}}</td>
-									<td style="text-align:center;">{{x.SALDO | currency}}</td>
-									<td style="text-align:center;">{{x.ID_TIPO_PAGO == 1 ? 'Contado':'Crédito'}}</td>
-									<td style="text-align:center;">{{x.FECHA_REVISION}}</td>
-									<td style="text-align:center;">{{x.FECHA_VENCIMIENTO}}</td>
-									<td style="text-align:center;">&nbsp;</td>
-									<td style="text-align:center;">{{x.VENDEDOR}}</td>
+									<td style="text-align:center;font-size:12px">{{x.DOCUMENTO}}</td>									
+									<td style="text-align:center;font-size:12px">{{x.FECHA_FACTURA}}</td>
+									<td style="text-align:center;font-size:12px">{{x.CLIENTE}}</td>
+									<td style="text-align:center;font-size:12px">{{x.IMPORTE | currency}}</td>
+									<td style="text-align:center;font-size:12px">{{x.SALDO | currency}}</td>
+									<td style="text-align:center;font-size:12px">{{x.ID_TIPO_PAGO == 1 ? 'Contado':'Crédito'}}</td>
+									<td style="text-align:center;font-size:12px">{{x.FECHA_REVISION}}</td>
+									<td style="text-align:center;font-size:12px">{{x.FECHA_VENCIMIENTO}}</td>
+									<td style="text-align:center;font-size:12px">&nbsp;</td>
+									<td style="text-align:center;font-size:12px">{{x.VENDEDOR}}</td>
 								</tr>
 							</table>
 						</div>
@@ -130,39 +148,37 @@
 									</div>
 								</div>
 								
-								<div class="column is-8" ng-show="showLstClte" style="margin-left:90px; overflow:auto; heigth:50px">
+								<div class="column is-narrow" ng-show="showLstClte" style="margin-left:80px; overflow:auto; heigth:50px; width:360px;">
 									<table style="width:100%; border:2px solid black">
 										<tr>
-											<td align="center">
-												<table style="width:100%">
+											<td>
+												<table class="table" style="width:100%">
 													<col width="26%">
 													<col width="63%">
 													<col width="11%">
-													<thead>
-														<tr>
-															<td style="text-align=left;">Clave</td>
-															<td align="left">Nombre</td>
-															<td align="right">
-																<a ng-click="closeClteSearch()">
-																<span class="icon has-text-danger">
-																<i title="Cierra la búsqueda" class="fas fa-times-circle"></i>
-																</span>
-																</a>
-															</td>
-														</tr>
-													</thead>
+													<tr>
+														<td style="text-align:left;">Clave</td>
+														<td style="text-align:left;">Nombre</td>
+														<td style="text-align:right;">
+															<a ng-click="closeClteSearch()">
+															<span class="icon has-text-danger">
+															<i title="Cierra la búsqueda" class="fas fa-times-circle"></i>
+															</span>
+															</a>
+														</td>
+													</tr>													
 												</table>
 											</td>
 										</tr>
 										<tr>
-											<td align="center">
+											<td>
 												<div style="width:100%; height:100px; overflow:auto;">
-													<table style="width:100%;">
+													<table class="table is-hoverable" style="width:100%;">
 														<col width="26%">
 														<col width="74%">
 														<tr ng-repeat="x in lstCliente" ng-click="seleccionaCliente($index)">
-															<td style="text-align=left;">{{x.CLAVE}}</td>
-															<td align="left">{{x.NOMBRE}}</td>
+															<td style="text-align:left;">{{x.CLAVE}}</td>
+															<td style="text-align:left;">{{x.NOMBRE}}</td>
 														</tr>
 													</table>
 											</div>
@@ -188,42 +204,36 @@
 										</p>
 									</div>
 								</div>
-								<div class="column is-1">
-								</div>
-								<div class="column is-2">
-								</div>
-								<div class="column is-8" id="listaVendedores" style="display:none;" >
-									<table border="1" style="width:100%; border:2px red">
+								<div class="column is-narrow" style="width:350; margin-left:80px; border:2px black solid" ng-show="isLstVendedor" >
+									<table style="width:100%; border:2px red">
 										<tr>
-											<td align="center">
-												<table style="width:100%" border="1">
+											<td>
+												<table style="width:100%">
 													<col width="26%">
 													<col width="74%">
-													<thead>
-														<tr>
-															<td align="left">Clave</td>
-															<td align="left">Nombre</td>
-															<td>
-																<a ng-click="closeVendSearch()">
-																<span class="icon has-text-danger">
-																	<i title="Cierra la búsqueda" class="fas fa-times-circle"></i>
-																</span>
-															</a>
-															</td>
-														</tr>
-													</thead>
+													<tr>
+														<td style="text-align:left">Clave</td>
+														<td style="text-align:left">Nombre</td>
+														<td>
+															<a ng-click="closeVendSearch()">
+															<span class="icon has-text-danger">
+																<i title="Cierra la búsqueda" class="fas fa-times-circle"></i>
+															</span>
+														</a>
+														</td>
+													</tr>
 												</table>
 											</td>
 										</tr>
 										<tr>
-											<td align="center">
+											<td>
 												<div style="width:100%; height:100px; overflow:auto;">
-													<table style="width:100%;" border="1">
+													<table class="table is-hoverable" style="width:100%;">
 														<col width="25%">
 														<col width="75%">
 														<tr ng-repeat="x in lstVendedor" ng-click="seleccionaVendedor($index)">
-															<td align="left">{{x.ID_VENDEDOR}}</td>
-															<td align="left">{{x.NOMBRE}}</td>
+															<td style="text-align:left;">{{x.ID_VENDEDOR}}</td>
+															<td style="text-align:left;">{{x.NOMBRE}}</td>
 														</tr>
 													</table>
 											</div>
@@ -242,12 +252,10 @@
 							</div>
 							<div class="columns">
 								<div class="column is-narrow" style="width:80px">
-									<label for="fpago" class="label">F/Pago</label>
+									<label class="label">F/Pago</label>
 								</div>
 								<div class="column is-narrow" style="width:130px">
-									<div class="select is-small">
-										<select ng-model="factura.tpago" ng-options="x.ID_TIPO_PAGO as x.DESCRIPCION for x in lstTipopago"></select>
-									</div>
+									<select ng-model="factura.tpago" ng-change="cambioTpago()" ng-options="x.ID_TIPO_PAGO as x.DESCRIPCION for x in lstTipopago"></select>
 								</div>
 								<div class="column is-narrow" style="width:78px;margin-left:-25px">
 									<input type="number" class="input is-small" value="0" ng-model="factura.dias" ng-disabled="factura.tpago == 1">
@@ -284,15 +292,15 @@
 								<div class="column is-narrow">
 									<label class="label">Uso del CFDI</label>
 								</div>
-								<div class="column is-narrow">
+								<div class="column is-narrow select is-small" style="width:380px">
 									<select ng-model="factura.cfdi" ng-options="x.ID_CFDI as x.CLAVE+' '+x.DESCRIPCION for x in lstUsocfdi "></select>
 								</div>
 							</div>
 							<div class="columns">
 								<div class="column is-narrow" style="width:80px">
-									<label class="label">Metodo</label>
+									<label class="label">M&eacute;todo</label>
 								</div>
-								<div class="column is-narrow">
+								<div class="column is-narrow" style="width:280px">
 									<select ng-model="factura.mpago" ng-options="x.ID_MET_PAGO as x.MET_PAGO+' '+x.DESCRIPCION for x in lstMetpago"></select>
 								</div>
 							</div>
@@ -364,22 +372,22 @@
 							</a>
 						</div>
 					</div>
-					<div class="table-container" style="display:none;" id="dispsearch">
+					<div class="container" ng-show="dispsearch">
 						<table style="width:100%;">
 							<tr>
 								<td>
-									<table class="table" style="width:100%" border="1" >
-										<col width="15%">
-										<col width="40%">
+									<table class="table is-bordered" style="width:100%">
+										<col width="23%">
+										<col width="32%">
 										<col width="15%">
 										<col width="15%">
 										<col width="15%">
 										<tr style="background-color:Crimson; color:Ivory;">
-											<th align="center">Código</th>
-											<th>Descripción</th>
-											<th align="center">Unidad</th>
-											<th align="center">Precio</th>
-											<th align="center">Existencia</th>
+											<td style="text-align:center">Código</td>
+											<td style="text-align:center">Descripción</td>
+											<td style="text-align:center">Unidad</td>
+											<td style="text-align:center">Precio</td>
+											<td style="text-align:center">Existencia</td>
 										</tr>
 									</table>
 								</td>
@@ -394,24 +402,24 @@
 							<tr>
 								<td>
 									<div style="width:100%; height:200px; overflow:auto; border:2px solid red">
-										<table class="table is-hoverable" style="width:100%;">
+										<table class="table is-hoverable is-bordered" style="width:100%;">
+											<col width="23%">
+											<col width="32%">
 											<col width="15%">
-											<col width="40%">
 											<col width="15%">
 											<col width="15%">
 											<tr ng-repeat="x in lstProdBusqueda" ng-click="selectProdBus($index)">
-												<td align="center">{{x.CODIGO}}</td>
-												<td>{{x.DESCRIPCION}}</td>
-												<td align="center">{{x.UNIDAD_MEDIDAD}}</td>
-												<td align="right">{{x.PREC_LISTA_DISP}}</td>
-												<td align="right">{{x.STOCK}}</td>
+												<td style="text-align:left;font-size:12px">{{x.CODIGO}}</td>
+												<td style="font-size:12px">{{x.DESCRIPCION}}</td>
+												<td style="text-align:center;font-size:12px">{{x.UNIDAD_MEDIDA}}</td>
+												<td style="text-align:right;font-size:12px">{{x.PRECIO_LISTA | currency}}</td>
+												<td style="text-align:right;font-size:12px">{{x.STOCK}}</td>
 											</tr>
 										</table>
 									</div>
 								</td>
 							</tr>
 						</table>
-						<hr class="hr">
 					</div>
 					<div class="columns">
 						<div class="column">
@@ -425,16 +433,15 @@
 												<col width="15%">
 												<col width="15%">
 												<col width="15%">
-										</colgroup>
-											<thead>
-											<tr class="th" style="background-color:CornflowerBlue; color:Ivory;">
-												<th>Descripción</th>
-												<th align="center">Cantidad</th>
-												<th align="center">Unidad</th>
-												<th align="right">Precio</th>
-												<th align="right">Importe</th>
+											</colgroup>											
+											<tr class="tbl-header">
+												<td>Descripción</td>
+												<td style="text-align:center">Cantidad</td>
+												<td style="text-align:center">Unidad</td>
+												<td style="text-align:right">Precio</td>
+												<td style="text-align:right">Importe</td>
 											</tr>
-											</thead>
+											
 										</table>
 									</td>
 								</tr>
@@ -451,10 +458,10 @@
 											</colgroup>
 												<tr ng-repeat="p in lstProdCompra" ng-click="setSelected($index,p.CODIGO)" ng-class="{selected: p.CODIGO === idSelCompra}">
 													<td>{{p.DESCRIPCION}}</td>
-													<td align="center">{{p.CANTIDAD}}</td>
-													<td align="center">{{p.UNIDAD_MEDIDA}}</td>
-													<td align="right">$ {{p.PRECIO | number:2}}</td>
-													<td align="right">$ {{p.IMPORTE | number:2}}</td>
+													<td style="text-align:center">{{p.CANTIDAD}}</td>
+													<td style="text-align:center">{{p.UNIDAD_MEDIDA}}</td>
+													<td style="text-align:right">$ {{p.PRECIO_LISTA | number:2}}</td>
+													<td style="text-align:	right">$ {{p.IMPORTE | number:2}}</td>
 												</tr>
 											</table>
 									</div>

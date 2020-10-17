@@ -35,6 +35,8 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
   $scope.showEliminaFactura = false;
   $scope.modalVerfClte = false;
   $scope.showLstClte = false;
+  $scope.isLstVendedor = false;
+  $scope.dispsearch = false;
   $scope.btnVerifClte = 'Actualizar';
   $scope.tcaptura = 'D';
   $scope.idempresa = '';
@@ -91,7 +93,8 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
       esPromo : false,
       esDscto : false,
       descuento : 0,
-      promocion : 0
+      promocion : 0,
+      tipo_ps:''
   };
 
 
@@ -507,7 +510,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
         {
           $scope.producto.prod_desc = res.data[0].DESCRIPCION;
           $scope.producto.precio = Number(res.data[0].PRECIO_LISTA).toFixed(2);
-          $scope.producto.unidad = res.data[0].producto.unidad_MEDIDA;
+          $scope.producto.unidad = res.data[0].producto.UNIDAD_MEDIDA;
           $scope.producto.imagePath = res.data[0].IMAGEN;
           $scope.producto.iva = res.data[0].IVA;
           if($scope.producto.imagePath!='')
@@ -529,7 +532,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
       {
         return;
       }
-    	$('#dispsearch').show();
+      $scope.dispsearch = true;
     	var searchword = $scope.producto.prod_desc !='' ? $scope.producto.prod_desc : 'vacio';
     	$http.get(pathTpv+'getitems/'+$scope.factura.idempresa+'/'+searchword+'/V', {responseType: 'json'}).
     	then(function(res)
@@ -558,7 +561,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
       $scope.producto.esDscto = $scope.lstProdBusqueda[idxRowListaBusq].ES_DESCUENTO == 't' ? true:false;
       $scope.producto.descuento = $scope.lstProdBusqueda[idxRowListaBusq].PRECIO_DESCUENTO;
       $scope.producto.promocion = $scope.lstProdBusqueda[idxRowListaBusq].PRECIO_PROMO;
-      
+      $scope.producto.tipo_ps = $scope.lstProdBusqueda[idxRowListaBusq].TIPO_PS;
       if($scope.imagePath!='')
       {
         $('#imgfig').show();
@@ -577,11 +580,17 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
         }else {
           $scope.qtyProdSuc = 0;
         }
-        if($scope.qtyProdSuc == 0)
+        if($scope.qtyProdSuc == 0 && $scope.producto.tipo_ps == 'P')
         {
           $scope.agregaProd = false;
         }  
-        $scope.isVerifExis = true;
+        if($scope.producto.tipo_ps =='S')
+        {
+          $scope.isVerifExis = false;
+        }else if($scope.producto.tipo_ps =='P')
+        {
+          $scope.isVerifExis = true;
+        }
         
       }).catch(function(err)
       {
@@ -591,7 +600,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
 
     $scope.closeDivSearch = function()
     {
-    	$('#dispsearch').hide();
+      $scope.dispsearch = false;
     	$scope.lstProdBusqueda = [];
     }
 
@@ -605,7 +614,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
         $('#cantidad').focus();
         return;
       }
-      if(Number($scope.cantidad) > Number($scope.producto.cantProd) && $scope.tipo_ps == 'P')
+      if(Number($scope.cantidad) > Number($scope.producto.cantProd) && $scope.producto.tipo_ps == 'P')
       {
         swal('La cantidad de productos ['+$scope.cantidad+'] seleccionados es mayor a la existencia ['+$scope.producto.cantProd+']');
         $scope.cantidad = $scope.producto.cantProd;
@@ -621,14 +630,15 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
           PRECIO_LISTA:$scope.producto.precio,
           IMPORTE:importe,
           CODIGO:$scope.producto.codigo_prodto,
-          UNIDAD:$scope.producto.unidad,
+          UNIDAD_MEDIDA:$scope.producto.unidad,
           IMG:$scope.producto.imagePath,
           IVA:$scope.producto.iva,
           ID_PRODUCTO:$scope.producto.id_producto,
           ESPROMO:$scope.producto.esPromo,
           ESDSCTO:$scope.producto.esDscto,
           PRECIO_PROMO:$scope.producto.promocion,
-          DESCUENTO:$scope.producto.descuento
+          DESCUENTO:$scope.producto.descuento,
+          TIPO_PS:$scope.producto.tipo_ps
       };
 
       if($('#updtTblComp').val()=='T'){
@@ -686,8 +696,15 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
       $scope.producto.esDscto = $scope.lstProdCompra[$scope.indexRowCompra].ESDSCTO;
       $scope.producto.promocion = $scope.lstProdCompra[$scope.indexRowCompra].PRECIO_PROMO;
       $scope.producto.descuento = $scope.lstProdCompra[$scope.indexRowCompra].DESCUENTO;
-      //$scope.tipo_ps = $scope.lstProdCompra[$scope.indexRowCompra].TIPO_PS;
+      $scope.producto.tipo_ps = $scope.lstProdCompra[$scope.indexRowCompra].TIPO_PS;
      
+      if($scope.producto.tipo_ps == 'P')
+      {
+        $scope.isVerifExis = true;
+      }else {
+        $scope.isVerifExis = false;
+      }
+
       if($scope.producto.imagePath!='')
       {
         $('#imgfig').show();
@@ -719,8 +736,8 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
 
       for(var i=0;i<$scope.lstProdCompra.length;i++)
       {
-        $scope.factura.total += Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO) ;
-        $scope.dsctoValor += Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO) * ($scope.lstProdCompra[i].ESDSCTO ? Number($scope.lstProdCompra[i].DESCUENTO/100) : 0);
+        $scope.factura.total += Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) ;
+        $scope.dsctoValor += Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) * ($scope.lstProdCompra[i].ESDSCTO ? Number($scope.lstProdCompra[i].DESCUENTO/100) : 0);
         $scope.importeNeto = $scope.factura.total   / (1+Number($scope.lstProdCompra[i].IVA/100));
         $scope.impuestos = ($scope.importeNeto) * Number($scope.lstProdCompra[i].IVA/100);
       }
@@ -775,10 +792,10 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
         if(res.data.length > 0)
         {
           $scope.lstVendedor = res.data;
-          $('#listaVendedores').show();
+          $scope.isLstVendedor = true;
         }else {
           $scope.lstVendedor = [];
-          $('#listaVendedores').hide();
+          $scope.isLstVendedor = false;
         }
       }).catch(function(err)
       {
@@ -786,19 +803,23 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
       });
     }
 
+    $scope.cambioTpago = function(){
+      if($scope.factura.tpago == 1){
+        $scope.factura.dias = '';
+      }
+    }
+
     $scope.seleccionaVendedor = function(indxRowClte)
     {
       $scope.factura.idvendedor = $scope.lstVendedor[indxRowClte].ID_VENDEDOR;
       $scope.nombre_vendedor = $scope.lstVendedor[indxRowClte].NOMBRE;
-
-      $scope.lstVendedor = [];
-      $('#listaVendedores').hide();
+      $scope.closeVendSearch();
     }
 
     $scope.closeVendSearch = function()
     {
       $scope.lstVendedor = [];
-      $('#listaVendedores').hide();
+      $scope.isLstVendedor = false;
     }
     
     $scope.registraFactura = function()
@@ -812,35 +833,63 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
         aniofiscal:$scope.factura.aniofiscal,
         idempresa:$scope.factura.idempresa,
         idtipopago:$scope.factura.tpago,
-        //idformapago:$scope.factura.fpago,
-        pagoefectivo:$scope.factura.tpago == 1 ? $scope.total : 0,
+        pagoefectivo:$scope.factura.tpago == 1 ? $scope.factura.total : 0,
         pagotarjeta:0,
         pagocheques:0,
         pagovales:0,
         idtarjea:null,
         idbanco:null,
         idvales:null,
-        importe:$scope.total,
+        idtarjea:null,
+        idbanco:null,
+        idvales:null,
+        importe:$scope.factura.total,
         cambio:0,
-        idsucursal:$scope.idsucursal,
+        idsucursal:$scope.factura.idsucursal,
+        facturado:'true',
+        idfactura:null
+      }
+      var nextdate = new Date(new Date().getTime()+ $scope.factura.dias*1000*60*60*24);
+      var dataFact = 
+      {
+        documento: $scope.factura.docto,
+        ffactura: formatDateInsert(new Date()),
+        idcliente: $scope.factura.idcliente,
+        importe: $scope.factura.total,
+        saldo:$scope.factura.total,
+        tipopago:$scope.factura.tpago,
+        frevision:formatDateInsert(new Date()),
+        fvencimiento:formatDateInsert(nextdate),
+        idvendedor:$scope.factura.idvendedor =='' ? null : $scope.factura.idvendedor,
+        idempresa:$scope.factura.idempresa,
+        aniofiscal:$scope.factura.aniofiscal,
+        idsucursal:$scope.factura.idsucursal,
         formapago:$scope.factura.fpago,
         usocfdi:$scope.factura.cfdi,
         metodopago:$scope.factura.mpago
-      }
+      };
 
-      $http.put(pathTpv+'registraventa',dataVenta).
-      then(function(res)
-      {
-        $scope.idVenta = res.data[0].registra_venta;
-        $scope.registraVentaProd();
-        swal('La factura se registró exitosamente');     
-        $scope.limpiar();
-        $scope.getNextDocTpv(); 
-      })
-      .catch(function(err)
-      {
-        console.log(err);
-      });
+      $http.post(pathFactura+'savefactura',dataFact)
+          .then( res => {
+            dataVenta.idfactura = res.data[0].registra_factura;
+            $http.put(pathTpv+'registraventa',dataVenta)
+              .then(function(res)
+              {
+                $scope.idVenta = res.data[0].registra_venta;
+                $scope.registraVentaProd();
+                $scope.getfacturas();
+                swal('La factura se registró exitosamente','Felicidades!','success');     
+                $scope.limpiar();
+                $scope.getNextDocTpv(); 
+              })
+              .catch(function(err)
+              {
+                console.log(err);
+              });
+          })
+          .catch(err => {
+            console.log(err);
+          });
     }
 
     $scope.registraVentaProd = function()
@@ -850,14 +899,16 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
       {
         ventaProd =
         {
-          idpedido:$scope.idPedido,
+          idventa:$scope.idVenta,
           idProducto:$scope.lstProdCompra[i].ID_PRODUCTO,
           cantidad:$scope.lstProdCompra[i].CANTIDAD,
           precio:$scope.lstProdCompra[i].PRECIO_LISTA,
           importe:$scope.lstProdCompra[i].IMPORTE,
-          idsucursal:$scope.factura.idsucursal
+          idsucursal:$scope.factura.idsucursal,
+          tipops:$scope.producto.tipo_ps
         }
-        $http.put(pathPedi+'registrapedidoprod',ventaProd).
+        console.log(ventaProd);
+        $http.put(pathTpv+'registraventaprod',ventaProd).
         then(function(res)
         {
           /*se insertó con éxito*/

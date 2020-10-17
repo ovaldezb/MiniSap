@@ -2,12 +2,11 @@
 	defined('BASEPATH') OR exit('No direct script access allowed');
 	$size1 = 100;
 ?>
-<br><br>
 <div class="container" ng-controller="myCtrlProducto" data-ng-init="init()">
 	<div class="notification" >
-		<h1 class="title is-2 has-text-centered">Administración de Productos y Servicios</h1>
+		<h1 class="title is-4 has-text-centered">Administración de Productos y Servicios</h1>
 	</div>
-	<nav class="level">
+	<nav class="level" ng-show="!isMainDivPrdcto">
 		<div class="level-left">
 			<div class="level-item">
 				<p class="subtitle is-5">
@@ -40,11 +39,11 @@
 					</span>
 				</a>
 			</p>
-  	</div>
+  		</div>
 	</nav>
-	<div class="box" ng-show="isMainDivPrdcto">
+	<div ng-show="isMainDivPrdcto">
 		<form name="myForm">
-			<div class="box">
+			<div class="box" style="margin-top:-25px">
 				<div class="columns">
 					<div class="column is-7">
 						<div class="columns">
@@ -95,17 +94,22 @@
 <?php	} ?>
 							</select>
 						</div>
+						<div class="column is-narrow" style="margin-left:70px">
+							<div class="control" id="cargarimg">
+								<button  ng-click="openImageWnd($event);" id="btnAddImg" class="button is-primary">Agregar Imagen</button>
+							</div>
+						</div>
 					</div>
 				</div>
 				<div class="column is-1">
 				</div>
-				<div class="column has-text-centered">
-				<figure class="media-left">
-					<p class="image is-128x128">
-						<input type="hidden" id="img_name" value="">
-					<img style="display: none;" id="imgsrc" src="">
-					</p>
-		  	</figure>
+				<div class="column is-narrow" style="margin-left:100px">
+					<figure class="media-left">
+						<p class="image is-128x128">
+							<input type="hidden" id="img_name" value="">
+						<img style="display: none;" id="imgsrc" src="">
+						</p>
+					</figure>
 				</div>
 			</div>
 			<div class="columns">			
@@ -118,16 +122,11 @@
 				<div class="column is-1">
 					<input  ng-model="equivalencia" class="input is-small" type="text">
 				</div>
-				<div class="column is-3"></div>
-				<div class="column is-2">
-					<div class="control" id="cargarimg">
-						<button  ng-click="openImageWnd($event);" id="btnAddImg" class="button is-primary">Agregar Imagen</button>
-					</div>
-				</div>
+				
 			</div>
 		</div>
 
-<div class="box">
+<div class="box" style="margin-top:-25px">
 	<h4 class="title is-5 has-text-centered">Datos Obligatorios para CFDI 3.3</h4>
 	<div class="columns">
 		<div class="column is-one-quarter">
@@ -265,8 +264,11 @@
 					<input ng-model="preciolista" class="input is-small" type="number" placeholder="PRECIO" required>
 				</div>
 				<div class="column is-1"></div>
-				<div class="column is-2">
+				<div class="column is-narrow" style="width:400px">
 					<label class="label">Última actualización:</label><p id="ultact"></p>
+				</div>
+				<div class="column is-narrow" style="margin-right:80px">
+					<label class="label">Stock</label>
 				</div>
 			</div>
 			<div class="columns is-gapless">
@@ -284,7 +286,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="column is-2">
+				<div class="column is-narrow" style="width:130px">
 					<label class="label">En Promoción</label>
 				</div>
 				<div class="column is-narrow" style="margin-right:84px">
@@ -295,6 +297,12 @@
 				</div>
 				<div class="column is-1">
 					<input type="number" ng-model="preciopromo" class="input is-small" name="preciopromo" min="0">
+				</div>
+				<div class="column is-narrow" style="margin-left:30px">
+					<label class="label">Máximo</label>
+				</div>
+				<div class="column is-1">
+					<input ng-model="maxstock" id="maxstock" class="input is-small" type="number" style="margin-left:10px">
 				</div>
 			</div>
 			<div class="columns is-gapless">
@@ -309,7 +317,7 @@
 				</div>
 				<div class="column is-1">
 				</div>
-				<div class="column is-2">
+				<div class="column is-narrow" style="width:130px">
 					<label class="label">Con Descuento</label>
 				</div>
 				<div class="column is-narrow" style="margin-right:80px">
@@ -320,6 +328,12 @@
 				</div>
 				<div class="column is-1">
 					<input type="number" ng-model="preciodescnt" class="input is-small" min="0" max="100">
+				</div>
+				<div class="column is-narrow" style="margin-left:30px">
+					<label class="label">Mínimo</label>
+				</div>
+				<div class="column is-1">
+					<input ng-model="minstock" id="minstock" class="input is-small" type="number" style="margin-left:10px">
 				</div>
 			</div>
 			<div class="columns is-gapless">
@@ -337,94 +351,75 @@
 						</div>
 					</div>
 				</div>
-				<div class="column is-1">
+				<div class="column is-narrow" style="width:90px">
 					<input id="ieps" ng-model="ieps" class="input is-small" type="text" placeholder="IEPS">
 				</div>
-				<div class="column is-1">
+				<div class="column is-narrow" style="width:90px">
 				</div>
-				<div class="column is-narrow" style="margin-right:80px">
-					<label class="label">Stock</label>
+				<div class="column is-narrow" style="width:125px">
+					<label class="label">Tasa Exenta</label>
 				</div>
-				<div class="column is-1">
-				</div>
-				<div class="column is-narrow" style="margin-right:28px">
-					<label class="label">Máximo</label>
-				</div>
-				<div class="column is-1">
-					<input ng-model="maxstock" id="maxstock" class="input is-small" type="number">
+				<div class="column is-narrow" style="margin-right:5px">
+					<input id="estasaexenta" ng-model="estasaexenta" class="checkbox" type="checkbox">
 				</div>
 			</div>
 			<div class="columns is-gapless is-multiline is-mobile">
 				<div class="column is-2">
 					<label class="label">Observaciones</label>
 				</div>
-				<div class="column is-narrow" style="margin-right:5px">
-					<input id="estasaexenta" ng-model="estasaexenta" class="checkbox" type="checkbox">
-				</div>
-				<div class="column is-1">
-					<label class="label">Tasa Exenta</label>
-				</div>
-				<div class="column is-3">
-				</div>
-				<div class="column is-narrow" style="margin-right:30px">
-					<label class="label">Mínimo</label>
-				</div>
-				<div class="column is-1">
-					<input ng-model="minstock" id="minstock" class="input is-small" type="number">
-				</div>
 			</div>
-			<div class="columns is-gapless is-multiline is-mobile">
-				<div class="column is-8">
-					<textarea class="textarea" ng-model="notas"></textarea>
+			<div class="columns" style="margin-top:-20px">
+				<div class="column is-narrow" style="width:705px">
+					<textarea class="textarea" ng-model="notas" rows="2"></textarea>
 				</div>
 			</div>
 			<div class="field is-grouped">
-		  	<p class="control">
+		  		<p class="control">
 					<button ng-click="submitForm();" class="button is-primary" ng-disabled="myForm.$invalid">{{btnAccion}}</button>
-		  	</p>
-		  	<p class="control">
+		  		</p>
+		  		<p class="control">
 					<button ng-click="cancelar()" class="button is-light">Cancelar</button>
-		  	</p>
+		  		</p>
 			</div>
 		</div>
 	</form>
 	</div>
-	<div style="border: 2px solid black" ng-show="!isMainDivPrdcto">
+	<div style="border: 2px solid black; width:99%" ng-show="!isMainDivPrdcto">
 		<table  class="table" style="width:100%;"  >
-				<tr>
-						<td>
-							<table class="table is-hoverable" style="width:100%">
-								<col width='40%'>
-								<col width='20%'>
-								<col width='20%'>
-								<col width='20%'>
-								<tr style="background-color:CornflowerBlue; color:Ivory;">
-									<td ng-click="orderByMe('DESCRIPCION')">DESCRIPCIÓN</td>
-									<td ng-click="orderByMe('CODIGO')" align="right">CÓDIGO</td>
-									<td ng-click="orderByMe('PRECIO_LISTA')" align="right">PRECIO LISTA</td>
-									<td ng-click="orderByMe('STOCK')" align="right">EXISTENCIA</td>
-								</tr>
-							</table>
-						</td>
-				</tr>
-				<tr>
-						<td>
-							<div style="width:100%; height:570px; overflow:auto;">
-								<table class="table is-hoverable" id="tablaproducto" style="width:100%">
-									<col width='40%'>
-									<col width='20%'>
-									<col width='20%'>
-									<col width='20%'>
-									<tr ng-repeat="x in lstPrdcts | orderBy:myOrderBy:sortDir" ng-click="selectRowProducto(x.CODIGO,$index,x.ID_PRODUCTO)" ng-class="{selected: x.CODIGO === idSelProd}" ng-dblclick="update()">
-										<td>{{x.DESCRIPCION}}</td>
-										<td align="right">{{x.CODIGO}}</td>
-										<td align="right">${{x.PRECIO_LISTA | number:2}}</td>
-										<td align="right">{{x.STOCK}}</td>
-									</tr>
-								</table>
-						</div>
-						</td>
-				</tr>
+			<tr>
+				<td>
+					<table class="table is-bordered" style="width:100%">
+						<col width='40%'>
+						<col width='20%'>
+						<col width='20%'>
+						<col width='20%'>
+						<tr class="tbl-header">
+							<td ng-click="orderByMe('DESCRIPCION')">DESCRIPCIÓN</td>
+							<td ng-click="orderByMe('CODIGO')" style="text-align:right">CÓDIGO</td>
+							<td ng-click="orderByMe('PRECIO_LISTA')" style="text-align:right">PRECIO LISTA</td>
+							<td ng-click="orderByMe('STOCK')" style="text-align:right">EXISTENCIA</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div style="width:100%; height:500px; overflow:auto;">
+						<table class="table" id="tablaproducto" style="width:100%">
+							<col width='40%'>
+							<col width='20%'>
+							<col width='20%'>
+							<col width='20%'>
+							<tr ng-repeat="x in lstPrdcts | orderBy:myOrderBy:sortDir" ng-click="selectRowProducto(x.CODIGO,$index,x.ID_PRODUCTO)" ng-class="{selected: x.ID_PRODUCTO === idProducto}" ng-dblclick="update()">
+								<td>{{x.DESCRIPCION}}</td>
+								<td style="text-align:right">{{x.CODIGO}}</td>
+								<td style="text-align:right">${{x.PRECIO_LISTA | number:2}}</td>
+								<td style="text-align:right">{{x.STOCK}}</td>
+							</tr>
+						</table>
+					</div>
+				</td>
+			</tr>
 		</table>
 	</div>
 

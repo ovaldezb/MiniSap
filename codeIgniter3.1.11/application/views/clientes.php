@@ -196,39 +196,37 @@
 		</div>
 	</form>
 	</div>
-	<div class="table-container is-centered" id="lstclientes" ng-show="!isAddOpen">
-		<table border="1" style="width:100%">
+	<div class="container" style="border:2px solid black; width:99%; margin:0 auto" id="lstclientes" ng-show="!isAddOpen">
+		<table style="width:100%">
 			<tr>
 				<td>
-					<table style="width:100%">
+					<table class="table is-bordered" style="width:100%">
 						<col width="15%">
 						<col width="25%">
 						<col width="26%">
 						<col width="29%">
-						<thead>
-							<tr style="background:LightSlateGray;">
-								<td align="center" style="color:white" ng-click="orderByMe('CLAVE')">CLAVE</td>
-								<td align="center" style="color:white" ng-click="orderByMe('NOMBRE')">NOMBRE</td>
-								<td align="center" style="color:white" ng-click="orderByMe('RFC')">RFC</td>
-								<td align="center" style="color:white" ng-click="orderByMe('CURP')">CURP</td>
-							</tr>
-						</thead>
+						<tr class="tbl-header">
+							<td style="text-align:center" ng-click="orderByMe('CLAVE')">CLAVE</td>
+							<td style="text-align:center" ng-click="orderByMe('NOMBRE')">NOMBRE</td>
+							<td style="text-align:center" ng-click="orderByMe('RFC')">RFC</td>
+							<td style="text-align:center" ng-click="orderByMe('SALDO')">SALDO</td>
+						</tr>
 					</table>
 				</td>
 			</tr>
 			<tr>
 				<td>
 					<div style="width:100%; height:500px; overflow:auto;">
-					<table class="table is-hoverable" style="width:100%" id="tblClientes">
+					<table class="table is-bordered is-hoverable" style="width:100%" id="tblClientes">
 						<col width="15%">
 						<col width="25%">
 						<col width="26%">
 						<col width="29%">
 						<tr ng-repeat="x in lstCliente | orderBy:myOrder:sortDir" ng-click="selectRowCliente(x.CLAVE,$index,x.ID_CLIENTE)" ng-class="{selected: x.CLAVE === idSelCompra}">
-							<td align="center">{{x.CLAVE}}</td>
-							<td align="center">{{x.NOMBRE}}</td>
-							<td align="center">{{x.RFC}}</td>
-							<td align="center">{{x.CURP}}</td>
+							<td style="text-align:center">{{x.CLAVE}}</td>
+							<td style="text-align:center">{{x.NOMBRE}}</td>
+							<td style="text-align:center">{{x.RFC}}</td>
+							<td style="text-align:center">{{x.CURP}}</td>
 						</tr>
 					</table>
 				</div>

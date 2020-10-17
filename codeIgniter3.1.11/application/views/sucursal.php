@@ -12,7 +12,7 @@
   				</p>
   			</div>
   			<div class="level-item">
-  				<input name="sucursal" class="input is-small" type="input" onKeyUp="doFilter(this.value,'tablaprovedores');" title="Ingrese cualquier dato que desee encontrar, Ej. nombre, código, precio ">
+  				<input name="sucursal" class="input is-small" type="input" onKeyUp="doFilter(this.value,'tablasucursal');" title="Ingrese cualquier dato que desee encontrar, Ej. nombre, código, precio ">
   			</div>
   		</div>
   		<div class="level-right">
@@ -110,20 +110,20 @@
 			</div>
     </form>
   </div>
-  <div class="table-container" style="border: 2px solid black" ng-show="!isDivSucActivo">
+  <div class="container" style="border: 2px solid black; width:90%" ng-show="!isDivSucActivo">
     <table style="width:100%">
       <tr>
         <td>
-          <table style="width:100%">
+          <table class="table is-bordered" style="width:100%">
             <col width="20%">
             <col width="40%">
             <col width="30%">
             <col width="10%">
             <tr style="background-color:CornflowerBlue; color:Ivory;">
-              <td align="center"><a ng-click="orderByMe('CLAVE')">CLAVE</a></td>
-              <td align="center"><a ng-click="orderByMe('DIRECCION')">DIRECCIÓN</a></td>
-              <td align="center"><a ng-click="orderByMe('RESPONSABLE')">RESPONSABLE</a></td>
-              <td align="center"><a ng-click="orderByMe('CP')">ALIAS</a></td>
+              <td style="text-align:center">CLAVE</td>
+              <td style="text-align:center" ng-click="orderByMe('DIRECCION')">DIRECCIÓN</td>
+              <td style="text-align:center" ng-click="orderByMe('RESPONSABLE')">RESPONSABLE</td>
+              <td style="text-align:center" ng-click="orderByMe('CP')">ALIAS</td>
             </tr>
           </table>
         </td>
@@ -131,7 +131,7 @@
       <tr>
         <td>
           <div style="width:100%; height:590px; overflow:auto;">
-            <table class="table is-hoverable" style="width:100%">
+            <table id="tablasucursal" class="table is-hoverable" style="width:100%">
               <col width="20%">
               <col width="40%">
               <col width="30%">
