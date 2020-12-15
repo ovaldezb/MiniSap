@@ -51,7 +51,7 @@
 								<label class="label">Código</label>
 							</div>
 							<div class="column is-3">
-								<input name="codigo" ng-model="codigo" class="input is-small" type="text" placeholder="CÓDIGO" required>
+								<input name="codigo" ng-model="codigo" class="input is-small" ng-blur="validarcodigo()" onkeyup="toUpper(this)" type="text" placeholder="CÓDIGO" required>
 							</div>
 							<div class="column is-narrow">
 								<label class="label">Producto <input type="radio" ng-model="tipops" name="tipo" value="P" checked ng-click="selecTPS()" required></label>

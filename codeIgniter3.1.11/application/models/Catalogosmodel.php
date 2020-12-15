@@ -99,7 +99,7 @@ class Catalogosmodel extends CI_model
 	{
 		$query = 'SELECT * FROM "BANCO"';
 		$result = pg_fetch_all(pg_query($this->conn, $query));
-		return $result;
+		return json_encode($result,JSON_NUMERIC_CHECK);
 	}
 
 	function get_linea()
@@ -184,14 +184,14 @@ class Catalogosmodel extends CI_model
 	{
 		$query = 'SELECT * FROM "TARJETAS" ';
 		$result = pg_fetch_all(pg_query($this->conn, $query));
-		return ($result);
+		return json_encode($result,JSON_NUMERIC_CHECK);
 	}
 
 	function get_vales()
 	{
 		$query = 'SELECT * FROM "VALES" ';
 		$result = pg_fetch_all(pg_query($this->conn, $query));
-		return ($result);
+		return json_encode($result,JSON_NUMERIC_CHECK);
 	}
 
 	function get_incremento_by_name($nombre,$idempresa,$longitud)
@@ -227,13 +227,6 @@ class Catalogosmodel extends CI_model
 		$query = 'SELECT * FROM "PUESTO"';
 		$result = pg_fetch_all(pg_query($this->conn, $query));
 		return $result;
-	}
-
-	function inserta_producto($arrayProd){
-		$query = 'SELECT * FROM inserta_producto($1,$2)';
-		pg_prepare($this->conn,"insert_prod",$query);
-		$result = pg_fetch_all(pg_execute($this->conn,"insert_prod",$arrayProd));
-		return $result;//json_encode(array('result'=>$result));
 	}
 
 }

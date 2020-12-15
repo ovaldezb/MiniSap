@@ -93,11 +93,11 @@ class Usuariomodel extends CI_model
 		return json_encode($result);
 	}
 
-	function crea_usuario($nombre,$usrname,$paswd,$idsucursal)
+	function crea_usuario($nombre,$usrname,$paswd)
 	{
-		$query = 'SELECT * FROM crea_usuario($1,$2,$3,$4)';
+		$query = 'SELECT * FROM crea_usuario($1,$2,$3)';
 		pg_prepare($this->conn,"creaquery",$query);
-		$result = pg_fetch_all(pg_execute($this->conn, "creaquery", array($nombre,$usrname,$paswd,$idsucursal)));
+		$result = pg_fetch_all(pg_execute($this->conn, "creaquery", array($nombre,$usrname,$paswd)));
 		return json_encode($result,JSON_NUMERIC_CHECK);
 	}
 
@@ -129,8 +129,9 @@ class Usuariomodel extends CI_model
 	function get_modulos_by_ususario($idusuario)
 	{
 		$query = 'SELECT U."ID_MODULO", M."NOMBRE"
-							FROM "USUARIO_MODULO" as U INNER JOIN "MODULOS" as M ON U."ID_MODULO" = M."ID_MODULO"
-							WHERE U."ID_USUARIO" = $1';
+				FROM "USUARIO_MODULO" as U 
+				INNER JOIN "MODULOS" as M ON U."ID_MODULO" = M."ID_MODULO"
+				WHERE U."ID_USUARIO" = $1';
 		pg_prepare($this->conn,"selectusrmdl",$query);
 		$result = pg_fetch_all(pg_execute($this->conn, "selectusrmdl", array($idusuario)));
 		return json_encode($result,JSON_NUMERIC_CHECK);

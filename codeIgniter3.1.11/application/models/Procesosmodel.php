@@ -13,7 +13,10 @@ class Procesosmodel extends CI_model
 
   function get_modulos_procesos_by_usuario($idusuario)
   {
-    $query = 'SELECT M."NOMBRE" as "MODULO",PR."NOMBRE" as "PROCESO",TRIM(PR."RUTA") as "RUTA", UP."ID_PROCESO"
+    $query = 'SELECT M."NOMBRE" as "MODULO",
+              CASE WHEN  M."ICONO" IS NULL THEN \'\' ELSE M."ICONO"  END as "ICONO",
+              PR."NOMBRE" as "PROCESO",
+              TRIM(PR."RUTA") as "RUTA", UP."ID_PROCESO"
               FROM "PROCESOS" as PR
               INNER JOIN "USUARIO_PROCESO" as UP ON PR."ID_PROCESO" = UP."ID_PROCESO"
               INNER JOIN "MODULOS" as M ON M."ID_MODULO" = PR."ID_MODULO"

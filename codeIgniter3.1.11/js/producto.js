@@ -463,6 +463,19 @@ app.controller('myCtrlProducto', function($scope,$http,$routeParams)
     }
   }
 
+  $scope.validarcodigo = function(){
+    $http.get(pathProd+'prodbycode/'+$scope.codigo)
+        .then(res=>{
+          if(res.data.length==1){
+            swal("El código de producto "+$scope.codigo+" ya existe","Verifique el código","warning");
+            $scope.codigo = '';
+          }
+        })
+        .catch(err=>{
+          console.log(err);
+        });
+  }
+
 });
 
 function setValue(valor,idemprcodigo)

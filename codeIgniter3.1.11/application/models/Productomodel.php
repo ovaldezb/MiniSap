@@ -14,13 +14,14 @@ class Productomodel extends CI_model
 	function get_productos($idempresa)
 	{
 		$query = 'SELECT P."ID_PRODUCTO", P."DESCRIPCION",
-							TRIM(P."CODIGO") AS "CODIGO",
-							P."PRECIO_LISTA", SUM(S."STOCK") as "STOCK"
-							FROM "PRODUCTO" as P
-							INNER JOIN "PRODUCTO_SUCURSAL" as S
-							ON P."ID_PRODUCTO" = S."ID_PRODUCTO"
-							WHERE P."ID_EMPRESA" = $1 AND P."ACTIVO" = true
-							GROUP BY P."DESCRIPCION",P."ID_PRODUCTO", P."CODIGO",P."PRECIO_LISTA"							';
+				TRIM(P."CODIGO") AS "CODIGO",
+				P."PRECIO_LISTA", SUM(S."STOCK") as "STOCK"
+				FROM "PRODUCTO" as P
+				INNER JOIN "PRODUCTO_SUCURSAL" as S
+				ON P."ID_PRODUCTO" = S."ID_PRODUCTO"
+				WHERE P."ID_EMPRESA" = $1 AND P."ACTIVO" = true
+				GROUP BY P."DESCRIPCION",P."ID_PRODUCTO", P."CODIGO",P."PRECIO_LISTA"
+				ORDER BY P."DESCRIPCION"';
 		pg_prepare($this->conn, "selproducto",$query);
 		$result = pg_fetch_all(pg_execute($this->conn, "selproducto",array($idempresa)));
 		return json_encode($result,JSON_NUMERIC_CHECK);
@@ -87,6 +88,54 @@ class Productomodel extends CI_model
 		$query = 'UPDATE "PRODUCTO" SET "ACTIVO" = false WHERE "ID_PRODUCTO" = $1';
 		pg_prepare($this->conn,"deletequery",$query);
 		$result = pg_execute($this->conn,"deletequery",array($_id));
+		return $result;
+	}
+
+	//Inserta productos de forma masiva
+	function inserta_producto($producto){
+		$query = 'SELECT * FROM inserta_producto($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)';
+		pg_query($this->conn, "DEALLOCATE ALL"); 
+		pg_prepare($this->conn,"insert_prod",$query);
+		$result = pg_execute($this->conn,"insert_prod",$producto);
+		return $result;
+	}
+
+	function inserta_cliente($cliente){
+		$query = 'INSERT INTO "CLIENTE" ("CLAVE",
+										"NOMBRE",
+										"DOMICILIO",
+										"TELEFONO",
+										"EMAIL",
+										"CURP",
+										"RFC",
+										"DIAS_CREDITO",
+										"ID_EMPRESA",
+										"ACTIVO",
+										"ID_FORMA_PAGO") 
+				VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)';
+		pg_query($this->conn, "DEALLOCATE ALL"); 
+		pg_prepare($this->conn,"insert_clt",$query);
+		$result = pg_execute($this->conn,"insert_clt",$cliente);
+		return $result;
+	}
+
+	function inserta_proveedor($proveedor){
+		$query = 'INSERT INTO "PROVEEDORES" ("CLAVE",
+											"NOMBRE",
+											"DOMICILIO",
+											"RFC",
+											"CURP",
+											"TELEFONO",
+											"EMAIL",
+											"DIAS_CRED",
+											"ID_CATEGORIA_PROV",
+											"ID_TIPO_ALC_PROV",
+											"ID_EMPRESA",
+											"ACTIVO") 
+				VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)';
+		pg_query($this->conn, "DEALLOCATE ALL"); 
+		pg_prepare($this->conn,"inserta_prov",$query);
+		$result = pg_execute($this->conn,"inserta_prov",$proveedor);
 		return $result;
 	}
 }

@@ -459,7 +459,7 @@
 												<tr ng-repeat="p in lstProdCompra" ng-click="setSelected($index,p.CODIGO)" ng-class="{selected: p.CODIGO === idSelCompra}">
 													<td>{{p.DESCRIPCION}}</td>
 													<td style="text-align:center">{{p.CANTIDAD}}</td>
-													<td style="text-align:center">{{p.UNIDAD_MEDIDA}}</td>
+													<td style="text-align:center">{{p.UNIDAD}}</td>
 													<td style="text-align:right">$ {{p.PRECIO_LISTA | number:2}}</td>
 													<td style="text-align:	right">$ {{p.IMPORTE | number:2}}</td>
 												</tr>

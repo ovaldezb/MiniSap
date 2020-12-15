@@ -438,7 +438,6 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 	$scope.regtracompraprod = function () {
 		var i;
 		for (i = 0; i < $scope.listaproductos.length; i++) {
-			console.log($scope.listaproductos[i]);
 			$http.put(pathCmpr + 'regcompraprdcto/', {
 				idcompra: $scope.idcompra,
 				idproducto: $scope.listaproductos[i].IDPRODUCTO,

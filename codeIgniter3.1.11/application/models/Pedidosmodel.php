@@ -29,8 +29,13 @@ class Pedidosmodel extends CI_model
 	}
 
 	function get_pedidos($idempresa,$aniofiscal){
-		$query = 'SELECT P."ID_PEDIDO", P."DOCUMENTO", C."NOMBRE" AS "CLIENTE", C."CLAVE", V."NOMBRE" AS "VENDEDOR", 
-		P."FECHA_PEDIDO", P."IMPORTE", P."VENDIDO" 
+		$query = 'SELECT P."ID_PEDIDO", 
+			P."DOCUMENTO", 
+			C."NOMBRE" AS "CLIENTE", 
+			C."CLAVE", V."NOMBRE" AS "VENDEDOR", 
+			P."FECHA_PEDIDO", 
+			P."IMPORTE", 
+			P."VENDIDO"
 		FROM "PEDIDOS" AS P
 		INNER JOIN "CLIENTE" AS C ON C."ID_CLIENTE" = P."ID_CLIENTE"
 		INNER JOIN "VENDEDOR" AS V ON V."ID_VENDEDOR" = P."ID_VENDEDOR"
@@ -43,10 +48,20 @@ class Pedidosmodel extends CI_model
 	}
 
 	function getpedidobyid($idPedido){
-		$query = 'SELECT TRIM(P."DOCUMENTO") as "DOCUMENTO", C."NOMBRE" AS "CLIENTE", 
-		TRIM(C."CLAVE") as "CLAVE", V."NOMBRE" AS "VENDEDOR", V."ID_VENDEDOR",
-		P."FECHA_PEDIDO", P."IMPORTE", P."VENDIDO", P."CONTACTO", P."CUENTA",to_char(P."FECHA_ENTREGA",\'DD/MM/YYYY\') as "FECHA_ENTREGA",
-		P."ID_MONEDA",P."ID_TIPO_PAGO",P."DIAS",P."ID_FORMA_PAGO", C."DOMICILIO"
+		$query = 'SELECT TRIM(P."DOCUMENTO") as "DOCUMENTO", 
+			C."NOMBRE" AS "CLIENTE", 
+			TRIM(C."CLAVE") as "CLAVE", 
+			V."NOMBRE" AS "VENDEDOR", 
+			V."ID_VENDEDOR",
+			P."FECHA_PEDIDO", 
+			P."IMPORTE", 
+			P."VENDIDO", P."CONTACTO", P."CUENTA",to_char(P."FECHA_ENTREGA",\'DD/MM/YYYY\') as "FECHA_ENTREGA",
+			P."ID_MONEDA",
+			P."ID_TIPO_PAGO",
+			P."DIAS",
+			P."ID_FORMA_PAGO", 
+			C."DOMICILIO",
+			P."ID_CLIENTE"
 		FROM "PEDIDOS" AS P
 		INNER JOIN "CLIENTE" AS C ON C."ID_CLIENTE" = P."ID_CLIENTE"
 		INNER JOIN "VENDEDOR" AS V ON V."ID_VENDEDOR" = P."ID_VENDEDOR"
@@ -57,11 +72,15 @@ class Pedidosmodel extends CI_model
 	}
 
 	function getpedidodetallebyid($idPedido){
-		$query = 'SELECT VP."CANTIDAD",VP."PRECIO" as "PRECIO_LISTA",VP."IMPORTE",
-					TRIM(P."DESCRIPCION") as "DESCRIPCION",TRIM(P."UNIDAD_MEDIDA") as "UNIDAD", TRIM(P."COD_CFDI") as "COD_CFDI",
-					P."IVA",TRIM(P."UNIDAD_SAT") as "UNIDAD_SAT",
-					CASE WHEN P."IEPS" IS NULL THEN \'0\' ELSE P."IEPS" END as "IEPS",TRIM(I."NOMBRE") as "TIPOFACTOR",
-					TRIM(P."CODIGO") as "CODIGO"
+		$query = 'SELECT VP."CANTIDAD",VP."PRECIO" as "PRECIO_LISTA",
+				VP."IMPORTE",
+				TRIM(P."DESCRIPCION") as "DESCRIPCION",
+				TRIM(P."UNIDAD_MEDIDA") as "UNIDAD", 
+				TRIM(P."COD_CFDI") as "COD_CFDI",
+				P."IVA",TRIM(P."UNIDAD_SAT") as "UNIDAD_SAT",
+				CASE WHEN P."IEPS" IS NULL THEN \'0\' ELSE P."IEPS" END as "IEPS",TRIM(I."NOMBRE") as "TIPOFACTOR",
+				TRIM(P."CODIGO") as "CODIGO",
+				P."ID_PRODUCTO" as "id_producto"
 				FROM "PEDIDO_PRODUCTO" as VP
 				INNER JOIN "PRODUCTO" as P ON VP."ID_PRODUCTO" = P."ID_PRODUCTO"
 				INNER JOIN "IEPS" as I on P."ID_IEPS" = I."ID_IEPS"
@@ -80,6 +99,13 @@ class Pedidosmodel extends CI_model
 		pg_prepare($this->conn,"del_pedido_det",$query);
 		$result = pg_execute($this->conn,"del_pedido_det",array($idPedido));
 		
+		return json_encode($result);
+	}
+
+	function updatepedido($idPedido,$status){
+		$query = 'UPDATE "PEDIDOS" SET "VENDIDO"=$1 WHERE "ID_PEDIDO"=$2';
+		pg_prepare($this->conn,"upd_ped",$query);
+		$result = pg_execute($this->conn,"upd_ped",array($status,$idPedido));
 		return json_encode($result);
 	}
 }

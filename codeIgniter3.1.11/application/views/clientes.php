@@ -1,4 +1,4 @@
-<br><br>
+
 <div class="container" ng-controller="myCtrlClientes" data-ng-init="init()">
 	<div class="notification">
   <h1 class="title has-text-centered">Administración de Clientes</h1>
@@ -226,7 +226,7 @@
 							<td style="text-align:center">{{x.CLAVE}}</td>
 							<td style="text-align:center">{{x.NOMBRE}}</td>
 							<td style="text-align:center">{{x.RFC}}</td>
-							<td style="text-align:center">{{x.CURP}}</td>
+							<td style="text-align:center">&nbsp;</td>
 						</tr>
 					</table>
 				</div>

@@ -1,4 +1,3 @@
-<br>
 <input type="hidden" id="updtTblComp" value="F">
 <div class="container">
   <div class="notification" align="center">
@@ -434,13 +433,11 @@
 							<input type="text" class="input" ng-model="pago_tarjeta" style="text-align:right; font-size: 20px; color: red;font-weight: bold;" onfocus="this.select()">
 						</td>
 						<td style="text-align:right;vertical-align:middle">
-						<div class="select is-small">
-							<select id="idtarjea">
-								<option value="">Elija una opción</option>
-<?php foreach ($tarjetas as $tarjeta) { ?>
-								<option value=<?php echo $tarjeta['ID_TARJETA']?>><?php echo $tarjeta['NOMBRE'] ?></option>
-<?php }?>
-							</select>
+							<div class="select is-small">
+								<select ng-init="idtarjeta" ng-model="idtarjeta">
+									<option value="0" disabled>Elije una opción</option>
+								 	<option ng-repeat="x in lstTarjetas" value="{{x.ID_TARJETA}}">{{x.NOMBRE}}</option>
+								 </select>
 							</div>
 						</td>
 					</tr>
@@ -455,14 +452,12 @@
 							<input type="text" class="input" ng-model="pago_cheque" style="text-align:right; font-size: 20px; color: red;font-weight: bold;" onfocus="this.select()">
 						</td>
 						<td style="text-align:right; vertical-align:middle">
-						<div class="select is-small">
-							<select name="banco" id="banco">
-								<option value="">Elija una opción</option>
-<?php foreach ($bancos as $banco) { ?>
-						<option value=<?php echo $banco['ID_BANCO']?>><?php echo $banco['DESCRIPCION'] ?></option>
-<?php }?>
-						</select>
-						</div>
+							<div class="select is-small">
+								<select ng-model="idbanco">
+									<option value="0" disabled>Elije una opción</option>
+									<option ng-repeat="x in lstBancos" value="{{x.ID_BANCO}}">{{x.DESCRIPCION }}</option>
+								</select>
+							</div>
 						</td>
 					</tr>
 					<tr>
@@ -484,14 +479,12 @@
 						<td>
 							<input type="text" class="input is-small" ng-model="pago_vales" style="text-align:right; font-size: 20px; color: red;font-weight: bold;" onfocus="this.select()">
 						</td>
-						<td align="right" style="vertical-align:middle">
-						<div class="select is-small">
-							<select id="idvales" >
-								<option value="">Elija una opción</option>
-<?php foreach ($vales as $vale) { ?>
-								<option value="<?php echo $vale['ID_VALE']?>" title="<?php echo $vale['EMPRESA']?>"><?php echo $vale['NOMBRE'] ?></option>
-<?php }?>
-							</select>
+						<td style="text-align:right;vertical-align:middle">
+							<div class="select is-small">
+								<select ng-model="idvales">
+									<option value="0" disabled>Elije una opción</option>
+									<option ng-repeat="x in lstVales" value="{{x.ID_VALE}}" title="{{x.EMPRESA}}">{{x.NOMBRE}}</option>
+								</select>
 							</div>
 						</td>
 					</tr>					
@@ -861,4 +854,99 @@
 	    </footer>
 	  </div>
 	</div>
+	<div id="ticket" style="display:none">
+		<div class="ticket ffont">
+			<table>
+				<tr>
+					<td colspan="2" style="text-align:center">
+						<img src="https://ready2solve.club/core/img/cercanias.png" alt="" style="width:40">
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" style="text-align:center">TICKET DE VENTA</td>
+				</tr>
+				<tr>
+					<td colspan="2" style="text-align:center">{{empresa.NOMBRE}}</td>
+				</tr>
+				<tr>
+					<td colspan="2" style="text-align:center">{{empresa.DOMICILIO}}</td>
+				</tr>
+				<tr>
+					<td colspan="2" style="text-align:center">{{empresa.RFC}}</td>
+				</tr>
+				<tr>
+					<td colspan="2" id="fechaTicket" style="text-align:center"></td>
+				</tr>
+				<tr>
+					<td colspan="2">&nbsp;</td>
+				</tr>
+				<tr>
+					<td>No Ticket:</td>
+					<td>{{docto}}</td>
+				</tr>
+				<tr>
+					<td>Cliente:</td>
+					<td>{{nombre_cliente}}</td>
+				</tr>
+				<tr>
+					<td colspan="2">&nbsp;</td>
+				</tr>
+			</table>
+			<table style="width:100%">
+				<tr style="border-top: 1px solid black;border-collapse: collapse;">
+					<th class="cantidad">CANTIDAD</th>
+					<th class="producto">DESCRIPCION</th>
+					<th class="precio">PRECIO</th>
+				</tr>
+				<tr ng-repeat="x in lstProdCompra">
+					<td class="cantidad">{{x.CANTIDAD}}</td>
+					<td class="producto">{{x.DESCRIPCION}}</td>
+					<td class="precio">{{x.IMPORTE | currency}}</td>
+				</tr>
+				<tr style="border-top: 1px solid black;border-collapse: collapse;">
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td colspan="2" class="cantidad" style="width:80px">Importe Neto:</td>
+					<td style="text-align:right;width:40px">{{importeNeto | currency}}</td>
+				</tr>
+				<tr>
+					<td colspan="2" class="cantidad">Descuento:</td>
+					<td style="text-align:right;width:40px">{{dsctoValor | currency}}</td>
+				</tr>
+				<tr>
+					<td colspan="2" class="cantidad">IVA:</td>
+					<td style="text-align:right;width:40px">{{impuestos | currency}}</td>
+				</tr>
+				<tr>
+					<td colspan="2" class="cantidad">Total:</td>
+					<td style="text-align:right;width:40px">{{total | currency}}</td>
+				</tr>
+				<tr>
+					<td colspan="2" class="cantidad">Forma de Pago:</td>
+					<td style="text-align:right;width:40px" id="formapago"</td>
+				</tr>
+				<tr>
+					<td colspan="3">&nbsp;</td>
+				</tr>
+				<tr>
+					<td colspan="3">&nbsp;</td>
+				</tr>
+			</table>
+			<table style="width:100%">
+				<tr>
+					<td style="text-align:center" colspan="3">Gracias por su compra, nos puede contactar en:</td>
+				</tr>
+				<tr>
+					<td style="text-align:center">72 34 23 56 23</td>
+				</tr>
+				<tr>
+					<td style="text-align:center">servicio@rts.com.mx</td>
+				</tr>
+			</table>
+		</div>
+	</div>
 </div>
+

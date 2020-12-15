@@ -414,12 +414,22 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
     }
   }
 
+  $scope.getpedidos = function(){
+    $http.get(pathPedi+'getpedidos/'+$scope.factura.idempresa+'/'+$scope.factura.aniofiscal)
+      .then(res =>{
+        if(res.data.length > 0 ){
+          $scope.lstPedidos = res.data;
+        }
+      });
+  }
+
   $scope.seleccionarPedido = function(){
     $http.get(pathPedi+'getpedidobyid/'+$scope.lstPedidos[$scope.indexRowPedido].ID_PEDIDO)
         .then(res=>{
           $scope.factura.docto = res.data[0].DOCUMENTO;
           $scope.claveclte = res.data[0].CLAVE;
           $scope.nombre_cliente = res.data[0].CLIENTE;
+          $scope.factura.idcliente = res.data[0].ID_CLIENTE;
           $scope.factura.idvendedor = res.data[0].ID_VENDEDOR;
           $scope.nombre_vendedor = res.data[0].VENDEDOR;
           $scope.factura.contacto = res.data[0].CONTACTO;
@@ -427,6 +437,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
           $scope.factura.fpago = res.data[0].ID_FORMA_PAGO;
           $scope.factura.cuenta = res.data[0].CUENTA == null ? '' : res.data[0].CUENTA.trim();
           $scope.factura.idmoneda = res.data[0].ID_MONEDA;
+          $scope.idPedido = $scope.lstPedidos[$scope.indexRowPedido].ID_PEDIDO;
         })
         .catch(err=>{
           console.log(err);
@@ -434,6 +445,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
     
     $http.get(pathPedi+'getpedidetallebyid/'+$scope.lstPedidos[$scope.indexRowPedido].ID_PEDIDO)
         .then(res=>{
+          console.log(res);
           $scope.lstProdCompra = res.data;
           $scope.calculaValoresMostrar();
         })
@@ -840,7 +852,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
         idtarjea:null,
         idbanco:null,
         idvales:null,
-        idtarjea:null,
+        idtarjeta:null,
         idbanco:null,
         idvales:null,
         importe:$scope.factura.total,
@@ -877,6 +889,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
               {
                 $scope.idVenta = res.data[0].registra_venta;
                 $scope.registraVentaProd();
+                $scope.updatePedido();
                 $scope.getfacturas();
                 swal('La factura se registró exitosamente','Felicidades!','success');     
                 $scope.limpiar();
@@ -892,6 +905,18 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
           });
     }
 
+    $scope.updatePedido = function(){
+      $http.put(pathPedi+'updatepedido/'+$scope.idPedido+"/true")
+        .then(res=>{
+          console.log("se actualizo el pedido")
+        })
+        .catch(err=>{
+          console.log(err);
+        });
+
+
+    }
+
     $scope.registraVentaProd = function()
     {
       var ventaProd = {};
@@ -900,7 +925,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
         ventaProd =
         {
           idventa:$scope.idVenta,
-          idProducto:$scope.lstProdCompra[i].ID_PRODUCTO,
+          idProducto:$scope.lstProdCompra[i].id_producto,
           cantidad:$scope.lstProdCompra[i].CANTIDAD,
           precio:$scope.lstProdCompra[i].PRECIO_LISTA,
           importe:$scope.lstProdCompra[i].IMPORTE,

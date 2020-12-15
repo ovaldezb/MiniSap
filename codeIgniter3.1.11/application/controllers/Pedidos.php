@@ -102,6 +102,10 @@ class Pedidos extends CI_Controller
 				->set_output($result);
 	}
 
+	function updatepedido($idpedido,$status){
+		$result = $this->pedidosmodel->updatepedido($idpedido,$status);
+	}
+
 
 }
 ?>

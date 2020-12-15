@@ -105,7 +105,7 @@ app.controller('myCtrlUsuarios', function($scope,$http,$routeParams)
     {
       if($scope.password == '' || $scope.cpassword=='')
       {
-        swal('La contraseña y su confirmación son requeridas');
+        swal('La contraseña y su confirmación son requeridas','Aviso','warning');
         return;
       }
       if($scope.password != $scope.cpassword)
@@ -144,10 +144,13 @@ app.controller('myCtrlUsuarios', function($scope,$http,$routeParams)
     var usrData = {
       nombre:$scope.nombre,
       usrname:$scope.username,
-      paswd:$scope.password,
-      idsucursal:$('#sucursal').val()
+      paswd:$scope.password
     };
-
+    var usrDataRow = {
+      ID_USUARIO:'',
+      NOMBRE:$scope.nombre,
+      CLAVE_USR:$scope.username
+    };
     $http.put(pathUsr+'saveusr',usrData).
     then(function(res)
     {
@@ -155,23 +158,19 @@ app.controller('myCtrlUsuarios', function($scope,$http,$routeParams)
       {
         if(res.data[0].crea_usuario == -1)
         {
-          swal('El usuario '+$scope.username+' ya existe, favor de elegir otro');
+          swal('El usuario '+$scope.username+' ya existe, favor de elegir otro','Aviso','warning');
           return;
         }else {
           $scope.idUsuario = res.data[0].crea_usuario;
+          usrDataRow.ID_USUARIO = res.data[0].crea_usuario;
+          console.log(usrDataRow);
+          $scope.lstUsuarios.push(usrDataRow);
+          console.log($scope.lstUsuarios);
           $scope.insertaModulos();
           $scope.insertaEmpPerm();
+          $scope.selectUsr($scope.idUsuario,$scope.lstUsuarios.length-1);
           $scope.cerrarAddUser();
-          swal('El usuario se insertó correctamente');
-          var usrData = {
-            ID_USUARIO:$scope.idUsuario,
-            NOMBRE:$scope.nombre,
-            CLAVE_USR:$scope.username,
-            ID_SUCURSAL:$('#sucursal').val()
-          };
-          $scope.lstUsuarios.push(usrData);
-          $scope.selectUsr(res.data[0].crea_usuario,$scope.lstUsuarios.length-1);
-          $scope.cleanUsr();
+          swal('El usuario se insertó correctamente','Exito','success');
         }
       }
     }).
@@ -190,7 +189,11 @@ app.controller('myCtrlUsuarios', function($scope,$http,$routeParams)
       paswd:$scope.password==undefined ? 'false':$scope.password,
       updtpwd:$scope.password==undefined ? 'false' : 'true'
     };
-
+    var usrDataRow = {
+      ID_USUARIO:$scope.idUsuario,
+      NOMBRE:$scope.nombre,
+      CLAVE_USR:$scope.username
+    };
     $http.put(pathUsr+'updtusuario',usrData).
     then(function(res)
     {
@@ -199,14 +202,8 @@ app.controller('myCtrlUsuarios', function($scope,$http,$routeParams)
         swal('El usuario '+$scope.username+' ya existe, favor de elegir otro');
         return;
       }else {
-        swal('El usuario se actualizó correctamente');
-        var usrData = {
-          ID_USUARIO:$scope.idUsuario,
-          NOMBRE:$scope.nombre,
-          CLAVE_USR:$scope.username,
-          ID_SUCURSAL:$('#sucursal').val()
-        };
-        $scope.lstUsuarios[$scope.indexUsr] = usrData;
+        swal('El usuario se actualizó correctamente','Exito','success');
+        $scope.lstUsuarios[$scope.indexUsr] = usrDataRow;
         $scope.cleanUsr();
         $scope.cerrarAddUser();
       }
@@ -333,7 +330,6 @@ app.controller('myCtrlUsuarios', function($scope,$http,$routeParams)
       {
         $scope.nombre = res.data[0].NOMBRE;
         $scope.username = res.data[0].CLAVE_USR;
-        $('#sucursal').val(res.data[0].ID_SUCURSAL);
       }
     }).
     catch(function(err)
@@ -407,7 +403,7 @@ app.controller('myCtrlUsuarios', function($scope,$http,$routeParams)
           });
         }
       }
-      swal('Se actualizaron los permisos')
+      swal('Se actualizaron los permisos','Exito','success')
     }).catch(function(err)
     {
       console.log(err);
@@ -425,7 +421,7 @@ app.controller('myCtrlUsuarios', function($scope,$http,$routeParams)
     $http.delete(pathUsr+'eliminausr/'+$scope.idUsuario).
     then(function(res)
     {
-      swal('El usuario se eliminó');
+      swal('El usuario se eliminó','Exito','success');
       $scope.lstUsuarios.splice($scope.indexUsr,1);
       $scope.lstModlUser = [];
       $scope.lstProcesos = [];

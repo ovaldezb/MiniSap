@@ -18,6 +18,7 @@ var pathCFDI = pathCliente + 'datosfactura/';
 var pathPedi = pathCliente + 'pedidos/';
 var pathFacturacion = pathCliente + 'facturacion/';
 var pathFactura = pathCliente + 'factura/';
+var pathCargaMasiva = pathCliente + 'cargamasiva/';
 var app = angular.module("myApp", ["ngRoute"]);
 app.config(function($routeProvider) {
     $routeProvider
@@ -71,6 +72,8 @@ app.config(function($routeProvider) {
     })
     .when("/vend/:idproc",{
       templateUrl : pathVend
+    }).when("/prcm/:idproc",{
+      templateUrl : pathCliente+'cargamasiva'
     });
 });
 

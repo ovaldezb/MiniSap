@@ -118,6 +118,7 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
   $scope.agregaCliente = function()
   {
     $scope.isAddOpen = true;
+    $scope.msjBoton = "Agregar";
   }
 
   $scope.cancelCliente = function()

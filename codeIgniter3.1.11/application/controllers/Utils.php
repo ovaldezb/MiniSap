@@ -52,5 +52,23 @@ class Utils extends CI_Controller
             ->set_output($this->catalogosmodel->get_tipo_pago());
   }
 
+  function getbancos(){
+    return $this->output
+            ->set_content_type('application/json')
+            ->set_output($this->catalogosmodel->get_bancos());
+  }
+
+  function gettarjetas(){
+    return $this->output
+            ->set_content_type('application/json')
+            ->set_output($this->catalogosmodel->get_tarjetas());
+  }
+
+  function getvales(){
+    return $this->output
+            ->set_content_type('application/json')
+            ->set_output($this->catalogosmodel->get_vales());
+  }
+
 }
 ?>
