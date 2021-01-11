@@ -57,7 +57,7 @@
 				<tr>
 					<td>
 						<div style="width:100%; height:500px; overflow:auto;">
-							<table class="table is-striped" style="width:100%" id="tblClientes">
+							<table class="table" style="width:100%" id="tblClientes">
 								<col width="8%"> 
 								<col width="25%">
 								<col width="17%">

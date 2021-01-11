@@ -434,9 +434,11 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
           $scope.nombre_vendedor = res.data[0].VENDEDOR;
           $scope.factura.contacto = res.data[0].CONTACTO;
           $scope.factura.tpago = res.data[0].ID_TIPO_PAGO;
-          $scope.factura.fpago = res.data[0].ID_FORMA_PAGO;
+          $scope.factura.fpago = res.data[0].ID_FORMA_PAGO < 10 ? '0'+res.data[0].ID_FORMA_PAGO : res.data[0].ID_FORMA_PAGO+'';
           $scope.factura.cuenta = res.data[0].CUENTA == null ? '' : res.data[0].CUENTA.trim();
           $scope.factura.idmoneda = res.data[0].ID_MONEDA;
+          $scope.factura.dias = res.data[0].DIAS;
+          //$scope.factura.tpago = res.data[0].ID_TIPO_PAGO > 10 ? '0'+res.data[0].ID_TIPO_PAGO : res.data[0].ID_TIPO_PAGO+'';
           $scope.idPedido = $scope.lstPedidos[$scope.indexRowPedido].ID_PEDIDO;
         })
         .catch(err=>{
@@ -445,7 +447,6 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
     
     $http.get(pathPedi+'getpedidetallebyid/'+$scope.lstPedidos[$scope.indexRowPedido].ID_PEDIDO)
         .then(res=>{
-          console.log(res);
           $scope.lstProdCompra = res.data;
           $scope.calculaValoresMostrar();
         })
@@ -565,7 +566,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
       $scope.producto.prod_desc = $scope.lstProdBusqueda[idxRowListaBusq].DESCRIPCION;
       $scope.producto.unidad = $scope.lstProdBusqueda[idxRowListaBusq].UNIDAD_MEDIDA;
       $scope.producto.precio = $scope.lstProdBusqueda[idxRowListaBusq].PRECIO_LISTA;
-      $scope.producto.id_producto = $scope.lstProdBusqueda[idxRowListaBusq].ID_PRODUCTO;
+      $scope.producto.id_producto = $scope.lstProdBusqueda[idxRowListaBusq].id_producto;
       $scope.producto.imagePath = $scope.lstProdBusqueda[idxRowListaBusq].IMAGEN;
       $scope.producto.iva = $scope.lstProdBusqueda[idxRowListaBusq].IVA;
       $scope.producto.cantProd = $scope.lstProdBusqueda[idxRowListaBusq].STOCK;
@@ -645,7 +646,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
           UNIDAD_MEDIDA:$scope.producto.unidad,
           IMG:$scope.producto.imagePath,
           IVA:$scope.producto.iva,
-          ID_PRODUCTO:$scope.producto.id_producto,
+          id_producto:$scope.producto.id_producto,
           ESPROMO:$scope.producto.esPromo,
           ESDSCTO:$scope.producto.esDscto,
           PRECIO_PROMO:$scope.producto.promocion,
@@ -908,13 +909,11 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
     $scope.updatePedido = function(){
       $http.put(pathPedi+'updatepedido/'+$scope.idPedido+"/true")
         .then(res=>{
-          console.log("se actualizo el pedido")
+          //console.log("se actualizo el pedido")
         })
         .catch(err=>{
           console.log(err);
         });
-
-
     }
 
     $scope.registraVentaProd = function()
@@ -930,9 +929,9 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
           precio:$scope.lstProdCompra[i].PRECIO_LISTA,
           importe:$scope.lstProdCompra[i].IMPORTE,
           idsucursal:$scope.factura.idsucursal,
-          tipops:$scope.producto.tipo_ps
+          tipops:$scope.lstProdCompra[i].TIPO_PS
         }
-        console.log(ventaProd);
+
         $http.put(pathTpv+'registraventaprod',ventaProd).
         then(function(res)
         {
@@ -995,6 +994,8 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
         $scope.factura.cuenta = '';
         $scope.factura.idmoneda = 1;
         $scope.factura.total = '';
+        $scope.tcaptura = 'D';
+        $scope.getNextDocTpv();
     }
 
 });

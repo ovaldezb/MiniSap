@@ -276,9 +276,9 @@
 							</div>
 							<div class="columns">
 								<div class="column is-narrow" style="width:160px">
-									<label for="mpago" class="label">Forma de Pago</label>
+									<label for="mpago" class="label">M&eacute;todo de Pago</label>
 								</div>
-								<div class="colummn is-narrow select is-small" style="width:188px">									
+								<div class="colummn is-narrow" style="width:188px">									
 									<select ng-model="factura.fpago" ng-options="x.CLAVE as x.DESCRIPCION for x in lstFormpago"></select>
 								</div>
 								<div class="colummnvis-narrow" style="width:60px;margin-left:10px">
@@ -292,7 +292,7 @@
 								<div class="column is-narrow">
 									<label class="label">Uso del CFDI</label>
 								</div>
-								<div class="column is-narrow select is-small" style="width:380px">
+								<div class="column is-narrow" style="width:380px">
 									<select ng-model="factura.cfdi" ng-options="x.ID_CFDI as x.CLAVE+' '+x.DESCRIPCION for x in lstUsocfdi "></select>
 								</div>
 							</div>

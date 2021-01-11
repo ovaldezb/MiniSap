@@ -6,7 +6,15 @@ app.controller('repControlVentas',function($scope,$http)
   $scope.nombreEmpresa = '';
   $scope.direccionEmpresa = '';
   $scope.rfcEmpresa = '';
+  $scope.tiporeporte = 1;
   $scope.sortDir = false;
+  $scope.bycodigo = false;
+  $scope.byname = false;
+  $scope.menushow =false;
+  $scope.tipoReporte = '';
+  $scope.idTipoReporte = 0;
+  $scope.codigo = '';
+  $scope.nombre = '';
   $scope.init = function()
   {
     var foopicker = new FooPicker({
@@ -59,11 +67,48 @@ app.controller('repControlVentas',function($scope,$http)
 
   $scope.creaReporte = function()
   {
-    $http.get(pathRepo+'ventas/'+$scope.idempresa+'/'+$scope.fiscalYear+'/'+$scope.fechaInicio+'/'+$scope.fechaFin+'/'+$scope.linea,{responseType:'json'}).
+    var urlVentas = '';
+    switch($scope.idTipoReporte){
+      case 1:
+        urlVentas = '/nada/1';
+        break;
+      case 2:
+        urlVentas = '/nada/2';
+        break;
+      case 3:
+        urlVentas = '/'+$scope.codigo+'/3';
+        break;
+      case 4:
+        urlVentas = '/nada/4';
+        break;
+    }
+    $http.get(pathRepo+'ventas/'+$scope.idempresa+'/'+$scope.fiscalYear+'/'+$scope.fechaInicio+'/'+$scope.fechaFin+'/'+$scope.linea+urlVentas,{responseType:'json'}).
     then((res)=>{
       if(res.data.length > 0)
       {
+        var bruta=0;
+        var neta=0;
+        var porcen=0;
         $scope.lstRepmalmcn = res.data;
+        $scope.lstRepmalmcn.forEach(row => {          
+            bruta += row.BRUTA;
+            neta += row.NETA;
+            porcen += row.PORCENTAJE;
+        });
+        var totalRowIns={
+          BRUTA:  bruta,
+          CANTIDAD:'',
+          CODIGO: '',
+          COSTO: '',
+          DESCRIPCION: 'Total',
+          ID_PRODUCTO: '',
+          NETA: neta,
+          PORCENTAJE: porcen,
+          PRECIO_PROM: '',
+          UTILIDAD: ''
+        }
+        console.log(totalRowIns);
+        $scope.lstRepmalmcn.push(totalRowIns);
         $scope.isRepShow = true;
         $scope.fechaImpresion = formatHoraReporte(new Date());
       }else{
@@ -74,6 +119,40 @@ app.controller('repControlVentas',function($scope,$http)
     catch((err)=>{
       console.log(err);
     });
+  }
+
+  $scope.selTipoRepo = function(i){
+    $scope.idTipoReporte = i;
+    $scope.bycodigo = false;
+    $scope.byname = false;
+    switch(i){
+      case 1:
+        $scope.tipoReporte = 'Todos';
+        break;
+      case 2:
+        $scope.tipoReporte = 'Los 10 más vendidos';
+        break;
+      case 3:
+        $scope.bycodigo = true;
+        $scope.byname = false;
+        $scope.tipoReporte = 'Por Código';
+        break;
+      case 4:
+        $scope.bycodigo = false;
+        $scope.byname = true;
+        $scope.tipoReporte = 'Por Nombre';
+        break;
+    }
+    $scope.menushow = !$scope.menushow;
+  }
+
+  $scope.showMenu = function(){
+    $scope.menushow = !$scope.menushow;
+  }
+
+  $scope.selectTipoRepo = function(i){
+    $scope.tiporeporte = i;
+    $scope.menushow = false;
   }
 
   $scope.fecIniChange = function(){

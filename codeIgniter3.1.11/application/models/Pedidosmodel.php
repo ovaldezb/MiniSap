@@ -80,7 +80,8 @@ class Pedidosmodel extends CI_model
 				P."IVA",TRIM(P."UNIDAD_SAT") as "UNIDAD_SAT",
 				CASE WHEN P."IEPS" IS NULL THEN \'0\' ELSE P."IEPS" END as "IEPS",TRIM(I."NOMBRE") as "TIPOFACTOR",
 				TRIM(P."CODIGO") as "CODIGO",
-				P."ID_PRODUCTO" as "id_producto"
+				P."ID_PRODUCTO" as "id_producto",
+				P."TIPO_PS"
 				FROM "PEDIDO_PRODUCTO" as VP
 				INNER JOIN "PRODUCTO" as P ON VP."ID_PRODUCTO" = P."ID_PRODUCTO"
 				INNER JOIN "IEPS" as I on P."ID_IEPS" = I."ID_IEPS"

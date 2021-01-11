@@ -395,8 +395,8 @@
 						<col width='20%'>
 						<tr class="tbl-header">
 							<td ng-click="orderByMe('DESCRIPCION')">DESCRIPCIÓN</td>
-							<td ng-click="orderByMe('CODIGO')" style="text-align:right">CÓDIGO</td>
-							<td ng-click="orderByMe('PRECIO_LISTA')" style="text-align:right">PRECIO LISTA</td>
+							<td ng-click="orderByMe('CODIGO')" style="text-align:center">CÓDIGO</td>
+							<td ng-click="orderByMe('PRECIO_LISTA')" style="text-align:center">PRECIO LISTA</td>
 							<td ng-click="orderByMe('STOCK')" style="text-align:right">EXISTENCIA</td>
 						</tr>
 					</table>

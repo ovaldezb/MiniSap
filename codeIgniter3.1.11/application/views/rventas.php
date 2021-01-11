@@ -5,36 +5,85 @@
 	</div>
   <div class="box" ng-show="!isRepShow">
     <form name="myForm">
-    <div class="columns">
-      <div class="column is-narrow" style="width:85px">
-        <label class="label">Línea:</label>
-      </div>
-      <div class="column">
-        <div class="select is-small">
-          <select ng-model="linea" ng-options="x.ID_LINEA as x.NOMBRE for x in lstlinea"></select>
+      <div class="columns">
+        <div class="column is-4">
+          <div class="columns">
+            <div class="column is-narrow center" style="width:85px">
+              <label class="label">Línea:</label>
+            </div>
+            <div class="column">
+              <div class="select is-small">
+                <select ng-model="linea" ng-options="x.ID_LINEA as x.NOMBRE for x in lstlinea"></select>
+              </div>
+            </div>
+          </div>
+          <div class="columns">
+            <div class="column is-narrow">
+              <label class="label">Periodo:</label>
+            </div>
+            <div class="column is-narrow" style="margin-right:-20px; width:110px">
+              <input type="text" ng-model="fecIni" ng-blur="fecIniChange()" class="input is-small" id="fechaInicio" required>
+            </div>
+            <div class="column is-narrow"><label class="label">-</label></div>
+            <div class="column is-narrow" style="margin-left:-20px; width:110px">
+              <input type="text" ng-model="fecFin" ng-blur="fecFinChange()" class="input is-small" id="fechaFin" required>
+            </div>
+          </div>
+          <div class="columns">
+            <div class="column">
+              <button class="button is-success" ng-click="creaReporte()" ng-disabled="myForm.$invalid">Enviar</button>
+            </div>
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column">
+            <div class="columns">
+              <div class="column">
+                <div class="dropdown {{menushow ? 'is-active':''}}">
+                  <div class="dropdown-trigger">
+                    <button class="button is-small" aria-haspopup="true" aria-controls="dropdown-menu3" ng-click="showMenu()" style="width:170px">
+                      <span>Tipo de Reporte</span>
+                      <span class="icon is-small">
+                        <i class="fas fa-angle-down" aria-hidden="true"></i>
+                      </span>
+                    </button>
+                  </div>
+                  <div class="dropdown-menu" id="dropdown-menu3" role="menu" style="margin-top:-3px">
+                    <div class="dropdown-content" style="width:170px">
+                      <a class="dropdown-item" ng-click="selTipoRepo(1)">Todos</a>
+                      <a class="dropdown-item" ng-click="selTipoRepo(2)">Los 10 más vendidos</a>
+                      <a class="dropdown-item" ng-click="selTipoRepo(3)">Por Codigo</a>
+                      <a class="dropdown-item" ng-click="selTipoRepo(4)">Por nombre</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="column">
+                <label class="label">{{tipoReporte}}</label>
+              </div>
+            </div>
+            <div class="columns" ng-show="bycodigo">
+              <div class="column is-3">
+                <label class="label">CODIGO:</label>
+              </div>
+              <div class="column is-6">
+                <input type="text" class="input is-small"  ng-model="codigo" name="" id="">
+              </div>
+            </div>
+            <div class="columns" ng-show="byname">
+              <div class="column is-3">
+                <label class="label">NOMBRE:</label>
+              </div>
+              <div class="column is-6">
+                <input type="text" class="input is-small" ng-model="nombre" name="" id="">
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="columns">
-      <div class="column is-narrow">
-        <label class="label">Periodo:</label>
-      </div>
-      <div class="column is-1">
-        <input type="text" ng-model="fecIni" ng-blur="fecIniChange()" class="input is-small" id="fechaInicio" required>
-      </div>
-      <div class="column is-narrow"><label class="label">-</label></div>
-      <div class="column is-1">
-        <input type="text" ng-model="fecFin" ng-blur="fecFinChange()" class="input is-small" id="fechaFin" required>
-      </div>
-    </div>
-    <div class="columns">
-      <div class="column">
-        <button class="button is-success" ng-click="creaReporte()" ng-disabled="myForm.$invalid">Enviar</button>
-      </div>
-    </div>
-  </form>
+    </form>
   </div>
-  <div class="table-container" ng-show="isRepShow" style="border:1px solid black;width:100%" id="exportable">
+  <div class="table-container" ng-show="isRepShow" style="border:1px solid black;width:99%" id="exportable">
     <table style="width:100%">
       <tr class="spaceUnder">
         <td align="right" width="55%"><label class="label">{{nombreEmpresa}}</label></td>
@@ -104,17 +153,6 @@
   </div>
   <nav class="pagination is-centered" role="navigation" ng-show="isRepShow" aria-label="pagination" style="width:100%">
     <a class="pagination-next" ng-click="cerrarReporte()">Cerrar</a>
-    <ul class="pagination-list">
-      <li><a class="pagination-previous">Previous</a></li>
-      <li><a class="pagination-link" aria-label="Goto page 1">1</a></li>
-      <li><span class="pagination-ellipsis">&hellip;</span></li>
-      <li><a class="pagination-link" aria-label="Goto page 45">45</a></li>
-      <li><a class="pagination-link is-current" aria-label="Page 46" aria-current="page">46</a></li>
-      <li><a class="pagination-link" aria-label="Goto page 47">47</a></li>
-      <li><span class="pagination-ellipsis">&hellip;</span></li>
-      <li><a class="pagination-link" aria-label="Goto page 86">86</a></li>
-      <li><a class="pagination-next">Next</a></li>
-    </ul>
     <a class="pagination-next" ng-click="exportExcel()">Excel</a>
     <a class="pagination-next" ng-click="exportCSV()">csv</a>
     <a class="pagination-next" ng-click="exportPDF()">PDF</a>
