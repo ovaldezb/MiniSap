@@ -74,14 +74,17 @@ class Tpv extends CI_Controller
 	function registraventaprod()
 	{
 		$data = json_decode(file_get_contents("php://input"),true);
-		$result = $this->tpvmodel->registra_venta_producto(
+		$result = $this->tpvmodel->registra_venta_producto(array(
 			$data['idventa'],
 			$data['idProducto'],
 			$data['cantidad'],
 			$data['precio'],
 			$data['importe'],
 			$data['idsucursal'],
-			$data['tipops']
+			$data['tipops'],
+			$data['documento'],
+			$data['caja'],
+			$data['idempresa'])
 		);
 		return $this->output
 					 ->set_content_type('application/json')
@@ -104,8 +107,8 @@ class Tpv extends CI_Controller
 					 ->set_output($result);
 	}
 
-	function getdataoper($aniofiscal,$fecIni,$fecFin){
-		$result = $this->tpvmodel->dataOperByDate(array($aniofiscal,str_replace("%20"," ",$fecIni),str_replace("%20"," ",$fecFin)));
+	function getdataoper($idempresa,$aniofiscal,$fecIni,$fecFin){
+		$result = $this->tpvmodel->dataOperByDate(array($aniofiscal,str_replace("%20"," ",$fecIni),str_replace("%20"," ",$fecFin),$idempresa ));
 		return $this->output
 					->set_content_type('application/json')
 					->set_output($result);

@@ -363,6 +363,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
           $scope.unidad = res.data[0].UNIDAD_MEDIDA;
           $scope.imagePath = res.data[0].IMAGEN;
           $scope.iva = res.data[0].IVA;
+          $scope.id_producto = res.data[0].ID_PRODUCTO;
           if($scope.imagePath!='')
           {
             $('#imgfig').show();
@@ -412,6 +413,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
       $scope.descuento = $scope.lstProdBusqueda[idxRowListaBusq].PRECIO_DESCUENTO;
       $scope.promocion = $scope.lstProdBusqueda[idxRowListaBusq].PRECIO_PROMO;
       $scope.tipo_ps = $scope.lstProdBusqueda[idxRowListaBusq].TIPO_PS;
+
       if($scope.imagePath!='')
       {
         $('#imgfig').show();
@@ -871,9 +873,12 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
           precio:$scope.lstProdCompra[i].PRECIO_LISTA,
           importe:$scope.lstProdCompra[i].IMPORTE,
           idsucursal:$scope.idsucursal,
-          tipops:$scope.tipo_ps
+          tipops:$scope.tipo_ps,
+          documento: $scope.fact.documento,
+          caja:1,
+          idempresa:$scope.idempresa
         }
-        $http.put(pathTpv+'registraventaprod',vntaProd).
+        $http.post(pathTpv+'registraventaprod',vntaProd).
         then(function(res)
         {
           /*se insertó con éxito*/
@@ -1076,7 +1081,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
       var dia = hoy.getDate() > 9 ? hoy.getDate() : '0'+hoy.getDate();
       var mes = (hoy.getMonth()+1) > 9 ? (hoy.getMonth()+1) : '0'+(hoy.getMonth()+1);
       var year = hoy.getFullYear();
-      $http.get(pathTpv+'getdataoper/'+$scope.aniofiscal+'/'+(mes+'-'+dia+'-'+year+' 00:00:00')+'/'+(mes+'-'+dia+'-'+year+' 23:59:59'))
+      $http.get(pathTpv+'getdataoper/'+$scope.idempresa+'/'+$scope.aniofiscal+'/'+(mes+'-'+dia+'-'+year+' 00:00:00')+'/'+(mes+'-'+dia+'-'+year+' 23:59:59'))
           .then(res=>{
               if(res.data.ventas.length > 0){
                 $scope.lstVentas = res.data.ventas;
@@ -1114,7 +1119,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
         usocfdi:null,
         metodopago:null
       };
-      //console.log(dataFactura);
+      
       swal({
         title: "Se va a realizar el corte de caja",
         text: "Continuar?",

@@ -56,7 +56,7 @@ class Compras extends CI_Controller
 	function regcompraprdcto()
 	{
 		$data = json_decode(file_get_contents("php://input"),true);
-		$result = $this->comprasmodel->insert_compra_producto(
+		$result = $this->comprasmodel->insert_compra_producto(array(
 		$data['idcompra'],
 		$data['idproducto'],
 		$data['cantidad'],
@@ -64,7 +64,10 @@ class Compras extends CI_Controller
 		$data['preciounitario'],
 		$data['importetotal'],
 		$data['dsctoprod'],
-		$data['idsucursal']);
+		$data['idsucursal'],
+		$data['documento'],
+		$data['caja'],
+		$data['idempresa']));
 		if($result){
 			return $this->output
 			->set_content_type('application/json')

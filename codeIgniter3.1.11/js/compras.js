@@ -201,6 +201,7 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 						$scope.precio_vta = res.data[0].PRECIO_LISTA;
 						$scope.unidad = res.data[0].UNIDAD_MEDIDA;
 						$scope.imagePath = res.data[0].IMAGEN;
+						$scope.idProducto = res.data[0].ID_PRODUCTO;
 						$scope.counter = 1;
 						$scope.cantidad = $scope.counter;
 						if ($scope.imagePath != '') {
@@ -438,7 +439,8 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 	$scope.regtracompraprod = function () {
 		var i;
 		for (i = 0; i < $scope.listaproductos.length; i++) {
-			$http.put(pathCmpr + 'regcompraprdcto/', {
+			console.log($scope.listaproductos[i]);
+			$http.post(pathCmpr + 'regcompraprdcto/', {
 				idcompra: $scope.idcompra,
 				idproducto: $scope.listaproductos[i].IDPRODUCTO,
 				cantidad: $scope.listaproductos[i].CANTIDAD,
@@ -446,7 +448,10 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 				preciounitario: $scope.listaproductos[i].PRECIO,
 				importetotal: $scope.listaproductos[i].IMPORTE,
 				dsctoprod: $scope.listaproductos[i].DESCTO,
-				idsucursal: $scope.idsucursal
+				idsucursal: $scope.idsucursal,
+				documento: $scope.numdoc,
+				caja:1,
+				idempresa:$scope.idempresa
 			}).then(function (res) {					
 					if (res.status == 200 && res.data.value == 'OK') {
 

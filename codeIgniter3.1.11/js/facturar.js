@@ -929,22 +929,21 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
           precio:$scope.lstProdCompra[i].PRECIO_LISTA,
           importe:$scope.lstProdCompra[i].IMPORTE,
           idsucursal:$scope.factura.idsucursal,
-          tipops:$scope.lstProdCompra[i].TIPO_PS
+          tipops:$scope.lstProdCompra[i].TIPO_PS,
+          docuento:$scope.factura.docto,
+          caja:1,
+          idempresa:$scope.factura.idempresa
         }
-
-        $http.put(pathTpv+'registraventaprod',ventaProd).
-        then(function(res)
-        {
-          /*se insertó con éxito*/
-        }).
-        catch(function(err)
-        {
+        $http.post(pathTpv+'registraventaprod',ventaProd)
+          .then(function(res){
+            /*se insertó con éxito*/
+          })
+          .catch(function(err){
           console.log(err);
         });
       }
     }
 
-    
     $scope.verificaExistencia = function()
     {
       $scope.modalVerifProdSuc = true;

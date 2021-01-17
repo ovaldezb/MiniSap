@@ -22,7 +22,7 @@
   <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <a class="navbar-item" >
-        <img src="../img/cercanias.png" alt="Sistema de Gesti&oacute;n Empresarial" width="40" height="28">
+        <img src="../img/logo.jpg" alt="Sistema de Gesti&oacute;n Empresarial" width="40" height="28">
       </a>
     </div>
     <div class="navbar-end">
@@ -78,8 +78,9 @@
 <?php
   $modulotmp = '';
   $isFinModulo = false;
-  foreach ($modproc as $key)
-  {
+  if($modproc){
+    foreach ($modproc as $key)
+    {
     $modulo = $key['MODULO'];
     $ruta = $key['RUTA'];
     $idproc = $key['ID_PROCESO'];
@@ -102,7 +103,10 @@
     }
     $modulotmp = $modulo;?>
 <?php
-  } ?>
+    }
+ }else{ ?>
+    <h2>Usuario sin permisos, favor de contactar al administrador</h2>
+<?php } ?>
         </ul>
       </div>
     </div>

@@ -14,13 +14,10 @@ class Comprasmodel extends CI_model
 	function get_compras($id_empresa,$anio_fiscal)
 	{
 		$query = 'SELECT C."ID_COMPRA",to_char(C."FECHA_COMPRA",\'DD/MM/YYYY\') as "FECHA_COMPRA",
-							TRIM(C."DOCUMENTO") AS "DOCUMENTO",
-							TRIM(P."NOMBRE") as "PROVEEDOR",
-							to_char(C."IMPORTE",\'L999,999,999.00\') as "IMPORTE",
-							CASE "DIAS_PAGO"
-							WHEN 0 THEN \'$             0.00\'
-							ELSE to_char("IMPORTE",\'L999,999,999.00\')
-							END as "SALDO",
+					TRIM(C."DOCUMENTO") AS "DOCUMENTO",
+					TRIM(P."NOMBRE") as "PROVEEDOR",
+					C."IMPORTE",
+					CASE "DIAS_PAGO" WHEN 0 THEN 0 ELSE "IMPORTE" END as "SALDO",
 							"DESCUENTO",
 							"CLAVE_PROVEEDOR",
 							"DIAS_PAGO",
@@ -43,6 +40,7 @@ class Comprasmodel extends CI_model
 							ON C."ID_TIPO_PAGO" = T."ID_TIPO_PAGO"
 							WHERE C."ID_EMPRESA" = $1
 							AND C."ANIO_FISCAL" = $2
+							AND P."ID_EMPRESA" = C."ID_EMPRESA"
 							ORDER BY 	C."FECHA_COMPRA" DESC';
 		$result = pg_prepare($this->conn, "selectquery", $query);
 		$result =  pg_fetch_all(pg_execute($this->conn, "selectquery", array($id_empresa,$anio_fiscal)));
@@ -57,11 +55,11 @@ class Comprasmodel extends CI_model
 		return json_encode($result);
 	}
 
-	function insert_compra_producto($idcompra,$idproducto,$cantidad,$unidad_medida,$precio_unit,$importe_total,$dsctoprod,$idsucursal)
+	function insert_compra_producto($data_producto)
 	{
-		$query = 'SELECT * FROM inserta_comp_prod($1,$2,$3,$4,$5,$6,$7,$8)';
+		$query = 'SELECT * FROM inserta_comp_prod($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)';
 		pg_prepare($this->conn,"insert_compra_producto",$query);
-		$result = pg_fetch_all(pg_execute($this->conn,"insert_compra_producto",array($idcompra,$idproducto,$cantidad,$unidad_medida,$precio_unit,$importe_total,$dsctoprod,$idsucursal)));
+		$result = pg_fetch_all(pg_execute($this->conn,"insert_compra_producto",$data_producto));
 		return json_encode($result);
 	}
 
@@ -110,3 +108,4 @@ class Comprasmodel extends CI_model
 		return json_encode($result);
 	}
 }
+?>

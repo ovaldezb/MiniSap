@@ -89,11 +89,11 @@ class Tpvmodel extends CI_model
 		return json_encode($result);
 	}
 
-	function registra_venta_producto($idventa,$idProducto,$cantidad,$precio,$importe,$idsucursal,$tipo_ps)
+	function registra_venta_producto($data)
 	{
-		$pstmt = 'SELECT * FROM venta_producto($1,$2,$3,$4,$5,$6,$7)';
+		$pstmt = 'SELECT * FROM venta_producto($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)';
 		pg_prepare($this->conn,"prstmt",$pstmt);
-		$result = pg_fetch_all(pg_execute($this->conn, "prstmt", array($idventa,$idProducto,$cantidad,$precio,$importe,$idsucursal,$tipo_ps)));
+		$result = pg_fetch_all(pg_execute($this->conn, "prstmt", $data));
 		return json_encode($result);
 	}
 
@@ -150,6 +150,7 @@ class Tpvmodel extends CI_model
 					WHERE V."ANIO_FISCAL" = $1
 					AND V."FECHA_VENTA" >= $2 
 					AND V."FECHA_VENTA" <= $3
+					AND V."ID_EMPRESA" = $4
 					AND V."FACTURADO" = \'false\'
 					ORDER BY V."ID_VENTA"';
 		pg_prepare($this->conn,"qry1",$query1);
@@ -161,6 +162,7 @@ class Tpvmodel extends CI_model
 					WHERE "ANIO_FISCAL"=$1
 					AND "FECHA_VENTA" >= $2 
 					AND "FECHA_VENTA" <= $3
+					AND "ID_EMPRESA" = $4
 					AND "ID_TIPO_PAGO" = 1
 					GROUP BY "ID_TIPO_PAGO"';
 		pg_prepare($this->conn,"qry2",$query2);
@@ -168,14 +170,21 @@ class Tpvmodel extends CI_model
 
 		$query3 = 'SELECT SUM("IMPORTE"), "ID_TIPO_PAGO" 
 					FROM "VENTAS"
-					WHERE "ANIO_FISCAL"=$1
+					WHERE "ANIO_FISCAL"=$1					
 					AND "FECHA_VENTA" >= $2 
 					AND "FECHA_VENTA" <= $3
+					AND "ID_EMPRESA" = $4
 					GROUP BY "ID_TIPO_PAGO"';
 		pg_prepare($this->conn,"qry3",$query3);
 		$result3 = pg_fetch_all(pg_execute($this->conn,"qry3",$arrayDates));
-
-		return json_encode(array("ventas"=>$result1,"pagos"=>$result2,"tipopago"=>$result3),JSON_NUMERIC_CHECK);
+		if(sizeof($result3) == 1){
+			if($result3[0]["ID_TIPO_PAGO"] == "1"){
+				$result4 = array($result3[0], array("sum"=>"0","ID_TIPO_PAGO"=>"2"));
+			}else{
+				$result4 = array(array("sum"=>"0","ID_TIPO_PAGO"=>"1"),$result3[0]);
+			}
+		}
+		return json_encode(array("ventas"=>$result1,"pagos"=>$result2,"tipopago"=>$result4),JSON_NUMERIC_CHECK);
 	}
 
 	function updateventatrue($idfactura,$idventa){

@@ -1,5 +1,5 @@
 .selected {
-  background-color: #fd9;
+  background-color: #fd9 !important;
 }
 .table tr{
   cursor: pointer !important;
@@ -243,4 +243,10 @@ a{
 .contenedor-menu .menus .activado > a{
   background: #1a95d5;
   color: #fff;
+}
+
+.contenedor-inv{
+  width:80%;
+  margin: 0 auto;
+  font-size: 14px;
 }

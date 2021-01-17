@@ -41,7 +41,6 @@ class Access extends CI_Controller {
       $user['nombre'] = $usuario['NOMBRE'];
       $user['idusuario'] = $usuario['ID_USUARIO'];
       $user['modproc'] = $this->procesosmodel->get_modulos_procesos_by_usuario($usuario['ID_USUARIO']);
-
       $this->load->view('index',$user);
     }else {
       $error['error'] = 'Usuario o contraseña no coinciden';
