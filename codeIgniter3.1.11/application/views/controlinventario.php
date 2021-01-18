@@ -1,29 +1,11 @@
-<html>
-<head>
-  <meta http-equiv="Expires" content="0">
-  <meta http-equiv="Last-Modified" content="0">
-  <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
-  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
-	<script src="../core/js/utilerias.js"></script>
-  <script src="../core/js/foopicker.js"></script>
-  <script src="../core/js/jquery-3.5.1.min.js"></script>
-  <link rel="stylesheet" href="../core/css/utils.css">
-  <link rel="stylesheet" href="../core/css/foopicker.css">
-  <title>RTS</title>
-</head>
-<body >
-<div ng-app="myApp" class="container" ng-controller="myCtrlControlinvent" data-ng-init="init()">
+<div class="container" ng-controller="myCtrlControlinvent" data-ng-init="init()">
     <div class="notification">
 		<h1 class="title is-4 has-text-centered">Control de Inventario</h1>
     </div>
     <div class="box">
         <div class="columns">
-            <div class="column document">
+            <div class="column inventario">
+                <form name="myForm">
                 <div class="columns">
                     <div class="column is-narrow">
                         <label for="">Periodo</label>
@@ -68,14 +50,26 @@
                 </div>
                 <div class="columns">
                     <div class="column">
-                        <button class="button is-success" ng-click="creaReporte()">Aceptar</button>
+                        <button class="button is-success" ng-click="creaReporte()" ng-disabled="myForm.$invalid">Aceptar</button>
                     </div>
                 </div>
+                </form>
             </div>
         </div>
     </div>
-    <div class="table-container" ng-show="isShowReporte">
-    <nav class="level">
+    
+    <div class="table-container box" ng-show="isShowReporte">
+      <nav class="level">
+        <div class="level-left">
+			<div class="level-item">
+				<p class="subtitle is-5">
+        			<strong>Filtro:</strong>
+      			</p>
+			</div>
+			<div class="level-item">
+				<input name="producto" class="input is-small" type="input" onKeyUp="doFilter(this.value,'tablainventario');" title="Ingrese cualquier dato que desee encontrar, Ej. nombre, código, precio ">
+			</div>
+		</div>
         <div class="level-right">
 			<p class="level-item" ng-show="permisos.alta">
 				<a ng-click="agregaMovimiento();"><span class="icon has-text-success">
@@ -88,13 +82,23 @@
                 </a>
             </p>
 			<p class="level-item" ng-show="permisos.baja">
-				<a ng-click="preguntaElimnaCliente()"><span class="icon has-text-danger">
+				<a ng-click="elliminaMovimiento()"><span class="icon has-text-danger">
                     <i class="far fa-trash-alt" title="Elimna Movimiento"></i></span>
                 </a>
             </p>
 		</div>
     </nav>
+    
         <table class="table" style="width:100%">
+            <col width='11%'/>
+            <col width='11%'/>
+            <col width='11%'/>
+            <col width='11%'/>
+            <col width='11%'/>
+            <col width='11%'/>
+            <col width='11%'/>
+            <col width='11%'/>
+            <col width='12%'/>
             <thead>
                 <tr>
                     <td>Fecha</td>
@@ -109,10 +113,19 @@
                 </tr>
             </thead>
         </table>
-        <div>
-            <table class="table" style="width:100%">
+        <div style="width:100%; height:250px; overflow:auto;">
+            <table class="table is-hoverable" style="width:100%" id="tablainventario">
+                <col width='11%'/>
+                <col width='11%'/>
+                <col width='11%'/>
+                <col width='11%'/>
+                <col width='11%'/>
+                <col width='11%'/>
+                <col width='11%'/>
+                <col width='11%'/>
+                <col width='12%'/>
                 <tbody>
-                    <tr ng-repeat="inv in lstInvent">
+                    <tr ng-repeat="inv in lstInvent" ng-click="selectRowInv(inv.ID)" ng-class="{selected: inv.ID === idSelInv}">
                         <td>{{inv.FECHA}}</td>
                         <td>{{inv.DOCUMENTO}}</td>
                         <td>{{inv.CODIGO}}</td>
@@ -125,17 +138,19 @@
                     </tr>
                 </tbody>
             </table>
-        </div>
+            </div>
+        
     </div>
     <div class="modal is-active" ng-show="isAdd">
-        <form name="myForm">
+        
         <div class="modal-background"></div>
         <div class="modal-card">
             <header class="modal-card-head">
                 <p class="modal-card-title">Registro de Movimientos</p>
-                <button class="delete" aria-label="close" ng-click="closeAddMov();"></button>
+                <button class="delete" id="upcerrar" aria-label="close" ng-click="closeAddMov($event);"></button>
             </header>
             <section class="modal-card-body">
+                <form name="regMov">
                 <div class="contenedor-inv">
                 <div class="columns">
                     <div class="column is-4">
@@ -159,7 +174,7 @@
                         <label>Clave</label>
                     </div>
                     <div class="column is-3">
-                        <input type="text" ng-model="clave" class="input is-small">
+                        <input type="text" ng-model="clave" class="input is-small" required>
                     </div>
                 </div>
                 <div class="columns">
@@ -167,11 +182,11 @@
                         <label for="">No Documento</label>
                     </div>
                     <div class="column is-3">
-                        <input type="text" ng-model="regmov.documento" class="input is-small">
+                        <input type="text" ng-model="regmov.documento" class="input is-small" required>
                     </div>
                     <div class="column is-2">Fecha</div>
                     <div class="column is-3">
-                        <input type="text" ng-model="fechaMov" class="input is-small" id="fechaMovimiento" ng-blur="validateFecha()">
+                        <input type="text" ng-model="fechaMov" class="input is-small" id="fechaMovimiento" ng-blur="validateFecha()" required>
                     </div>
                 </div>
                 <div class="columns">
@@ -195,31 +210,41 @@
                 <div class="columns">
                     <div class="column">
                         <label for="">Producto</label>
-                        <input type="text" ng-model="regmov.codigo" class="input is-small">
+                        <input type="text" ng-model="regmov.codigo" class="input is-small" ng-keyup="buscaProducto($event)"  title="{{prddesc}}" required>
                     </div>
                     <div class="column">
                         <label for="">Cantidad</label>
-                        <input type="number" ng-model="cantidad" class="input is-small">
+                        <input type="number" ng-model="cantidad" class="input is-small" required>
                     </div>
                     <div class="column">
                         <label for="">Medida</label>
-                        <input type="text" ng-model="medida" class="input is-small">
+                        <input type="text" ng-model="medida" class="input is-small" disabled>
                     </div>
                     <div class="column">
                         <label for="">$/Unitario</label>
-                        <input type="text" ng-model="regmov.preciounit" class="input is-small">
+                        <input type="text" ng-model="regmov.preciounit" class="input is-small" required>
                     </div>
                 </div>
+                <div style="width:60%; height:100px; overflow:auto;border:2px solid black;margin-top:-15px" ng-show="lstProducto.length > 0 ">
+                    <table class="table is-hoverable">
+                        <col width="30%"/>
+                        <col width="70%"/>
+                        <tbody>
+                            <tr ng-repeat="prd in lstProducto" ng-click="selectRowPrd($index,prd.ID_PRODUCTO)" >
+                                <td>{{prd.CODIGO}}</td>
+                                <td>{{prd.DESCRIPCION}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
+            </div>
+            </form>
             </section>
             <footer class="modal-card-foot">
-	            <button class="button" ng-click="enviaMovimiento();" ng-disabled="myForm.$invalid">Enviar</button>
-		        <button class="button" ng-click="closeAddMov()">Cerrar</button>
+	            <button class="button is-success" ng-click="enviaMovimiento()" ng-disabled="regMov.$invalid">Enviar</button>
+		        <button class="button is-danger" ng-click="closeAddMov()">Cerrar</button>
 	        </footer>
         </div>
-        </form>
+        
     </div>
 </div>
-    <script src="../core/js/controlinventario.js"></script>
-</body>
-</html>

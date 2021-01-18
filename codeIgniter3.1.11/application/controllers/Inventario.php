@@ -66,6 +66,13 @@ class Inventario extends CI_Controller
 			->set_content_type('application/json')
 			->set_output($result);
 	}
+
+	function delmov($idMov){
+		$result = $this->controlinvmodel->del_movinv($idMov);
+		return $this->output
+			->set_content_type('application/json')
+			->set_output($result);
+	}
 }
 
 ?>

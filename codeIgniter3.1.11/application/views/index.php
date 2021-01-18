@@ -35,11 +35,11 @@
             <span><?php echo $nombre?></span>
           </p>
           <p class="control">
-            <a ng-click="selectEmpresa()">
-              <span class="icon">
-                <i class="far fa-building"></i>
-              </span>
-            </a>
+            <span class="icon">
+              <a ng-click="selectEmpresa()" style="color: #184ddd">
+              <i class="far fa-building"></i>
+              </a>
+            </span>
             <span>{{nombreEmpresa}}</span>
           </p>
 
@@ -185,6 +185,7 @@
 <script src="../js/facturar.js"></script>
 <script src="../js/vendedores.js"></script>
 <script src="../js/cargamasiva.js"></script>
+<script src="../js/controlinventario.js"></script>
 <script>
   $(document).ready(function(){
     $('.menus li:has(ul)').click(function(e){

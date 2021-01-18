@@ -67,7 +67,13 @@ class Compras extends CI_Controller
 		$data['idsucursal'],
 		$data['documento'],
 		$data['caja'],
-		$data['idempresa']));
+		$data['idempresa'],
+		$data['aniofiscal'],
+		$data['idcliente'],
+		$data['idproveedor'],
+		$data['idusuario'],
+		$data['idmoneda']
+	));
 		if($result){
 			return $this->output
 			->set_content_type('application/json')

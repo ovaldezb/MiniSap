@@ -125,7 +125,7 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 	}
 
 	$scope.buscaprovbyclave = function (event) {
-		event.stopPropagation()
+		event.stopPropagation();
 		if (event.keyCode == 13) {
 			$http.get(pathPrve + 'getprvdorclave/' + $scope.claveprov, {
 				responseType: 'json'
@@ -250,10 +250,9 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 		}
 		
 		if($scope.precio > $scope.precio_vta){
-			if(confirm('El precio de compra es mas alto que el precio de venta, esto implicaría una pérdida, el precio de venta está fijado en $'+$scope.precio_vta)){
-
-			}else{
-				return;
+			
+			if(!confirm('El precio de compra es más alto que el precio de venta, esto implicaría una pérdida, el precio de venta está fijado en $'+$scope.precio_vta)){
+		  	  return;
 			}			
 		}
 
@@ -399,8 +398,8 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 						DOCUMENTO: $scope.numdoc,
 						PROVEEDOR: $scope.proveedor,
 						CLAVE_PROVEEDOR: $scope.claveprov,
-						IMPORTE: '$ ' + $scope.total,
-						SALDO: $('#tipopago').val() == 1 ? '$ 0.00' : '$ ' + $scope.total,
+						IMPORTE: $scope.total,
+						SALDO: $('#tipopago').val() == 1 ? '0.00' : $scope.total,
 						FECHA_REVISION: formatDatePrint(hoy),
 						FECHA_PAGO: $('#fechapago').val(),
 						FORMA_PAGO: $('#tipopago').val() == 1 ? 'Contado' : 'Crédito ' + $scope.diascred + ' días',
@@ -451,7 +450,12 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 				idsucursal: $scope.idsucursal,
 				documento: $scope.numdoc,
 				caja:1,
-				idempresa:$scope.idempresa
+				idempresa:$scope.idempresa,
+				aniofiscal:$scope.aniofiscal,
+				idcliente:null,
+				idproveedor:$scope.idproveedor,
+				idusuario:null,
+				idmoneda:$('#moneda').val()
 			}).then(function (res) {					
 					if (res.status == 200 && res.data.value == 'OK') {
 

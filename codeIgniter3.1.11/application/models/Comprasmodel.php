@@ -57,7 +57,7 @@ class Comprasmodel extends CI_model
 
 	function insert_compra_producto($data_producto)
 	{
-		$query = 'SELECT * FROM inserta_comp_prod($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)';
+		$query = 'SELECT * FROM inserta_comp_prod($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16)';
 		pg_prepare($this->conn,"insert_compra_producto",$query);
 		$result = pg_fetch_all(pg_execute($this->conn,"insert_compra_producto",$data_producto));
 		return json_encode($result);

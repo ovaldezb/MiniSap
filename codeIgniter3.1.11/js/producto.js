@@ -464,7 +464,8 @@ app.controller('myCtrlProducto', function($scope,$http,$routeParams)
   }
 
   $scope.validarcodigo = function(){
-    $http.get(pathProd+'prodbycode/'+$scope.codigo)
+    if($scope.btnAccion == 'Agregar'){
+      $http.get(pathProd+'prodbycode/'+$scope.codigo)
         .then(res=>{
           if(res.data.length==1){
             swal("El código de producto "+$scope.codigo+" ya existe","Verifique el código","warning");
@@ -474,6 +475,7 @@ app.controller('myCtrlProducto', function($scope,$http,$routeParams)
         .catch(err=>{
           console.log(err);
         });
+      }
   }
 
 });

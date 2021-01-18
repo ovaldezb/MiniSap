@@ -42,7 +42,7 @@
 						<input type="text" class="input is-small" ng-model="claveprov" ng-keyup="buscaprovbyclave($event)" placeholder="Clave Proveedor">
 					</div>
 					<div class="column is-4">
-						<input type="text" class="input is-small"  ng-model="proveedor" ng-keyup="buscaprovbynombre($event)" placeholder="Nombde del Proveedor">
+						<input type="text" class="input is-small"  ng-model="proveedor" ng-keyup="buscaprovbynombre($event)" placeholder="Nombre del Proveedor">
 					</div>
 				</div>
 				<div class="container" style="display:none; width:47.5%;margin-left:210px;margin-top:-25px;margin-bottom:10px" id="buscaprov">
@@ -441,8 +441,8 @@
 								<td style="text-align:center;font-size:14px">{{x.FECHA_COMPRA}}</td>
 								<td style="text-align:right;font-size:14px">{{x.DOCUMENTO}}</td>
 								<td style="text-align:center;font-size:14px">{{x.PROVEEDOR}}</td>
-								<td style="text-align:center;font-size:14px">{{x.IMPORTE}}</td>
-								<td style="text-align:center;font-size:14px">{{x.SALDO}}</td>
+								<td style="text-align:center;font-size:14px">{{x.IMPORTE | currency}}</td>
+								<td style="text-align:center;font-size:14px">{{x.SALDO | currency}}</td>
 								<td style="text-align:center;font-size:14px">{{x.FECHA_REVISION}}</td>
 								<td style="text-align:center;font-size:14px">{{x.FECHA_PAGO}}</td>
 								<td style="text-align:center;font-size:14px">{{x.FORMA_PAGO}}</td>

@@ -50,5 +50,12 @@ class Controlinvmodel extends CI_model
 		return json_encode($result);
     }
 
+    function del_movinv($idMov){
+        $query = 'DELETE FROM "INVENTARIO" WHERE "ID"=$1';
+        pg_prepare($this->conn, "borramov", $query);
+		$result =  pg_fetch_all(pg_execute($this->conn, "borramov", $idMov));
+		return json_encode($result);
+    }
+
 }
 ?>

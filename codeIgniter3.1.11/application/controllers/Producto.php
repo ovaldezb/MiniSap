@@ -169,9 +169,6 @@ class Producto extends CI_Controller
             ->set_content_type('application/json')
             ->set_output($result);
 	}
-	/*function fileExists($codigo)
-	{
-
-	}*/
+	
 }
 ?>

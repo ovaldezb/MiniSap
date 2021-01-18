@@ -364,6 +364,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
           $scope.imagePath = res.data[0].IMAGEN;
           $scope.iva = res.data[0].IVA;
           $scope.id_producto = res.data[0].ID_PRODUCTO;
+          $scope.tipo_ps = res.data[0].TIPO_PS;
           if($scope.imagePath!='')
           {
             $('#imgfig').show();
@@ -395,7 +396,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
     	}).catch(function(err)
     	{
     		console.log(err);
-    	})
+    	});
     }
 
     $scope.selectProdBus = function(idxRowListaBusq)
@@ -876,7 +877,12 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
           tipops:$scope.tipo_ps,
           documento: $scope.fact.documento,
           caja:1,
-          idempresa:$scope.idempresa
+          idempresa:$scope.idempresa,
+          aniofiscal:$scope.aniofiscal,
+          idcliente:$scope.idcliente,
+          idproveedor:null,
+          idusuario:null,
+          idmoneda:1 //la venta siempre es en pesos
         }
         $http.post(pathTpv+'registraventaprod',vntaProd).
         then(function(res)

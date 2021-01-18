@@ -84,7 +84,13 @@ class Tpv extends CI_Controller
 			$data['tipops'],
 			$data['documento'],
 			$data['caja'],
-			$data['idempresa'])
+			$data['idempresa'],
+			$data['aniofiscal'],
+			$data['idcliente'],
+			$data['idproveedor'],
+			$data['idusuario'],
+			$data['idmoneda'],
+			)
 		);
 		return $this->output
 					 ->set_content_type('application/json')

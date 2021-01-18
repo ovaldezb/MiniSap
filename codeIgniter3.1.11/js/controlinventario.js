@@ -1,20 +1,20 @@
-var pathCliente = '/core/';
-var pathAcc = pathCliente+'access/';
-var pathUsr = pathCliente+'usuarios/';
-var pathInv = pathCliente+'inventario/';
-var app = angular.module("myApp", []);
-app.controller("myCtrlControlinvent", function ($scope, $http) {
+app.controller("myCtrlControlinvent", function ($scope, $http,$routeParams) {
   $scope.isShowReporte = false;
   $scope.lstInvent = [];
+  $scope.lstProducto = [];
   $scope.isAdd = false;
   $scope.fechaIni = '';
   $scope.fechaFin = '';
   $scope.fechaMov = '';
   $scope.tipoES='e';
-  $scope.cantidad=0,
+  $scope.cantidad='';
   $scope.medida='';
   $scope.cliPro='cli';
+  $scope.prddesc = '';
   $scope.clave='';
+  $scope.idSelInv = -1;
+  $scope.idusuario = '';
+  $scope.idProceso = $routeParams.idproc;
   $scope.ctrlInv = {
     fechaIni:'',
     fechaFin:'',
@@ -111,6 +111,8 @@ app.controller("myCtrlControlinvent", function ($scope, $http) {
           $scope.regmov.idsucursal = res.data.idsucursal;
           $scope.ctrlInv.aniofiscal = res.data.aniofiscal;
           $scope.regmov.aniofiscal = res.data.aniofiscal;
+          $scope.idUsuario = res.data.idusuario;
+          $scope.permisos();
         }
       })
       .catch(err =>{
@@ -158,10 +160,12 @@ app.controller("myCtrlControlinvent", function ($scope, $http) {
 
   $scope.fecIniChange =()=>{
     $scope.ctrlInv.fechaIni = formatFecQuery($('#fechaInicio').val(),'ini');
+    $scope.fechaIni = $('#fechaInicio').val();
   }
 
   $scope.fecFinChange = () =>{
     $scope.ctrlInv.fechaFin = formatFecQuery($('#fechaFin').val(),'fin');
+    $scope.fechaFin = $('#fechaFin').val();
   }
 
   $scope.validateFecha = () =>{
@@ -179,15 +183,17 @@ app.controller("myCtrlControlinvent", function ($scope, $http) {
       date.getMonth(fecha.substring(3,5));
       date.setDate(fecha.substring(0,2));
       $scope.regmov.fecha = formatDateInsert(date);
+      $scope.fechaMov = $('#fechaMovimiento').val(); 
     }
     
   }
 
+  $scope.selectRowInv = (idInv) =>{
+    console.log(idInv);
+    $scope.idSelInv =  idInv;
+  }
+
   $scope.creaReporte = () =>{
-      $scope.permisos.alta=true;
-      $scope.permisos.baja=true;
-      $scope.permisos.modificacion=true;
-      $scope.permisos.consulta=true;
       $scope.isShowReporte = true;
       $http.post(pathInv+'getinventario',$scope.ctrlInv)
         .then(res =>{
@@ -223,16 +229,114 @@ app.controller("myCtrlControlinvent", function ($scope, $http) {
       $scope.regmov.idusuario=$scope.clave;
     }
 
-    console.log($scope.regmov);
+    $http.post(pathInv+'save',$scope.regmov)
+    .then(res=>{
+      console.log(res);
+      if(res.status === '200'){
+        swal('El movimiento se guardó con éxito');
+        $scope.closeAddMov()
+      }
+    })
+    .catch(err=>{
+      console.log(err);
+    });
+  }
+
+
+  $scope.elliminaMovimiento = ()=>{
+    swal({
+      title: "Desea eliminar este movimiento?",
+      text: "una vez eliminado no será posible recuperarlo",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+    .then((willDelete) => {
+      if (willDelete) {
+        $http.delete(pathInv+'delmov/'+$scope.idSelInv)
+        .then(res =>{
+          $http.post(pathInv+'getinventario',$scope.ctrlInv)
+          .then(res =>{
+            if(res.data.length > 0){
+              $scope.lstInvent = res.data;
+            }
+          })
+          .catch(err =>{
+            console.log(err);
+          });
+        })
+        .catch(err=>{
+          console.log(err);
+        });
+        swal("El movimiento ha sido eliminado!", {
+          icon: "success",
+        });
+      } 
+    });
+  }
+
+  $scope.buscaProducto=(event)=> {
+    event.stopPropagation();
+    if (event.keyCode == 13) {
+      if($scope.regmov.codigo === undefined || $scope.regmov.codigo === ''){
+        $http.get(pathTpv+'getitems/'+$scope.ctrlInv.idempresa+'/vacio/V', {responseType: 'json'}).
+          then(res =>
+          {
+            if(res.status == '200')
+            {
+              $scope.lstProducto = res.data;
+            }
+          }).catch(err =>
+          {
+            console.log(err);
+          })
+      }else{
+        $http.get(pathProd+'prodbycode/'+$scope.regmov.codigo)
+          .then(res =>{
+            if(res.data.length > 0){
+              $scope.regmov.codigo = res.data[0].CODIGO.trim();
+              $scope.prddesc = res.data[0].DESCRIPCION.trim();
+              $scope.medida = res.data[0].UNIDAD_MEDIDA.trim();
+              $scope.regmov.idproducto = res.data[0].ID_PRODUCTO;
+            }else{              
+              $http.get(pathTpv+'getitems/'+$scope.ctrlInv.idempresa+'/'+$scope.regmov.codigo+'/V', {responseType: 'json'}).
+                then(res =>
+                {
+                  if(res.data.length > 0)
+                  {
+                    $scope.lstProducto = res.data;
+                  }else{
+                    swal('No se encontró un producto con el código o descripción '+$scope.regmov.codigo);
+                  }
+                }).catch(err =>
+                {
+                  console.log(err);
+                })
+            }
+          })
+          .catch();
+      }
+    }
+  }
+
+  $scope.selectRowPrd = (index, idproducto) =>{
+    $scope.regmov.codigo = $scope.lstProducto[index].CODIGO;
+    $scope.prddesc = $scope.lstProducto[index].DESCRIPCION;
+    $scope.medida = $scope.lstProducto[index].UNIDAD_MEDIDA;
+    $scope.regmov.idproducto = idproducto;
+    $scope.lstProducto = [];
   }
 
   $scope.agregaMovimiento = () =>{
     $scope.isAdd = true;
-    
   }
 
-  $scope.closeAddMov = () =>{
+  $scope.closeAddMov = (event) =>{
     $scope.isAdd = false;
+    $scope.regmov ={};
+    $scope.medida = '';
+    $scope.cantidad = '';
+    $scope.fechaMov = '';
   }
   
 });

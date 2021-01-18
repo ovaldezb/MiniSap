@@ -91,7 +91,7 @@ class Tpvmodel extends CI_model
 
 	function registra_venta_producto($data)
 	{
-		$pstmt = 'SELECT * FROM venta_producto($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)';
+		$pstmt = 'SELECT * FROM venta_producto($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)';
 		pg_prepare($this->conn,"prstmt",$pstmt);
 		$result = pg_fetch_all(pg_execute($this->conn, "prstmt", $data));
 		return json_encode($result);
