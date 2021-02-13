@@ -70,5 +70,12 @@ class Utils extends CI_Controller
             ->set_output($this->catalogosmodel->get_vales());
   }
 
+
+  function addFY($idempresa,$fiscalYear){
+    return $this->output
+    ->set_content_type('application/json')
+    ->set_output($this->catalogosmodel->addFY($idempresa,$fiscalYear));
+  }
+
 }
 ?>

@@ -61,6 +61,21 @@ app.controller('repControlMovAlm',function($scope,$http)
 
   $scope.creaReporte = function()
   {
+    var urlVentas = '';
+    switch($scope.idTipoReporte){
+      case 1:
+        urlVentas = '/nada/1';
+        break;
+      case 2:
+        urlVentas = '/nada/2';
+        break;
+      case 3:
+        urlVentas = '/'+$scope.codigo+'/3';
+        break;
+      case 4:
+        urlVentas = '/nada/4';
+        break;
+    }
     $http.get(pathRepo+'movalmacen/'+$scope.idempresa+'/'+$scope.fiscalYear+'/'+$scope.fechaInicio+'/'+$scope.fechaFin+'/'+$scope.linea,{responseType:'json'}).
     then((res)=>{
       if(res.data.length > 0)
@@ -128,13 +143,44 @@ app.controller('repControlMovAlm',function($scope,$http)
     {
       type: "application/pdf;base64"
     });*/
-    window.html2canvas = html2canvas;
+    //window.html2canvas = html2canvas;
     var doc = new jsPDF()
     doc.html(document.getElementById('exportable').innerHTML, {
      callback: function (doc) {
        doc.save();
      }
    });
+  }
+
+  $scope.selTipoRepo = function(i){
+    $scope.idTipoReporte = i;
+    $scope.bycodigo = false;
+    $scope.byname = false;
+    switch(i){
+      case 1:
+        $scope.tipoReporte = 'Todos';
+        break;
+      case 2:
+        $scope.bycodigo = true;
+        $scope.byname = false;
+        $scope.tipoReporte = 'Por Código';
+        break;
+      case 3:
+        $scope.bycodigo = false;
+        $scope.byname = true;
+        $scope.tipoReporte = 'Por Nombre';
+        break;
+    }
+    $scope.menushow = !$scope.menushow;
+  }
+
+  $scope.showMenu = function(){
+    $scope.menushow = !$scope.menushow;
+  }
+
+  $scope.selectTipoRepo = function(i){
+    $scope.tiporeporte = i;
+    $scope.menushow = false;
   }
 
   $scope.orderByMe = function(x)

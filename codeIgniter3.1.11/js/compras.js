@@ -248,6 +248,12 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 			$('#cantidad').focus();
 			return;
 		}
+
+		if ($scope.precio == 0) {
+			swal('El precio debe ser mayor a 0');
+			$('#precio').focus();
+			return;
+		}
 		
 		if($scope.precio > $scope.precio_vta){
 			
@@ -623,7 +629,7 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 
 	$scope.closeDivSearch = function () {
 		$('#dispsearch').hide();
-		$scope.listaproductos = [];
+		$scope.lstaprdctbusq = [];
 	}
 
 	$scope.agregarcompra = function () {

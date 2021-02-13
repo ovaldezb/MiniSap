@@ -13,7 +13,7 @@ class Cliente extends CI_Controller
 
 	function index() {
 		if(isset($_SESSION['username']))
-    {
+    	{
 			$data['tipo_cliente'] = $this->catalogosmodel->get_tipo_cliente();
 			$data['revision'] = $this->catalogosmodel->get_dias_semana();
 			$data['forma_pago'] = $this->catalogosmodel->get_forma_pago();

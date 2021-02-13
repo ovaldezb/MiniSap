@@ -163,8 +163,11 @@
 						</div>
 					</div>
 					<div class="level-right">
-				    <div class="level-item">
-							<button class="button is-success" ng-click="verificaExistencia()" style="display:{{isVerifExis ? 'block':'none'}}">Verificar Existencia</button>
+						<div class="level-item" ng-show="lstProdCompra.length > 0">
+							<button class="button is-info" ng-click="addDescuento()">Descuento</button>
+						</div>
+				    	<div class="level-item">
+							<button class="button is-success" ng-click="verificaExistencia()" ng-show="isVerifExis">Verificar Existencia</button>
 						</div>
 					</div>
 				</nav>
@@ -853,6 +856,87 @@
 		  <button class="button" ng-click="closeVerifClte()">Cerrar</button>
 	    </footer>
 	  </div>
+	</div>
+	<div class="{{modalAddDscnt ? 'modal is-active' : 'modal' }}" id="adddscnt">
+		<div class="modal-background"></div>
+		<div class="modal-card" style="width:700px">
+			<header class="modal-card-head">
+				<p class="modal-card-title">Agregar descuento a los Productos</p>
+				<button class="delete" aria-label="close" ng-click="closeAddDscnt();"></button>
+			</header>
+			<section class="modal-card-body">				
+				<div class="columns" ng-show="!proddscnt.producto">
+					<div class="column is-5">Descuento total:</div>
+					<div class="column is-2"><input type="number" class="input is-small" ng-model="proddscnt.descuentoTodos" ng-keyup="calculaDescTodos()"></div>
+					
+				</div>
+				<div class="columns" ng-show="proddscnt.producto">
+					<div class="column is-5">{{proddscnt.producto}}</div>
+					<div class="column is-2">{{proddscnt.precio | currency}}</div>						
+					<div class="column is-2"><input type="number" class="input is-small is-1" ng-keyup="calculaDescInd()" ng-chage="calculaDescInd()" ng-model="proddscnt.descuento"></div>
+					
+					<div class="column is-2">
+						<a ng-click="escondeRenglon()">
+							<span class="icon has-text-danger">
+								<i title="Limpia el renglon" class="fas fa-times-circle"></i>
+							</span>
+						</a>
+					</div>
+				</div>
+					
+				<table style="width:100%">
+					<tr>
+						<td>
+							<table class="table" style="width:100%" border="1">
+								<colgroup>
+									<col width="30%">
+									<col width="15%">
+									<col width="15%">
+									<col width="15%">
+									<col width="15%">
+									<col width="10%">
+								</colgroup>
+								<tr>
+									<td>Descripcion</td>
+									<td>Cantidad</td>
+									<td>Unidad</td>
+									<td>Precio</td>
+									<td>Importe</td>
+									<td>Desc</td>
+								</tr>
+							</table>
+						</td>
+					<tr>
+					<tr>
+						<td>
+							<div style="width:100%; height:150px; overflow:auto;">
+								<table class="table" style="width:100%;">
+									<colgroup>
+										<col width="30%">
+										<col width="15%">
+										<col width="15%">
+										<col width="15%">
+										<col width="15%">
+										<col width="10%">
+									</colgroup>
+									<tr ng-repeat="p in lstProdCompra" ng-click="setSelectedDscnt($index)" ng-class="{selected: $index === indexRowCompra}">
+										<td>{{p.DESCRIPCION}}</td>
+										<td align="center">{{p.CANTIDAD}}</td>
+										<td align="center">{{p.UNIDAD}}</td>
+										<td align="right">$ {{p.PRECIO_LISTA | number:2}}</td>
+										<td style="text-align:right">$ {{p.IMPORTE | number:2}}</td>
+										<td style="text-align:center">{{p.DESCUENTO}}%</td>
+									</tr>
+								</table>	
+							</div>
+						</td>
+					<tr>
+				</table>
+			</section>
+			<footer class="modal-card-foot">
+				<button class="button" ng-click="closeAddDscnt();">Cerrar</button>
+			</footer>
+		</div>
 	</div>
 	<div id="ticket" style="display:none">
 		<div class="ticket ffont">

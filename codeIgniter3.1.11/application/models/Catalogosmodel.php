@@ -229,5 +229,12 @@ class Catalogosmodel extends CI_model
 		return $result;
 	}
 
+	function addFY($idempresa,$fiscalYear){
+		$query = 'INSERT INTO "EMP_EJER_FISC" ("ID_EMPRESA","EJER_FISC") VALUES($1,$2)';
+		$result = pg_prepare($this->conn,"insertqry",$query);
+		$result = pg_execute($this->conn,"insertqry",array($idempresa,$fiscalYear));
+		return json_encode($result);
+	}
+
 }
 ?>

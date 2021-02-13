@@ -22,7 +22,7 @@
   <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <a class="navbar-item" >
-        <img src="../img/logo.jpg" alt="Sistema de Gesti&oacute;n Empresarial" width="40" height="28">
+        <img src="../img/logo.png" alt="Sistema de Gesti&oacute;n Empresarial" width="40" height="28">
       </a>
     </div>
     <div class="navbar-end">
@@ -36,7 +36,7 @@
           </p>
           <p class="control">
             <span class="icon">
-              <a ng-click="selectEmpresa()" style="color: #184ddd">
+              <a ng-click="selectEmpresa()" style="color: #184ddd" disabled>
               <i class="far fa-building"></i>
               </a>
             </span>
@@ -44,8 +44,13 @@
           </p>
 
           <p class="control">
-            <span class="icon">
-              <i class="far fa-calendar-alt"></i>
+            <span class="icon" ng-show="!isCurrentYear">
+              <a ng-click="addFY()" style="color: #184ddd">
+                <i class="far fa-calendar-alt"></i>
+              </a>
+            </span>
+            <span class="icon" ng-show="isCurrentYear">
+                <i class="far fa-calendar-alt"></i>
             </span>
             <span>{{anioFiscal}}</span>
           </p>
@@ -92,7 +97,7 @@
         </ul>
 <?php }?>
         <li>
-          <a href="#"><i class="icono izquierda <?php echo $key['ICONO']?>"></i><?php echo $key['MODULO']?><i class="icono derecha fas fa-chevron-down"></i></a>
+          <a><i class="icono izquierda <?php echo $key['ICONO']?>"></i><?php echo $key['MODULO']?><i class="icono derecha fas fa-chevron-down"></i></a>
           <ul >
             <li><a href="#!<?php echo $key['RUTA']?>/<?php echo $idproc ?>"><?php echo $key['PROCESO']?></a></li>
 <?php

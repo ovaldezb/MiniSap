@@ -48,6 +48,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
   $scope.agregaProd = true;
   $scope.modalConsProdSuc = false;
   $scope.modalVerifProdSuc = false;
+  $scope.modalAddDscnt = false;
   $scope.isOperaciones = false;
   $scope.isVerifExis = false;
   $scope.pago_tarjeta = 0.00;
@@ -76,6 +77,12 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
   $scope.idvales = '0';
   $scope.idtarjeta = '0';
   $scope.idbanco = '0';
+  $scope.proddscnt ={
+    producto:undefined,
+    precio:undefined,
+    descuento:0,
+    descuentoTodos:0
+  }
   $scope.empresa ={
     NOMBRE:'',
     DOMICILIO:'',
@@ -299,10 +306,20 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
 			console.log(err);
 		});
   }
+
   $scope.setSelected = function(indexRowCompra,idSelCompra)
   {
     $scope.idSelCompra = idSelCompra;
     $scope.indexRowCompra = indexRowCompra;
+  }
+
+  $scope.setSelectedDscnt = function(indexRowCompra)
+  {
+    $scope.indexRowCompra = indexRowCompra;
+    $scope.proddscnt.producto = $scope.lstProdCompra[indexRowCompra].DESCRIPCION;
+    $scope.proddscnt.precio= $scope.lstProdCompra[indexRowCompra].PRECIO_LISTA;
+    $scope.proddscnt.descuento = $scope.lstProdCompra[indexRowCompra].DESCUENTO;
+    
   }
 
   $scope.manualenter = function()
@@ -896,7 +913,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
       }
     }
 
-    $scope.registraFactura = function(){
+    $scope.registraFactura = ()=>{
       $scope.fact.cliente = $scope.nombre_cliente;
       $scope.fact.rfc = $scope.rfc_cliente;
       $scope.fact.idventa = $scope.idVenta;
@@ -915,7 +932,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
           });
     }
 
-  $scope.VerificarCliente = function()
+  $scope.VerificarCliente = ()=>
   {
       if($scope.claveclte != '')
       {
@@ -956,7 +973,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
       $scope.modalVerfClte = true;
   }
 
-  $scope.closeVerifClte = function()
+  $scope.closeVerifClte = ()=>
   {
     $scope.cliente.clave = '';
     $scope.cliente.nombre = '';
@@ -978,7 +995,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
     $scope.modalVerfClte = false;
   }
 
-  $scope.enviaDatosCliente = function()
+  $scope.enviaDatosCliente = ()=>
   {
     $scope.cliente.id_tipo_cliente=$('#id_tipo_cliente').val();
     $scope.cliente.revision=$('#revision').val();
@@ -1019,7 +1036,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
     }
   }
 
-  $scope.verificaExistencia = function()
+  $scope.verificaExistencia = ()=>
   {
     $scope.modalVerifProdSuc = true;
     $http.get(pathTpv+'getproductosforsucursal/'+$scope.id_producto,{responseType:'json'}).
@@ -1036,136 +1053,173 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
     });
   }
 
-    $scope.closeVerifProdSuc = function()
-    {
-      $scope.modalVerifProdSuc = false;
-      $scope.lstPrdSucExis = [];
-    }
+  $scope.addDescuento = ()=>{
+    
+    $scope.modalAddDscnt = true;
+  }
+
+  $scope.closeVerifProdSuc = ()=>
+  {
+    $scope.modalVerifProdSuc = false;
+    $scope.lstPrdSucExis = [];
+  }
 
     
-
-    $scope.imprimeCompra = function()
-    {
-      
-      if($scope.pago_efectivo > 0){
-        $scope.formaPago = 'Efectivo';
-      }else if($scope.pago_tarjeta > 0){
-        $scope.formaPago = 'Tarjeta';
-      }else if($scope.pago_vales){
-        $scope.formaPago = 'Vales';
-      }else if($scope.pago_cheque){
-        $scope.formaPago = 'Cheque';
-      }
-     
-      document.getElementById("formapago").innerHTML = $scope.formaPago;
-      var h = new Date();
-      var ft = document.getElementById("fechaTicket");
-      ft.innerHTML = formatDateInsert(h);
-      var ficha = document.getElementById('ticket');
-      var ventimp = window.open(' ', 'popimpr');
-      ventimp.document.write( ficha.innerHTML );
-      ventimp.document.close();
-      ventimp.print();
-      ventimp.close();
+  $scope.imprimeCompra = ()=>
+  {
+    if($scope.pago_efectivo > 0){
+      $scope.formaPago = 'Efectivo';
+    }else if($scope.pago_tarjeta > 0){
+      $scope.formaPago = 'Tarjeta';
+    }else if($scope.pago_vales){
+      $scope.formaPago = 'Vales';
+    }else if($scope.pago_cheque){
+      $scope.formaPago = 'Cheque';
     }
+    
+    document.getElementById("formapago").innerHTML = $scope.formaPago;
+    var h = new Date();
+    var ft = document.getElementById("fechaTicket");
+    ft.innerHTML = formatDateInsert(h);
+    var ficha = document.getElementById('ticket');
+    var ventimp = window.open(' ', 'popimpr');
+    ventimp.document.write( ficha.innerHTML );
+    ventimp.document.close();
+    ventimp.print();
+    ventimp.close();
+  }
 
-    $scope.cancelVenta = function()
-    {
-      $scope.rgstracompra = false;
-      $scope.fact.req_factura = false;
-      $scope.limpiaCancelVenta();
+  $scope.closeAddDscnt = () =>{
+    $scope.proddscnt.producto = undefined;
+    $scope.modalAddDscnt = false;
+    $scope.proddscnt.descuento = '';
+    $scope.proddscnt.descuentoTodos = '';
+  }
+
+  $scope.escondeRenglon = () =>{
+    $scope.proddscnt.producto = undefined;
+  }
+
+  $scope.calculaDescInd = () =>{
+    if(isNaN($scope.proddscnt.descuento)){
+      swal('Solo se aceptan numeros');
+      return;
     }
-
-    $scope.closeReqFact = function(){
-      $scope.modalReqFact = false;
+    if($scope.proddscnt.descuento > 10 ){
+      swal('No puede dar un descuento mayor al 10%','Pida ayuda a su superior','error');
     }
+    $scope.lstProdCompra[$scope.indexRowCompra].IMPORTE = $scope.lstProdCompra[$scope.indexRowCompra].PRECIO_LISTA * $scope.lstProdCompra[$scope.indexRowCompra].CANTIDAD * (1-($scope.proddscnt.descuento / 100));
+    $scope.lstProdCompra[$scope.indexRowCompra].DESCUENTO = $scope.proddscnt.descuento;
+    $scope.lstProdCompra[$scope.indexRowCompra].ESDSCTO = $scope.proddscnt.descuento > 0;
+    $scope.calculaValoresMostrar();
+  }
 
-    $scope.abreOperaciones = function(){
-      $scope.getNextDocFact();
-      $scope.isOperaciones = true;
-      var hoy = new Date();
-      var dia = hoy.getDate() > 9 ? hoy.getDate() : '0'+hoy.getDate();
-      var mes = (hoy.getMonth()+1) > 9 ? (hoy.getMonth()+1) : '0'+(hoy.getMonth()+1);
-      var year = hoy.getFullYear();
-      $http.get(pathTpv+'getdataoper/'+$scope.idempresa+'/'+$scope.aniofiscal+'/'+(mes+'-'+dia+'-'+year+' 00:00:00')+'/'+(mes+'-'+dia+'-'+year+' 23:59:59'))
+  $scope.calculaDescTodos = () =>{
+    $scope.lstProdCompra.map(prod =>{  
+      prod.ESDSCTO = $scope.proddscnt.descuentoTodos > 0;
+      prod.DESCUENTO = $scope.proddscnt.descuentoTodos ;
+      prod.IMPORTE = prod.PRECIO_LISTA * prod.CANTIDAD * (1-($scope.proddscnt.descuentoTodos / 100));
+    });
+    $scope.calculaValoresMostrar();
+  }
+
+  $scope.cancelVenta = () =>
+  {
+    $scope.rgstracompra = false;
+    $scope.fact.req_factura = false;
+    $scope.limpiaCancelVenta();
+  }
+
+  $scope.closeReqFact = ()=>{
+    $scope.modalReqFact = false;
+  }
+
+  $scope.abreOperaciones = ()=>{
+    $scope.getNextDocFact();
+    $scope.isOperaciones = true;
+    var hoy = new Date();
+    var dia = hoy.getDate() > 9 ? hoy.getDate() : '0'+hoy.getDate();
+    var mes = (hoy.getMonth()+1) > 9 ? (hoy.getMonth()+1) : '0'+(hoy.getMonth()+1);
+    var year = hoy.getFullYear();
+    $http.get(pathTpv+'getdataoper/'+$scope.idempresa+'/'+$scope.aniofiscal+'/'+(mes+'-'+dia+'-'+year+' 00:00:00')+'/'+(mes+'-'+dia+'-'+year+' 23:59:59'))
+        .then(res=>{
+            if(res.data.ventas.length > 0){
+              $scope.lstVentas = res.data.ventas;
+              $scope.pagos = res.data.pagos;
+              $scope.tipopago = res.data.tipopago;
+            }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+  }
+
+  $scope.closeOperaciones = ()=>{
+    $scope.isOperaciones = false;
+    $scope.lstVentas = [];
+    $scope.pagos = '';
+    $scope.tipopago = '';
+  }
+
+  $scope.corteCaja = ()=>{
+    var dataFactura = {
+      documento: $scope.fact.documento,
+      ffactura: formatDateInsert(new Date()),
+      idcliente: 0,
+      importe: 0,
+      saldo: 0,
+      tipopago:1,
+      frevision:null,
+      fvencimiento:null,
+      idvendedor:0,
+      idempresa:$scope.idempresa,
+      aniofiscal:$scope.aniofiscal,
+      idsucursal:$scope.idsucursal,
+      formapago:null,
+      usocfdi:null,
+      metodopago:null
+    };
+    
+    swal({
+      title: "Se va a realizar el corte de caja",
+      text: "Continuar?",
+      icon: "warning",
+      buttons: [true,true],
+      dangerMode: true,
+    })
+    .then(yes=>{
+      if(yes){
+        for(var i = 0; i< $scope.lstVentas.length ; i++){
+          if($scope.lstVentas[i].ID_FACTURA == 0){
+            dataFactura.importe += $scope.lstVentas[i].IMPORTE;
+          }
+        }
+        $http.post(pathFactura+'savefactura',dataFactura)
           .then(res=>{
-              if(res.data.ventas.length > 0){
-                $scope.lstVentas = res.data.ventas;
-                $scope.pagos = res.data.pagos;
-                $scope.tipopago = res.data.tipopago;
-              }
+            console.log(res);
+            var facturaCreada = res.data[0].registra_factura;              
+            for(var i = 0; i< $scope.lstVentas.length ; i++){
+              
+              $http.put(pathTpv+'updventa/'+$scope.lstVentas[i].ID_VENTA+'/'+facturaCreada)
+              .then(res => {
+                //se actualizo la venta
+              })
+              .catch(err => {
+                console.log(err);
+              });
+            }              
+            swal('Se ha hecho el corte de caja','Ok','success');
+            $scope.lstVentas = [];
+            $scope.closeOperaciones();
           })
-          .catch(err => {
+          .catch(err =>{
             console.log(err);
           });
-    }
-
-    $scope.closeOperaciones = function(){
-      $scope.isOperaciones = false;
-      $scope.lstVentas = [];
-      $scope.pagos = '';
-      $scope.tipopago = '';
-    }
-
-    $scope.corteCaja = function(){
-      var dataFactura = {
-        documento: $scope.fact.documento,
-        ffactura: formatDateInsert(new Date()),
-        idcliente: 0,
-        importe: 0,
-        saldo: 0,
-        tipopago:1,
-        frevision:null,
-        fvencimiento:null,
-        idvendedor:0,
-        idempresa:$scope.idempresa,
-        aniofiscal:$scope.aniofiscal,
-        idsucursal:$scope.idsucursal,
-        formapago:null,
-        usocfdi:null,
-        metodopago:null
-      };
-      
-      swal({
-        title: "Se va a realizar el corte de caja",
-        text: "Continuar?",
-        icon: "warning",
-        buttons: [true,true],
-        dangerMode: true,
-      })
-      .then(yes=>{
-        if(yes){
-          for(var i = 0; i< $scope.lstVentas.length ; i++){
-            if($scope.lstVentas[i].ID_FACTURA == 0){
-              dataFactura.importe += $scope.lstVentas[i].IMPORTE;
-            }
-          }
-          $http.post(pathFactura+'savefactura',dataFactura)
-            .then(res=>{
-              console.log(res);
-              var facturaCreada = res.data[0].registra_factura;              
-              for(var i = 0; i< $scope.lstVentas.length ; i++){
-                
-                $http.put(pathTpv+'updventa/'+$scope.lstVentas[i].ID_VENTA+'/'+facturaCreada)
-                .then(res => {
-                  //se actualizo la venta
-                })
-                .catch(err => {
-                  console.log(err);
-                });
-              }              
-              swal('Se ha hecho el corte de caja','Ok','success');
-              $scope.lstVentas = [];
-              $scope.closeOperaciones();
-            })
-            .catch(err =>{
-              console.log(err);
-            });
         }
       });
     }
 
-});
+  });
 
   function DisplayCurrentTime() {
       var date = new Date();

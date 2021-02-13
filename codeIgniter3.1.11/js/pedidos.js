@@ -723,6 +723,9 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
       $scope.pedido.fechapedido = formatDateInsert(new Date());
       $scope.pedido.dias = $scope.pedido.dias == '' ? null : $scope.pedido.dias;
       $scope.pedido.cuenta = $scope.pedido.cuenta == '' ? null : $scope.pedido.cuenta;
+      $scope.pedido.fechaentrega = $scope.pedido.fechaentrega == '' ? null :$scope.pedido.fechaentrega;
+      $scope.pedido.idvendedor = $scope.pedido.idvendedor == '' ? null : $scope.pedido.idvendedor;
+
       $http.put(pathPedi+'registrapedido',$scope.pedido).
       then(function(res)
       {

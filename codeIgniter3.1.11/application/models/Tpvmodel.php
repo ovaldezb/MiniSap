@@ -183,6 +183,8 @@ class Tpvmodel extends CI_model
 			}else{
 				$result4 = array(array("sum"=>"0","ID_TIPO_PAGO"=>"1"),$result3[0]);
 			}
+		}else{
+			$result4 = $result3;
 		}
 		return json_encode(array("ventas"=>$result1,"pagos"=>$result2,"tipopago"=>$result4),JSON_NUMERIC_CHECK);
 	}

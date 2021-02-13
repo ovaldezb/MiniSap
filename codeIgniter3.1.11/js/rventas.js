@@ -107,7 +107,7 @@ app.controller('repControlVentas',function($scope,$http)
           PRECIO_PROM: '',
           UTILIDAD: ''
         }
-        console.log(totalRowIns);
+        //console.log(totalRowIns);
         $scope.lstRepmalmcn.push(totalRowIns);
         $scope.isRepShow = true;
         $scope.fechaImpresion = formatHoraReporte(new Date());

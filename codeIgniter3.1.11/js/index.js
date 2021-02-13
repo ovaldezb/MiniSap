@@ -1,4 +1,4 @@
-var pathCliente = '/paty/';
+var pathCliente = '/core/';
 var pathPrve = pathCliente+'proveedor/';
 var pathClte = pathCliente+'cliente/';
 var pathUtils = pathCliente+'utils/';
@@ -98,9 +98,11 @@ app.controller('myCtrlIndex', function($scope,$http,$location,$window)
   $scope.isEmpPermActiv = true;
   $scope.idSucEmp = 0;
   $scope.sucursalEmpresa = '';
+  $scope.isCurrentYear = false;
   $scope.init = function()
   {
     $scope.loadEmpresas();  
+    
   }
 
   $scope.loadEmpresas = function(){
@@ -127,8 +129,9 @@ app.controller('myCtrlIndex', function($scope,$http,$location,$window)
 
   $scope.obtieneFYEmp = function(idEmpresa)
   {
+    todayYear = new Date().getFullYear();
     $http.get(pathEmpr+'getfybyemp/'+idEmpresa,{responseType:'json'}).
-    then(function(res)
+    then((res) =>
     {
       $scope.lstFYEmpr = [];
       if(res.data.length > 0)
@@ -136,6 +139,11 @@ app.controller('myCtrlIndex', function($scope,$http,$location,$window)
         $scope.lstFYEmpr = res.data;
         $scope.idSelFYEmp = res.data[0].EJER_FISC;
         $scope.indxdFyEmp = 0;
+        $scope.lstFYEmpr.forEach(yr =>{  
+                
+          $scope.isCurrentYear = (Number(yr.EJER_FISC)===todayYear);
+        });
+        
       }
     }).
     catch(function(err)
@@ -147,7 +155,7 @@ app.controller('myCtrlIndex', function($scope,$http,$location,$window)
   $scope.guardarEmpPerm = function()
   {
     $http.get(pathAcc+'setempfy/'+$scope.idEmpresaSelected+'/'+$scope.idSelFYEmp,{responseType:'json'}).
-    then(function(res)
+    then((res) =>
     {
       $scope.nombreEmpresa = $scope.lstEmprPerm[$scope.indxdSelEmp].NOMBRE;
       $scope.anioFiscal = $scope.lstFYEmpr[$scope.indxdFyEmp].EJER_FISC;
@@ -216,6 +224,32 @@ app.controller('myCtrlIndex', function($scope,$http,$location,$window)
       }
     }).catch((err)=>{
       console.log(err);
+    });
+  }
+
+  $scope.addFY = () =>{
+    todayYear = new Date();
+    swal({
+      title: "Desea agregar un nuevo año fiscal "+todayYear.getFullYear(),
+      text: "Una vez agregado, no se podra eliminar",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+    .then((fiscalYear) => {
+      if (fiscalYear) {
+        $http.post(pathUtils+'addFY/'+$scope.idEmpresaSelected+'/'+todayYear.getFullYear())
+        .then(res=>{
+          $scope.isCurrentYear = true; 
+          swal("El año fiscal ha sido agregado", {
+            icon: "success",
+          });
+        })
+        .catch(err=>{
+
+        });
+        
+      } 
     });
   }
 
