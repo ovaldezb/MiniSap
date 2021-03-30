@@ -7,7 +7,7 @@ class Factura extends CI_Controller
     {
         parent::__construct();
         $this->load->model('facturacionmodel');
-        //$this->load->model('catalogosmodel');
+        $this->load->model('tpvmodel');
         $this->load->helper('url');
         $this->load->library('session');
     }
@@ -55,8 +55,8 @@ class Factura extends CI_Controller
 					 ->set_output($result);
     }
     
-    function getfactdetbyid($idventa){
-		$result = $this->tpvmodel->getventadetallebyid($idventa);
+    function getfactdetbyid($idfactura){
+		$result = $this->tpvmodel->getventadetallebyid($idfactura);
 		return $this->output
 					 ->set_content_type('application/json')
 					 ->set_output(json_encode($result));

@@ -58,7 +58,7 @@ class Sucursalmodel extends CI_model
 
   function delete_sucursal($_id)
   {
-    $query = 'UPDATE "SUCURSALES" SET "ACTIVO" = true WHERE "ID_SUCURSAL" = $1';
+    $query = 'UPDATE "SUCURSALES" SET "ACTIVO" = false WHERE "ID_SUCURSAL" = $1';
     pg_prepare($this->conn,"delete_suc",$query);
     $result = pg_execute($this->conn,"delete_suc",array($_id));
     return $result;

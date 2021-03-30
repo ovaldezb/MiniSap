@@ -49,6 +49,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
   $scope.doctoEliminar = '';
   $scope.fechaentrega = '';
   $scope.idUsuario = '';
+  $scope.listaVendedores = false;
   $scope.idProceso = $routeParams.idproc;
   $scope.permisos = {
     alta: false,
@@ -684,10 +685,10 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
         if(res.data.length > 0)
         {
           $scope.lstVendedor = res.data;
-          $('#listaVendedores').show();
+          $scope.listaVendedores = true;
         }else {
           $scope.lstVendedor = [];
-          $('#listaVendedores').hide();
+          $scope.listaVendedores = false;
         }
       }).catch(function(err)
       {
@@ -701,13 +702,13 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
       $scope.nombre_vendedor = $scope.lstVendedor[indxRowClte].NOMBRE;
 
       $scope.lstVendedor = [];
-      $('#listaVendedores').hide();
+      $scope.listaVendedores = false;
     }
 
     $scope.closeVendSearch = function()
     {
       $scope.lstVendedor = [];
-      $('#listaVendedores').hide();
+      $scope.listaVendedores = false;
     }
 
     $scope.fecEntrega = function(){

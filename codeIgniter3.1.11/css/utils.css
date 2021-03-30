@@ -255,3 +255,13 @@ a{
   margin: 0 auto;
   font-size: 14px;
 }
+
+.pagos-width{
+  width: 350px !important;
+}
+
+.centro{
+  width: 100%;
+  margin: 0px auto;
+  text-align: center
+}

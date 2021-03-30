@@ -1,4 +1,4 @@
-var pathCliente = '/core/';
+var pathCliente = '/paty/';
 var pathPrve = pathCliente+'proveedor/';
 var pathClte = pathCliente+'cliente/';
 var pathUtils = pathCliente+'utils/';
@@ -20,7 +20,9 @@ var pathFacturacion = pathCliente + 'facturacion/';
 var pathFactura = pathCliente + 'factura/';
 var pathCargaMasiva = pathCliente + 'cargamasiva/';
 var pathInv = pathCliente+'inventario/';
-var app = angular.module("myApp", ["ngRoute"]);
+var pathCob = pathCliente+'cobranza/';
+var pathPag = pathCliente+'pagos/';
+var app = angular.module("myApp", ["ngRoute","chart.js"]);
 app.config(function($routeProvider) {
     $routeProvider
     .when("/", {
@@ -79,6 +81,12 @@ app.config(function($routeProvider) {
     })
     .when("/ctin/:idproc",{
       templateUrl : pathInv
+    })
+    .when("/cbrz/:idproc",{
+      templateUrl : pathCob
+    })
+    .when("/pago/:idproc",{
+      templateUrl : pathPag
     });
 });
 

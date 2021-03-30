@@ -148,12 +148,16 @@ class Cargamasiva extends CI_Controller
                         break;
                     
                 }
-                $this->productomodel->inserta_producto(array(trim($item['CODIGO']),
+                
+                $this->productomodel->inserta_producto(
+                  array(
+                    trim($item['CODIGO']),
                     utf8_encode(trim($item['DESCRIPCION'])),
                     intval(trim($item['EXISTENCIA'])),
                     trim($item['LINEA']),
                     $unidad,
-                    0, //Precio Lista
+                    $item['PRECIOVENTA']!='' ? doubleval(str_replace(',','',trim($item['PRECIOVENTA']))) : 0.0, //Precio Venta
+                    $item['PRECIOCOSTO']!='' ? doubleval(str_replace(',','',trim($item['PRECIOCOSTO']))) : 0.0, //Precio Compra
                     1, //moneda
                     16, //Iva
                     $_SESSION['idempresa'],

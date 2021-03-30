@@ -24,6 +24,7 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
   $scope.idUsuario = '';
   $scope.msjBoton = 'Agregar';
   $scope.idProceso = $routeParams.idproc;
+  $scope.aniofiscal = '';
   $scope.permisos = {
     alta: false,
     baja: false,
@@ -38,6 +39,7 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
       if(res.data.value=='OK'){
         $scope.idempresa = res.data.idempresa;
         $scope.idUsuario = res.data.idusuario;
+        $scope.aniofiscal = res.data.aniofiscal
         $scope.getDataInit();
         $scope.permisos();
       }
@@ -49,8 +51,8 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
   $scope.getDataInit = function()
   {
     var valor=0;
-    $http.get(pathClte+'loadByEmpresa/'+$scope.idempresa, { responseType: 'json'}).
-    then(function(res)
+    $http.get(pathClte+'loadByEmpresa/'+$scope.idempresa+'/'+$scope.aniofiscal, { responseType: 'json'}).
+    then(res =>
     {
       if(res.data.length > 0)
       {
@@ -72,7 +74,7 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
   $scope.getNextDocClte = function()
   {
     $http.get(pathUtils+'incremento/CLTE/'+$scope.idempresa+'/4').
-    then(function(res)
+    then((res)=>
     {
       $scope.clave = res.data[0].VALOR;
       $scope.claveTmp = res.data[0].VALOR;
@@ -164,7 +166,8 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
             NOMBRE:$scope.nombre,
             RFC:$scope.rfc,
             CURP:$scope.curp,
-            ID_CLIENTE:res.data[0].crea_cliente
+            ID_CLIENTE:res.data[0].crea_cliente,
+            SALDO:0
           };
           $scope.lstCliente.push(row);
           $scope.cancelCliente();

@@ -11,20 +11,19 @@ class Clientemodel extends CI_model
 		$this->conn = $this->postgresdb->getConn();
 	}
 
-	function get_clientes_by_empresa($idEmpresa)
+	function get_clientes_by_empresa($idEmpresa,$anioFiscal)
 	{
-		$query = 'SELECT C."ID_CLIENTE",C."NOMBRE",TRIM(C."CLAVE") as "CLAVE", 
-					U."CLAVE" as "USO_CFDI",
-					C."ID_USO_CFDI",
-					C."RFC", 
-					C."DIAS_CREDITO"
-				FROM "CLIENTE" as C
-				LEFT JOIN "USO_CFDI" as U ON C."ID_USO_CFDI" = U."ID_CFDI" 				
-				WHERE C."ACTIVO" = true 
-				AND C."ID_EMPRESA" = $1 
-				ORDER BY C."CLAVE"';
+		$query = 'SELECT C."ID_CLIENTE", C."NOMBRE",
+                    TRIM(C."CLAVE") as "CLAVE", 
+                    C."RFC", 
+                    CASE WHEN X."IMPORTE" IS NULL THEN 0 ELSE X."IMPORTE"  END as "SALDO"
+              FROM "CLIENTE" as C
+              LEFT OUTER JOIN (SELECT SUM(V."IMPORTE") as "IMPORTE","CODIGO_CLIENTE" FROM "VENTAS" as V 
+                              WHERE V."ANIO_FISCAL" = $1  GROUP BY "CODIGO_CLIENTE") as X ON X."CODIGO_CLIENTE" = C."ID_CLIENTE"
+              WHERE C."ACTIVO" = true 
+              AND C."ID_EMPRESA" = $2';
 		pg_prepare($this->conn, "my_query", $query);
-		$result =  pg_fetch_all(pg_execute($this->conn, "my_query", array($idEmpresa)));
+		$result =  pg_fetch_all(pg_execute($this->conn, "my_query", array($anioFiscal,$idEmpresa)));
 		return json_encode($result,JSON_NUMERIC_CHECK);
 	}
 

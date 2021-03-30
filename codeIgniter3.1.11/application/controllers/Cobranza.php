@@ -1,12 +1,11 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Pagos extends CI_Controller
+class Cobranza extends CI_Controller
 {
     function __construct() {
 		parent::__construct();
-		$this->load->model('pagosmodel');
-		//$this->load->model('catalogosmodel');
+		$this->load->model('cobranzamodel');
 		$this->load->helper('url');
 		$this->load->library('session');
 	}
@@ -14,7 +13,7 @@ class Pagos extends CI_Controller
     function index() {
 		if(isset($_SESSION['username']))
     	{
-            $this->load->view('pagos');
+            $this->load->view('cobranza');
         }else{
             $error['error'] = '';
       		$this->load->view('login',$error);
@@ -22,17 +21,17 @@ class Pagos extends CI_Controller
     }
 
 	function getfacturas($idempresa, $anioFiscal){
-		$result = $this->pagosmodel->getListaFacturas(array($idempresa,$anioFiscal));
+		$result = $this->cobranzamodel->getListaFacturas(array($idempresa,$anioFiscal));
 		return $this->output
 				->set_content_type('application/json')
 				->set_output($result);
 	}
 
-	function guardapago(){
+	function guardacobro(){
 		$data = json_decode(file_get_contents("php://input"),true);
-		$result = $this->pagosmodel->guardapago(array(
-			$data['fechapago'],
-			$data['importepago'],
+		$result = $this->cobranzamodel->guardacobranza(array(
+			$data['fechacobro'],
+			$data['importecobro'],
 			$data['movimiento'],
 			$data['banco'],
 			$data['cheque'],
@@ -49,23 +48,23 @@ class Pagos extends CI_Controller
 					 ->set_output($result);
 	}
 
-	function getpagofac($idfactura){
+	function getcobrofac($idfactura){
 		return $this->output
 					 ->set_content_type('application/json')
-					 ->set_output($this->pagosmodel->getpagobyfactura($idfactura));
+					 ->set_output($this->cobranzamodel->getcobranzabyfactura($idfactura));
 	}
 
-	function deletepago($idpago,$idfactura,$importe){
+	function deletecobro($idcobro,$idfactura,$importe){
 		return $this->output
 					 ->set_content_type('application/json')
-					 ->set_output($this->pagosmodel->deletebyid($idpago,$idfactura,$importe));
+					 ->set_output($this->cobranzamodel->deletebyid($idcobro,$idfactura,$importe));
 		
 	}
 
-  function getpagoid($idpago){
+  function getcobroid($idcobro){
     return $this->output
 					 ->set_content_type('application/json')
-					 ->set_output($this->pagosmodel->getpagobyid($idpago));
+					 ->set_output($this->cobranzamodel->getcobranzabyid($idcobro));
   }
 
 }

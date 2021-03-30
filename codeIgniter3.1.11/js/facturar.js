@@ -243,7 +243,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
   }
 
   $scope.getFacturaDetalleyId = function(idFactura){
-    $http.get(pathTpv+'getfactdetbyid/'+idFactura,{responseType:'json'})
+    $http.get(pathFactura+'getfactdetbyid/'+idFactura,{responseType:'json'})
         .then(res => {
           if(res.data.length > 0){
             $scope.lstProdCompra = res.data;
@@ -259,7 +259,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
   $scope.eliminarFactura = function(){
     $http.delete(pathTpv+'eliminafact/'+$scope.lstFacturas[$scope.indexRowFactura].ID_VENTA+'/'+$scope.factura.idsucursal)
         .then(res=>{
-          console.log(res);
+          
           $scope.lstFacturas.splice($scope.indexRowFactura,1);
           $scope.showEliminaFactura = false;
         })
@@ -287,9 +287,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
     $scope.claveclte = $scope.lstFacturas[$scope.indexRowFactura].CLAVE;
     $scope.factura.idvendedor = $scope.lstFacturas[$scope.indexRowFactura].CODIGO_VENDEDOR;
     $scope.nombre_vendedor = $scope.lstFacturas[$scope.indexRowFactura].VENDEDOR;
-    $scope.factura.fpago = $scope.lstFacturas[$scope.indexRowFactura].CVE_FORMA_PAGO;
-    $scope.getFacturaDetalleyId($scope.lstFacturas[$scope.indexRowFactura].ID_VENTA);
-    
+    $scope.getFacturaDetalleyId($scope.lstFacturas[$scope.indexRowFactura].ID_FACTURA);
   }
 
   $scope.agregaFactura = function(){
@@ -566,7 +564,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
       $scope.producto.prod_desc = $scope.lstProdBusqueda[idxRowListaBusq].DESCRIPCION;
       $scope.producto.unidad = $scope.lstProdBusqueda[idxRowListaBusq].UNIDAD_MEDIDA;
       $scope.producto.precio = $scope.lstProdBusqueda[idxRowListaBusq].PRECIO_LISTA;
-      $scope.producto.id_producto = $scope.lstProdBusqueda[idxRowListaBusq].id_producto;
+      $scope.producto.id_producto = $scope.lstProdBusqueda[idxRowListaBusq].ID_PRODUCTO;
       $scope.producto.imagePath = $scope.lstProdBusqueda[idxRowListaBusq].IMAGEN;
       $scope.producto.iva = $scope.lstProdBusqueda[idxRowListaBusq].IVA;
       $scope.producto.cantProd = $scope.lstProdBusqueda[idxRowListaBusq].STOCK;
@@ -646,7 +644,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
           UNIDAD_MEDIDA:$scope.producto.unidad,
           IMG:$scope.producto.imagePath,
           IVA:$scope.producto.iva,
-          id_producto:$scope.producto.id_producto,
+          ID_PRODUCTO:$scope.producto.id_producto,
           ESPROMO:$scope.producto.esPromo,
           ESDSCTO:$scope.producto.esDscto,
           PRECIO_PROMO:$scope.producto.promocion,
@@ -697,7 +695,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
 
     $scope.editaProducto = function()
     {
-      $scope.producto.id_producto = $scope.lstProdCompra[$scope.indexRowCompra].id_producto;
+      $scope.producto.id_producto = $scope.lstProdCompra[$scope.indexRowCompra].ID_PRODUCTO;
       $scope.producto.codigo_prodto = $scope.lstProdCompra[$scope.indexRowCompra].CODIGO;
       $scope.producto.prod_desc = $scope.lstProdCompra[$scope.indexRowCompra].DESCRIPCION;
       $scope.producto.unidad = $scope.lstProdCompra[$scope.indexRowCompra].UNIDAD;
@@ -746,7 +744,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
       $scope.dsctoValor = 0;
       $scope.producto.esPromo = false;
       $scope.producto.esDscto = false;
-
+      
       for(var i=0;i<$scope.lstProdCompra.length;i++)
       {
         $scope.factura.total += Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) ;
@@ -924,15 +922,20 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
         ventaProd =
         {
           idventa:$scope.idVenta,
-          idProducto:$scope.lstProdCompra[i].id_producto,
+          idProducto:$scope.lstProdCompra[i].ID_PRODUCTO,
           cantidad:$scope.lstProdCompra[i].CANTIDAD,
           precio:$scope.lstProdCompra[i].PRECIO_LISTA,
           importe:$scope.lstProdCompra[i].IMPORTE,
           idsucursal:$scope.factura.idsucursal,
           tipops:$scope.lstProdCompra[i].TIPO_PS,
-          docuento:$scope.factura.docto,
+          documento:$scope.factura.docto,
           caja:1,
-          idempresa:$scope.factura.idempresa
+          idempresa:$scope.factura.idempresa,
+          aniofiscal:$scope.factura.aniofiscal,
+          idcliente:$scope.factura.idcliente,
+          idproveedor:null,
+          idusuario:$scope.idUsuario,
+          idmoneda:1 //En la factura no se pide moneda, se pone por dafault peso
         }
         $http.post(pathTpv+'registraventaprod',ventaProd)
           .then(function(res){

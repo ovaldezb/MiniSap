@@ -34,10 +34,9 @@ class Comprasmodel extends CI_model
 							WHEN 0 THEN T."DESCRIPCION"
 							ELSE T."DESCRIPCION" || \' \' ||"DIAS_PAGO" || \' días\'
 							END as "FORMA_PAGO"
-							FROM "COMPRAS" AS C INNER JOIN "PROVEEDORES" AS P
-							ON C."CLAVE_PROVEEDOR" = P."CLAVE"
-							INNER JOIN "TIPO_PAGO" as T
-							ON C."ID_TIPO_PAGO" = T."ID_TIPO_PAGO"
+							FROM "COMPRAS" AS C 
+              INNER JOIN "PROVEEDORES" AS P ON C."CLAVE_PROVEEDOR" = P."CLAVE"
+							INNER JOIN "TIPO_PAGO" as T 	ON C."ID_TIPO_PAGO" = T."ID_TIPO_PAGO"
 							WHERE C."ID_EMPRESA" = $1
 							AND C."ANIO_FISCAL" = $2
 							AND P."ID_EMPRESA" = C."ID_EMPRESA"

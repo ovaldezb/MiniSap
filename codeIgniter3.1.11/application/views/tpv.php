@@ -53,12 +53,16 @@
 							<tr>
 								<td>
 									<table class="table is-bordered" style="width:100%">
-										<col width="26%">
-										<col width="74%">																				
-										<tr class="tbl-header-seek">
-											<td style="text-align:center;">CLAVE</td>
-											<td style="text-align:center;">NOMBRE</td>												
-										</tr>
+										<colgroup>
+                      <col width="26%">
+										  <col width="74%">																				
+                    </colgroup>
+                    <thead>
+                      <tr class="tbl-header-seek">
+                        <td style="text-align:center;">CLAVE</td>
+                        <td style="text-align:center;">NOMBRE</td>												
+                      </tr>
+                    </thead>
 									</table>
 								</td>
 								<td style="text-align:right;">
@@ -73,8 +77,10 @@
 								<td>
 									<div style="width:100%; height:100px; overflow:auto;border:2px solid red">
 										<table class="table is-bordered" style="width:100%;">
-											<col width="26%">
-											<col width="74%">
+											<colgroup>
+                        <col width="26%">
+											  <col width="74%">
+                      </colgroup>
 											<tr ng-repeat="x in lstCliente" ng-click="seleccionaCliente($index)">
 												<td style="text-align:center;font-size:14px;">{{x.CLAVE}}</td>
 												<td style="text-align:left;font-size:14px;">{{x.NOMBRE}}</td>
@@ -111,11 +117,13 @@
 								<td>
 									<table class="table is-bordered" style="width:100%">
 										<col width="26%">
-										<col width="74%">										
-										<tr class="tbl-header-seek">
-											<td style="text-align:center">CLAVE</td>
-											<td style="text-align:center">NOMBRE</td>
-										</tr>										
+										<col width="74%">	
+                    <thead>									
+										  <tr class="tbl-header-seek">
+											  <td style="text-align:center">CLAVE</td>
+											  <td style="text-align:center">NOMBRE</td>
+										  </tr>
+                    </thead>										
 									</table>
 								</td>
 								<td>
@@ -128,8 +136,8 @@
 							</tr>
 							<tr>
 								<td>
-									<div style="width:100%; height:100px; overflow:auto;border:2px solid red">
-										<table class="table" style="width:100%;">
+									<div style="width:100%; height:100px; overflow:auto;border:2px solid red;">
+										<table class="table" style="width:100%;cursor:pointer">
 											<col width="25%">
 											<col width="75%">
 											<tr ng-repeat="x in lstVendedor" ng-click="seleccionaVendedor($index)">
@@ -551,7 +559,7 @@
 			</header>
 			<section class="modal-card-body">
 				<div class="columns">
-					<div class="column">
+					<div class="column is-7">
 						<div class="columns" style="margin-top:-20px;margin-bottom:-25px">
 							<div class="column">
 								<label class="label">Ventas del {{fechaCorte}} Caja - {{noCaja}}</label>
@@ -573,10 +581,10 @@
 								</table>
 								<div style="overflow:auto; height:200px;">
 									<table class="table is-bordered" style="width:100%">
-										<col width="45%">
+										<col width="35%">
+										<col width="16%">
 										<col width="20%">
-										<col width="15%">
-										<col width="20%">
+										<col width="29%">
 										<tr ng-repeat="x in lstVentas">
 											<td>{{x.DOCUMENTO.trim()}}</td>
 											<td>{{x.COUNT}}</td>
@@ -588,7 +596,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="column">
+					<div class="column is-5">
 						<div class="columns" style="margin-bottom:30px">
 							<nav class="level">
 								<div class="level-right">

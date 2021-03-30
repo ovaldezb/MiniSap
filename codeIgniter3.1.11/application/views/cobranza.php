@@ -1,11 +1,12 @@
-<div ng-controller="myCtrlPagos" data-ng-init="init()">
+
+<div ng-app="myApp" ng-controller="myCtrlCobros" data-ng-init="init()">
     <div class="container">
       <div class="notification" >
       <h1 class="title is-2 has-text-centered">Cobranza</h1>
       </div>
     </div>
     <div class="container">
-      <div class="box" id="barranavegacion" ng-show="!isCapturaPago">
+      <div class="box" id="barranavegacion" ng-show="!isCapturaCobro">
         <nav class="level">
           <div class="level-left">
           <div class="level-item">
@@ -17,7 +18,7 @@
           </div>
           <div class="level-right">
             <p class="level-item" ng-show="permisos.alta">
-              <a ng-click="agregaCobranza();"><span class="icon has-text-success"><i class="fas fa-file" title="Aplicar pago"></i></span></a>
+              <a ng-click="agregaCobranza();"><span class="icon has-text-success"><i class="fas fa-file" title="Aplicar Cobro"></i></span></a>
             </p>
             <p class="level-item" ng-show="permisos.baja">
               <a ng-click="preguntaElimnaFactura()"><span class="icon has-text-danger"><i class="far fa-trash-alt" title="Elimina Factura"></i></span></a>
@@ -25,7 +26,7 @@
           </div>
         </nav>
       </div>
-      <div class="table-container is-centered" style="margin:auto 0px" id="lstclientes" ng-show="!isCapturaPago">
+      <div class="table-container is-centered" style="margin:auto 0px" id="lstclientes" ng-show="!isCapturaCobro">
         <table class="table is-bordered" style="width:100%">
           <colgroup>						
             <col width="9%">
@@ -77,23 +78,23 @@
 					</table>
 				</div>
       </div>
-      <div ng-show="isCapturaPago">
+      <div ng-show="isCapturaCobro">
         <div class="container">
-          <div class="box" id="barranavegacion" ng-show="isCapturaPago">
+          <div class="box" id="barranavegacion" ng-show="isCapturaCobro">
             <nav class="level">
               <div class="level-left">
                 <div class="level-item">
-                  <p class="subtitle is-5"><strong>Filtro:</strong></p>
+                  <p class="subtitle is-5"></p>
                 </div>
                 
               </div>
               <div class="level-right">
                 <p class="level-item" ng-show="permisos.alta">
-                  <a ng-click="agregaPago();"><span class="icon has-text-success"><i class="fas fa-hand-holding-usd" title="Agrega Pago"></i></span></a></p>
+                  <a ng-click="agregaCobro();"><span class="icon has-text-success"><i class="fas fa-hand-holding-usd" title="Agrega Cobro"></i></span></a></p>
                 <p class="level-item" ng-show="permisos.modificacion">
-                  <a ng-click="editaPago()"><span class="icon has-text-info"><i class="fas fa-edit" title="Editar Pago"></i></span></a></p>
+                  <a ng-click="editaCobro()"><span class="icon has-text-info"><i class="fas fa-edit" title="Editar Cobro"></i></span></a></p>
                 <p class="level-item" ng-show="permisos.baja">
-                  <a ng-click="eliminaPago()"><span class="icon has-text-danger"><i class="far fa-trash-alt" title="Elimina Pago"></i></span></a></p>
+                  <a ng-click="eliminaCobro()"><span class="icon has-text-danger"><i class="far fa-trash-alt" title="Elimina Cobro"></i></span></a></p>
               </div>
             </nav>
           </div>
@@ -114,13 +115,13 @@
               <input type="text" name="serie"  />
             </div>
             <div class="column">
-              <input type="text" name="documento" ng-model="pago.documento"/>
+              <input type="text" name="documento" ng-model="cobro.documento"/>
             </div>
             <div class="column">
-              <input type="text" name="cliente" ng-model="pago.idcliente"/>
+              <input type="text" name="cliente" ng-model="cobro.idcliente"/>
             </div>
             <div class="column">
-              <label for="">{{pago.cliente}}</label>
+              <label for="">{{cobro.cliente}}</label>
             </div>
           </div>
           </div>
@@ -133,15 +134,15 @@
                 </div>
                 <div class="columns">
                   <div class="column">Importe</div>
-                  <div class="column">{{pago.saldo | currency}}</div>
+                  <div class="column">{{cobro.saldo | currency}}</div>
                 </div>
                 <div class="columns">
                   <div class="column">Cobrado</div>
-                  <div class="column">{{pago.cobrado | currency}}</div>
+                  <div class="column">{{cobro.cobrado | currency}}</div>
                 </div>
                 <div class="columns">
                   <div class="column">Saldo</div>
-                  <div class="column">{{pago.saldopendiente | currency}}</div>
+                  <div class="column">{{cobro.saldopendiente | currency}}</div>
                 </div>
               </div>
             </div>
@@ -173,10 +174,10 @@
                       <col width="25%"/>
                     </colgroup>
                     <tbody>
-                      <tr ng-repeat="x in lstPagos" ng-click="selectRowPago(x.ID_PAGO,x.IMPORTE_PAGO)" ng-class="{selected: x.ID_PAGO === idPago}" >
-                        <td style="text-align:center">{{x.FECHA_PAGO}}</td>
+                      <tr ng-repeat="x in lstCobros" ng-click="selectRowCobro(x.ID_COBRO,x.IMPORTE_COBRO)" ng-class="{selected: x.ID_COBRO === idCobro}" >
+                        <td style="text-align:center">{{x.FECHA_COBRO}}</td>
                         <td></td>
-                        <td style="text-align:center">{{x.IMPORTE_PAGO | currency}}</td>
+                        <td style="text-align:center">{{x.IMPORTE_COBRO | currency}}</td>
                         <td></td>
                       </tr>
                     </tbody>
@@ -185,7 +186,7 @@
               </div>
             </div>
           </div>
-          <button class="button is-link" ng-click="cerrarPago()">Cerrar</button>
+          <button class="button is-link" ng-click="cerrarCobro()">Cerrar</button>
         </div>
       </div>
     </div>
@@ -200,25 +201,25 @@
           <table style="width:60%">
             <tr>
               <td><label for="">Factura</label></td>
-              <td>{{pago.documento}}</td> 
+              <td>{{cobro.documento}}</td> 
             </tr>
           </table>
           <form name="myForm">
           <div class="columns">
             <div class="column">
               <fieldset>
-                <legend>Datos del pago</legend>
+                <legend>Datos del cobro</legend>
                 <div class="columns">
                     <div class="column">
                       <legend>Fecha</legend>  
                     </div>
                     <div class="column">
-                      <input type="text" class="input is-small" id="fechaPago" ng-blur="fecPagoChange()" ng-model="fechapago" required />
+                      <input type="text" class="input is-small" id="fechaCobro" ng-blur="fecCobroChange()" ng-model="fechacobro" required />
                     </div>
                 </div>
                 <div class="columns">
                   <div class="column">Importe</div>
-                  <div class="column"><input type="text" class="input is-small" ng-model="pago.importepago" required/></div>
+                  <div class="column"><input type="text" class="input is-small" ng-model="cobro.importecobro" required/></div>
                 </div>
                 <div class="columns">
                   <div class="column">Movimiento</div>
@@ -242,7 +243,7 @@
                 </div>
                 <div class="columns">
                   <div class="column">Cheque/Pol</div>
-                  <div class="column"><input type="text" class="input is-small" ng-model="pago.cheque"/></div>
+                  <div class="column"><input type="text" class="input is-small" ng-model="cobro.cheque"/></div>
                 </div>
                 <div class="columns">
                   <div class="column">Depósito en</div>
@@ -256,11 +257,11 @@
                 </div>
                 <div class="columns">
                   <div class="column">Póliza predefinida</div>
-                  <div class="column"><input type="text" class="input is-small" ng-model="pago.poliza"></div>
+                  <div class="column"><input type="text" class="input is-small" ng-model="cobro.poliza"></div>
                 </div>
                 <div class="columns">
                   <div class="column">Importe Base</div>
-                  <div class="column"><input type="text" class="input is-small" ng-model="pago.importebase"></div>
+                  <div class="column"><input type="text" class="input is-small" ng-model="cobro.importebase"></div>
                 </div>
               </fieldset>
             </div>
@@ -268,9 +269,10 @@
           </form>
         </section>
         <footer class="modal-card-foot">
-          <button class="button is-success" ng-click="guardaPago()" ng-disabled="myForm.$invalid">{{btnName}}</button>
+          <button class="button is-success" ng-click="guardaCobro()" ng-disabled="myForm.$invalid">{{btnName}}</button>
           <button class="button" ng-click="closeMovimiento()">Cerrar</button>
         </footer>
       </div>
     </div>
 </div>
+

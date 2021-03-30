@@ -139,39 +139,42 @@
 									</div>
 								</div>
 								
-								<div class="column is-8" ng-show="showLstClte" style="margin-left:90px; overflow:auto; heigth:50px">
-									<table style="width:100%; border:2px solid black">
+								<div class="column is-9" ng-show="showLstClte" style="margin-left:90px;">
+									<table style="width:100%;">
 										<tr>
-											<td align="center">
-												<table style="width:100%">
-													<col width="26%">
-													<col width="63%">
-													<col width="11%">
+											<td>
+												<table class="table is-bordered"  style="width:100%">
+													<colgroup>
+                            <col width="26%">
+													  <col width="74%">
+													</colgroup>
 													<thead>
-														<tr>
-															<td style="text-align=left;">Clave</td>
-															<td align="left">Nombre</td>
-															<td align="right">
-																<a ng-click="closeClteSearch()">
-																<span class="icon has-text-danger">
-																<i title="Cierra la búsqueda" class="fas fa-times-circle"></i>
-																</span>
-																</a>
-															</td>
+														<tr class="tbl-header-seek">
+															<td style="text-align=left;">CLAVE</td>
+															<td style="text-align:center;">NOMBRE</td>
 														</tr>
 													</thead>
 												</table>
 											</td>
+                      <td style="text-align:right;">
+                        <a ng-click="closeClteSearch()">
+                          <span class="icon has-text-danger">
+                          <i title="Cierra la búsqueda" class="fas fa-times-circle"></i>
+                        </span>
+                        </a>
+                      </td>
 										</tr>
 										<tr>
-											<td align="center">
-												<div style="width:100%; height:100px; overflow:auto;">
-													<table style="width:100%;">
-														<col width="26%">
-														<col width="74%">
+											<td>
+												<div style="width:100%; height:100px; overflow:auto;border:2px solid red">
+													<table class="table is-bordered" style="width:100%;">
+														<colgroup>
+                              <col width="26%">
+														  <col width="74%">
+                            </colgroup>
 														<tr ng-repeat="x in lstCliente" ng-click="seleccionaCliente($index)">
 															<td style="text-align=left;">{{x.CLAVE}}</td>
-															<td align="left">{{x.NOMBRE}}</td>
+															<td style="text-align:center;">{{x.NOMBRE}}</td>
 														</tr>
 													</table>
 											</div>
@@ -202,38 +205,38 @@
 								</div>
 								<div class="column is-2">
 								</div>
-								<div class="column is-8" id="listaVendedores" style="display:none;" >
-									<table border="1" style="width:100%; border:2px red">
+								<div class="column is-8" ng-show="listaVendedores" style="" >
+									<table style="width:100%; border:2px red">
 										<tr>
-											<td align="center">
-												<table style="width:100%" border="1">
+											<td>
+												<table class="table is-bordered" style="width:100%">
 													<col width="26%">
 													<col width="74%">
 													<thead>
-														<tr>
-															<td align="left">Clave</td>
-															<td align="left">Nombre</td>
-															<td>
-																<a ng-click="closeVendSearch()">
-																<span class="icon has-text-danger">
-																	<i title="Cierra la búsqueda" class="fas fa-times-circle"></i>
-																</span>
-															</a>
-															</td>
+														<tr class="tbl-header-seek"> 
+															<td style="text-align:center">CLAVE</td>
+															<td style="text-align:center">NOMBRE</td>
 														</tr>
 													</thead>
 												</table>
 											</td>
+                      <td>
+                        <a ng-click="closeVendSearch()">
+                          <span class="icon has-text-danger">
+                            <i title="Cierra la búsqueda" class="fas fa-times-circle"></i>
+                          </span>
+                        </a>
+                      </td>
 										</tr>
 										<tr>
-											<td align="center">
-												<div style="width:100%; height:100px; overflow:auto;">
-													<table style="width:100%;" border="1">
+											<td>
+												<div style="width:100%; height:100px; overflow:auto;border:2px solid red;">
+													<table class="table" style="width:100%;cursor:pointer">
 														<col width="25%">
 														<col width="75%">
 														<tr ng-repeat="x in lstVendedor" ng-click="seleccionaVendedor($index)">
-															<td align="left">{{x.ID_VENDEDOR}}</td>
-															<td align="left">{{x.NOMBRE}}</td>
+															<td style="text-align:left;font-size:14px;">{{x.ID_VENDEDOR}}</td>
+															<td style="text-align:left;font-size:14px;">{{x.NOMBRE}}</td>
 														</tr>
 													</table>
 											</div>

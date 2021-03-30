@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Pagosmodel extends CI_model
+class Cobranzamodel extends CI_model
 {
 	private $conn;
 
@@ -33,40 +33,37 @@ class Pagosmodel extends CI_model
 		return json_encode($result);
 	}
 
-	public function guardapago($datospago){
-		$query = 'SELECT * FROM registra_pago($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)';
-		pg_prepare($this->conn,"inserta_pago",$query);
-		$result = pg_execute($this->conn,"inserta_pago",$datospago);
+	public function guardacobranza($datoscobro){
+		$query = 'SELECT * FROM registra_cobro($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)';
+		pg_prepare($this->conn,"inserta_cobro",$query);
+		$result = pg_execute($this->conn,"inserta_cobro",$datoscobro);
 		return json_encode($result);
 	}
 
-	public function getpagobyfactura($idfactura){
-		$query = 'SELECT "ID_PAGO",
-				TO_CHAR("FECHA_PAGO",\'dd-MM-YYYY\') as "FECHA_PAGO",
-				"IMPORTE_PAGO" 
-				FROM "PAGOS" WHERE "ID_FACTURA"=$1';
-		pg_prepare($this->conn,"select_pago",$query);
-		$result = pg_fetch_all(pg_execute($this->conn,"select_pago",array($idfactura)));
+	public function getcobranzabyfactura($idfactura){
+		$query = 'SELECT "ID_COBRO",
+				TO_CHAR("FECHA_COBRO",\'dd-MM-YYYY\') as "FECHA_COBRO",
+				"IMPORTE_COBRO" 
+				FROM "COBROS" WHERE "ID_FACTURA"=$1';
+		pg_prepare($this->conn,"select_cobro",$query);
+		$result = pg_fetch_all(pg_execute($this->conn,"select_cobro",array($idfactura)));
 		return json_encode($result);
 	}
 
-
-	public function getpagobyid($idpago){
-		$query = 'SELECT "ANIO_FISCAL","CHEQUE","DEPOSITO",TO_CHAR("FECHA_PAGO",\'dd/MM/yyyy\') as "FECHA_PAGO","ID_BANCO","IMPORTE_BASE","IMPORTE_PAGO","POLIZA" FROM "PAGOS" WHERE "ID_PAGO" = $1';
-		pg_prepare($this->conn,"select_pago",$query);
-		$result = pg_fetch_all(pg_execute($this->conn,"select_pago",array($idpago)));
+	public function getcobranzabyid($idcobro){
+		$query = 'SELECT "ANIO_FISCAL","CHEQUE","DEPOSITO",TO_CHAR("FECHA_COBRO",\'dd/MM/yyyy\') as "FECHA_cobro","ID_BANCO","IMPORTE_BASE","IMPORTE_COBRO","POLIZA" FROM "COBROS" WHERE "ID_COBRO" = $1';
+		pg_prepare($this->conn,"select_cobro",$query);
+		$result = pg_fetch_all(pg_execute($this->conn,"select_cobro",array($idcobro)));
 		return json_encode($result);
 	}
 
-  
-
-	public function deletebyid($idpago,$idfactura,$importe){
+	public function deletebyid($idcobro,$idfactura,$importe){
 		$query = 'UPDATE "FACTURA" SET "SALDO" = "SALDO" + $1 WHERE "ID_FACTURA"=$2';
 		pg_prepare($this->conn,"updt_fact",$query);
 		pg_execute($this->conn,"updt_fact",array($importe,$idfactura));
-		$query1 = 'DELETE FROM "PAGOS" WHERE "ID_PAGO"=$1';
-		pg_prepare($this->conn,"del_pago",$query1);
-		pg_execute($this->conn,"del_pago",array($idpago));
+		$query1 = 'DELETE FROM "COBROS" WHERE "ID_COBRO"=$1';
+		pg_prepare($this->conn,"del_cobro",$query1);
+		pg_execute($this->conn,"del_cobro",array($idcobro));
 		return json_encode(array("msg"=>"ok"));
 	}
 }

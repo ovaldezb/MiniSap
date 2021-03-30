@@ -93,7 +93,7 @@ class Productomodel extends CI_model
 
 	//Inserta productos de forma masiva
 	function inserta_producto($producto){
-		$query = 'SELECT * FROM inserta_producto($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)';
+		$query = 'SELECT * FROM inserta_producto($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)';
 		pg_query($this->conn, "DEALLOCATE ALL"); 
 		pg_prepare($this->conn,"insert_prod",$query);
 		$result = pg_execute($this->conn,"insert_prod",$producto);

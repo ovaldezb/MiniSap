@@ -58,4 +58,20 @@ class Reportes extends CI_Controller {
             ->set_output($reporte);
   }
 
+  /** Aqui van a ir las llamadas a las consultas que se van a mostrar en el Dashboard */
+
+  /** Valor del Inventario */
+  function valinvent($idEmpresa){
+    return $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($this->reportemodel->get_valor_inventario($idEmpresa)));
+  }
+
+  function ventasfy($idEmpresa, $anioFiscal){
+    return $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($this->reportemodel->get_ventas_aniofiscal($idEmpresa,$anioFiscal)));
+  }
+
+
 }

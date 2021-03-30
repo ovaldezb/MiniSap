@@ -1162,10 +1162,14 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
   }
 
   $scope.corteCaja = ()=>{
+    if($scope.lstVentas.length === 0){
+      swal('No hay movimientos para hacer el corte de caja');
+      return;
+    }
     var dataFactura = {
       documento: $scope.fact.documento,
       ffactura: formatDateInsert(new Date()),
-      idcliente: 0,
+      idcliente: 'C0000',
       importe: 0,
       saldo: 0,
       tipopago:1,
@@ -1194,27 +1198,31 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
             dataFactura.importe += $scope.lstVentas[i].IMPORTE;
           }
         }
-        $http.post(pathFactura+'savefactura',dataFactura)
-          .then(res=>{
-            console.log(res);
-            var facturaCreada = res.data[0].registra_factura;              
-            for(var i = 0; i< $scope.lstVentas.length ; i++){
+        if(dataFactura.importe > 0){
+          $http.post(pathFactura+'savefactura',dataFactura)
+            .then(res=>{
+              var facturaCreada = res.data[0].registra_factura;              
+              for(var i = 0; i< $scope.lstVentas.length ; i++){
+                
+                $http.put(pathTpv+'updventa/'+$scope.lstVentas[i].ID_VENTA+'/'+facturaCreada)
+                .then(res => {
+                  //se actualizo la venta
+                })
+                .catch(err => {
+                  console.log(err);
+                });
+              }              
               
-              $http.put(pathTpv+'updventa/'+$scope.lstVentas[i].ID_VENTA+'/'+facturaCreada)
-              .then(res => {
-                //se actualizo la venta
-              })
-              .catch(err => {
-                console.log(err);
-              });
-            }              
-            swal('Se ha hecho el corte de caja','Ok','success');
+            })
+            .catch(err =>{
+              console.log(err);
+            });
+          }else{
+
+          }
+          swal('Se ha hecho el corte de caja','Ok','success');
             $scope.lstVentas = [];
             $scope.closeOperaciones();
-          })
-          .catch(err =>{
-            console.log(err);
-          });
         }
       });
     }

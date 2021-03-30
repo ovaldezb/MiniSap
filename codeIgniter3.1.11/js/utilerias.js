@@ -72,6 +72,14 @@ function formatFecPago(fecha)
 	return year+'-'+mes+'-'+dia;
 }
 
+function formatFecPagodmy(fecha)
+{
+	var dia = fecha.substr(0,2);
+	var mes = fecha.substr(3,2);
+	var year = fecha.substr(6,4);
+	return dia+'/'+mes+'/'+year;
+}
+
 function formatFecQuery(fecha,tipo)
 {
 	var horas;

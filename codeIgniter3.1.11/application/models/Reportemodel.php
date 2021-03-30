@@ -137,4 +137,34 @@ class Reportemodel extends CI_model
 			return json_encode($result,JSON_NUMERIC_CHECK);
 	}
 
+  function get_valor_inventario($idEmpresa){
+    $query = 'SELECT X."LINEA", X."SUMA", X."SUMA"/R."TOTAL" * 100 as "PORCENTAJE"
+              FROM
+              (SELECT TRIM(L."NOMBRE") as "LINEA", SUM( P."PRECIO_COMPRA" * S."STOCK" ) as "SUMA" 
+              FROM "PRODUCTO" as P
+              INNER JOIN "PRODUCTO_SUCURSAL" as S ON P."ID_PRODUCTO" = S."ID_PRODUCTO"
+              INNER JOIN "LINEA" as L ON P."ID_LINEA" = L."ID_LINEA"
+              WHERE P."ID_EMPRESA" = $1
+              GROUP BY L."NOMBRE" ) as X,
+              (SELECT SUM( P."PRECIO_COMPRA" * S."STOCK" ) as "TOTAL"
+              FROM "PRODUCTO" as P
+              INNER JOIN "PRODUCTO_SUCURSAL" as S ON P."ID_PRODUCTO" = S."ID_PRODUCTO"
+              WHERE P."ID_EMPRESA" = $2) as R';
+    pg_prepare($this->conn,"valor_inventario",$query);
+    $result = pg_fetch_all(pg_execute($this->conn,"valor_inventario",array($idEmpresa,$idEmpresa)));
+    return $result;
+  }
+
+  function get_ventas_aniofiscal($idEmpresa,$anioFiscal){
+    $query = 'SELECT CAST(to_char(V."FECHA_VENTA",\'MM\') as integer)-1 as "MES", SUM(V."IMPORTE") as "IMPORTE"
+              FROM "VENTAS" as V
+              WHERE V."ID_EMPRESA" = $1
+              AND V."ANIO_FISCAL"  = $2
+              GROUP BY to_char(V."FECHA_VENTA",\'MM\')
+              ORDER BY to_char(V."FECHA_VENTA",\'MM\')';
+    pg_prepare($this->conn,"ventas_aniofiscal",$query);
+    $result = pg_fetch_all(pg_execute($this->conn,"ventas_aniofiscal",array($idEmpresa,$anioFiscal)));
+    return $result;
+  }
+
 }

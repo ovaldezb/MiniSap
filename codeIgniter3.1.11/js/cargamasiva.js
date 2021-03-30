@@ -7,7 +7,7 @@ app.controller('myCtrCargMasiva', function($scope,$http,$interval)
     };
     $scope.TotalRows = 0;
     $scope.init = function(){
-        console.log('Up & Running');
+        //console.log('Up & Running');
     }
 
     $scope.uploadProducto = function(){

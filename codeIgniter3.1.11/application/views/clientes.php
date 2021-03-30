@@ -226,7 +226,7 @@
 							<td style="text-align:center">{{x.CLAVE}}</td>
 							<td style="text-align:center">{{x.NOMBRE}}</td>
 							<td style="text-align:center">{{x.RFC}}</td>
-							<td style="text-align:center">&nbsp;</td>
+							<td style="text-align:center">{{x.SALDO | currency}}</td>
 						</tr>
 					</table>
 				</div>

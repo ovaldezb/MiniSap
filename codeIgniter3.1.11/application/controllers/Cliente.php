@@ -26,9 +26,9 @@ class Cliente extends CI_Controller
 		}
 	}
 
-	function loadByEmpresa($idEmpresa)
+	function loadByEmpresa($idEmpresa,$anioFiscal)
 	{
-		$data = $this->clientemodel->get_clientes_by_empresa($idEmpresa);
+		$data = $this->clientemodel->get_clientes_by_empresa($idEmpresa,$anioFiscal);
 		return $this->output
             ->set_content_type('application/json')
             ->set_output($data);

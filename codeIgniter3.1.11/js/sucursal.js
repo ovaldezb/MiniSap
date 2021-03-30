@@ -167,18 +167,19 @@ app.controller('myCtrlSucursal', function($scope,$http,$routeParams)
 
   $scope.eliminar = function()
   {
+    if($scope.lstSucursal.length===1){
+      swal('No se pueden eliminar todas las sucursales, debe existir al menos una');
+      return;
+    }
     $http.delete(pathSucr+'delete/'+$scope.idSucursal).
     then(function(res)
     {
       if(res.data.value=='OK')
       {
-        if($scope.lstSucursal.length > 2)
-        {
-          $scope.lstSucursal.splice($scope.idxRowSuc,1);
-          $scope.selectRowSucursal($scope.lstSucursal[0].CLAVE,0,$scope.lstSucursal[0].ID_SUCURSAL);
-        }else {
-          $scope.lstSucursal = [];
-        }
+        $scope.getDataInit();
+          //$scope.lstSucursal.splice($scope.idxRowSuc,1);
+          //$scope.selectRowSucursal($scope.lstSucursal[0].CLAVE,0,$scope.lstSucursal[0].ID_SUCURSAL);
+        
         swal('Se ha eliminado correctamente la sucursal');
         $scope.closeAvisoBorrar();
       }

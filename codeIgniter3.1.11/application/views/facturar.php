@@ -27,11 +27,12 @@
 				</div>
 			</nav>
 		</div>
-		<div class="table-container is-centered" style="margin:auto 0px" id="lstclientes" ng-show="!isCapturaFactura">
+		<div class="table-container is-centered" style="margin-top:-20px" id="lstclientes" ng-show="!isCapturaFactura">
 			<table style="width:99.5%">
 				<tr>
 					<td>
-						<table class="table is-bordered" style="width:100%">							
+						<table class="table is-bordered" style="width:100%">
+							<colgroup>						
 							<col width="9%">
 							<col width="9%">
 							<col width="14%">
@@ -42,6 +43,7 @@
 							<col width="10%">
 							<col width="10%">
 							<col width="12%">
+							</colgroup>
 							<tr class="tbl-header">
 								<td style="text-align:center;font-size:12px">DOCUMENTO</td>									
 								<td style="text-align:center;font-size:12px">FECHA</td>
@@ -59,7 +61,7 @@
 				</tr>
 				<tr>
 					<td>
-						<div style="width:100%; height:500px; overflow:auto;">
+						<div style="width:100%; height:450px; overflow:auto;">
 							<table class="table is-bordered is-hoverable" style="width:100%" id="tblClientes">
 								<col width="9%">
 								<col width="9%">
@@ -98,7 +100,7 @@
 						<div class="column is-narrow" style="width:200px">
 							<div class="columns is-gapless">
 								<div class="column is-narrow" style="width:70px;margin-left:-15px">
-									<label class="label">Numero</label>
+									<label class="label">Número</label>
 								</div>
 								<div class="column is-narrow" style="width:100px">
 									<input class="input is-small" type="text" ng-model="factura.docto" id="docto" placeholder="Docto" required>
@@ -459,7 +461,7 @@
 												<tr ng-repeat="p in lstProdCompra" ng-click="setSelected($index,p.CODIGO)" ng-class="{selected: p.CODIGO === idSelCompra}">
 													<td>{{p.DESCRIPCION}}</td>
 													<td style="text-align:center">{{p.CANTIDAD}}</td>
-													<td style="text-align:center">{{p.UNIDAD}}</td>
+													<td style="text-align:center">{{p.UNIDAD_MEDIDA}}</td>
 													<td style="text-align:right">$ {{p.PRECIO_LISTA | number:2}}</td>
 													<td style="text-align:	right">$ {{p.IMPORTE | number:2}}</td>
 												</tr>
@@ -741,13 +743,15 @@
 			</header>
 			<section class="modal-card-body">
 				<table class="table is-bordered" style="width:100%">
+        <thead>
 					<tr>
-						<td style="text-align:center;width:60px">Documento</td>
-						<td style="text-align:center;width:150px">Cliente</td>
-						<td style="text-align:center;width:120px">Fecha Pedido</td>
-						<td style="text-align:center;width:80px">Importe</td>
-						<td style="text-align:center;width:100px">Vendedor</td>
+						<th style="text-align:center;width:60px">Documento</th>
+						<th style="text-align:center;width:150px">Cliente</th>
+						<th style="text-align:center;width:120px">Fecha Pedido</th>
+						<th style="text-align:center;width:80px">Importe</th>
+						<th style="text-align:center;width:100px">Vendedor</th>
 					</tr>
+          </thead>
 				</table>
 				<div style="width:100%; height:500px; overflow:auto; margin-top:-24px; border:2px solid black">
 					<table class="table is-hoverable" style="width:100%" id="tblClientes">
