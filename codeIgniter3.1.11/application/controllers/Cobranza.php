@@ -40,7 +40,8 @@ class Cobranza extends CI_Controller
 			$data['importebase'],
 			$data['idempresa'],
 			$data['aniofiscal'],
-			$data['idfactura']
+			$data['idfactura'],
+      $data['idcliente']
 			)
 		);
 		return $this->output
@@ -58,7 +59,12 @@ class Cobranza extends CI_Controller
 		return $this->output
 					 ->set_content_type('application/json')
 					 ->set_output($this->cobranzamodel->deletebyid($idcobro,$idfactura,$importe));
-		
+	}
+
+  function updatecobro($idcobro,$idfactura,$importe){
+		return $this->output
+					 ->set_content_type('application/json')
+					 ->set_output($this->cobranzamodel->updatebyid($idcobro,$idfactura,$importe));
 	}
 
   function getcobroid($idcobro){

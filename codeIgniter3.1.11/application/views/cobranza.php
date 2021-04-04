@@ -31,8 +31,8 @@
           <colgroup>						
             <col width="9%">
             <col width="9%">
-            <col width="14%">
-            <col width="8%">
+            <col width="5%">
+            <col width="17%">
             <col width="8%">
             <col width="10%">
             <col width="10%">
@@ -56,8 +56,8 @@
 						<colgroup>
               <col width="9%">
 							<col width="9%">
-							<col width="14%">
-							<col width="8%">
+							<col width="5%">
+							<col width="17%">
 							<col width="8%">
 							<col width="10%">
 							<col width="10%">
@@ -115,10 +115,7 @@
               <input type="text" name="serie"  />
             </div>
             <div class="column">
-              <input type="text" name="documento" ng-model="cobro.documento"/>
-            </div>
-            <div class="column">
-              <input type="text" name="cliente" ng-model="cobro.idcliente"/>
+              <label for="">{{cobro.documento}}</label>
             </div>
             <div class="column">
               <label for="">{{cobro.cliente}}</label>
@@ -130,11 +127,11 @@
               <div class="column">
                 <div class="columns">
                   <div class="column">Fecha</div>
-                  <div class="column">10/02/2021</div>
+                  <div class="column">{{hoy}}</div>
                 </div>
                 <div class="columns">
                   <div class="column">Importe</div>
-                  <div class="column">{{cobro.saldo | currency}}</div>
+                  <div class="column">{{cobro.importetotal | currency}}</div>
                 </div>
                 <div class="columns">
                   <div class="column">Cobrado</div>
@@ -142,7 +139,7 @@
                 </div>
                 <div class="columns">
                   <div class="column">Saldo</div>
-                  <div class="column">{{cobro.saldopendiente | currency}}</div>
+                  <div class="column">{{cobro.saldo | currency}}</div>
                 </div>
               </div>
             </div>
@@ -165,7 +162,7 @@
                     </tr>
                   </thead>
                 </table>
-                <div style="height:110px;border:2px solid black; overflow:auto">
+                <div style="height:160px;border:2px solid black; overflow:auto">
                   <table class="table table-hover" style="width:100%">
                     <colgroup>
                       <col width="25%"/>
@@ -174,7 +171,7 @@
                       <col width="25%"/>
                     </colgroup>
                     <tbody>
-                      <tr ng-repeat="x in lstCobros" ng-click="selectRowCobro(x.ID_COBRO,x.IMPORTE_COBRO)" ng-class="{selected: x.ID_COBRO === idCobro}" >
+                      <tr ng-repeat="x in lstCobros" ng-click="selectRowCobro(x.ID_COBRO,x.IMPORTE_COBRO,$index)" ng-class="{selected: x.ID_COBRO === idCobro}" >
                         <td style="text-align:center">{{x.FECHA_COBRO}}</td>
                         <td></td>
                         <td style="text-align:center">{{x.IMPORTE_COBRO | currency}}</td>

@@ -4,24 +4,28 @@ app.controller('myCtrlPagos', function($scope,$http,$routeParams)
     $scope.idempresa = '';
     $scope.idsucursal = '';
     $scope.aniofiscal = '';
-    $scope.idFactura = '';
+    $scope.idCompra = '';
     $scope.idRowSel = -1;
+    $scope.idRowPago = -1;
     $scope.importepago = 0;
     $scope.isModalActive = false;
     $scope.fechapago = '';
+    $scope.hoy = '';
     $scope.idPago = -1;
+    $scope.importeInicial = 0;
     $scope.idProceso = $routeParams.idproc;
     $scope.btnName = "Guardar";
     $scope.pago = {
-        idfactura:'',
+        idcompra:'',
         cliente:'',
-        idcliente:'',
+        idproveedor:'',
         documento:'',
         saldo:0,
         cobrado:0,
         saldopendiente:0,
         fechapago:'',
         importepago:0,
+        pagado:0,
         movimiento:0,
         banco:0,
         cheque:'',
@@ -31,7 +35,7 @@ app.controller('myCtrlPagos', function($scope,$http,$routeParams)
         idempresa:'',
         aniofiscal:''
     }
-    $scope.lstFacturas = [];
+    $scope.lstCompras = [];
     $scope.lstPagos = [];
     $scope.permisos = {
         alta: false,
@@ -41,6 +45,7 @@ app.controller('myCtrlPagos', function($scope,$http,$routeParams)
     };
     $scope.isCapturaPago = false;
     $scope.init = () =>{
+        $scope.hoy = formatDatePrint(new Date());
         var foopicker = new FooPicker({
             id: 'fechaPago',
             dateFormat: 'dd/MM/yyyy'
@@ -51,7 +56,7 @@ app.controller('myCtrlPagos', function($scope,$http,$routeParams)
             $scope.pago.idempresa = res.data.idempresa;
             $scope.pago.aniofiscal = res.data.aniofiscal;
             $scope.idusuario = res.data.idusuario;
-            $scope.getListaFacturas();
+            $scope.getListaCompras();
             $scope.permisos();
             }
     }).catch(function(err){
@@ -59,11 +64,11 @@ app.controller('myCtrlPagos', function($scope,$http,$routeParams)
     });
     };
 
-    $scope.getListaFacturas = () =>{
-        $http.get(pathPag+'getfacturas/'+$scope.pago.idempresa+'/'+$scope.pago.aniofiscal)
+    $scope.getListaCompras = () =>{
+        $http.get(pathCmpr + 'getcompras/'+$scope.pago.idempresa+'/'+$scope.pago.aniofiscal)
         .then(res =>{
             if(res.data.length > 0){
-              $scope.lstFacturas = res.data;
+              $scope.lstCompras = res.data;
             }
         })
         .catch(err =>{
@@ -72,10 +77,23 @@ app.controller('myCtrlPagos', function($scope,$http,$routeParams)
     }
 
     $scope.getpagos = () =>{
-        $http.get(pathPag+'getpagofac/'+$scope.idFactura)
+      $scope.pago.pagado = 0;
+      $scope.pago.saldo = 0;
+      $scope.lstPagos = [];
+        $http.get(pathPag+'getpagocom/'+$scope.idCompra)
         .then(res=>{
-            if(res.data.length > 0)
-                $scope.lstPagos = res.data;
+          if(res.data.length > 0){
+            $scope.lstPagos = res.data;
+            res.data.forEach((elemen)=>{
+              $scope.pago.pagado += elemen.IMPORTE_PAGO;
+            });
+            $scope.pago.saldo = $scope.pago.importetotal - $scope.pago.pagado;
+            $scope.pago.importepago = $scope.pago.saldo ;
+          }else{
+            $scope.pago.importepago = $scope.pago.importetotal;
+            $scope.pago.saldo = $scope.pago.importetotal;
+          }
+          $scope.cleanPago();
         })
         .catch(err=>{
             console.log(err);
@@ -95,16 +113,20 @@ app.controller('myCtrlPagos', function($scope,$http,$routeParams)
      
     }
 
-  $scope.agregaCobranza = () =>{
-    if($scope.idFactura === ''){
-        swal('Debe elegir una factura para poder aplicar un pago');
+  $scope.aplicaPago = () =>{
+    if($scope.idCompra === ''){
+        swal('Debe elegir una compra para poder aplicar un pago');
         return;
     }
-    $scope.pago.cliente = $scope.lstFacturas[$scope.idRowSel].CLIENTE;
-    $scope.pago.idcliente = $scope.lstFacturas[$scope.idRowSel].CLAVE;
-    $scope.pago.documento = $scope.lstFacturas[$scope.idRowSel].DOCUMENTO;
-    $scope.pago.importepago = $scope.lstFacturas[$scope.idRowSel].SALDO;
-    $scope.pago.idfactura = $scope.lstFacturas[$scope.idRowSel].ID_FACTURA;
+
+    $scope.pago.proveedor = $scope.lstCompras[$scope.idRowSel].PROVEEDOR;
+    $scope.pago.idproveedor = $scope.lstCompras[$scope.idRowSel].ID_PROVEEDOR;
+    $scope.pago.documento = $scope.lstCompras[$scope.idRowSel].DOCUMENTO;
+    //$scope.pago.importepago = $scope.lstCompras[$scope.idRowSel].IMPORTE;
+    $scope.pago.importetotal = $scope.lstCompras[$scope.idRowSel].IMPORTE;
+    $scope.pago.saldo = 0;
+    $scope.pago.pagado = 0;
+    $scope.pago.idcompra = $scope.lstCompras[$scope.idRowSel].ID_COMPRA;
     $scope.isCapturaPago = true;
     $scope.getpagos();
   }
@@ -115,90 +137,72 @@ app.controller('myCtrlPagos', function($scope,$http,$routeParams)
       $http.post(pathPag+'guardapago',$scope.pago)
       .then(res=>{
           if(res.status===200){
-              swal('Se guardo el pago con exito');
+              swal('Se guardó el pago con éxito');
               $scope.closeMovimiento();
               $scope.getpagos();
+              //Esto es para refrescar la lista de Compras
+              $scope.getListaCompras();
           }
       })
       .catch(err=>{
 
       });
     }else{
-      $http.put(pathPag+'guardapago',$scope.pago)
+      let delta = $scope.pago.importepago - $scope.importeInicial;
+      $http.put(pathPag+'updatepago/'+$scope.idPago+'/'+$scope.pago.idcompra+'/'+delta)
       .then(res=>{
           if(res.status===200){
-              swal('Se guardo el pago con exito');
+              swal('Se actualizó el pago con éxito');
               $scope.closeMovimiento();
               $scope.getpagos();
+              //Esto es para refrescar la lista de Compras
+              $scope.getListaCompras();
           }
       })
       .catch(err=>{
 
       });
+    } 
+  }
+
+  $scope.editaPago = () =>{
+    $scope.isModalActive = true;
+    $scope.btnName = "Actualizar";
+    $scope.pago.importepago = $scope.lstPagos[$scope.idRowPago].IMPORTE_PAGO;
+    $scope.importeInicial = $scope.lstPagos[$scope.idRowPago].IMPORTE_PAGO;
+    $scope.fechapago = $scope.lstPagos[$scope.idRowPago].FECHA_PAGO;
+  }
+
+  $scope.eliminaPago = () =>{
+    if($scope.idPago === -1){
+        swal('Debe seleccionar un pago');
+        return;
     }
-    
-  }
-
-  $scope.editaPago=()=>{
-    $http.get(pathPag+'getpagoid/'+$scope.idPago)
-    .then(res=>{
-      if(res.data.length>0){
-        $scope.pago.aniofiscal = res.data[0].ANIO_FISCAL;
-        $scope.pago.cheque=res.data[0].CHEQUE;
-        $scope.pago.depositoen=res.data[0].DEPOSITO;
-        //$scope.pago.fechapago=
-        var e = jQuery.Event("keyup");
-        e.which = 13; // # Some key code value
-        
-        $('#fechaPago').val(res.data[0].FECHA_PAGO);
-        $("#fechaPago").trigger(e);
-        $scope.pago.banco=res.data[0].ID_BANCO;
-        //$scope.pago. res.data[0].ID_EMPRESA;
-        //$scope.pago. res.data[0].ID_FACTURA;
-        //$scope.pago. res.data[0].ID_MOVIMIENTO;
-        //$scope.pago. res.data[0].ID_PAGO;
-        $scope.pago.importebase=res.data[0].IMPORTE_BASE;
-        $scope.pago.importepago=res.data[0].IMPORTE_PAGO;
-        $scope.pago.poliza=res.data[0].POLIZA;
-        $scope.isModalActive = true;
-        $scope.btnName = "Actualizar";
-      }
-      
-    })
-    .catch(err=>{
-
-    });
-  }
-
-    $scope.eliminaPago = () =>{
-        if($scope.idPago === -1){
-            swal('Debe seleccionar un pago');
-            return;
+    swal({
+        title: "Está seguro que desea eliminar el pago",
+        text: "Una vez eliminado, no se podrá recuperar!",
+        icon: "warning",
+        buttons: [true,true],
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if(willDelete){
+            $http.delete(pathPag+'deletepago/'+$scope.idPago+'/'+$scope.pago.idcompra+'/'+$scope.lstPagos[$scope.idRowPago].IMPORTE_PAGO)
+            .then(res=>{
+                if(res.status === 200){
+                    $scope.getpagos();
+                    swal('El pago ha sido eliminado');
+                    $scope.idPago = -1;
+                    //Esto es para refrescar la lista de Compras
+                    $scope.getListaCompras();
+                }
+            })
+            .catch(err=>{
+                console.log(err);
+            });
         }
-        swal({
-            title: "Esta seguro que desea eliminar el pago",
-            text: "Una vez eliminado, no se podrá recuperar!",
-            icon: "warning",
-            buttons: [true,true],
-            dangerMode: true,
-          })
-          .then((willDelete) => {
-            if(willDelete){
-                $http.delete(pathPag+'deletepago/'+$scope.idPago+'/'+$scope.pago.idfactura+'/'+$scope.importepago)
-                .then(res=>{
-                    if(res.status === 200){
-                        $scope.getpagos();
-                        swal('El pago ha sido eliminado');
-                        $scope.idPago = -1;
-                    }
-                })
-                .catch(err=>{
-                    console.log(err);
-                });
-            }
-          });
-        
-    }
+      });
+  }
 
     $scope.fecPagoChange = () =>{
         var e = jQuery.Event("keydown");
@@ -208,19 +212,19 @@ app.controller('myCtrlPagos', function($scope,$http,$routeParams)
         $scope.pago.fechapago = formatFecQuery($('#fechaPago').val(),'ini');
     }
 
-    $scope.selectRowFactura = (idFactura, index) =>{
-        $scope.idFactura = idFactura;
+    $scope.selectRowCompra = (idCompra, index) =>{
+        $scope.idCompra = idCompra;
         $scope.idRowSel = index;
     }
 
-    $scope.selectRowPago = (idPago,importePago) =>{
+    $scope.selectRowPago = (idPago,importePago, index) =>{
         $scope.idPago = idPago;
-        $scope.importepago = importePago;
+        $scope.importetotal = importePago;
+        $scope.idRowPago = index;
     }
 
     $scope.agregaPago = () =>{
         $scope.isModalActive = true;
-        
     }
 
     $scope.cerrarPago = () =>{
@@ -230,5 +234,12 @@ app.controller('myCtrlPagos', function($scope,$http,$routeParams)
 
     $scope.closeMovimiento = () =>{
         $scope.isModalActive = false;
+    }
+
+    $scope.cleanPago = () =>{
+      $scope.fechapago = '';
+      $scope.pago.cheque = '';
+      $scope.pago.poliza = '';
+      $scope.pago.importebase = '';
     }
 });

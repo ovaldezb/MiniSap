@@ -7,12 +7,12 @@ app.controller('myCtrlUsuarios', function($scope,$http,$routeParams)
   $scope.lstModlUser = [];
   $scope.modlAddUser = false;
   $scope.modlDelUser = false;
-  $scope.idUsuario = '';
   $scope.indexUsr = '';
   $scope.btnAccion = 'Aceptar';
   $scope.allModules = true;
   $scope.nomModule = '';
   $scope.userElim = '';
+  $scope.idCurrentUser = '';
   $scope.idUsuario = '';
   $scope.idProceso = $routeParams.idproc;
   $scope.permisos = {
@@ -27,7 +27,7 @@ app.controller('myCtrlUsuarios', function($scope,$http,$routeParams)
     $http.get(pathAcc+'getdata',{responseType:'json'}).
     then(function(res){
       if(res.data.value=='OK'){
-        $scope.idUsuario = res.data.idusuario;
+        $scope.idCurrentUser = res.data.idusuario;
         $scope.getUsers();
         $scope.permisos();
       }
@@ -52,7 +52,7 @@ app.controller('myCtrlUsuarios', function($scope,$http,$routeParams)
   }
 
   $scope.permisos = function(){
-    $http.get(pathUsr+'permusrproc/'+$scope.idUsuario+'/'+$scope.idProceso)
+    $http.get(pathUsr+'permusrproc/'+$scope.idCurrentUser+'/'+$scope.idProceso)
     .then(res =>{
       $scope.permisos.alta = res.data[0].A == 't';
       $scope.permisos.baja = res.data[0].B == 't';
@@ -163,12 +163,10 @@ app.controller('myCtrlUsuarios', function($scope,$http,$routeParams)
         }else {
           $scope.idUsuario = res.data[0].crea_usuario;
           usrDataRow.ID_USUARIO = res.data[0].crea_usuario;
-          console.log(usrDataRow);
           $scope.lstUsuarios.push(usrDataRow);
-          console.log($scope.lstUsuarios);
           $scope.insertaModulos();
           $scope.insertaEmpPerm();
-          $scope.selectUsr($scope.idUsuario,$scope.lstUsuarios.length-1);
+          //$scope.selectUsr($scope.idUsuario,$scope.lstUsuarios.length-1);
           $scope.cerrarAddUser();
           swal('El usuario se insertó correctamente','Exito','success');
         }

@@ -112,7 +112,7 @@
     </div>
     <table style="width:100%">
       <tr>
-        <td align="right"><button class="button is-info" ng-click="actualizaUsrProc()">Actualizar</button></td>
+        <td align="right"><button class="button is-info" ng-click="actualizaUsrProc()" ng-disabled="idUsuario==''">Actualizar</button></td>
       </tr>
     </table>
   </div>

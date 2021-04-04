@@ -20,7 +20,7 @@ app.controller('myInicio', function($scope,$http,$interval){
     },1500); 
 
   $scope.init = () =>{
-    console.log('En init');
+    //console.log('En init');
   }
 
   $scope.getData = () =>{

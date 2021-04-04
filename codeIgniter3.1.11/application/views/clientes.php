@@ -19,7 +19,7 @@
 				<p class="level-item" ng-show="permisos.modificacion">
 					<a ng-click="editaCliente()"><span class="icon has-text-info"><i class="fas fa-edit" title="Edita Cliente"></i></span></a></p>
 				<p class="level-item" ng-show="permisos.baja">
-					<a ng-click="preguntaElimnaCliente()"><span class="icon has-text-danger"><i class="far fa-trash-alt" title="Elimna Cliente"></i></span></a></p>
+					<a ng-click="borraCliente()"><span class="icon has-text-danger"><i class="far fa-trash-alt" title="Elimna Cliente"></i></span></a></p>
 			</div>
 		</nav>
 	</div>
@@ -149,11 +149,9 @@
 				<label class="label">Vendedor</label>
 			</div>
 			<div class="column is-2">
-				<select name="id_vendedor" id="id_vendedor">
-<?php	foreach($vendedor as $vend) {?>
-					<option value='<?php echo $vend['ID_VENDEDOR']?>'><?php echo trim($vend['NOMBRE'])?></option>
-<?php	}?>
-				</select>
+        <select ng-model="idVendedor" >
+            <option ng-repeat=" x in lstVendedor" value="{{x.ID_VENDEDOR}}">{{x.NOMBRE}}</option>
+        </select>	
 			</div>
 		</div>
 		<div class="columns">
@@ -202,9 +200,9 @@
 				<td>
 					<table class="table is-bordered" style="width:100%">
 						<col width="15%">
-						<col width="25%">
+						<col width="34%">
 						<col width="26%">
-						<col width="29%">
+						<col width="20%">
 						<tr class="tbl-header">
 							<td style="text-align:center" ng-click="orderByMe('CLAVE')">CLAVE</td>
 							<td style="text-align:center" ng-click="orderByMe('NOMBRE')">NOMBRE</td>
@@ -216,17 +214,17 @@
 			</tr>
 			<tr>
 				<td>
-					<div style="width:100%; height:500px; overflow:auto;">
+					<div style="width:100%; height:450px; overflow:auto;">
 					<table class="table is-bordered is-hoverable" style="width:100%" id="tblClientes">
 						<col width="15%">
-						<col width="25%">
+						<col width="34%">
 						<col width="26%">
-						<col width="29%">
-						<tr ng-repeat="x in lstCliente | orderBy:myOrder:sortDir" ng-click="selectRowCliente(x.CLAVE,$index,x.ID_CLIENTE)" ng-class="{selected: x.CLAVE === idSelCompra}">
-							<td style="text-align:center">{{x.CLAVE}}</td>
-							<td style="text-align:center">{{x.NOMBRE}}</td>
-							<td style="text-align:center">{{x.RFC}}</td>
-							<td style="text-align:center">{{x.SALDO | currency}}</td>
+						<col width="20%">
+						<tr ng-repeat="x in lstCliente | orderBy:myOrder:sortDir" ng-click="selectRowCliente(x.CLAVE,$index,x.ID_CLIENTE)" ng-dblclick="muestraDetalle()" ng-class="{selected: x.CLAVE === idSelCompra}">
+							<td class="font12" style="text-align:center">{{x.CLAVE}}</td>
+							<td class="font12" style="text-align:left">{{x.NOMBRE}}</td>
+							<td class="font12" style="text-align:center">{{x.RFC}}</td>
+							<td class="font12" style="text-align:right">{{x.SALDO | currency}}</td>
 						</tr>
 					</table>
 				</div>
@@ -234,19 +232,54 @@
 			</tr>
 		</table>
 	</div>
-	<div class="{{modalBorraClte ? 'modal is-active' : 'modal' }}">
+	<div class="{{modalDetalleClte ? 'modal is-active' : 'modal' }}">
 	  <div class="modal-background"></div>
 	  <div class="modal-card">
 	    <header class="modal-card-head">
-	      <p class="modal-card-title">Advertencia</p>
+	      <p class="modal-card-title">Detalle del Cliente: {{cliente}}</p>
 	      <button class="delete" aria-label="close" ng-click="cerrarBorraCliente()"></button>
 	    </header>
 	    <section class="modal-card-body">
-	      ¿Está seguro que desea eliminar al cliente <b>{{clteBorrar}}</b>?
+	      <table style="width:100%">
+        <colgroup>
+          <col width="40%"/>
+          <col width="15%"/>
+          <col width="22%"/>
+          <col width="23%"/>
+        </colgroup>
+        <thead>
+          <tr>
+            <th>Documento</th>
+            <th>Fecha</th>
+            <th>Importe</th>
+            <th>Saldo</th>
+          </tr>
+          </thead>
+        </table>
+        <div>
+          <table style="width:100%">
+            <colgroup>
+              <col width="40%"/>
+              <col width="15%"/>
+              <col width="22%"/>
+              <col width="23%"/>
+            </colgroup>
+            <tr ng-repeat="x in lstFactDtl">
+              <td>{{x.DOCUMENTO}}</td>
+              <td>{{x.FECHA_FACTURA}}</td>
+              <td>{{x.IMPORTE | currency}}</td>
+              <td>{{x.SALDO | currency}}</td>
+            </tr>
+            <tr>
+              <td colspan="2" style="text-align:right">Total:</td>
+              <td>{{totalImporFact | currency}}</td>
+              <td>{{totalSaldoFact | currency}}</td>
+            </tr>
+          </table>
+        </div>
 	    </section>
 	    <footer class="modal-card-foot">
-	      <button class="button is-success" ng-click="borraCliente()">Si</button>
-	      <button class="button" ng-click="cerrarBorraCliente()">No</button>
+	      <button class="button" ng-click="cerrarBorraCliente()">Cerrar</button>
 	    </footer>
 	  </div>
 	</div>

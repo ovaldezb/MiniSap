@@ -617,7 +617,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
     {
       var searchword;
       searchword = $scope.nombre_cliente != '' ? $scope.nombre_cliente : 'vacio';
-      $http.get(pathClte+'loadbynombre/'+$scope.idempresa +'/'+searchword).
+      $http.get(pathClte+'loadbynombre/'+$scope.idempresa +'/'+$scope.aniofiscal+'/'+searchword).
       then(function(res)
       {
         if(res.data.length > 0)
@@ -635,9 +635,9 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
 
     $scope.seleccionaCliente = function(indxRowClte)
     {
-      $scope.claveclte = $scope.lstCliente[indxRowClte].CLAVE.trim();
+      $scope.claveclte = $scope.lstCliente[indxRowClte].CLAVE;
       $scope.nombre_cliente = $scope.lstCliente[indxRowClte].NOMBRE;
-      $scope.rfc_cliente = $scope.lstCliente[indxRowClte].RFC.trim();
+      $scope.rfc_cliente = $scope.lstCliente[indxRowClte].RFC;
       $scope.fact.usocfdi = $scope.lstCliente[indxRowClte].USO_CFDI;
       $scope.cliente.id_uso_cfdi = $scope.lstCliente[indxRowClte].ID_USO_CFDI;      
       $scope.idcliente = $scope.lstCliente[indxRowClte].ID_CLIENTE;           

@@ -6,7 +6,6 @@ class Pagos extends CI_Controller
     function __construct() {
 		parent::__construct();
 		$this->load->model('pagosmodel');
-		//$this->load->model('catalogosmodel');
 		$this->load->helper('url');
 		$this->load->library('session');
 	}
@@ -21,8 +20,8 @@ class Pagos extends CI_Controller
         }
     }
 
-	function getfacturas($idempresa, $anioFiscal){
-		$result = $this->pagosmodel->getListaFacturas(array($idempresa,$anioFiscal));
+	function getpagos($idempresa, $anioFiscal){
+		$result = $this->pagosmodel->getListaPagos(array($idempresa,$anioFiscal));
 		return $this->output
 				->set_content_type('application/json')
 				->set_output($result);
@@ -41,7 +40,8 @@ class Pagos extends CI_Controller
 			$data['importebase'],
 			$data['idempresa'],
 			$data['aniofiscal'],
-			$data['idfactura']
+			$data['idcompra'],
+      $data['idproveedor']
 			)
 		);
 		return $this->output
@@ -49,17 +49,22 @@ class Pagos extends CI_Controller
 					 ->set_output($result);
 	}
 
-	function getpagofac($idfactura){
+	function getpagocom($idcompra){
 		return $this->output
 					 ->set_content_type('application/json')
-					 ->set_output($this->pagosmodel->getpagobyfactura($idfactura));
+					 ->set_output($this->pagosmodel->getpagobycompra($idcompra));
 	}
 
-	function deletepago($idpago,$idfactura,$importe){
+	function deletepago($idpago,$idcompra,$importe){
 		return $this->output
 					 ->set_content_type('application/json')
-					 ->set_output($this->pagosmodel->deletebyid($idpago,$idfactura,$importe));
-		
+					 ->set_output($this->pagosmodel->deletebyid($idpago,$idcompra,$importe));
+	}
+
+	function updatepago($idpago,$idcompra,$importe){
+		return $this->output
+					 ->set_content_type('application/json')
+					 ->set_output($this->pagosmodel->updatebyid($idpago,$idcompra,$importe));
 	}
 
   function getpagoid($idpago){

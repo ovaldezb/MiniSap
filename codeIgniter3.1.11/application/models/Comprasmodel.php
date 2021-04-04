@@ -14,10 +14,11 @@ class Comprasmodel extends CI_model
 	function get_compras($id_empresa,$anio_fiscal)
 	{
 		$query = 'SELECT C."ID_COMPRA",to_char(C."FECHA_COMPRA",\'DD/MM/YYYY\') as "FECHA_COMPRA",
-					TRIM(C."DOCUMENTO") AS "DOCUMENTO",
-					TRIM(P."NOMBRE") as "PROVEEDOR",
-					C."IMPORTE",
-					CASE "DIAS_PAGO" WHEN 0 THEN 0 ELSE "IMPORTE" END as "SALDO",
+					    TRIM(C."DOCUMENTO") AS "DOCUMENTO",
+					    TRIM(P."NOMBRE") as "PROVEEDOR",
+              P."ID_PROVEEDOR",
+					    C."IMPORTE",
+					    C."SALDO",
 							"DESCUENTO",
 							"CLAVE_PROVEEDOR",
 							"DIAS_PAGO",
@@ -46,11 +47,11 @@ class Comprasmodel extends CI_model
 		return json_encode($result);
 	}
 
-	function insert_compra($documento,$claveprov,$fec_comp,$tipo_pago,$moneda,$tipo_cambio,$contra_rec,$fec_pago,$fec_rev,$id_empresa,$docprev,$diascred,$importe,$iva,$anio_fiscal,$descuento,$idsucursal,$idproveedor,$notas)
+	function insert_compra($datoscompra)
 	{
-		$query = 'SELECT * FROM inserta_compra($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19)';
+		$query = 'SELECT * FROM inserta_compra($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20)';
 		pg_prepare($this->conn,"insert_compra",$query);
-		$result = pg_fetch_all(pg_execute($this->conn,"insert_compra",array($documento,$claveprov,$fec_comp,$tipo_pago,$moneda,$tipo_cambio,$contra_rec,$fec_pago,$fec_rev,$id_empresa,$docprev,$diascred,$importe,$iva,$anio_fiscal,$descuento,$idsucursal,$idproveedor,$notas)));
+		$result = pg_fetch_all(pg_execute($this->conn,"insert_compra",$datoscompra));
 		return json_encode($result);
 	}
 

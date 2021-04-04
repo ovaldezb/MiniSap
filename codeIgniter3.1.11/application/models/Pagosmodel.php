@@ -11,7 +11,7 @@ class Pagosmodel extends CI_model
 		$this->conn = $this->postgresdb->getConn();
     }
 
-	public function getListaFacturas($arrayData){
+	public function getListaPagos($arrayData){
 		$query = 'SELECT "ID_FACTURA",TRIM("DOCUMENTO") as "DOCUMENTO",
 				CASE WHEN M."MET_PAGO" IS NULL THEN \'\' ELSE M."MET_PAGO" END as "METODO_PAGO",
 				TO_CHAR("FECHA_FACTURA",\'dd-MM-YYYY\') as "FECHA_FACTURA",
@@ -34,20 +34,20 @@ class Pagosmodel extends CI_model
 	}
 
 	public function guardapago($datospago){
-		$query = 'SELECT * FROM registra_pago($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)';
+		$query = 'SELECT * FROM registra_pago($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)';
 		pg_prepare($this->conn,"inserta_pago",$query);
 		$result = pg_execute($this->conn,"inserta_pago",$datospago);
 		return json_encode($result);
 	}
 
-	public function getpagobyfactura($idfactura){
+	public function getpagobycompra($idcompra){
 		$query = 'SELECT "ID_PAGO",
-				TO_CHAR("FECHA_PAGO",\'dd-MM-YYYY\') as "FECHA_PAGO",
+				TO_CHAR("FECHA_PAGO",\'dd/MM/YYYY\') as "FECHA_PAGO",
 				"IMPORTE_PAGO" 
-				FROM "PAGOS" WHERE "ID_FACTURA"=$1';
+				FROM "PAGOS" WHERE "ID_COMPRA"=$1';
 		pg_prepare($this->conn,"select_pago",$query);
-		$result = pg_fetch_all(pg_execute($this->conn,"select_pago",array($idfactura)));
-		return json_encode($result);
+		$result = pg_fetch_all(pg_execute($this->conn,"select_pago",array($idcompra)));
+		return json_encode($result,JSON_NUMERIC_CHECK);
 	}
 
 
@@ -58,12 +58,23 @@ class Pagosmodel extends CI_model
 		return json_encode($result);
 	}
 
+  public function updatebyid($idpago,$idcompra,$importe){
+    $query = 'UPDATE "PAGOS" SET "IMPORTE_PAGO" = "IMPORTE_PAGO" + $1 WHERE "ID_PAGO"=$2';
+		pg_prepare($this->conn,"updt_pago",$query);
+		pg_execute($this->conn,"updt_pago",array($importe,$idpago));
+
+    $query1 = 'UPDATE "COMPRAS" SET "SALDO" = "SALDO" - $1 WHERE "ID_COMPRA"=$2';
+		pg_prepare($this->conn,"del_pago",$query1);
+		pg_execute($this->conn,"del_pago",array($importe,$idcompra));
+		return json_encode(array("msg"=>"ok"));
+  }
+
   
 
-	public function deletebyid($idpago,$idfactura,$importe){
-		$query = 'UPDATE "FACTURA" SET "SALDO" = "SALDO" + $1 WHERE "ID_FACTURA"=$2';
+	public function deletebyid($idpago,$idcompra,$importe){
+		$query = 'UPDATE "COMPRAS" SET "SALDO" = "SALDO" + $1 WHERE "ID_COMPRA"=$2';
 		pg_prepare($this->conn,"updt_fact",$query);
-		pg_execute($this->conn,"updt_fact",array($importe,$idfactura));
+		pg_execute($this->conn,"updt_fact",array($importe,$idcompra));
 		$query1 = 'DELETE FROM "PAGOS" WHERE "ID_PAGO"=$1';
 		pg_prepare($this->conn,"del_pago",$query1);
 		pg_execute($this->conn,"del_pago",array($idpago));

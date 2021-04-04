@@ -642,7 +642,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
     {
       var searchword;
       searchword = $scope.nombre_cliente != '' ? $scope.nombre_cliente : 'vacio';
-      $http.get(pathClte+'loadbynombre/'+$scope.pedido.idempresa +'/'+searchword).
+      $http.get(pathClte+'loadbynombre/'+$scope.pedido.idempresa +'/'+$scope.pedido.aniofiscal+'/'+searchword).
       then(function(res)
       {
         if(res.data.length > 0)

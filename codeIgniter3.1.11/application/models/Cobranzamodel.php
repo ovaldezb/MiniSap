@@ -15,7 +15,7 @@ class Cobranzamodel extends CI_model
 		$query = 'SELECT "ID_FACTURA",TRIM("DOCUMENTO") as "DOCUMENTO",
 				CASE WHEN M."MET_PAGO" IS NULL THEN \'\' ELSE M."MET_PAGO" END as "METODO_PAGO",
 				TO_CHAR("FECHA_FACTURA",\'dd-MM-YYYY\') as "FECHA_FACTURA",
-				C."NOMBRE" as "CLIENTE",TRIM(C."CLAVE") as "CLAVE",
+				C."NOMBRE" as "CLIENTE",TRIM(C."CLAVE") as "CLAVE", C."ID_CLIENTE",
 				CASE WHEN F."FECHA_VENCIMIENTO" IS NULL THEN \'\' ELSE TO_CHAR("FECHA_VENCIMIENTO",\'dd-MM-YYYY\') END as "FECHA_VENCIMIENTO",
 				"IMPORTE","SALDO",T."DESCRIPCION" as "FORMA_PAGO",
 				CASE WHEN C."DIAS_CREDITO" IS NULL THEN 0 ELSE C."DIAS_CREDITO" END as "DIAS_CREDITO",
@@ -34,7 +34,7 @@ class Cobranzamodel extends CI_model
 	}
 
 	public function guardacobranza($datoscobro){
-		$query = 'SELECT * FROM registra_cobro($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)';
+		$query = 'SELECT * FROM registra_cobro($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)';
 		pg_prepare($this->conn,"inserta_cobro",$query);
 		$result = pg_execute($this->conn,"inserta_cobro",$datoscobro);
 		return json_encode($result);
@@ -42,12 +42,12 @@ class Cobranzamodel extends CI_model
 
 	public function getcobranzabyfactura($idfactura){
 		$query = 'SELECT "ID_COBRO",
-				TO_CHAR("FECHA_COBRO",\'dd-MM-YYYY\') as "FECHA_COBRO",
+				TO_CHAR("FECHA_COBRO",\'dd/MM/YYYY\') as "FECHA_COBRO",
 				"IMPORTE_COBRO" 
 				FROM "COBROS" WHERE "ID_FACTURA"=$1';
 		pg_prepare($this->conn,"select_cobro",$query);
 		$result = pg_fetch_all(pg_execute($this->conn,"select_cobro",array($idfactura)));
-		return json_encode($result);
+		return json_encode($result,JSON_NUMERIC_CHECK);
 	}
 
 	public function getcobranzabyid($idcobro){
@@ -56,6 +56,18 @@ class Cobranzamodel extends CI_model
 		$result = pg_fetch_all(pg_execute($this->conn,"select_cobro",array($idcobro)));
 		return json_encode($result);
 	}
+
+
+  public function updatebyid($idcobro,$idfactura,$importe){
+    $query = 'UPDATE "COBROS" SET "IMPORTE_COBRO" = "IMPORTE_COBRO" + $1 WHERE "ID_COBRO"=$2';
+		pg_prepare($this->conn,"updt_cobro",$query);
+		pg_execute($this->conn,"updt_cobro",array($importe,$idcobro));
+
+    $query1 = 'UPDATE "FACTURA" SET "SALDO" = "SALDO" - $1 WHERE "ID_FACTURA"=$2';
+		pg_prepare($this->conn,"upt_cobro",$query1);
+		pg_execute($this->conn,"upt_cobro",array($importe,$idfactura));
+		return json_encode(array("msg"=>"ok"));
+  }
 
 	public function deletebyid($idcobro,$idfactura,$importe){
 		$query = 'UPDATE "FACTURA" SET "SALDO" = "SALDO" + $1 WHERE "ID_FACTURA"=$2';

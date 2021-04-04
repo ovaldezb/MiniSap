@@ -26,7 +26,6 @@
                         <select ng-model="ctrlInv.tipoES" >
                             <option value="t">Todos</option>
                             <option ng-repeat=" x in entsal" value="{{x.value}}">{{x.label}}</option>
-
                         </select>	
                     </div>
                     <div class="column is-narrow">

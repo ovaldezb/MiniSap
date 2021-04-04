@@ -951,7 +951,7 @@
 			<table>
 				<tr>
 					<td colspan="2" style="text-align:center">
-						<img src="https://ready2solve.club/paty/img/logo.jpg" alt="" style="width:40">
+						<img src="https://ready2solve.club/pinabete/img/logo.jpg" alt="" style="width:40">
 					</td>
 				</tr>
 				<tr>

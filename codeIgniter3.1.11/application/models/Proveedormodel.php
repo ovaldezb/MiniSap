@@ -11,11 +11,20 @@ class Proveedormodel extends CI_model
 		$this->conn = $this->postgresdb->getConn();
 	}
 
-	function get_proveedores_by_empresa($idEmpresa)
+	function get_proveedores_by_empresa($idEmpresa,$aniofiscal)
 	{
-		$query = 'SELECT * FROM "PROVEEDORES" WHERE "ACTIVO" = true AND "ID_EMPRESA" = $1';
+		$query = 'SELECT P."ID_PROVEEDOR", P."CLAVE", 
+              TRIM(P."NOMBRE") as "NOMBRE", P."RFC", 
+              CASE WHEN S."SALDO" IS NULL THEN 0 ELSE S."SALDO" END AS "SALDO"
+        FROM "PROVEEDORES" as P 
+        LEFT OUTER JOIN (SELECT C."ID_PROVEEDOR", SUM(C."SALDO") as "SALDO"
+        FROM "COMPRAS" as C
+        WHERE "ANIO_FISCAL" = $1
+        GROUP BY C."ID_PROVEEDOR" ) as S ON S."ID_PROVEEDOR" = P."ID_PROVEEDOR"
+        WHERE "ACTIVO" = true 
+        AND "ID_EMPRESA" = $2';
 		pg_prepare($this->conn,"select_prov",$query);
-		$result = pg_fetch_all(pg_execute($this->conn,"select_prov",array($idEmpresa)));
+		$result = pg_fetch_all(pg_execute($this->conn,"select_prov",array($aniofiscal,$idEmpresa)));
 		return json_encode($result,JSON_NUMERIC_CHECK);
 	}
 
@@ -86,6 +95,16 @@ class Proveedormodel extends CI_model
 		$result =  pg_fetch_all(pg_execute($this->conn, "selectquery", array($desc,$idEmpresa)));
 		return json_encode($result);
 	}
+
+  function get_compras_by_proveedor($idproveedor,$aniofiscal){
+    $query = 'SELECT TRIM("DOCUMENTO") as "DOCUMENTO", "FECHA_COMPRA","IMPORTE","SALDO" 
+    FROM "COMPRAS" 
+    WHERE "ID_PROVEEDOR" = $1
+    AND "ANIO_FISCAL" = $2';
+		$result = pg_prepare($this->conn, "selectquery", $query);
+		$result =  pg_fetch_all(pg_execute($this->conn, "selectquery", array($idproveedor,$aniofiscal)));
+		return json_encode($result,JSON_NUMERIC_CHECK);
+  }
 
 }
 ?>

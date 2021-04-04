@@ -25,9 +25,9 @@ class Proveedor extends CI_Controller
     }
 	}
 
-	function loadByEmpresa($idEmpresa)
+	function loadByEmpresa($idEmpresa,$aniofiscal)
 	{
-		$data = $this->proveedormodel->get_proveedores_by_empresa($idEmpresa);
+		$data = $this->proveedormodel->get_proveedores_by_empresa($idEmpresa,$aniofiscal);
 		return $this->output
             ->set_content_type('application/json')
             ->set_output($data);
@@ -120,13 +120,13 @@ class Proveedor extends CI_Controller
 			->set_output(json_encode(array('value'=>$res)));
 	}
 
-	function getproveedores($idEmpresa,$desc)
+	function getproveedores($idEmpresa,$aniofiscal,$desc)
 	{
 		if($desc != 'vacio'){
 			$data = $this->proveedormodel->get_proveedor_by_desc($idEmpresa,$desc.'%');
 		}else
 		{
-			$data = $this->proveedormodel->get_proveedores_by_empresa($idEmpresa);
+			$data = $this->proveedormodel->get_proveedores_by_empresa($idEmpresa,$aniofiscal);
 		}
 
 		return $this->output
@@ -141,6 +141,13 @@ class Proveedor extends CI_Controller
             ->set_content_type('application/json')
             ->set_output($data);
 	}
+
+  function comprasprov($idproveedor,$aniofiscal){
+    $data = $this->proveedormodel->get_compras_by_proveedor($idproveedor,$aniofiscal);
+		return $this->output
+            ->set_content_type('application/json')
+            ->set_output($data);
+  }
 
 }
 ?>

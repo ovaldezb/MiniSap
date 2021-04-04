@@ -153,7 +153,7 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 		if (event.keyCode == 13) {
 			$('#buscaprov').show();
 			searchword = $scope.proveedor != '' ? $scope.proveedor : 'vacio';
-			$http.get(pathPrve + 'getproveedores/' + $scope.idempresa + '/' + searchword, {
+			$http.get(pathPrve + 'getproveedores/' + $scope.idempresa + '/' + $scope.aniofiscal+'/'+ searchword, {
 				responseType: 'json'
 			}).
 				then(function (res) {
@@ -388,7 +388,8 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 			descuento: $scope.descuento,
 			idsucursal: $scope.idsucursal,
 			idproveedor: $scope.idproveedor,
-			notas: $scope.notas
+			notas: $scope.notas,
+      saldo:$('#tipopago').val() == 1 ? 0: $('#importe').val()
 		};
 
 		$http.put(pathCmpr + 'registracompra', data).

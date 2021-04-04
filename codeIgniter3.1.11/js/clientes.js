@@ -2,6 +2,11 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
 {
   $scope.lstCliente = [];
   $scope.lstTipoClte = [];
+  $scope.lstFactDtl = [];
+  $scope.lstVendedor = [];
+  $scope.totalImporFact = 0;
+  $scope.totalSaldoFact = 0;
+  $scope.cliente = '';
   $scope.clave = '';
   $scope.claveTmp = '';
   $scope.nombre = '';
@@ -17,8 +22,9 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
   $scope.sortDir = false;
   $scope.idSelCompra = '';
   $scope.indexRowCliente = 0;
-  $scope.idCliente = '';
-  $scope.modalBorraClte = false;
+  $scope.idCliente = -1;
+  $scope.idVendedor = '-1';
+  $scope.modalDetalleClte = false;
   $scope.clteBorrar = '';
   $scope.isAddOpen = false;
   $scope.idUsuario = '';
@@ -42,6 +48,7 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
         $scope.aniofiscal = res.data.aniofiscal
         $scope.getDataInit();
         $scope.permisos();
+        $scope.getvendedores();
       }
     }).catch(function(err){
       console.log(err);
@@ -78,6 +85,22 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
     {
       $scope.clave = res.data[0].VALOR;
       $scope.claveTmp = res.data[0].VALOR;
+    }).catch(function(err)
+    {
+      console.log(err);
+    });
+  }
+
+  $scope.getvendedores = function(){
+    $http.get(pathVend+'getvendedores/'+$scope.idempresa+'/vacio').
+    then(function(res)
+    {
+      if(res.data.length > 0)
+      {
+        $scope.lstVendedor = res.data;
+      }else {
+        $scope.lstVendedor = [];
+      }
     }).catch(function(err)
     {
       console.log(err);
@@ -146,7 +169,7 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
       revision:$('#revision').val(),
       pagos:$('#pagos').val(),
       id_forma_pago:$('#id_forma_pago').val(),
-      id_vendedor:$('#id_vendedor').val(),
+      id_vendedor:$scope.idVendedor,
       id_uso_cfdi:$('#id_uso_cfdi').val(),
       email:$scope.email,
       notas:$scope.notas,
@@ -205,22 +228,36 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
 
   $scope.borraCliente = function()
   {
-    $http.delete(pathClte+'delete/'+$scope.idCliente).
-  	then(function(res){
-      console.log(res);
-  		if(res.status==200)
-  		{
-  			if(res.data.value=='OK')
-  			{
-          $scope.lstCliente.splice($scope.indexRowCliente,1);
-          $scope.selectRowCliente($scope.lstCliente[0].CLAVE,0,$scope.lstCliente[0].ID_CLIENTE);
-  				swal('Cliente elimnado exitosamente');
-          $scope.modalBorraClte = false;
-  			}
-  		}
-  	}).catch(function(err){
-  		console.log(err)
-  	});
+    if($scope.idCliente == -1){
+      swal('Debe seleccionar un Cliente');
+      return;
+    }
+    swal({
+      title: "Esta seguro que desea eliminar el Cliente "+$scope.lstCliente[$scope.indexRowCliente].NOMBRE,
+      text: "Una vez eliminado, no se podrá recuperar!",
+      icon: "warning",
+      buttons: [true,true],
+      dangerMode: true,
+    })
+    .then((willDelete) => {
+      if(willDelete){
+        $http.delete(pathClte+'delete/'+$scope.idCliente).
+        then(function(res){
+          if(res.status==200)
+            {
+              if(res.data.value=='OK'){
+                $scope.lstCliente.splice($scope.indexRowCliente,1);
+                $scope.selectRowCliente($scope.lstCliente[0].CLAVE,0,$scope.lstCliente[0].ID_CLIENTE);
+                swal('Cliente elimnado exitosamente');
+            }
+          }
+        }).catch(function(err){
+            console.log(err)
+        });
+      }
+    });
+
+    
   }
 
   $scope.editaCliente = function()
@@ -246,7 +283,8 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
         $("#revision").val(res.data[0].ID_REVISION);
         $("#pagos").val(res.data[0].ID_PAGOS);
         $("#id_forma_pago").val(res.data[0].ID_FORMA_PAGO);
-        $("#id_vendedor").val(res.data[0].ID_VENDEDOR);
+        //$("#id_vendedor").val(res.data[0].ID_VENDEDOR);
+        $scope.idVendedor = res.data[0].ID_VENDEDOR;
         $("#id_uso_cfdi").val(res.data[0].ID_USO_CFDI);
       }
     }).catch(function(err)
@@ -257,16 +295,28 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
     $scope.msjBoton = 'Actualizar';
   }
 
-  $scope.preguntaElimnaCliente = function()
-  {
-  	$scope.clteBorrar = $scope.lstCliente[$scope.indexRowCliente].NOMBRE;
-    $scope.modalBorraClte = true;
+  $scope.muestraDetalle =()=>{
+    $scope.modalDetalleClte = true;
+    $scope.cliente = $scope.lstCliente[$scope.indexRowCliente].NOMBRE;
+    $http.get(pathClte+'factcliente/'+$scope.idCliente+'/'+$scope.aniofiscal)
+    .then(res=>{
+      $scope.lstFactDtl = res.data;
+      res.data.forEach(elem =>{
+        $scope.totalImporFact += elem.IMPORTE;
+        $scope.totalSaldoFact += elem.SALDO;
+      });
+    })
+    .catch(err=>{
+
+    });
   }
 
   $scope.cerrarBorraCliente = function()
   {
-    $scope.clteBorrar = '';
-    $scope.modalBorraClte = false;
+    $scope.modalDetalleClte = false;
+    $scope.lstFactDtl = [];
+    $scope.totalImporFact = 0;
+    $scope.totalSaldoFact = 0;
   }
 
   $scope.cleanup = function()

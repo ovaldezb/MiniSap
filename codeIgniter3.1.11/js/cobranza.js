@@ -9,9 +9,11 @@ app.controller('myCtrlCobros', function($scope,$http,$routeParams)
     $scope.importecobro = 0;
     $scope.isModalActive = false;
     $scope.fechacobro = '';
+    $scope.hoy = '';
     $scope.idCobro = -1;
-    $scope.btnName = "Guardar";
+    $scope.importeInicial= 0;
     $scope.idProceso = $routeParams.idproc;
+    $scope.btnName = "Guardar";
     $scope.cobro = {
         idfactura:'',
         cliente:'',
@@ -41,11 +43,12 @@ app.controller('myCtrlCobros', function($scope,$http,$routeParams)
     };
     $scope.isCapturaCobro = false;
     $scope.init = () =>{
-        var foopicker = new FooPicker({
-            id: 'fechaCobro',
-            dateFormat: 'dd/MM/yyyy'
-            });
-        $http.get(pathAcc+'getdata',{responseType:'json'}).
+      $scope.hoy = formatDatePrint(new Date());
+      var foopicker = new FooPicker({
+          id: 'fechaCobro',
+          dateFormat: 'dd/MM/yyyy'
+          });
+      $http.get(pathAcc+'getdata',{responseType:'json'}).
         then(function(res){
             if(res.data.value=='OK'){
             $scope.cobro.idempresa = res.data.idempresa;
@@ -54,9 +57,9 @@ app.controller('myCtrlCobros', function($scope,$http,$routeParams)
             $scope.getListaFacturas();
             $scope.permisos();
             }
-    }).catch(function(err){
-        console.log(err);
-    });
+        }).catch(function(err){
+          console.log(err);
+      });
     };
 
     $scope.getListaFacturas = () =>{
@@ -72,27 +75,39 @@ app.controller('myCtrlCobros', function($scope,$http,$routeParams)
     }
 
     $scope.getcobros = () =>{
-        $http.get(pathCob+'getcobrofac/'+$scope.idFactura)
-        .then(res=>{
-            if(res.data.length > 0)
-                $scope.lstCobros = res.data;
-        })
-        .catch(err=>{
-            console.log(err);
-        });
+      $scope.cobro.cobrado = 0;
+      $scope.cobro.saldo = 0;
+      $scope.lstCobros
+      $http.get(pathCob+'getcobrofac/'+$scope.idFactura)
+      .then(res=>{
+        if(res.data.length > 0){
+          $scope.lstCobros = res.data;
+          res.data.forEach((elemen)=>{
+            $scope.cobro.cobrado += elemen.IMPORTE_COBRO;
+          });
+          $scope.cobro.saldo = $scope.cobro.importetotal - $scope.cobro.cobrado;
+          $scope.cobro.importecobro = $scope.cobro.saldo ;
+        }else{
+          $scope.cobro.importecobro = $scope.cobro.importetotal;
+          $scope.cobro.saldo = $scope.cobro.importetotal;
+        }
+      })
+      .catch(err=>{
+        console.log(err);
+      });
     }
 
-    $scope.permisos = function(){
-        $http.get(pathUsr+'permusrproc/'+$scope.idusuario+'/'+$scope.idProceso)
-        .then(res =>{
-          $scope.permisos.alta = res.data[0].A == 't';
-          $scope.permisos.baja = res.data[0].B == 't';
-          $scope.permisos.modificacion = res.data[0].M == 't';
-          $scope.permisos.consulta = res.data[0].C == 't';
-        }).catch(err => {
-          console.log(err);
-        });
-    }
+  $scope.permisos = function(){
+    $http.get(pathUsr+'permusrproc/'+$scope.idusuario+'/'+$scope.idProceso)
+    .then(res =>{
+      $scope.permisos.alta = res.data[0].A == 't';
+      $scope.permisos.baja = res.data[0].B == 't';
+      $scope.permisos.modificacion = res.data[0].M == 't';
+      $scope.permisos.consulta = res.data[0].C == 't';
+    }).catch(err => {
+      console.log(err);
+    });
+  }
 
   $scope.agregaCobranza = () =>{
     if($scope.idFactura === ''){
@@ -100,9 +115,12 @@ app.controller('myCtrlCobros', function($scope,$http,$routeParams)
         return;
     }
     $scope.cobro.cliente = $scope.lstFacturas[$scope.idRowSel].CLIENTE;
-    $scope.cobro.idcliente = $scope.lstFacturas[$scope.idRowSel].CLAVE;
-    $scope.cobro.documento = $scope.lstFacturas[$scope.idRowSel].DOCUMENTO;
-    $scope.cobro.importecobro = $scope.lstFacturas[$scope.idRowSel].SALDO;
+    $scope.cobro.idcliente = $scope.lstFacturas[$scope.idRowSel].ID_CLIENTE;
+    $scope.cobro.documento = $scope.lstFacturas[$scope.idRowSel].DOCUMENTO;    
+    //$scope.cobro.importecobro = $scope.lstFacturas[$scope.idRowSel].SALDO;
+    $scope.cobro.importetotal = $scope.lstFacturas[$scope.idRowSel].IMPORTE;
+    $scope.cobro.cobrado = 0;
+    $scope.cobro.saldo = 0;
     $scope.cobro.idfactura = $scope.lstFacturas[$scope.idRowSel].ID_FACTURA;
     $scope.isCapturaCobro = true;
     $scope.getcobros();
@@ -114,21 +132,24 @@ app.controller('myCtrlCobros', function($scope,$http,$routeParams)
       $http.post(pathCob+'guardacobro',$scope.cobro)
       .then(res=>{
           if(res.status===200){
-              swal('Se guardo el cobro con exito');
+              swal('Se guardó el cobro con éxito');
               $scope.closeMovimiento();
               $scope.getcobros();
+              $scope.getListaFacturas();
           }
       })
       .catch(err=>{
 
       });
     }else{
-      $http.put(pathCob+'guardacobro',$scope.cobro)
+      let delta = $scope.cobro.importecobro - $scope.importeInicial;
+      $http.put(pathCob+'updatecobro/'+$scope.idCobro+'/'+$scope.idFactura+'/'+delta)
       .then(res=>{
           if(res.status===200){
-              swal('Se actualizo el cobro con exito');
+              swal('Se actualizó el cobro con éxito');
               $scope.closeMovimiento();
               $scope.getcobros();
+              $scope.getListaFacturas();
           }
       })
       .catch(err=>{
@@ -139,34 +160,12 @@ app.controller('myCtrlCobros', function($scope,$http,$routeParams)
   }
 
   $scope.editaCobro=()=>{
-    $http.get(pathCob+'getcobroid/'+$scope.idCobro)
-    .then(res=>{
-      if(res.data.length>0){
-        $scope.cobro.aniofiscal = res.data[0].ANIO_FISCAL;
-        $scope.cobro.cheque=res.data[0].CHEQUE;
-        $scope.cobro.depositoen=res.data[0].DEPOSITO;
-        //$scope.cobro.fechacobro=
-        var e = jQuery.Event("keyup");
-        e.which = 13; // # Some key code value
-        
-        $('#fechaCobro').val(res.data[0].FECHA_COBRO);
-        $("#fechaCobro").trigger(e);
-        $scope.cobro.banco=res.data[0].ID_BANCO;
-        //$scope.cobro. res.data[0].ID_EMPRESA;
-        //$scope.cobro. res.data[0].ID_FACTURA;
-        //$scope.cobro. res.data[0].ID_MOVIMIENTO;
-        //$scope.cobro. res.data[0].ID_cobro;
-        $scope.cobro.importebase=res.data[0].IMPORTE_BASE;
-        $scope.cobro.importecobro=res.data[0].IMPORTE_COBRO;
-        $scope.cobro.poliza=res.data[0].POLIZA;
-        $scope.isModalActive = true;
-        $scope.btnName = "Actualizar";
-      }
-      
-    })
-    .catch(err=>{
+    $scope.isModalActive = true;
+    $scope.btnName = "Actualizar";
+    $scope.cobro.importecobro = Number($scope.lstCobros[$scope.idRowCobro].IMPORTE_COBRO).toFixed(2);
+    $scope.importeInicial = $scope.lstCobros[$scope.idRowCobro].IMPORTE_COBRO;
+    $scope.fechacobro = $scope.lstCobros[$scope.idRowCobro].FECHA_COBRO;
 
-    });
   }
 
     $scope.eliminaCobro = () =>{
@@ -189,6 +188,7 @@ app.controller('myCtrlCobros', function($scope,$http,$routeParams)
                         $scope.getcobros();
                         swal('El cobro ha sido eliminado');
                         $scope.idCobro = -1;
+                        $scope.getListaFacturas();
                     }
                 })
                 .catch(err=>{
@@ -200,34 +200,41 @@ app.controller('myCtrlCobros', function($scope,$http,$routeParams)
     }
 
     $scope.fecCobroChange = () =>{
-        var e = jQuery.Event("keydown");
-        e.which = 13; // # Some key code value
-        $("#fechaCobro").trigger(e);
-        $scope.fechacobro = formatFecPagodmy($('#fechaCobro').val());
-        $scope.cobro.fechacobro = formatFecQuery($('#fechaCobro').val(),'ini');
+      var e = jQuery.Event("keydown");
+      e.which = 13; // # Some key code value
+      $("#fechaCobro").trigger(e);
+      $scope.fechacobro = formatFecPagodmy($('#fechaCobro').val());
+      $scope.cobro.fechacobro = formatFecQuery($('#fechaCobro').val(),'ini');
     }
 
     $scope.selectRowFactura = (idFactura, index) =>{
-        $scope.idFactura = idFactura;
-        $scope.idRowSel = index;
+      $scope.idFactura = idFactura;
+      $scope.idRowSel = index;
     }
 
-    $scope.selectRowCobro = (idCobro,importeCobro) =>{
-        $scope.idCobro = idCobro;
-        $scope.importecobro = importeCobro;
+    $scope.selectRowCobro = (idCobro,importeCobro, index) =>{
+      $scope.idCobro = idCobro;
+      $scope.importetotal = importeCobro;
+      $scope.idRowCobro = index;
     }
 
     $scope.agregaCobro = () =>{
-        $scope.isModalActive = true;
-        
+      $scope.isModalActive = true;
     }
 
     $scope.cerrarCobro = () =>{
-        $scope.isCapturaCobro = false;
-        $scope.lstCobros = [];
+      $scope.isCapturaCobro = false;
+      $scope.lstCobros = [];
     }
 
     $scope.closeMovimiento = () =>{
-        $scope.isModalActive = false;
+      $scope.isModalActive = false;
+    }
+
+    $scope.cleanPago = () =>{
+      $scope.fechacobro = '';
+      $scope.cobro.cheque = '';
+      $scope.cobro.poliza = '';
+      $scope.cobro.importebase = '';
     }
 });

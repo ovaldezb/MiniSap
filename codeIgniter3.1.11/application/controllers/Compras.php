@@ -26,7 +26,7 @@ class Compras extends CI_Controller
 	function registracompra()
 	{
 		$data = json_decode(file_get_contents("php://input"),true);
-		$result = $this->comprasmodel->insert_compra(
+		$result = $this->comprasmodel->insert_compra(array(
 		$data['documento'],
 		$data['claveprov'],
 		$data['feccompra'],
@@ -45,7 +45,8 @@ class Compras extends CI_Controller
 		$data['descuento'],
 		$data['idsucursal'],
 		$data['idproveedor'],
-		$data['notas']
+		$data['notas'],
+    $data['saldo'])
 	);
 		return $this->output
 			->set_content_type('application/json')

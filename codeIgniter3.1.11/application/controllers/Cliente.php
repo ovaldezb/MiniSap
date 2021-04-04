@@ -17,7 +17,6 @@ class Cliente extends CI_Controller
 			$data['tipo_cliente'] = $this->catalogosmodel->get_tipo_cliente();
 			$data['revision'] = $this->catalogosmodel->get_dias_semana();
 			$data['forma_pago'] = $this->catalogosmodel->get_forma_pago();
-			$data['vendedor'] = $this->catalogosmodel->get_vendedor();
 			$data['uso_cfdi'] = $this->catalogosmodel->get_uso_cfdi();
 			$this->load->view('clientes',$data);
 		}else {
@@ -50,11 +49,11 @@ class Cliente extends CI_Controller
             ->set_output($data);
 	}
 
-	function loadbynombre($idempresa,$nombre)
+	function loadbynombre($idempresa,$anioFiscal,$nombre)
 	{
 		if($nombre == 'vacio')
 		{
-			$data = $this->clientemodel->get_clientes_by_empresa($idempresa);
+			$data = $this->clientemodel->get_clientes_by_empresa($idempresa,$anioFiscal);
 		}else{
 			$nvonombre = str_replace("%20"," ",$nombre);
 			$data = $this->clientemodel->get_clientes_by_nombre($idempresa,'%'.$nvonombre.'%');
@@ -146,6 +145,13 @@ class Cliente extends CI_Controller
 		->set_content_type('application/json')
 		->set_output($result);
 	}
+
+  function factcliente($idcliente,$anioFiscal){
+    $result = $this->clientemodel->get_fact_by_idcliente($idcliente,$anioFiscal);
+		return $this->output
+		->set_content_type('application/json')
+		->set_output($result);
+  }
 
 }
 

@@ -14,17 +14,18 @@ class Clientemodel extends CI_model
 	function get_clientes_by_empresa($idEmpresa,$anioFiscal)
 	{
 		$query = 'SELECT C."ID_CLIENTE", C."NOMBRE",
-                    TRIM(C."CLAVE") as "CLAVE", 
-                    C."RFC", 
-                    CASE WHEN X."IMPORTE" IS NULL THEN 0 ELSE X."IMPORTE"  END as "SALDO"
-              FROM "CLIENTE" as C
-              LEFT OUTER JOIN (SELECT SUM(V."IMPORTE") as "IMPORTE","CODIGO_CLIENTE" FROM "VENTAS" as V 
-                              WHERE V."ANIO_FISCAL" = $1  GROUP BY "CODIGO_CLIENTE") as X ON X."CODIGO_CLIENTE" = C."ID_CLIENTE"
-              WHERE C."ACTIVO" = true 
-              AND C."ID_EMPRESA" = $2';
+    TRIM(C."CLAVE") as "CLAVE", C."RFC", 
+    CASE WHEN F."SALDO" IS NULL THEN 0 ELSE F."SALDO" END as "SALDO"
+    FROM "CLIENTE" as C
+    LEFT JOIN (SELECT F."ID_CLIENTE", SUM(F."SALDO") as "SALDO"  
+              FROM "FACTURA" as F 
+              WHERE F."ANIO_FISCAL" = $1 
+              GROUP BY F."ID_CLIENTE") as F ON F."ID_CLIENTE" = C."ID_CLIENTE"
+    WHERE C."ACTIVO" = true 
+    AND C."ID_EMPRESA" = $2';
 		pg_prepare($this->conn, "my_query", $query);
 		$result =  pg_fetch_all(pg_execute($this->conn, "my_query", array($anioFiscal,$idEmpresa)));
-		return json_encode($result,JSON_NUMERIC_CHECK);
+		return json_encode($result);
 	}
 
 	function get_cliente_by_id($_idCliente)
@@ -127,6 +128,16 @@ class Clientemodel extends CI_model
 		$result = pg_fetch_all(pg_execute($this->conn,"selqry",array($valor)));
 		return json_encode($result);
 	}
+
+  function get_fact_by_idcliente($idcliente,$anioFiscal){
+    $query = 'SELECT TRIM("DOCUMENTO") as "DOCUMENTO","IMPORTE","SALDO","FECHA_FACTURA" 
+    FROM "FACTURA" 
+    WHERE "ID_CLIENTE" = $1 
+    AND "ANIO_FISCAL" = $2';
+		pg_prepare($this->conn,"selqry",$query);
+		$result = pg_fetch_all(pg_execute($this->conn,"selqry",array($idcliente,$anioFiscal)));
+		return json_encode($result,JSON_NUMERIC_CHECK);
+  }
 }
 
 ?>

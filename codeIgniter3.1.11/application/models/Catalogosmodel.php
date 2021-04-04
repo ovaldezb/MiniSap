@@ -39,13 +39,6 @@ class Catalogosmodel extends CI_model
 		return json_encode($result);
 	}
 
-	function get_vendedor()
-	{
-		$query = 'SELECT * FROM "VENDEDOR"';
-		$result = pg_fetch_all(pg_query($this->conn, $query));
-		return ($result);
-	}
-
 	function get_uso_cfdi()
 	{
 		$query = 'SELECT * FROM "USO_CFDI"';

@@ -58,9 +58,7 @@ app.controller('myCtrCargMasiva', function($scope,$http,$interval)
         fd.append('file',filePRov);
         $http.post(pathCargaMasiva+'cargaproveedor',fd, config)
         .then(res => {
-            //console.log(res);
             swal("Se insertaron "+res.data.Total+" proveedores","Felicidades","success");
-
         })
         .catch(err=>{
             console.log(err);

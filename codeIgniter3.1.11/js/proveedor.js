@@ -2,8 +2,12 @@
 app.controller('myCtrlProveedor', function($scope,$http,$routeParams)
 {
   $scope.lstProveedor = [];
+  $scope.lstFactProv = [];
+  $scope.proveedor = '';
+  $scope.totalImporFact = 0;
+  $scope.totalSaldoFact = 0;
   $scope.isDivProvActivo = false;
-  $scope.isAvsoBrrarActv = false;
+  $scope.modalDetalleProv = false;
   $scope.descProvBorrar = '';
   $scope.btnAccion = 'Agregar';
   $scope.clave = '';
@@ -20,7 +24,7 @@ app.controller('myCtrlProveedor', function($scope,$http,$routeParams)
   $scope.notas = '';
   $scope.idSelProv = '';
   $scope.indexRowProv = '';
-  $scope.idProveedor = '';
+  $scope.idProveedor = -1;
   $scope.sortDir = true;
   $scope.myOrderBy = '';
   $scope.idempresa = '';
@@ -40,6 +44,7 @@ app.controller('myCtrlProveedor', function($scope,$http,$routeParams)
       if(res.data.value=='OK'){
         $scope.idempresa = res.data.idempresa;
         $scope.idUsuario = res.data.idusuario;
+        $scope.aniofiscal = res.data.aniofiscal;
         $scope.getDataInit();
         $scope.permisos();
       }
@@ -49,13 +54,14 @@ app.controller('myCtrlProveedor', function($scope,$http,$routeParams)
   }
 
   $scope.getDataInit = function(){
-    $http.get(pathPrve+'loadByEmpresa/'+$scope.idempresa, {responseType: 'json'}).
+    $http.get(pathPrve+'loadByEmpresa/'+$scope.idempresa+'/'+$scope.aniofiscal, {responseType: 'json'}).
     then(function(res)
   	{
+      console.log(res.data);
   		if(res.data.length > 0)
   		{
   			$scope.lstProveedor = res.data;
-        $scope.selectRowProveedor($scope.lstProveedor[0].RFC,0,$scope.lstProveedor[0].ID_PROVEEDOR);
+        //$scope.selectRowProveedor($scope.lstProveedor[0].RFC,0,$scope.lstProveedor[0].ID_PROVEEDOR);
   		}else {
         $scope.lstProveedor = [];
       }
@@ -77,9 +83,8 @@ app.controller('myCtrlProveedor', function($scope,$http,$routeParams)
     });
   }
   
-  $scope.selectRowProveedor = function(idSelProv,indexRowProv,idProveedor)
+  $scope.selectRowProveedor = function(indexRowProv,idProveedor)
   {
-    $scope.idSelProv = idSelProv;
     $scope.indexRowProv = indexRowProv;
     $scope.idProveedor = idProveedor;
   }
@@ -111,17 +116,17 @@ app.controller('myCtrlProveedor', function($scope,$http,$routeParams)
   			$scope.nombre = res.data[0].NOMBRE.trim();
   			$scope.domicilio = res.data[0].DOMICILIO;
   			$scope.cp = res.data[0].CP;
-  			$scope.telefono = res.data[0].TELEFONO.trim();
-  			$scope.contacto = res.data[0].CONTACTO.trim();
-  			$scope.rfc = res.data[0].RFC.trim();
-  			$scope.curp = res.data[0].CURP.trim();
+  			$scope.telefono = res.data[0].TELEFONO;
+  			$scope.contacto = res.data[0].CONTACTO;
+  			$scope.rfc = res.data[0].RFC;
+  			$scope.curp = res.data[0].CURP;
   			$('#id_tipo_prov').val(res.data[0].ID_CATEGORIA_PROV);
   			$scope.dias_cred = Number(res.data[0].DIAS_CRED);
   			$('#id_tipo_alc_prov').val(res.data[0].ID_TIPO_ALC_PROV);
   			$('#banco').val(res.data[0].ID_BANCO);
-  			$scope.cuenta = Number(res.data[0].CUENTA.trim());
-  			$scope.email = res.data[0].EMAIL.trim();
-  			$scope.notas = res.data[0].NOTAS.trim();
+  			$scope.cuenta = Number(res.data[0].CUENTA);
+  			$scope.email = res.data[0].EMAIL;
+  			$scope.notas = res.data[0].NOTAS;
         $scope.isDivProvActivo = true;
         $scope.btnAccion = 'Actualizar';
   		}
@@ -153,14 +158,11 @@ app.controller('myCtrlProveedor', function($scope,$http,$routeParams)
       idempresa:$scope.idempresa
     };
 
-    //console.log(dataProveedor);
     if($scope.btnAccion == 'Agregar')
     {
       $http.post(pathPrve+'save', dataProveedor).
       then(function(res)
       {
-        //$('#message').html(res.data);
-        //console.log(res);
     		if(res.status==200) {
           var dataRowProvA =
           {
@@ -197,26 +199,48 @@ app.controller('myCtrlProveedor', function($scope,$http,$routeParams)
     }
   }
 
-  $scope.preguntaEliminar = function()
-  {
-    $scope.isAvsoBrrarActv = true;
-    $scope.descProvBorrar = $scope.lstProveedor[$scope.indexRowProv].NOMBRE;
+  $scope.muestraDetalle =()=>{
+    $scope.modalDetalleProv = true;
+    $scope.proveedor = $scope.lstProveedor[$scope.indexRowProv].NOMBRE;
+    $http.get(pathPrve+'comprasprov/'+$scope.idProveedor+'/'+$scope.aniofiscal)
+    .then(res=>{
+      $scope.lstFactProv = res.data;
+      res.data.forEach(elem =>{
+        $scope.totalImporFact += elem.IMPORTE;
+        $scope.totalSaldoFact += elem.SALDO;
+      });
+    }).catch();
   }
 
   $scope.eliminar = function()
   {
-  	$http.delete(pathPrve+'delete/'+$scope.idProveedor).
-  	then(function(res){
-  		if(res.status==200 && res.data.value=='OK')
-  		{
-        $scope.lstProveedor.splice($scope.indexRowProv,1);
-        $scope.selectRowProveedor($scope.lstProveedor[0].RFC,0,$scope.lstProveedor[0].ID_PROVEEDOR);
-        $scope.closeAvisoBorrar();
-				swal('Cliente elimnado exitosamente');
-  		}
-  	}).catch(function(err){
-  		console.log(err)
-  	})
+    if($scope.idProveedor == -1){
+      swal('Debe seleccionar un Proveedor');
+      return;
+    }
+    swal({
+      title: "Esta seguro que desea eliminar el Proveedor "+$scope.lstProveedor[$scope.indexRowProv].NOMBRE,
+      text: "Una vez eliminado, no se podrá recuperar!",
+      icon: "warning",
+      buttons: [true,true],
+      dangerMode: true,
+    })
+    .then((willDelete) => {
+      if(willDelete){
+        $http.delete(pathPrve+'delete/'+$scope.idProveedor).
+        then(function(res){
+          if(res.status==200 && res.data.value=='OK')
+          {
+            $scope.lstProveedor.splice($scope.indexRowProv,1);
+            $scope.selectRowProveedor($scope.lstProveedor[0].RFC,0,$scope.lstProveedor[0].ID_PROVEEDOR);
+            $scope.closeAvisoBorrar();
+            swal('Cliente elimnado exitosamente');
+          }
+        }).catch(function(err){
+          console.log(err)
+        })
+      }
+    });
   }
 
   $scope.orderByMe = function(valor)
@@ -227,8 +251,10 @@ app.controller('myCtrlProveedor', function($scope,$http,$routeParams)
 
   $scope.closeAvisoBorrar = function()
   {
-    $scope.isAvsoBrrarActv = false;
-    $scope.descProvBorrar = '';
+    $scope.modalDetalleProv = false;
+    $scope.lstFactProv = [];
+    $scope.totalImporFact = 0;
+    $scope.totalSaldoFact = 0;
   }
 
   $scope.cancelar = function()

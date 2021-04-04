@@ -1,7 +1,7 @@
 <div ng-controller="myCtrlPagos" data-ng-init="init()">
     <div class="container">
       <div class="notification" >
-      <h1 class="title is-2 has-text-centered">Cobranza</h1>
+      <h1 class="title is-2 has-text-centered">Pagos</h1>
       </div>
     </div>
     <div class="container">
@@ -17,7 +17,7 @@
           </div>
           <div class="level-right">
             <p class="level-item" ng-show="permisos.alta">
-              <a ng-click="agregaCobranza();"><span class="icon has-text-success"><i class="fas fa-file" title="Aplicar pago"></i></span></a>
+              <a ng-click="aplicaPago();"><span class="icon has-text-success"><i class="fas fa-file" title="Aplicar pago"></i></span></a>
             </p>
             <p class="level-item" ng-show="permisos.baja">
               <a ng-click="preguntaElimnaFactura()"><span class="icon has-text-danger"><i class="far fa-trash-alt" title="Elimina Factura"></i></span></a>
@@ -28,51 +28,47 @@
       <div class="table-container is-centered" style="margin:auto 0px" id="lstclientes" ng-show="!isCapturaPago">
         <table class="table is-bordered" style="width:100%">
           <colgroup>						
-            <col width="9%">
-            <col width="9%">
-            <col width="14%">
-            <col width="8%">
-            <col width="8%">
-            <col width="10%">
-            <col width="10%">
-            <col width="10%">
-            <col width="10%">
+            <col width="11%">
+						<col width="10%">
+						<col width="20%">
+						<col width="11%">
+						<col width="11%">
+						<col width="11%">
+						<col width="11%">
+						<col width="15%">
           </colgroup>
           <tr class="tbl-header">
-            <td style="text-align:center;font-size:12px">DOCUMENTO</td>									
-            <td style="text-align:center;font-size:12px">FECHA</td>
-            <td style="text-align:center;font-size:12px">MET</td>
-            <td style="text-align:center;font-size:12px">CLIENTE</td>
+            <td style="text-align:center;font-size:12px">FECHA</td>									
+            <td style="text-align:center;font-size:12px">DOCUMENTO</td>
+            <td style="text-align:center;font-size:12px">PROVEEDOR</td>
             <td style="text-align:center;font-size:12px">IMPORTE</td>
             <td style="text-align:center;font-size:12px">SALDO</td>
-            <td style="text-align:center;font-size:12px">VENCE</td>
+            <td style="text-align:center;font-size:12px">REVISION</td>
+            <td style="text-align:center;font-size:12px">VENCIMIENTO</td>
             <td style="text-align:center;font-size:12px">FORMA DE PAGO</td>
-            <td style="text-align:center;font-size:12px">VENDEDOR</td>
           </tr>							
         </table>
         <div style="width:100%; height:500px; overflow:auto;margin-top:-25px">
 					<table class="table is-bordered is-hoverable" style="width:100%" id="tblClientes">
 						<colgroup>
-              <col width="9%">
-							<col width="9%">
-							<col width="14%">
-							<col width="8%">
-							<col width="8%">
+              <col width="11%">
 							<col width="10%">
-							<col width="10%">
-							<col width="10%">
-							<col width="10%">
+							<col width="20%">
+							<col width="11%">
+							<col width="11%">
+							<col width="11%">
+							<col width="11%">
+							<col width="15%">
             </colgroup>
-  					<tr ng-repeat="x in lstFacturas" ng-click="selectRowFactura(x.ID_FACTURA, $index)" ng-class="{selected: x.ID_FACTURA === idFactura}">
-							<td style="text-align:center;font-size:12px">{{x.DOCUMENTO}}</td>									
-							<td style="text-align:center;font-size:12px">{{x.FECHA_FACTURA | date}}</td>
-              <td style="text-align:center;font-size:12px">{{x.METODO_PAGO}}</td>
-							<td style="text-align:center;font-size:12px">{{x.CLIENTE}}</td>
+  					<tr ng-repeat="x in lstCompras" ng-click="selectRowCompra(x.ID_COMPRA, $index)" ng-class="{selected: x.ID_COMPRA === idCompra}">
+							<td style="text-align:center;font-size:12px">{{x.FECHA_COMPRA | date}}</td>									
+							<td style="text-align:center;font-size:12px">{{x.DOCUMENTO}}</td>
+              <td style="text-align:center;font-size:12px">{{x.PROVEEDOR}}</td>
 							<td style="text-align:center;font-size:12px">{{x.IMPORTE | currency}}</td>
 							<td style="text-align:center;font-size:12px">{{x.SALDO | currency}}</td>
-              <td style="text-align:center;font-size:12px">{{x.FECHA_VENCIMIENTO}}</td>
-  						<td style="text-align:center;font-size:12px">{{x.FORMA_PAGO}}</td>
-							<td style="text-align:center;font-size:12px">{{x.VENDEDOR}}</td>
+              <td style="text-align:center;font-size:12px">{{x.FECHA_REVISION}}</td>
+  						<td style="text-align:center;font-size:12px">{{x.FECHA_PAGO}}</td>
+							<td style="text-align:center;font-size:12px">{{x.FORMA_PAGO}}</td>
 						</tr>
 					</table>
 				</div>
@@ -114,13 +110,10 @@
               <input type="text" name="serie"  />
             </div>
             <div class="column">
-              <input type="text" name="documento" ng-model="pago.documento"/>
+            <label for="">{{pago.documento}}</label>
             </div>
             <div class="column">
-              <input type="text" name="cliente" ng-model="pago.idcliente"/>
-            </div>
-            <div class="column">
-              <label for="">{{pago.cliente}}</label>
+              <label for="">{{pago.proveedor}}</label>
             </div>
           </div>
           </div>
@@ -128,20 +121,20 @@
             <div class="box">
               <div class="column">
                 <div class="columns">
-                  <div class="column">Fecha</div>
-                  <div class="column">10/02/2021</div>
+                  <div class="column">Fecha:</div>
+                  <div class="column">{{hoy}}</div>
                 </div>
                 <div class="columns">
-                  <div class="column">Importe</div>
+                  <div class="column">Importe:</div>
+                  <div class="column">{{pago.importetotal | currency}}</div>
+                </div>
+                <div class="columns">
+                  <div class="column">Pagado:</div>
+                  <div class="column">{{pago.pagado | currency}}</div>
+                </div>
+                <div class="columns">
+                  <div class="column">Saldo:</div>
                   <div class="column">{{pago.saldo | currency}}</div>
-                </div>
-                <div class="columns">
-                  <div class="column">Cobrado</div>
-                  <div class="column">{{pago.cobrado | currency}}</div>
-                </div>
-                <div class="columns">
-                  <div class="column">Saldo</div>
-                  <div class="column">{{pago.saldopendiente | currency}}</div>
                 </div>
               </div>
             </div>
@@ -164,7 +157,7 @@
                     </tr>
                   </thead>
                 </table>
-                <div style="height:110px;border:2px solid black; overflow:auto">
+                <div style="height:160px;border:2px solid black; overflow:auto">
                   <table class="table table-hover" style="width:100%">
                     <colgroup>
                       <col width="25%"/>
@@ -173,7 +166,7 @@
                       <col width="25%"/>
                     </colgroup>
                     <tbody>
-                      <tr ng-repeat="x in lstPagos" ng-click="selectRowPago(x.ID_PAGO,x.IMPORTE_PAGO)" ng-class="{selected: x.ID_PAGO === idPago}" >
+                      <tr ng-repeat="x in lstPagos" ng-click="selectRowPago(x.ID_PAGO,x.IMPORTE_PAGO, $index)" ng-class="{selected: x.ID_PAGO === idPago}" >
                         <td style="text-align:center">{{x.FECHA_PAGO}}</td>
                         <td></td>
                         <td style="text-align:center">{{x.IMPORTE_PAGO | currency}}</td>

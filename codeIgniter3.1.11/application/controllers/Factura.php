@@ -39,7 +39,8 @@ class Factura extends CI_Controller
             $data['idsucursal'],
             $data['formapago'],
             $data['usocfdi'],
-            $data['metodopago']
+            $data['metodopago'],
+            $data['contacto']
         );
        $result = $this->facturacionmodel->savefactura($arraDatosFactura);
        return $this->output

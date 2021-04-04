@@ -68,7 +68,7 @@
 						</tr>
 						<tr>
 							<td>
-								<div style="width:100%; height:200px; overflow:auto; border:2px solid red">
+								<div style="width:100%; height:100px; overflow:auto; border:2px solid red">
 									<table class="table is-hoverable"  style="width:100%;" id="proveedores">
 										<col width="25%">
 										<col width="75%">
@@ -404,14 +404,16 @@
 			<tr>
 				<td>
 					<table class="table is-bordered" style="width:100%" >
-						<col width="11%">
-						<col width="10%">
-						<col width="20%">
-						<col width="11%">
-						<col width="11%">
-						<col width="11%">
-						<col width="11%">
-						<col width="15%">
+            <colgroup>	
+              <col width="11%">
+              <col width="10%">
+              <col width="20%">
+              <col width="11%">
+              <col width="11%">
+              <col width="11%">
+              <col width="11%">
+              <col width="15%">
+            </colgroup>
 						<tr style="background-color:CornflowerBlue; color:Ivory;">
 							<td ng-click="orderByMe('FECHA_COMPRA')" style="text-align:center;">Fecha</td>
 							<td ng-click="orderByMe('DOCUMENTO')"  style="text-align:right;">No Doc</td>
@@ -429,14 +431,16 @@
 				<td>
 					<div style="width:100%; height:500px; overflow:auto;">
 						<table class="table is-bordered is-hoverable" id="tblcompras" style="width:100%" >
-							<col width="11%">
-							<col width="10%">
-							<col width="20%">
-							<col width="11%">
-							<col width="11%">
-							<col width="11%">
-							<col width="11%">
-							<col width="15%">
+              <colgroup>
+                <col width="11%">
+							  <col width="10%">
+							  <col width="20%">
+							  <col width="11%">
+							  <col width="11%">
+							  <col width="11%">
+							  <col width="11%">
+							  <col width="15%">
+              </colgroup>
 							<tr ng-repeat="x in listaCompras | orderBy:myOrderBy:sortDir" ng-click="selectRowCompra(x.ID_COMPRA,$index)" ng-dblclick="despliegaCompra()" ng-class="{selected: x.ID_COMPRA ===  idSelCompra}">
 								<td style="text-align:center;font-size:14px">{{x.FECHA_COMPRA}}</td>
 								<td style="text-align:right;font-size:14px">{{x.DOCUMENTO}}</td>

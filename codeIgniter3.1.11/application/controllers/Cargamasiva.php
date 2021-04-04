@@ -47,14 +47,15 @@ class Cargamasiva extends CI_Controller
             $result = $this->csvreader->parse_file($inFile);
             $count = 0;
             foreach ($result as $item) {
+              var_dump($item);
                 $this->productomodel->inserta_proveedor(array(trim($item['CLAVE']),
                     utf8_encode(trim($item['NOMBRE'])),
-                    trim($item['DOMICILIO']),
-                    trim($item['RFC']),
-                    trim($item['CURP']),
-                    trim($item['TELEFONO']),
-                    trim($item['CORREO']),
-                    trim($item['DIASCREDITO']), 
+                    $item['DOMICILIO']!=NULL ? trim($item['DOMICILIO']): NULL,
+                    $item['RFC']!=NULL ? trim($item['RFC']) : NULL, 
+                    $item['CURP']!=NULL ? trim($item['CURP']) : NULL,
+                    $item['TELEFONO']!=NULL ? trim($item['TELEFONO']) : NULL,
+                    $item['CORREO']!=NULL ? trim($item['CORREO']) : NULL,
+                    $item['DIASCREDITO']!=NULL ? trim($item['DIASCREDITO']) : NULL, 
                     1,//Categoria proveedor
                     1,//Tipo Alcance Proveedor
                     $_SESSION['idempresa'],
@@ -94,12 +95,12 @@ class Cargamasiva extends CI_Controller
             foreach ($result as $item) {
                 $this->productomodel->inserta_cliente(array(trim($item['CLAVE']),
                     utf8_encode(trim($item['NOMBRE'])),
-                    trim($item['DOMICILIO']),
-                    trim($item['TELEFONO']),
-                    trim($item['CORREO']),
-                    trim($item['CURP']),
-                    trim($item['RFC']), 
-                    trim($item['DIASCREDITO']), 
+                    $item['DOMICILIO']!=NULL ? trim($item['DOMICILIO']): NULL,
+                    $item['TELEFONO']!=NULL ? trim($item['TELEFONO']) : NULL,
+                    $item['CORREO']!=NULL ? trim($item['CORREO']) : NULL,
+                    $item['CURP']!=NULL ? trim($item['CURP']) : NULL,
+                    $item['RFC']!=NULL ? trim($item['RFC']) : NULL, 
+                    $item['DIASCREDITO']!=NULL ? trim($item['DIASCREDITO']) : NULL, 
                     $_SESSION['idempresa'],
                     true,
                     1 //FORMA_PAGO

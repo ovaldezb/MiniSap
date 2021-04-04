@@ -4,6 +4,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
   $scope.fechaPantalla = formatDatePantalla(new Date());
   $scope.hora = DisplayCurrentTime();
   $scope.doctoTmp = '';
+  $scope.idVendedor = '';
   $scope.sortDir = true;
 	$scope.counter = 0;
   $scope.totalBruto = 0.00;
@@ -285,8 +286,9 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
     $scope.factura.docto = $scope.lstFacturas[$scope.indexRowFactura].DOCUMENTO;
     $scope.nombre_cliente = $scope.lstFacturas[$scope.indexRowFactura].CLIENTE;
     $scope.claveclte = $scope.lstFacturas[$scope.indexRowFactura].CLAVE;
-    $scope.factura.idvendedor = $scope.lstFacturas[$scope.indexRowFactura].CODIGO_VENDEDOR;
+    $scope.factura.idvendedor = $scope.lstFacturas[$scope.indexRowFactura].ID_VENDEDOR;
     $scope.nombre_vendedor = $scope.lstFacturas[$scope.indexRowFactura].VENDEDOR;
+    $scope.claveclte = $scope.lstFacturas[$scope.indexRowFactura].CLAVE;
     $scope.getFacturaDetalleyId($scope.lstFacturas[$scope.indexRowFactura].ID_FACTURA);
   }
 
@@ -322,7 +324,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
             $('#revision').val(res.data[0].ID_REVISION);
             $('#pagos').val(res.data[0].ID_PAGOS);
             $('#id_forma_pago').val(res.data[0].ID_FORMA_PAGO);
-            $('#id_vendedor').val(res.data[0].ID_VENDEDOR);
+            $scope.idVendedor =res.data[0].ID_VENDEDOR;
             $('#id_uso_cfdi').val(res.data[0].ID_USO_CFDI);
             $scope.cliente.email = res.data[0].EMAIL;
             $scope.cliente.num_proveedor = res.data[0].NUM_PROVEEDOR;
@@ -376,7 +378,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
     $scope.cliente.revision=$('#revision').val();
     $scope.cliente.pagos=$('#pagos').val();
     $scope.cliente.id_forma_pago=$('#id_forma_pago').val();
-    $scope.cliente.id_vendedor=$('#id_vendedor').val();
+    $scope.cliente.id_vendedor=$scope.idVendedor;
     //$scope.cliente.id_uso_cfdi=$('#id_uso_cfdi').val();
     $scope.cliente.idempresa = $scope.factura.idempresa;
 
@@ -760,7 +762,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
     {
       var searchword;
       searchword = $scope.nombre_cliente != '' ? $scope.nombre_cliente : 'vacio';
-      $http.get(pathClte+'loadbynombre/'+$scope.factura.idempresa +'/'+searchword).
+      $http.get(pathClte+'loadbynombre/'+$scope.factura.idempresa +'/'+ $scope.factura.aniofiscal+'/'+searchword).
       then(function(res)
       {
         if(res.data.length > 0)
@@ -778,9 +780,9 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
 
     $scope.seleccionaCliente = function(indxRowClte)
     {
-      $scope.claveclte = $scope.lstCliente[indxRowClte].CLAVE.trim();
+      $scope.claveclte = $scope.lstCliente[indxRowClte].CLAVE;
       $scope.nombre_cliente = $scope.lstCliente[indxRowClte].NOMBRE;
-      $scope.rfc_cliente = $scope.lstCliente[indxRowClte].RFC.trim();
+      $scope.rfc_cliente = $scope.lstCliente[indxRowClte].RFC;
       $scope.cliente.id_uso_cfdi = $scope.lstCliente[indxRowClte].ID_USO_CFDI;      
       $scope.factura.idcliente = $scope.lstCliente[indxRowClte].ID_CLIENTE;           
       $scope.lstCliente = [];
@@ -807,6 +809,22 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
         }else {
           $scope.lstVendedor = [];
           $scope.isLstVendedor = false;
+        }
+      }).catch(function(err)
+      {
+        console.log(err);
+      });
+    }
+
+    $scope.getvendedores = function(){
+      $http.get(pathVend+'getvendedores/'+$scope.factura.idempresa+'/vacio').
+      then(function(res)
+      {
+        if(res.data.length > 0)
+        {
+          $scope.lstVendedorVer = res.data;
+        }else {
+          $scope.lstVendedorVer = [];
         }
       }).catch(function(err)
       {
@@ -877,7 +895,8 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
         idsucursal:$scope.factura.idsucursal,
         formapago:$scope.factura.fpago,
         usocfdi:$scope.factura.cfdi,
-        metodopago:$scope.factura.mpago
+        metodopago:$scope.factura.mpago,
+        contacto:$scope.factura.contacto
       };
 
       $http.post(pathFactura+'savefactura',dataFact)

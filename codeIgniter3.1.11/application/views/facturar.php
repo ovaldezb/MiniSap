@@ -74,16 +74,16 @@
 								<col width="10%">
 								<col width="12%">
 								<tr ng-repeat="x in lstFacturas" ng-click="selectRowFactura(x.DOCUMENTO,$index)" ng-class="{selected: x.DOCUMENTO === idDocumento}">
-									<td style="text-align:center;font-size:12px">{{x.DOCUMENTO}}</td>									
-									<td style="text-align:center;font-size:12px">{{x.FECHA_FACTURA}}</td>
-									<td style="text-align:center;font-size:12px">{{x.CLIENTE}}</td>
-									<td style="text-align:center;font-size:12px">{{x.IMPORTE | currency}}</td>
-									<td style="text-align:center;font-size:12px">{{x.SALDO | currency}}</td>
-									<td style="text-align:center;font-size:12px">{{x.ID_TIPO_PAGO == 1 ? 'Contado':'Crédito'}}</td>
-									<td style="text-align:center;font-size:12px">{{x.FECHA_REVISION}}</td>
-									<td style="text-align:center;font-size:12px">{{x.FECHA_VENCIMIENTO}}</td>
-									<td style="text-align:center;font-size:12px">&nbsp;</td>
-									<td style="text-align:center;font-size:12px">{{x.VENDEDOR}}</td>
+									<td class="font12" style="text-align:center;">{{x.DOCUMENTO}}</td>									
+									<td class="font12" style="text-align:center;">{{x.FECHA_FACTURA}}</td>
+									<td class="font12" style="text-align:center;">{{x.CLIENTE}}</td>
+									<td class="font12" style="text-align:right;">{{x.IMPORTE | currency}}</td>
+									<td class="font12" style="text-align:right;">{{x.SALDO | currency}}</td>
+									<td class="font12" style="text-align:center;">{{x.ID_TIPO_PAGO == 1 ? 'Contado':'Crédito'}}</td>
+									<td class="font12" style="text-align:center;">{{x.FECHA_REVISION}}</td>
+									<td class="font12" style="text-align:center;">{{x.FECHA_VENCIMIENTO}}</td>
+									<td class="font12" style="text-align:center;">&nbsp;</td>
+									<td class="font12" style="text-align:center;">{{x.VENDEDOR}}</td>
 								</tr>
 							</table>
 						</div>
@@ -459,11 +459,11 @@
 													<col width="15%">
 											</colgroup>
 												<tr ng-repeat="p in lstProdCompra" ng-click="setSelected($index,p.CODIGO)" ng-class="{selected: p.CODIGO === idSelCompra}">
-													<td>{{p.DESCRIPCION}}</td>
-													<td style="text-align:center">{{p.CANTIDAD}}</td>
-													<td style="text-align:center">{{p.UNIDAD_MEDIDA}}</td>
-													<td style="text-align:right">$ {{p.PRECIO_LISTA | number:2}}</td>
-													<td style="text-align:	right">$ {{p.IMPORTE | number:2}}</td>
+													<td class="font12">{{p.DESCRIPCION}}</td>
+													<td class="font12" style="text-align:center">{{p.CANTIDAD}}</td>
+													<td class="font12" style="text-align:center">{{p.UNIDAD_MEDIDA}}</td>
+													<td class="font12" style="text-align:right">$ {{p.PRECIO_LISTA | number:2}}</td>
+													<td class="font12" style="text-align:right">$ {{p.IMPORTE | number:2}}</td>
 												</tr>
 											</table>
 									</div>
@@ -695,10 +695,9 @@
 					<tr>
 						<td>Vendedor:</td>
 						<td colspan="3">
-              <select name="id_vendedor" id="id_vendedor">
-      <?php	foreach($vendedor as $vend) {?>
-      					<option value='<?php echo $vend['ID_VENDEDOR']?>'><?php echo trim($vend['NOMBRE'])?></option>
-      <?php	}?>
+              <select ng-model="idVendedor" >
+                <option ng-repeat=" x in lstVendedorVer" value="{{x.ID_VENDEDOR}}">{{x.NOMBRE}}</option>
+              </select>	
       				</select>
             </td>
 					</tr>

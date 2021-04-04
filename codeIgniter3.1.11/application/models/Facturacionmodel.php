@@ -84,7 +84,7 @@ class Facturacionmodel extends CI_model
 	}
 
 	function savefactura($arrayDatFact){
-		$query = 'SELECT * FROM registra_factura($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)';
+		$query = 'SELECT * FROM registra_factura($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16)';
 		pg_prepare($this->conn,"insert_fact",$query);
 		$result = pg_fetch_all(pg_execute($this->conn,"insert_fact",$arrayDatFact));
 		return json_encode($result);
@@ -94,6 +94,8 @@ class Facturacionmodel extends CI_model
 		$query = 'SELECT F."ID_FACTURA", F."DOCUMENTO",
 		TO_CHAR(F."FECHA_FACTURA",\'dd-MM-yyyy\') as "FECHA_FACTURA",
 		F."IMPORTE",F."SALDO", 
+    C."CLAVE",
+    E."ID_VENDEDOR",
 		CASE WHEN C."NOMBRE" IS NULL THEN \'Ventas Mostrador\' ELSE C."NOMBRE" END  as "CLIENTE", 
 		CASE WHEN E."NOMBRE" IS NULL THEN \'Ventas Mostrador\' ELSE E."NOMBRE"END as "VENDEDOR", F."ID_TIPO_PAGO",
 		CASE WHEN C."DIAS_CREDITO" IS NULL THEN 0 ELSE C."DIAS_CREDITO" END as "DIAS_CREDITO",
