@@ -35,7 +35,6 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
   $scope.showLstClte = false;
   $scope.isImprimir = false;
   $scope.btnVerifClte = 'Actualizar';
-  $scope.idempresa = '';
   $scope.lstMoneda = [];
   $scope.lstMetpago = [];
   $scope.lstFormpago = [];
@@ -139,6 +138,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
           $scope.getFormPago();
           $scope.getTipoPago();
           $scope.permisos();
+          $scope.getvendedores();
         }
       }).catch(function(err){
         console.log(err);
@@ -147,7 +147,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
   }
 
   $scope.getpedidos = function(){
-    $http.get(pathPedi+'getpedidos/'+$scope.pedido.idempresa+'/'+$scope.pedido.aniofiscal,{responseType:'json'})
+    $http.get(pathPedi+'getpedidostotales/'+$scope.pedido.idempresa+'/'+$scope.pedido.aniofiscal,{responseType:'json'})
         .then(res => {
           if(res.data.length > 0){
             $scope.lstPedidos = res.data;
@@ -172,6 +172,17 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
 			console.log(err);
 		});
 	}
+
+  $scope.getvendedores =() =>{
+    $http.get(pathVend+'getvendedores/'+$scope.pedido.idempresa+'/vacio',{responseType:'json'}).
+    then(res => {
+      if(res.data.length > 0){
+        $scope.lstVendedorVerif = res.data;
+      }
+    }).catch(err =>	{
+			console.log(err);
+		});
+  }
 
   $scope.permisos = function(){
     $http.get(pathUsr+'permusrproc/'+$scope.idUsuario+'/'+$scope.idProceso)
@@ -265,7 +276,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
             $('#revision').val(res.data[0].ID_REVISION);
             $('#pagos').val(res.data[0].ID_PAGOS);
             $('#id_forma_pago').val(res.data[0].ID_FORMA_PAGO);
-            $('#id_vendedor').val(res.data[0].ID_VENDEDOR);
+            $scope.cliente.id_vendedor = res.data[0].ID_VENDEDOR;
             $('#id_uso_cfdi').val(res.data[0].ID_USO_CFDI);
             $scope.cliente.email = res.data[0].EMAIL;
             $scope.cliente.num_proveedor = res.data[0].NUM_PROVEEDOR;
@@ -319,7 +330,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
     $scope.cliente.revision=$('#revision').val();
     $scope.cliente.pagos=$('#pagos').val();
     $scope.cliente.id_forma_pago=$('#id_forma_pago').val();
-    $scope.cliente.id_vendedor=$('#id_vendedor').val();
+    //$scope.cliente.id_vendedor=$('#id_vendedor').val();
     //$scope.cliente.id_uso_cfdi=$('#id_uso_cfdi').val();
     $scope.cliente.idempresa = $scope.pedido.idempresa;
 
@@ -410,16 +421,25 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
   {
     if(event.keyCode==13)
     {
-      $http.get(pathProd+'prodbycode/'+$scope.producto.codigo_prodto,{responseType: 'json'}).
+      $http.get(pathProd+'prodbycode/'+$scope.producto.codigo_prodto+'/'+$scope.pedido.idempresa,{responseType: 'json'}).
       then(function(res)
       {
         if(res.data != false)
         {
           $scope.producto.prod_desc = res.data[0].DESCRIPCION;
           $scope.producto.precio = Number(res.data[0].PRECIO_LISTA).toFixed(2);
-          $scope.producto.unidad = res.data[0].producto.unidad_MEDIDA;
+          $scope.producto.unidad = res.data[0].UNIDAD_MEDIDA;
           $scope.producto.imagePath = res.data[0].IMAGEN;
           $scope.producto.iva = res.data[0].IVA;
+          $scope.producto.id_producto = res.data[0].ID_PRODUCTO;
+          $scope.producto.codigo_prodto = res.data[0].CODIGO;
+          $scope.producto.imagePath = res.data[0].IMAGEN;
+          $scope.producto.cantProd = res.data[0].STOCK;
+          $scope.producto.esPromo = res.data[0].ES_PROMO == 't' ? true:false;
+          $scope.producto.esDscto = res.data[0].ES_DESCUENTO == 't' ? true:false;
+          $scope.producto.descuento = res.data[0].PRECIO_DESCUENTO;
+          $scope.producto.promocion = res.data[0].PRECIO_PROMO;
+
           if($scope.producto.imagePath!='')
           {
             $('#imgfig').show();
@@ -660,13 +680,36 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
 
     $scope.seleccionaCliente = function(indxRowClte)
     {
-      $scope.claveclte = $scope.lstCliente[indxRowClte].CLAVE.trim();
+      $scope.claveclte = $scope.lstCliente[indxRowClte].CLAVE;
       $scope.nombre_cliente = $scope.lstCliente[indxRowClte].NOMBRE;
-      $scope.rfc_cliente = $scope.lstCliente[indxRowClte].RFC.trim();
+      $scope.rfc_cliente = $scope.lstCliente[indxRowClte].RFC;
       $scope.cliente.id_uso_cfdi = $scope.lstCliente[indxRowClte].ID_USO_CFDI;      
       $scope.pedido.idcliente = $scope.lstCliente[indxRowClte].ID_CLIENTE;           
       $scope.lstCliente = [];
       $scope.showLstClte = false;      
+    }
+
+    $scope.buscacodcliente = (event) =>{
+      if(event.keyCode==13){
+        $http.get(pathClte+'findbycode/'+$scope.claveclte+'/'+$scope.pedido.idempresa)
+        .then(res=>{
+          if(res.data){
+            $scope.claveclte = res.data[0].CLAVE.trim();
+            $scope.nombre_cliente =res.data[0].NOMBRE;
+            $scope.rfc_cliente = res.data[0].RFC;
+            $scope.cliente.id_uso_cfdi = res.data[0].ID_USO_CFDI;      
+            $scope.pedido.idcliente = res.data[0].ID_CLIENTE;           
+          }else{
+            swal('No existe el cliente con codigo '+$scope.claveclte+', puede hacer la búsqueda por nombre');
+            $scope.nombre_cliente = '';
+            $scope.claveclte = '';
+            return;
+          }
+        })
+        .catch(err=>{
+
+        });
+      }
     }
 
     $scope.closeClteSearch = function()
@@ -700,9 +743,25 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
     {
       $scope.pedido.idvendedor = $scope.lstVendedor[indxRowClte].ID_VENDEDOR;
       $scope.nombre_vendedor = $scope.lstVendedor[indxRowClte].NOMBRE;
-
       $scope.lstVendedor = [];
       $scope.listaVendedores = false;
+    }
+
+    $scope.buscacodvendedor = (event) =>{
+      if(event.keyCode==13){
+        $http.get(pathVend+'findvendbyid/'+$scope.pedido.idvendedor+'/'+$scope.pedido.idempresa)
+        .then(res=>{
+          if(res.data){
+            $scope.pedido.idvendedor = res.data[0].ID_VENDEDOR;
+            $scope.nombre_vendedor = res.data[0].NOMBRE;
+          }else{
+            swal('No existe el vendedor con codigo '+$scope.pedido.idvendedor+', puede hacer la búsqueda por nombre');
+            $scope.pedido.idvendedor = '';
+            $scope.nombre_vendedor = ''; 
+            return;
+          }
+        })
+      }
     }
 
     $scope.closeVendSearch = function()

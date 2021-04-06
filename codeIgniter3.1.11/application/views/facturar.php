@@ -134,7 +134,7 @@
 									<label class="label">Cliente</label>
 								</div>
 								<div class="column is-narrow" style="width:90px">
-									<input type="text" ng-model="claveclte" class="input is-small">
+									<input type="text" ng-model="claveclte" ng-keyup="buscacodcliente($event)" class="input is-small">
 								</div>
 								<div class="column is-narrow">
 									<div class="field has-addons" style="width:340px">
@@ -149,38 +149,40 @@
 										</p>
 									</div>
 								</div>
-								
-								<div class="column is-narrow" ng-show="showLstClte" style="margin-left:80px; overflow:auto; heigth:50px; width:360px;">
-									<table style="width:100%; border:2px solid black">
+								<div class="column is-narrow" ng-show="showLstClte" style="margin-left:80px; overflow:auto; heigth:50px; width:380px;border:2px solid black">
+									<table style="width:100%;">
 										<tr>
 											<td>
-												<table class="table" style="width:100%">
-													<col width="26%">
-													<col width="63%">
-													<col width="11%">
-													<tr>
+												<table class="table is-bordered" style="width:100%;">
+                          <colgroup>
+													  <col width="26%">
+													  <col width="74%">
+                          </colgroup>
+													<tr style="background-color:#6698FF; color:Ivory;">
 														<td style="text-align:left;">Clave</td>
-														<td style="text-align:left;">Nombre</td>
-														<td style="text-align:right;">
-															<a ng-click="closeClteSearch()">
-															<span class="icon has-text-danger">
-															<i title="Cierra la búsqueda" class="fas fa-times-circle"></i>
-															</span>
-															</a>
-														</td>
+														<td style="text-align:center;">Nombre</td>
 													</tr>													
 												</table>
 											</td>
+                      <td style="text-align:right;">
+                        <a ng-click="closeClteSearch()">
+                          <span class="icon has-text-danger">
+                            <i title="Cierra la búsqueda" class="fas fa-times-circle"></i>
+                          </span>
+                        </a>
+                      </td>
 										</tr>
 										<tr>
 											<td>
 												<div style="width:100%; height:100px; overflow:auto;">
-													<table class="table is-hoverable" style="width:100%;">
-														<col width="26%">
-														<col width="74%">
+													<table class="table is-hoverable is-bordered" style="width:100%;">
+                            <colgroup>
+														  <col width="26%">
+														  <col width="74%">
+                            </colgroup>
 														<tr ng-repeat="x in lstCliente" ng-click="seleccionaCliente($index)">
-															<td style="text-align:left;">{{x.CLAVE}}</td>
-															<td style="text-align:left;">{{x.NOMBRE}}</td>
+															<td class="font12" style="text-align:left;">{{x.CLAVE}}</td>
+															<td class="font12" style="text-align:left;">{{x.NOMBRE}}</td>
 														</tr>
 													</table>
 											</div>
@@ -194,7 +196,7 @@
 									<label class="label">Vendedor</label>
 								</div>
 								<div class="column is-2">
-									<input type="text" ng-model="factura.idvendedor" class="input is-small">
+									<input type="text" ng-model="factura.idvendedor" ng-keyup="buscacodvendedor($event)" class="input is-small">
 								</div>
 								<div class="column is-6">
 									<div class="field has-addons">
@@ -210,32 +212,36 @@
 									<table style="width:100%; border:2px red">
 										<tr>
 											<td>
-												<table style="width:100%">
-													<col width="26%">
-													<col width="74%">
-													<tr>
+												<table class="table is-bordered" style="width:100%">
+                          <colgroup>
+													  <col width="26%">
+													  <col width="74%">
+                          </colgroup>
+													<tr style="background-color:#6698FF; color:Ivory;">
 														<td style="text-align:left">Clave</td>
-														<td style="text-align:left">Nombre</td>
-														<td>
-															<a ng-click="closeVendSearch()">
-															<span class="icon has-text-danger">
-																<i title="Cierra la búsqueda" class="fas fa-times-circle"></i>
-															</span>
-														</a>
-														</td>
+														<td style="text-align:center">Nombre</td>
 													</tr>
 												</table>
 											</td>
+                      <td>
+                        <a ng-click="closeVendSearch()">
+                          <span class="icon has-text-danger">
+                            <i title="Cierra la búsqueda" class="fas fa-times-circle"></i>
+                          </span>
+                        </a>
+                      </td>
 										</tr>
 										<tr>
 											<td>
 												<div style="width:100%; height:100px; overflow:auto;">
-													<table class="table is-hoverable" style="width:100%;">
-														<col width="25%">
-														<col width="75%">
+													<table class="table is-hoverable is-bordered" style="width:100%;">
+                            <colgroup>
+														  <col width="25%">
+														  <col width="75%">
+                            </colgroup>
 														<tr ng-repeat="x in lstVendedor" ng-click="seleccionaVendedor($index)">
-															<td style="text-align:left;">{{x.ID_VENDEDOR}}</td>
-															<td style="text-align:left;">{{x.NOMBRE}}</td>
+															<td class="font12" style="text-align:left;">{{x.ID_VENDEDOR}}</td>
+															<td class="font12" style="text-align:left;">{{x.NOMBRE}}</td>
 														</tr>
 													</table>
 											</div>
@@ -379,11 +385,13 @@
 							<tr>
 								<td>
 									<table class="table is-bordered" style="width:100%">
+                    <colgroup>
 										<col width="23%">
 										<col width="32%">
 										<col width="15%">
 										<col width="15%">
 										<col width="15%">
+                    </colgroup>
 										<tr style="background-color:Crimson; color:Ivory;">
 											<td style="text-align:center">Código</td>
 											<td style="text-align:center">Descripción</td>

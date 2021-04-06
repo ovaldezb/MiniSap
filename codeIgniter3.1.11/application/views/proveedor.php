@@ -226,41 +226,46 @@
 	      <button class="delete" aria-label="close" ng-click="closeAvisoBorrar();"></button>
 	    </header>
 	    <section class="modal-card-body">
-	      <table style="width:100%">
+	      <table style="width:100%" class="table is-bordered">
           <colgroup>
-            <col width="40%"/>
-            <col width="15%"/>
-            <col width="22%"/>
-            <col width="23%"/>
+          <col width="20%"/>
+              <col width="20%"/>
+              <col width="20%"/>
+              <col width="20%"/>
+              <col width="20%"/>
           </colgroup>
           <thead>
-            <tr>
-              <th>Documento</th>
-              <th>Fecha</th>
-              <th>Importe</th>
-              <th>Saldo</th>
+            <tr style="background-color:#7ca9e8">
+              <th style="text-align:center">Documento</th>
+              <th style="text-align:center">Fecha</th>
+              <th style="text-align:center">Importe</th>
+              <th style="text-align:center">Pagos</th>
+              <th style="text-align:center">Saldo</th>
             </tr>
           </thead>
         </table>
-        <div>
-          <table style="width:100%">
+        <div style="height:200px;overflow:auto;margin-top:-25px">
+          <table style="width:100%" class="table is-bordered">
             <colgroup>
-              <col width="40%"/>
-              <col width="15%"/>
-              <col width="22%"/>
-              <col width="23%"/>
+              <col width="20%"/>
+              <col width="20%"/>
+              <col width="20%"/>
+              <col width="20%"/>
+              <col width="20%"/>
             </colgroup>
             <tbody>
               <tr ng-repeat="x in lstFactProv">
                 <td>{{x.DOCUMENTO}}</td>
                 <td>{{x.FECHA_COMPRA}}</td>
-                <td>{{x.IMPORTE}}</td>
-                <td>{{x.SALDO}}</td>
+                <td style="text-align:right">{{x.IMPORTE | currency}}</td>
+                <td style="text-align:right">{{x.PAGO | currency}}</td>
+                <td style="text-align:right">{{x.SALDO | currency}}</td>
               </tr>
               <tr>
                 <td style="text-align:right;" colspan="2">Total:</td>
-                <td>{{totalImporFact | currency}}</td>
-                <td>{{totalSaldoFact | currency}}</td>
+                <td style="text-align:right">{{totalImporFact | currency}}</td>
+                <td style="text-align:right">{{totalImporPago | currency}}</td>
+                <td style="text-align:right">{{totalSaldoFact | currency}}</td>
               </tr>
             </tbody>
           </table>

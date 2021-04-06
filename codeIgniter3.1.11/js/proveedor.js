@@ -5,6 +5,7 @@ app.controller('myCtrlProveedor', function($scope,$http,$routeParams)
   $scope.lstFactProv = [];
   $scope.proveedor = '';
   $scope.totalImporFact = 0;
+  $scope.totalImporPago = 0;
   $scope.totalSaldoFact = 0;
   $scope.isDivProvActivo = false;
   $scope.modalDetalleProv = false;
@@ -207,6 +208,7 @@ app.controller('myCtrlProveedor', function($scope,$http,$routeParams)
       $scope.lstFactProv = res.data;
       res.data.forEach(elem =>{
         $scope.totalImporFact += elem.IMPORTE;
+        $scope.totalImporPago += elem.PAGO;
         $scope.totalSaldoFact += elem.SALDO;
       });
     }).catch();
@@ -254,6 +256,7 @@ app.controller('myCtrlProveedor', function($scope,$http,$routeParams)
     $scope.modalDetalleProv = false;
     $scope.lstFactProv = [];
     $scope.totalImporFact = 0;
+    $scope.totalImporPago = 0;
     $scope.totalSaldoFact = 0;
   }
 

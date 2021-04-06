@@ -25,6 +25,13 @@ class Vendedormodel extends CI_model
 		return json_encode($result);
 	}
 
+  function get_vend_by_id($idvendedor,$idempresa){
+    $query = 'SELECT * FROM "VENDEDOR" WHERE "ID_VENDEDOR" = $1 AND "ID_EMPRESA" = $2';
+		$result = pg_prepare($this->conn, "my_query", $query);
+		$result =  pg_fetch_all(pg_execute($this->conn, "my_query", array($idvendedor,$idempresa)));
+		return json_encode($result,JSON_NUMERIC_CHECK);
+  }
+
 	function crea_vendedor($arrayVendedor){
 	   $pstmt = 'INSERT INTO "VENDEDOR" ("NOMBRE","ID_EMPRESA","ACTIVO") VALUES($1,$2,true)';
 	   pg_prepare($this->conn,"insertquery",$pstmt);

@@ -64,6 +64,12 @@ class Cliente extends CI_Controller
 						->set_output($data);
 	}
 
+  function findbycode($codigo,$idempresa){
+    $data = $this->clientemodel->get_cliente_by_code($codigo,$idempresa);
+		return $this->output
+            ->set_content_type('application/json')
+            ->set_output($data);
+  }
 
 	function save()
 	{

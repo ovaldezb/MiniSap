@@ -5,6 +5,7 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
   $scope.lstFactDtl = [];
   $scope.lstVendedor = [];
   $scope.totalImporFact = 0;
+  $scope.totalImporCobr = 0;
   $scope.totalSaldoFact = 0;
   $scope.cliente = '';
   $scope.clave = '';
@@ -302,8 +303,9 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
     .then(res=>{
       $scope.lstFactDtl = res.data;
       res.data.forEach(elem =>{
-        $scope.totalImporFact += elem.IMPORTE;
-        $scope.totalSaldoFact += elem.SALDO;
+        $scope.totalImporFact += Number(elem.IMPORTE);
+        $scope.totalImporCobr += Number(elem.COBRO);
+        $scope.totalSaldoFact += Number(elem.SALDO);
       });
     })
     .catch(err=>{
@@ -316,6 +318,7 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
     $scope.modalDetalleClte = false;
     $scope.lstFactDtl = [];
     $scope.totalImporFact = 0;
+    $scope.totalImporCobr = 0;
     $scope.totalSaldoFact = 0;
   }
 

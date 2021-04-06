@@ -357,18 +357,18 @@
 			<div class="column is-2">
 				<div class="columns">
 					<div class="column">
-						<label class="label">Desc(-)</label>
-					</div>
-					<div class="column has-text-right">
-						<label class="label">{{descuento}} %</label>
-					</div>
-				</div>
-				<div class="columns">
-					<div class="column">
-						<label class="label">Suma</label>
+						<label class="label">Suma(+)</label>
 					</div>
 					<div class="column has-text-right">
 						<label id="suma" class="label">{{suma | currency}}</label>
+					</div>
+				</div>
+        <div class="columns">
+					<div class="column">
+						<label class="label">Desc(-)</label>
+					</div>
+					<div class="column has-text-right">
+						<label class="label">{{descuento | currency}}</label>
 					</div>
 				</div>
 				<div class="columns">

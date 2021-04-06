@@ -24,6 +24,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
   $scope.lstProdCompra = [];
   $scope.lstCliente = [];
   $scope.lstVendedor = [];
+  $scope.lstVendedorVerif = [];
   $scope.lstPrdSucExis = [];
   $scope.lstVentas = [];
   $scope.idSelCompra = 0;
@@ -147,6 +148,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
           $scope.getNextDocTpv();
           $scope.getNextDocFact();
           $scope.getEmpresa();
+          $scope.getvendedores();
         }
       }).catch(function(err){
         console.log(err);
@@ -241,6 +243,17 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
     then(res => {
       if(res.data.length > 0){
         $scope.lstUsocfdi = res.data;
+      }
+    }).catch(err =>	{
+			console.log(err);
+		});
+  }
+
+  $scope.getvendedores =() =>{
+    $http.get(pathVend+'getvendedores/'+$scope.fact.idempresa+'/vacio',{responseType:'json'}).
+    then(res => {
+      if(res.data.length > 0){
+        $scope.lstVendedorVerif = res.data;
       }
     }).catch(err =>	{
 			console.log(err);
@@ -647,6 +660,32 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
       $scope.showLstClte = false;      
     }
 
+    $scope.buscacodcliente = (event) =>{
+      if(event.keyCode==13){
+        $http.get(pathClte+'findbycode/'+$scope.claveclte+'/'+$scope.idempresa)
+        .then(res=>{
+          if(res.data){
+            $scope.claveclte = res.data[0].CLAVE.trim();
+            $scope.nombre_cliente =res.data[0].NOMBRE;
+            $scope.rfc_cliente = res.data[0].RFC;
+            $scope.fact.usocfdi = res.data[0].USO_CFDI;
+            $scope.cliente.id_uso_cfdi = res.data[0].ID_USO_CFDI;      
+            $scope.idcliente = res.data[0].ID_CLIENTE;           
+            $scope.fact.idCliente = res.data[0].ID_CLIENTE;
+            $scope.cliente.dcredito = res.data[0].DIAS_CREDITO;
+          }else{
+            swal('No existe el cliente con codigo '+$scope.claveclte+', puede hacer la búsqueda por nombre');
+            $scope.nombre_cliente = '';
+            $scope.claveclte = '';
+            return;
+          }
+        })
+        .catch(err=>{
+
+        });
+      }
+    }
+
     $scope.closeClteSearch = function()
     {
       $scope.lstCliente = [];
@@ -678,8 +717,24 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
     {
       $scope.idvendedor = $scope.lstVendedor[indxRowClte].ID_VENDEDOR;
       $scope.nombre_vendedor = $scope.lstVendedor[indxRowClte].NOMBRE;
-      $scope.idvendedor = $scope.lstVendedor[indxRowClte].ID_VENDEDOR;
       $scope.closeVendSearch();
+    }
+
+    $scope.buscacodvendedor = (event) =>{
+      if(event.keyCode==13){
+        $http.get(pathVend+'findvendbyid/'+$scope.idvendedor+'/'+$scope.idempresa)
+        .then(res=>{
+          if(res.data){
+            $scope.idvendedor = res.data[0].ID_VENDEDOR;
+            $scope.nombre_vendedor = res.data[0].NOMBRE;
+          }else{
+            swal('No existe el vendedor con codigo '+$scope.idvendedor+', puede hacer la búsqueda por nombre');
+            $scope.idvendedor = '';
+            $scope.nombre_vendedor = ''; 
+            return;
+          }
+        })
+      }
     }
 
     $scope.closeVendSearch = function()
@@ -811,7 +866,8 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
                     if($scope.fact.req_factura){
                       $scope.registraFactura(); 
                     }
-                    swal('La venta se registro exitosamente','Felicidades!','success');       
+                    swal('La venta se registro exitosamente','Felicidades!','success');      
+                    //$scope.imprimeCompra();
                     $scope.limpiaCompra();
                   })
                   .catch(function(err)
@@ -953,7 +1009,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
             $('#revision').val(res.data[0].ID_REVISION);
             $('#pagos').val(res.data[0].ID_PAGOS);
             $('#id_forma_pago').val(res.data[0].ID_FORMA_PAGO);
-            $('#id_vendedor').val(res.data[0].ID_VENDEDOR);
+            $scope.cliente.id_vendedor = res.data[0].ID_VENDEDOR;
             $('#id_uso_cfdi').val(res.data[0].ID_USO_CFDI);
             $scope.cliente.dcredito = res.data[0].DIAS_CREDITO;
             $scope.cliente.email = res.data[0].EMAIL;
@@ -1001,7 +1057,6 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
     $scope.cliente.revision=$('#revision').val();
     $scope.cliente.pagos=$('#pagos').val();
     $scope.cliente.id_forma_pago=$('#id_forma_pago').val();
-    $scope.cliente.id_vendedor=$('#id_vendedor').val();
     $scope.cliente.idempresa = $scope.idempresa;
 
     if($scope.btnVerifClte == 'Agregar')

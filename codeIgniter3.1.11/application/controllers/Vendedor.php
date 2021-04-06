@@ -13,9 +13,6 @@ class Vendedor extends CI_Controller
 
 	function index(){
 		if(isset($_SESSION['username'])){
-			//$data['area'] = $this->catalogosmodel->get_areas();
-			//$data['titulo'] = $this->catalogosmodel->get_titulos();
-			//$data['puesto'] = $this->catalogosmodel->get_puestos();
 			$this->load->view('vendedores');
 		}
 		else {
@@ -37,6 +34,13 @@ class Vendedor extends CI_Controller
 			->set_content_type('application/json')
 			->set_output($data);
 	}	
+
+  function findvendbyid($codigo,$idempresa){
+    $data = $this->vendedormodel->get_vend_by_id($codigo,$idempresa);
+    return $this->output
+			->set_content_type('application/json')
+			->set_output($data);
+  }
 
 	function save(){
 		$data = json_decode(file_get_contents("php://input"),true);

@@ -43,13 +43,30 @@ class Productomodel extends CI_model
 		return json_encode($result,JSON_NUMERIC_CHECK);
 	}
 
-	function get_producto_by_codigo($codigo)
+	function get_producto_by_codigo($codigo, $idempresa)
 	{
-		$query = 'SELECT * FROM "PRODUCTO" WHERE "CODIGO" = $1';
+		$query = 'SELECT * FROM "PRODUCTO" WHERE "CODIGO" = $1 AND "ID_EMPRESA"=$2';
 		$result = pg_prepare($this->conn, "selectquery", $query);
-		$result =  pg_fetch_all(pg_execute($this->conn, "selectquery", array($codigo)));
+		$result =  pg_fetch_all(pg_execute($this->conn, "selectquery", array($codigo, $idempresa)));
 		return json_encode($result,JSON_NUMERIC_CHECK);
 	}
+
+  function get_producto_detalle_by_codigo($idproducto){
+    $query = 
+    'SELECT \'COMPRA\' as "TIPO", C."DOCUMENTO", CP."CANTIDAD", CP."CANTIDAD" as "MOV", TO_CHAR("FECHA_COMPRA",\'DD/Mon/YYYY\') as "FECHA"
+    FROM "COMPRAS" as C
+    INNER JOIN "COMPRA_PRODUCTO" as CP ON CP."ID_COMPRA" = C."ID_COMPRA"
+    WHERE "ID_PRODUCTO" = $1
+    UNION
+    SELECT \'VENTA\' as "TIPO", V."DOCUMENTO",VP."CANTIDAD",VP."CANTIDAD" * -1 as "MOV", TO_CHAR(V."FECHA_VENTA",\'DD/Mon/YYYY\') as "FECHA"
+    FROM "VENTAS" as V
+    INNER JOIN "VENTAS_PRODUCTO" as VP ON VP."ID_VENTA" = V."ID_VENTA"
+    WHERE VP."ID_PRODUCTO" = $2 
+    ORDER BY "FECHA"';
+		$result = pg_prepare($this->conn, "selectquery", $query);
+		$result =  pg_fetch_all(pg_execute($this->conn, "selectquery", array($idproducto,$idproducto)));
+		return json_encode($result,JSON_NUMERIC_CHECK);
+  }
 
 	function update_producto($id_producto,$codigo,$nombre,$linea,$unidadmedida,$esequiv,$equivalencia,$codigocfdi,$unidad,$preciolista,$ultact,$moneda,$iva,$id_ieps,$ieps,$enpromo,$preciopromo,$esdescnt,$preciodescnt,$maxstock,$minstock,$estasaexenta,$notas,$img)
 	{

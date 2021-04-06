@@ -41,6 +41,26 @@ class Pedidosmodel extends CI_model
 		INNER JOIN "VENDEDOR" AS V ON V."ID_VENDEDOR" = P."ID_VENDEDOR"
 		WHERE P."ID_EMPRESA" = $1
 		AND P."ANIO_FISCAL" = $2
+    AND P."VENDIDO" = false
+		ORDER BY P."DOCUMENTO"';
+		pg_prepare($this->conn,"select_venta",$query);
+		$result = pg_fetch_all(pg_execute($this->conn,"select_venta",array($idempresa,$aniofiscal)));
+		return json_encode($result,JSON_NUMERIC_CHECK);
+	}
+
+  function get_pedidos_activos($idempresa,$aniofiscal){
+		$query = 'SELECT P."ID_PEDIDO", 
+			P."DOCUMENTO", 
+			C."NOMBRE" AS "CLIENTE", 
+			C."CLAVE", V."NOMBRE" AS "VENDEDOR", 
+			P."FECHA_PEDIDO", 
+			P."IMPORTE", 
+			P."VENDIDO"
+		FROM "PEDIDOS" AS P
+		INNER JOIN "CLIENTE" AS C ON C."ID_CLIENTE" = P."ID_CLIENTE"
+		INNER JOIN "VENDEDOR" AS V ON V."ID_VENDEDOR" = P."ID_VENDEDOR"
+		WHERE P."ID_EMPRESA" = $1
+		AND P."ANIO_FISCAL" = $2
 		ORDER BY P."DOCUMENTO"';
 		pg_prepare($this->conn,"select_venta",$query);
 		$result = pg_fetch_all(pg_execute($this->conn,"select_venta",array($idempresa,$aniofiscal)));
@@ -75,12 +95,12 @@ class Pedidosmodel extends CI_model
 		$query = 'SELECT VP."CANTIDAD",VP."PRECIO" as "PRECIO_LISTA",
 				VP."IMPORTE",
 				TRIM(P."DESCRIPCION") as "DESCRIPCION",
-				TRIM(P."UNIDAD_MEDIDA") as "UNIDAD", 
+				TRIM(P."UNIDAD_MEDIDA") as "UNIDAD_MEDIDA", 
 				TRIM(P."COD_CFDI") as "COD_CFDI",
 				P."IVA",TRIM(P."UNIDAD_SAT") as "UNIDAD_SAT",
 				CASE WHEN P."IEPS" IS NULL THEN \'0\' ELSE P."IEPS" END as "IEPS",TRIM(I."NOMBRE") as "TIPOFACTOR",
 				TRIM(P."CODIGO") as "CODIGO",
-				P."ID_PRODUCTO" as "id_producto",
+				P."ID_PRODUCTO" as "ID_PRODUCTO",
 				P."TIPO_PS"
 				FROM "PEDIDO_PRODUCTO" as VP
 				INNER JOIN "PRODUCTO" as P ON VP."ID_PRODUCTO" = P."ID_PRODUCTO"

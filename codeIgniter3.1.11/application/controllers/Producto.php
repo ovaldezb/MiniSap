@@ -162,13 +162,20 @@ class Producto extends CI_Controller
 
 	}
 
-	function prodbycode($codigo)
+	function prodbycode($codigo,$idempresa)
 	{
-		$result = $this->productomodel->get_producto_by_codigo($codigo);
+		$result = $this->productomodel->get_producto_by_codigo($codigo,$idempresa);
 		return $this->output
             ->set_content_type('application/json')
             ->set_output($result);
 	}
+
+  function proddetailid($idproducto){
+    $result = $this->productomodel->get_producto_detalle_by_codigo($idproducto);
+		return $this->output
+            ->set_content_type('application/json')
+            ->set_output($result);
+  }
 	
 }
 ?>

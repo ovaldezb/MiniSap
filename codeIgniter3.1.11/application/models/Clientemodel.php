@@ -36,6 +36,13 @@ class Clientemodel extends CI_model
 		return json_encode($result,JSON_NUMERIC_CHECK);
 	}
 
+  function get_cliente_by_code($codigo,$idempresa){
+    $query = 'SELECT * FROM "CLIENTE" WHERE "CLAVE" = $1 AND "ID_EMPRESA"=$2 AND "ACTIVO" = true';
+		pg_prepare($this->conn, "my_query", $query);
+		$result =  pg_fetch_all(pg_execute($this->conn, "my_query", array($codigo,$idempresa)));
+		return json_encode($result,JSON_NUMERIC_CHECK);
+  }
+
 	function get_cliente_by_id_verif($_idCliente)
 	{
 		$query = 'SELECT TRIM(C."CLAVE") as "CLAVE",C."NOMBRE",C."DOMICILIO","CP",
@@ -51,12 +58,12 @@ class Clientemodel extends CI_model
 		UC."DESCRIPCION" as "CFDI",
 		TRIM(C."EMAIL") AS "EMAIL",C."NOTAS"
 		FROM "CLIENTE" as C
-		INNER JOIN "VENDEDOR" as V ON C."ID_VENDEDOR" = V."ID_VENDEDOR"
-		INNER JOIN "TIPO_CLIENTE" as TC ON TC."ID_TIPO_CLTE" = C."ID_TIPO_CLIENTE"
-		INNER JOIN "FORMA_PAGO" as FP ON FP."ID_FORMA_PAGO" = C."ID_FORMA_PAGO"
-		INNER JOIN "DIAS_SEMANA" as DS1 on DS1."ID_DIA" = C."ID_REVISION"
-		INNER JOIN "DIAS_SEMANA" as DS2 on DS2."ID_DIA" = C."ID_PAGOS"
-		INNER JOIN "USO_CFDI" as UC on UC."ID_CFDI" = C."ID_USO_CFDI"
+		LEFT JOIN "VENDEDOR" as V ON C."ID_VENDEDOR" = V."ID_VENDEDOR"
+		LEFT JOIN "TIPO_CLIENTE" as TC ON TC."ID_TIPO_CLTE" = C."ID_TIPO_CLIENTE"
+		LEFT JOIN "FORMA_PAGO" as FP ON FP."ID_FORMA_PAGO" = C."ID_FORMA_PAGO"
+		LEFT JOIN "DIAS_SEMANA" as DS1 on DS1."ID_DIA" = C."ID_REVISION"
+		LEFT JOIN "DIAS_SEMANA" as DS2 on DS2."ID_DIA" = C."ID_PAGOS"
+		LEFT JOIN "USO_CFDI" as UC on UC."ID_CFDI" = C."ID_USO_CFDI"
 		WHERE "ID_CLIENTE" = $1
 		AND C."ACTIVO" = true';
 		$result = pg_prepare($this->conn, "my_query", $query);
@@ -130,13 +137,21 @@ class Clientemodel extends CI_model
 	}
 
   function get_fact_by_idcliente($idcliente,$anioFiscal){
-    $query = 'SELECT TRIM("DOCUMENTO") as "DOCUMENTO","IMPORTE","SALDO","FECHA_FACTURA" 
-    FROM "FACTURA" 
-    WHERE "ID_CLIENTE" = $1 
-    AND "ANIO_FISCAL" = $2';
+    $query = 
+    'SELECT \'A\' as "TIPO",TRIM("DOCUMENTO") as "DOCUMENTO",TO_CHAR("FECHA_FACTURA",\'DD/Mon/YYYY\') as "FECHA_FACTURA" ,TO_CHAR("IMPORTE",\'999999999.99\') as "IMPORTE", \'\' as "COBRO",TO_CHAR("SALDO",\'999999999.99\') as "SALDO"
+    FROM "FACTURA" as F
+    WHERE F."ID_CLIENTE" = $1
+    AND F."ANIO_FISCAL" = $2
+    UNION
+    SELECT \'B\' as "TIPO", TRIM(F."DOCUMENTO") as "DOCUMENTO",TO_CHAR("FECHA_COBRO",\'DD/Mon/YYYY\') as "FECHA_FACTURA",\'\' as "IMPORTE",TO_CHAR("IMPORTE_COBRO",\'999999999.99\') as "COBRO", \'\' as "SALDO"
+    FROM "COBROS" as C
+    INNER JOIN "FACTURA" as F ON F."ID_FACTURA" = C."ID_FACTURA"
+    WHERE C."ID_CLIENTE" = $3
+    AND C."ANIO_FISCAL" = $4
+    ORDER BY "DOCUMENTO","TIPO", "FECHA_FACTURA" ';
 		pg_prepare($this->conn,"selqry",$query);
-		$result = pg_fetch_all(pg_execute($this->conn,"selqry",array($idcliente,$anioFiscal)));
-		return json_encode($result,JSON_NUMERIC_CHECK);
+		$result = pg_fetch_all(pg_execute($this->conn,"selqry",array($idcliente,$anioFiscal,$idcliente,$anioFiscal)));
+		return json_encode($result);
   }
 }
 

@@ -5,10 +5,14 @@ app.controller('myCtrlProducto', function($scope,$http,$routeParams)
   $scope.lstPrdcts = [];
   $scope.lstItemsSAT = [];
   $scope.lstUndadSAT = [];
+  $scope.lstDetailProd = [];
   $scope.idSelProd = '';
   $scope.indexRowProd = '';
   $scope.idProducto = '';
+  $scope.producto = '';
+  $scope.prodDetailTot = 0;
   $scope.sortDir = false;
+  $scope.modalDetalleProd = false;
   $scope.isNobrrarActive = false;
   $scope.isAvsoBrrarActv = false;
   $scope.isMainDivPrdcto = false;
@@ -442,6 +446,30 @@ app.controller('myCtrlProducto', function($scope,$http,$routeParams)
     $scope.cleanup();
   }
 
+  $scope.verdetalle = () =>{
+    $scope.modalDetalleProd = true;
+    $http.get(pathProd+'proddetailid/'+$scope.idProducto)
+    .then(res =>{
+      if(res.data){
+        $scope.lstDetailProd = res.data;
+        res.data.forEach(elem =>{
+          $scope.prodDetailTot += elem.MOV;
+        });
+        $scope.producto = $scope.lstPrdcts[$scope.indexRowProd].DESCRIPCION.trim();
+      }
+    })
+    .catch(err =>{
+
+    });
+
+  }
+
+  $scope.cerrarDetalleProd = ()=>{
+    $scope.modalDetalleProd = false;
+    $scope.lstDetailProd = [];
+    $scope.prodDetailTot = 0;
+  }
+
   $scope.selecTPS = function()
   {
     if($scope.tipops=='P')
@@ -465,7 +493,7 @@ app.controller('myCtrlProducto', function($scope,$http,$routeParams)
 
   $scope.validarcodigo = function(){
     if($scope.btnAccion == 'Agregar'){
-      $http.get(pathProd+'prodbycode/'+$scope.codigo)
+      $http.get(pathProd+'prodbycode/'+$scope.codigo+'/'+$scope.idempresa)
         .then(res=>{
           if(res.data.length==1){
             swal("El código de producto "+$scope.codigo+" ya existe","Verifique el código","warning");

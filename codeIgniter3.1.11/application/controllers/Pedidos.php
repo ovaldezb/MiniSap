@@ -23,7 +23,7 @@ class Pedidos extends CI_Controller
 			$data['tipo_cliente'] = $this->catalogosmodel->get_tipo_cliente();
 			$data['revision'] = $this->catalogosmodel->get_dias_semana();
 			$data['forma_pago'] = $this->catalogosmodel->get_forma_pago();
-			$data['vendedor'] = $this->catalogosmodel->get_vendedor();
+			//$data['vendedor'] = $this->catalogosmodel->get_vendedor();
 			$data['uso_cfdi'] = $this->catalogosmodel->get_uso_cfdi();
 			$this->load->view('pedidos',$data);
 		}else {
@@ -76,6 +76,13 @@ class Pedidos extends CI_Controller
 
 	function getpedidos($idempresa,$anioFiscal){
 		$result = $this->pedidosmodel->get_pedidos($idempresa,$anioFiscal);
+		return $this->output
+				->set_content_type('application/json')
+				->set_output($result);
+	}
+
+  function getpedidostotales($idempresa,$anioFiscal){
+		$result = $this->pedidosmodel->get_pedidos_activos($idempresa,$anioFiscal);
 		return $this->output
 				->set_content_type('application/json')
 				->set_output($result);

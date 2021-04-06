@@ -410,7 +410,7 @@
 							<col width='20%'>
 							<col width='20%'>
 							<col width='20%'>
-							<tr ng-repeat="x in lstPrdcts | orderBy:myOrderBy:sortDir" ng-click="selectRowProducto(x.CODIGO,$index,x.ID_PRODUCTO)" ng-class="{selected: x.ID_PRODUCTO === idProducto}" ng-dblclick="update()">
+							<tr ng-repeat="x in lstPrdcts | orderBy:myOrderBy:sortDir" ng-click="selectRowProducto(x.CODIGO,$index,x.ID_PRODUCTO)" ng-class="{selected: x.ID_PRODUCTO === idProducto}" ng-dblclick="verdetalle()">
 								<td>{{x.DESCRIPCION}}</td>
 								<td style="text-align:right">{{x.CODIGO}}</td>
 								<td style="text-align:right">${{x.PRECIO_LISTA | number:2}}</td>
@@ -421,6 +421,56 @@
 				</td>
 			</tr>
 		</table>
+	</div>
+  <div class="{{modalDetalleProd ? 'modal is-active' : 'modal' }}">
+	  <div class="modal-background"></div>
+	  <div class="modal-card">
+	    <header class="modal-card-head">
+	      <p class="modal-card-title">Detalle del Producto: <span class="font12">{{producto}}</span> </p>
+	      <button class="delete" aria-label="close" ng-click="cerrarDetalleProd()"></button>
+	    </header>
+	    <section class="modal-card-body">
+	      <table style="width:100%" class="table is-bordered">
+        <colgroup>
+          <col width="25%"/>
+          <col width="25%"/>
+          <col width="25%"/>
+          <col width="25%"/>
+        </colgroup>
+        <thead>
+          <tr style="background-color:#7ca9e8">
+            <th style="text-align:center">Documento</th>
+            <th style="text-align:center">Fecha</th>
+            <th style="text-align:center">Tipo</th>
+            <th style="text-align:center">Cantidad</th>
+          </tr>
+          </thead>
+        </table>
+        <div style="height:200px;overflow:auto;margin-top:-25px">
+          <table style="width:100%;" class="table is-bordered">
+            <colgroup>
+              <col width="25%"/>
+              <col width="25%"/>
+              <col width="25%"/>
+              <col width="25%"/>
+            </colgroup>
+            <tr ng-repeat="x in lstDetailProd">
+              <td style="text-align:center">{{x.DOCUMENTO}}</td>
+              <td style="text-align:center">{{x.FECHA}}</td>
+              <td style="text-align:center">{{x.TIPO}}</td>
+              <td style="text-align:right">{{x.CANTIDAD }}</td>
+            </tr>
+            <tr>
+              <td colspan="3" style="text-align:right">Total:</td>
+              <td style="text-align:right">{{prodDetailTot}}</td>
+            </tr>
+          </table>
+        </div>
+	    </section>
+	    <footer class="modal-card-foot">
+	      <button class="button" ng-click="cerrarDetalleProd()">Cerrar</button>
+	    </footer>
+	  </div>
 	</div>
 
 <div class="{{isNobrrarActive ? 'modal is-active' : 'modal'}}" id="noborrar">

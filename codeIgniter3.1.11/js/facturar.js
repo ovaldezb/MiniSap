@@ -40,7 +40,6 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
   $scope.dispsearch = false;
   $scope.btnVerifClte = 'Actualizar';
   $scope.tcaptura = 'D';
-  $scope.idempresa = '';
   $scope.lstMoneda = [];
   $scope.lstMetpago = [];
   $scope.lstFormpago = [];
@@ -516,14 +515,14 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
   {
     if(event.keyCode==13)
     {
-      $http.get(pathProd+'prodbycode/'+$scope.producto.codigo_prodto,{responseType: 'json'}).
+      $http.get(pathProd+'prodbycode/'+$scope.producto.codigo_prodto+'/'+$scope.factura.idempresa,{responseType: 'json'}).
       then(function(res)
       {
         if(res.data != false)
         {
           $scope.producto.prod_desc = res.data[0].DESCRIPCION;
           $scope.producto.precio = Number(res.data[0].PRECIO_LISTA).toFixed(2);
-          $scope.producto.unidad = res.data[0].producto.UNIDAD_MEDIDA;
+          $scope.producto.unidad = res.data[0].UNIDAD_MEDIDA;
           $scope.producto.imagePath = res.data[0].IMAGEN;
           $scope.producto.iva = res.data[0].IVA;
           if($scope.producto.imagePath!='')
@@ -789,6 +788,29 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
       $scope.showLstClte = false;      
     }
 
+    $scope.buscacodcliente = (event) =>{
+      if(event.keyCode==13){
+        $http.get(pathClte+'findbycode/'+$scope.claveclte+'/'+$scope.factura.idempresa)
+        .then(res=>{
+          if(res.data){
+            $scope.claveclte = res.data[0].CLAVE.trim();
+            $scope.nombre_cliente =res.data[0].NOMBRE;
+            $scope.rfc_cliente = res.data[0].RFC;
+            $scope.cliente.id_uso_cfdi = res.data[0].ID_USO_CFDI;              
+            $scope.factura.idcliente = res.data[0].ID_CLIENTE;
+          }else{
+            swal('No existe el cliente con codigo '+$scope.claveclte+', puede hacer la búsqueda por nombre');
+            $scope.nombre_cliente = '';
+            $scope.claveclte = '';
+            return;
+          }
+        })
+        .catch(err=>{
+
+        });
+      }
+    }
+
     $scope.closeClteSearch = function()
     {
       $scope.lstCliente = [];
@@ -843,6 +865,23 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
       $scope.factura.idvendedor = $scope.lstVendedor[indxRowClte].ID_VENDEDOR;
       $scope.nombre_vendedor = $scope.lstVendedor[indxRowClte].NOMBRE;
       $scope.closeVendSearch();
+    }
+
+    $scope.buscacodvendedor = (event) =>{
+      if(event.keyCode==13){
+        $http.get(pathVend+'findvendbyid/'+$scope.factura.idvendedor+'/'+$scope.factura.idempresa)
+        .then(res=>{
+          if(res.data){
+            $scope.factura.idvendedor = res.data[0].ID_VENDEDOR;
+            $scope.nombre_vendedor = res.data[0].NOMBRE;
+          }else{
+            swal('No existe el vendedor con codigo '+$scope.factura.idvendedor+', puede hacer la búsqueda por nombre');
+            $scope.factura.idvendedor = '';
+            $scope.nombre_vendedor = ''; 
+            return;
+          }
+        })
+      }
     }
 
     $scope.closeVendSearch = function()

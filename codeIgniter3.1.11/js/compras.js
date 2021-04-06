@@ -135,6 +135,8 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 					if (res.data != false) {
 						$scope.claveprov = res.data[0].CLAVE.trim();
 						$scope.proveedor = res.data[0].NOMBRE.trim();
+            $scope.idproveedor = res.data[0].ID_PROVEEDOR;
+            
 					} else {
 						swal('La clave del proveedor no existe, puede hacer una búsqueda por nombre');
 						$scope.claveprov = '';
@@ -193,7 +195,7 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 
 	$scope.buscaprodbycodigo = function (event) {
 		if (event.keyCode == 13) {
-			$http.get(pathProd + 'prodbycode/' + $scope.codigo, { responseType: 'json' }).
+			$http.get(pathProd + 'prodbycode/' + $scope.codigo+'/'+$scope.idempresa, { responseType: 'json' }).
 				then(function (res) {
 					if (res.data != false) {
 						$scope.descripcion = res.data[0].DESCRIPCION;
@@ -238,8 +240,8 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 
 	$scope.agregar = function () {
 		$scope.suma = 0;
-		if ($scope.iva == '') {
-			swal('Debe ingresar el Iva');
+		if ($scope.iva < 0) {
+			swal('Debe ingresar el IVA mayor o igual a cero');
 			$('#iva').focus();
 			return;
 		}
@@ -256,7 +258,6 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 		}
 		
 		if($scope.precio > $scope.precio_vta){
-			
 			if(!confirm('El precio de compra es más alto que el precio de venta, esto implicaría una pérdida, el precio de venta está fijado en $'+$scope.precio_vta)){
 		  	  return;
 			}			
@@ -284,15 +285,15 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 		var descProm = 0;
 		var suma = 0;
 		for (var i = 0; i < $scope.listaproductos.length; i++) {
-			$scope.suma += Number($scope.listaproductos[i].IMPORTE);
-			descProm += Number($scope.listaproductos[i].DESCTO);
+			$scope.suma += Number($scope.listaproductos[i].CANTIDAD) * Number($scope.listaproductos[i].PRECIO);
+			descProm += Number($scope.listaproductos[i].DESCTO) * Number($scope.listaproductos[i].CANTIDAD) * Number($scope.listaproductos[i].PRECIO) / 100;
 		}
 		/*Hace el descuento*/
 		//$scope.suma = Number($scope.suma * Number(1 - $scope.descuento / 100)).toFixed(2);
 		$scope.suma = Number($scope.suma).toFixed(2);
-		$scope.ivapaga = Number($scope.suma * $scope.iva / 100).toFixed(2);
-		$scope.total = Number(Number($scope.suma) + Number($scope.ivapaga)).toFixed(2);
-		$scope.descuento = Number(descProm / $scope.listaproductos.length).toFixed(2);
+		$scope.ivapaga = Number(($scope.suma - descProm) * $scope.iva / 100).toFixed(2);
+		$scope.descuento = Number(descProm).toFixed(2);
+    $scope.total = Number(Number($scope.suma) + Number($scope.ivapaga)).toFixed(2) - descProm;
 		$scope.cantidad = 0;
 		$scope.counter = 0;
 		$scope.desctoprod = 0;		
@@ -432,7 +433,6 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 					$('#tipopago').val(1);
 					$('#moneda').val(1);
 					$scope.isAgrgaCompra = false;
-					//$scope.getNextDocCompra();
 					$scope.limpiarBox1();
 					swal('Se registro la compra exitosamente','Felicidades!','success');
 				}
@@ -482,7 +482,7 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 		$scope.descripcion = $scope.listaproductos[$scope.idxRowProd].DESCRIPCION + ' ';
 		$scope.cantidad = $scope.listaproductos[$scope.idxRowProd].CANTIDAD;
 		$scope.unidad = $scope.listaproductos[$scope.idxRowProd].UNIDAD.trim();
-		$scope.descuento = $scope.listaproductos[$scope.idxRowProd].DESCTO;
+		$scope.desctoprod = $scope.listaproductos[$scope.idxRowProd].DESCTO;
 		$scope.precio = $scope.listaproductos[$scope.idxRowProd].PRECIO;
 		$scope.imagePath = $scope.listaproductos[$scope.idxRowProd].IMG;
 		$('#imgfig').show();

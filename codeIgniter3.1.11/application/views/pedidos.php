@@ -123,7 +123,7 @@
 									<label class="label">Cliente</label>
 								</div>
 								<div class="column is-narrow" style="width:90px">
-									<input type="text" ng-model="claveclte" class="input is-small">
+									<input type="text" ng-model="claveclte" ng-keyup="buscacodcliente($event)" class="input is-small">
 								</div>
 								<div class="column is-narrow">
 									<div class="field has-addons" style="width:340px">
@@ -189,7 +189,7 @@
 									<label class="label">Vendedor</label>
 								</div>
 								<div class="column is-2">
-									<input type="text" ng-model="pedido.idvendedor" class="input is-small">
+									<input type="text" ng-model="pedido.idvendedor" ng-keyup="buscacodvendedor($event)" class="input is-small">
 								</div>
 								<div class="column is-6">
 									<div class="field has-addons">
@@ -631,9 +631,9 @@
 					</tr>
 					<tr>
 						<td>RFC:</td>
-						<td><input maxlength="20" type="text" class="input is-small" ng-model="cliente.rfc" placeholder="RFC"></td>
+						<td><input maxlength="20" type="text" class="input is-small" ng-model="cliente.rfc" placeholder="RFC" required></td>
 						<td>CURP:</td>
-						<td><input maxlength="20" type="text" class="input is-small" ng-model="cliente.curp" placeholder="CURP" required></td>
+						<td><input maxlength="20" type="text" class="input is-small" ng-model="cliente.curp" placeholder="CURP" ></td>
 					</tr>
 					<tr>
 						<td>Cliente:</td>
@@ -678,11 +678,7 @@
 					<tr>
 						<td>Vendedor:</td>
 						<td colspan="3">
-              <select name="id_vendedor" id="id_vendedor">
-      <?php	foreach($vendedor as $vend) {?>
-      					<option value='<?php echo $vend['ID_VENDEDOR']?>'><?php echo trim($vend['NOMBRE'])?></option>
-      <?php	}?>
-      				</select>
+            <select ng-model='cliente.id_vendedor' ng-options="x.ID_VENDEDOR as x.NOMBRE for x in lstVendedorVerif" ></select>
             </td>
 					</tr>
 					<tr>

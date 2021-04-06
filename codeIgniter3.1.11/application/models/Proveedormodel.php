@@ -46,7 +46,7 @@ class Proveedormodel extends CI_model
 
 	function get_proveedor_by_clave($_clave)
 	{
-		$query = 'SELECT "NOMBRE","CLAVE" FROM "PROVEEDORES" WHERE "CLAVE" = $1 AND "ACTIVO" = true';
+		$query = 'SELECT "ID_PROVEEDOR","NOMBRE","CLAVE" FROM "PROVEEDORES" WHERE "CLAVE" = $1 AND "ACTIVO" = true';
 		$result = pg_prepare($this->conn, "selectquery", $query);
 		$result =  pg_fetch_all(pg_execute($this->conn, "selectquery", array($_clave)));
 		return json_encode($result);
@@ -97,12 +97,20 @@ class Proveedormodel extends CI_model
 	}
 
   function get_compras_by_proveedor($idproveedor,$aniofiscal){
-    $query = 'SELECT TRIM("DOCUMENTO") as "DOCUMENTO", "FECHA_COMPRA","IMPORTE","SALDO" 
+    $query = 
+    'SELECT \'A\' as "TIPO",TRIM("DOCUMENTO") as "DOCUMENTO", TO_CHAR("FECHA_COMPRA",\'DD/Mon/YYYY\') as "FECHA_COMPRA","IMPORTE",0 as "PAGO", "SALDO" 
     FROM "COMPRAS" 
     WHERE "ID_PROVEEDOR" = $1
-    AND "ANIO_FISCAL" = $2';
+    AND "ANIO_FISCAL" = $2
+    UNION
+    SELECT \'B\' as "TIPO",C."DOCUMENTO", TO_CHAR(P."FECHA_PAGO",\'DD/Mon/YYYY\') as "FECHA_COMPRA",0 as "IMPORTE", "IMPORTE_PAGO" as "PAGO", 0 as "SALDO"
+    FROM "PAGOS" as P
+    INNER JOIN "COMPRAS" as C on C."ID_COMPRA" = P."ID_COMPRA"
+    WHERE P."ID_PROVEEDOR" = $3
+    AND P."ANIO_FISCAL" = $4
+    ORDER BY "DOCUMENTO","TIPO","FECHA_COMPRA"';
 		$result = pg_prepare($this->conn, "selectquery", $query);
-		$result =  pg_fetch_all(pg_execute($this->conn, "selectquery", array($idproveedor,$aniofiscal)));
+		$result =  pg_fetch_all(pg_execute($this->conn, "selectquery", array($idproveedor,$aniofiscal,$idproveedor,$aniofiscal)));
 		return json_encode($result,JSON_NUMERIC_CHECK);
   }
 

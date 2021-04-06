@@ -291,7 +291,7 @@ app.controller("myCtrlControlinvent", function ($scope, $http,$routeParams) {
             console.log(err);
           })
       }else{
-        $http.get(pathProd+'prodbycode/'+$scope.regmov.codigo)
+        $http.get(pathProd+'prodbycode/'+$scope.regmov.codigo+'/'+$scope.ctrlInv.idempresa)
           .then(res =>{
             if(res.data.length > 0){
               $scope.regmov.codigo = res.data[0].CODIGO.trim();

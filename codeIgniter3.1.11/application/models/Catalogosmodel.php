@@ -229,5 +229,7 @@ class Catalogosmodel extends CI_model
 		return json_encode($result);
 	}
 
+
+
 }
 ?>
