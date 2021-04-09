@@ -91,7 +91,7 @@ class Tpvmodel extends CI_model
 
 	function registra_venta_producto($data)
 	{
-		$pstmt = 'SELECT * FROM venta_producto($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)';
+		$pstmt = 'SELECT * FROM venta_producto($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16)';
 		pg_prepare($this->conn,"prstmt",$pstmt);
 		$result = pg_fetch_all(pg_execute($this->conn, "prstmt", $data));
 		return json_encode($result);
@@ -125,6 +125,25 @@ class Tpvmodel extends CI_model
 		return json_decode(json_encode($result,JSON_NUMERIC_CHECK),false);
 	}
 
+  function get_data_impr_ticket($idVenta){
+    $query1 = 'SELECT "DOCUMENTO","PAG_EFECTIVO","PAG_TARJETA","PAG_CHEQUE","PAG_VALES",C."NOMBRE","ID_TIPO_PAGO" 
+    FROM "VENTAS" as V
+    INNER JOIN "CLIENTE" as C ON V."CODIGO_CLIENTE" = C."ID_CLIENTE"
+    WHERE "ID_VENTA" = $1';
+    pg_prepare($this->conn,"select_venta",$query1);
+		$result1 = pg_fetch_all(pg_execute($this->conn,"select_venta",array($idVenta)));
+
+    $query2 = 'SELECT "CANTIDAD",P."DESCRIPCION","IMPORTE",P."PRECIO_LISTA",P."ES_DESCUENTO" as "ESDSCTO", 
+    P."PRECIO_DESCUENTO" as "DESCUENTO", P."IVA"
+    FROM "VENTAS_PRODUCTO" as V
+    INNER JOIN "PRODUCTO" as P ON P."ID_PRODUCTO" = V."ID_PRODUCTO"
+    WHERE "ID_VENTA" = $1';
+    pg_prepare($this->conn,"select_venta_prod",$query2);
+		$result2 = pg_fetch_all(pg_execute($this->conn,"select_venta_prod",array($idVenta)));
+
+    return json_encode(array("datos"=>$result1[0],"ventas"=>$result2),JSON_NUMERIC_CHECK);
+  }
+
 
   //EL descuento se pone en 0 porque en Factura aun no se tiene una funcionalidad de descuento
 	function getventadetallebyid($idFactura){
@@ -155,6 +174,7 @@ class Tpvmodel extends CI_model
 					AND V."FECHA_VENTA" <= $3
 					AND V."ID_EMPRESA" = $4
 					AND V."FACTURADO" = \'false\'
+          AND V."CANCELADO" = \'false\'
 					ORDER BY V."ID_VENTA"';
 		pg_prepare($this->conn,"qry1",$query1);
 		$result1 = pg_fetch_all(pg_execute($this->conn,"qry1",$arrayDates));
@@ -168,9 +188,13 @@ class Tpvmodel extends CI_model
 					AND "ID_EMPRESA" = $4
 					AND "ID_TIPO_PAGO" = 1
           AND "FACTURADO" = \'false\'
+          AND "CANCELADO" = \'false\'
 					GROUP BY "ID_TIPO_PAGO"';
 		pg_prepare($this->conn,"qry2",$query2);
 		$result2 = pg_fetch_all(pg_execute($this->conn,"qry2",$arrayDates));
+    if($result2 == false){
+      $result2 = array(array("EFECTIVO"=>0,"TARJETA"=>0,"CHEQUE"=>0,"VALES"=>0));
+    }
 
 		$query3 = 'SELECT SUM("IMPORTE"), "ID_TIPO_PAGO" 
 					FROM "VENTAS"
@@ -179,19 +203,35 @@ class Tpvmodel extends CI_model
 					AND "FECHA_VENTA" <= $3
 					AND "ID_EMPRESA" = $4
           AND "FACTURADO" = \'false\'
+          AND "CANCELADO" = \'false\'
 					GROUP BY "ID_TIPO_PAGO"';
 		pg_prepare($this->conn,"qry3",$query3);
+    
 		$result3 = pg_fetch_all(pg_execute($this->conn,"qry3",$arrayDates));
-		if(sizeof($result3) == 1){
-			if($result3[0]["ID_TIPO_PAGO"] == "1"){
-				$result4 = array($result3[0], array("sum"=>"0","ID_TIPO_PAGO"=>"2"));
-			}else{
-				$result4 = array(array("sum"=>"0","ID_TIPO_PAGO"=>"1"),$result3[0]);
-			}
-		}else{
-			$result4 = $result3;
-		}
-		return json_encode(array("ventas"=>$result1,"pagos"=>$result2,"tipopago"=>$result4),JSON_NUMERIC_CHECK);
+    if($result3){
+      if(sizeof($result3) == 1){
+        if($result3[0]["ID_TIPO_PAGO"] == "1"){
+          $result4 = array($result3[0], array("sum"=>"0","ID_TIPO_PAGO"=>"2"));
+        }else{
+          $result4 = array(array("sum"=>"0","ID_TIPO_PAGO"=>"1"),$result3[0]);
+        }
+      }else{
+        $result4 = $result3;
+      }
+    }else{
+      $result4 = array(array("sum"=>"0","ID_TIPO_PAGO"=>"1"),array("sum"=>"0","ID_TIPO_PAGO"=>"2"));
+    }
+
+    $query4 = 'SELECT COUNT(*) as "TOTAL" FROM "VENTAS"
+          WHERE "ANIO_FISCAL" = $1
+					AND "FECHA_VENTA" >= $2 
+					AND "FECHA_VENTA" <= $3
+					AND "ID_EMPRESA" = $4
+          AND "CANCELADO" = \'true\'';
+    pg_prepare($this->conn,"qry4",$query4);
+    $result5 = pg_fetch_all(pg_execute($this->conn,"qry4",$arrayDates));
+
+		return json_encode(array("ventas"=>$result1,"pagos"=>$result2,"tipopago"=>$result4,"cancelados"=>$result5[0]),JSON_NUMERIC_CHECK);
 	}
 
 	function updateventatrue($idfactura,$idventa){
@@ -201,5 +241,12 @@ class Tpvmodel extends CI_model
 		$result = pg_execute($this->conn,"updtventatrue",array($idfactura,$idventa));
 		return json_encode(array("res"=>$result));
 	}
+
+  function delete_venta_by_id($idventa){
+    $query = 'UPDATE "VENTAS" SET "CANCELADO" = true WHERE "ID_VENTA" = $1';
+		pg_prepare($this->conn,"update_venta",$query);
+		$result = pg_execute($this->conn,"update_venta",array($idventa));
+		return json_encode($result);
+  }
 }
 ?>

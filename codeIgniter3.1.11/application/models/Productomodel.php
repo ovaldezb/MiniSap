@@ -43,11 +43,17 @@ class Productomodel extends CI_model
 		return json_encode($result,JSON_NUMERIC_CHECK);
 	}
 
-	function get_producto_by_codigo($codigo, $idempresa)
+	function get_producto_by_codigo($codigo, $idempresa,$idsucursal)
 	{
-		$query = 'SELECT * FROM "PRODUCTO" WHERE "CODIGO" = $1 AND "ID_EMPRESA"=$2';
+		$query = 'SELECT P."DESCRIPCION", P."PRECIO_LISTA",P."UNIDAD_MEDIDA","IMAGEN","IVA", PS."STOCK",
+    P."ID_PRODUCTO","CODIGO","ES_PROMO","ES_DESCUENTO","PRECIO_DESCUENTO","PRECIO_PROMO","TIPO_PS" 
+    FROM "PRODUCTO" as P
+    LEFT OUTER JOIN "PRODUCTO_SUCURSAL" as PS ON PS."ID_PRODUCTO" = P."ID_PRODUCTO"
+    WHERE "CODIGO" = $1
+    AND "ID_EMPRESA"=$2
+    AND PS."ID_SUCURSAL" = $3';
 		$result = pg_prepare($this->conn, "selectquery", $query);
-		$result =  pg_fetch_all(pg_execute($this->conn, "selectquery", array($codigo, $idempresa)));
+		$result =  pg_fetch_all(pg_execute($this->conn, "selectquery", array($codigo, $idempresa, $idsucursal)));
 		return json_encode($result,JSON_NUMERIC_CHECK);
 	}
 

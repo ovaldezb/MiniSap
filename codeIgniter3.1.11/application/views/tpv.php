@@ -22,9 +22,6 @@
 							</span>
 						</p>
 					</div>
-					<div class="column is-narrow">
-						<label class="label"><input type="checkbox" ng-model="captura_rapida" ng-click="capturaRapida()" name="caprap" >Captura Rápida</label>
-					</div>
 				</div>
 				<div class="columns is-gapless is-multiline">
 					<div class="column is-2">
@@ -174,14 +171,14 @@
 						<div class="level-item" ng-show="lstProdCompra.length > 0">
 							<button class="button is-info" ng-click="addDescuento()">Descuento</button>
 						</div>
-				    	<div class="level-item">
+				    <div class="level-item">
 							<button class="button is-success" ng-click="verificaExistencia()" ng-show="isVerifExis">Verificar Existencia</button>
 						</div>
 					</div>
 				</nav>
 				<div class="columns">
 					<div class="column is-2">
-						<input type="text" id="codigo_prodto" ng-model="codigo_prodto"  ng-keyup="buscaprodbycodigo($event)" class="input is-small" >
+						<input type="text" ng-model="codigo_prodto"  ng-keyup="buscaprodbycodigo($event)" class="input is-small" >
 					</div>
 					<div class="column is-4">
 						<input type="text"  ng-model="prod_desc" ng-keyup="buscprodbydesc($event)" class="input is-small" >
@@ -271,52 +268,47 @@
 				</div>
 				<div class="columns">
 					<div class="column">
-						<table border="1" style="width:100%; border: 2px blue">
-							<tr>
-								<td>
-									<table class="table" style="width:100%">
-										<colgroup>
-											<col width="40%">
-											<col width="15%">
-											<col width="15%">
-											<col width="15%">
-											<col width="15%">
-									  </colgroup>
-										<thead>
-										<tr class="th" style="background-color:CornflowerBlue; color:Ivory;">
-											<th>Descripción</th>
-											<th align="center">Cantidad</th>
-											<th align="center">Unidad</th>
-											<th align="right">Precio</th>
-											<th align="right">Importe</th>
-										</tr>
-										</thead>
-									</table>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<div style="width:100%; height:285px; overflow:auto;">
-										<table class="table" style="width:100%;">
-											<colgroup>
-												<col width="40%">
-												<col width="15%">
-												<col width="15%">
-												<col width="15%">
-												<col width="15%">
-										  </colgroup>
-											<tr ng-repeat="p in lstProdCompra" ng-click="setSelected($index,p.CODIGO)" ng-class="{selected: p.CODIGO === idSelCompra}">
-												<td>{{p.DESCRIPCION}}</td>
-												<td align="center">{{p.CANTIDAD}}</td>
-												<td align="center">{{p.UNIDAD}}</td>
-												<td align="right">$ {{p.PRECIO_LISTA | number:2}}</td>
-												<td align="right">$ {{p.IMPORTE | number:2}}</td>
-											</tr>
-										</table>
-								</div>
-								</td>
-							</tr>
-						</table>
+            <table class="table is-bordered" style="width:100%">
+              <colgroup>
+                <col width="38%">
+                <col width="15%">
+                <col width="15%">
+                <col width="10%">
+                <col width="10%">
+                <col width="12%">
+              </colgroup>
+              <tbody>
+              <tr class="tbl-header">
+                <td>Descripción</td>
+                <td style="text-align:center">Cantidad</td>
+                <td style="text-align:center">Unidad</td>
+                <td style="text-align:center">Precio</td>
+                <td style="text-align:center">Descto</td>
+                <td style="text-align:center">Importe</td>
+              </tr>
+              </tbody>
+            </table>
+          
+            <div style="width:100%; height:285px; overflow:auto;margin-top:-25px">
+              <table class="table is-bordered" style="width:100%;">
+                <colgroup>
+                  <col width="38%">
+                  <col width="15%">
+                  <col width="15%">
+                  <col width="10%">
+                  <col width="10%">
+                  <col width="12%">
+                </colgroup>
+                <tr ng-repeat="p in lstProdCompra" ng-click="setSelected($index,p.CODIGO)" ng-class="{selected: p.CODIGO === idSelCompra}">
+                  <td class="font12">{{p.DESCRIPCION}}</td>
+                  <td class="font12" style="text-align:center">{{p.CANTIDAD}}</td>
+                  <td class="font12" style="text-align:center">{{p.UNIDAD}}</td>
+                  <td class="font12" style="text-align:right">{{p.PRECIO_LISTA | currency}}</td>
+                  <td class="font12" style="text-align:right">{{p.DESCUENTO * p.CANTIDAD * p.PRECIO_LISTA / 100 | currency}}</td>
+                  <td class="font12" style="text-align:right">{{p.IMPORTE | currency}}</td>
+                </tr>
+              </table>
+            </div>
 					</div>
 				</div>
 				<button class="button is-info is-rounded" ng-click="iniciaRegistrarCompra()" id="regcompra">Registrar Venta</button>
@@ -558,7 +550,7 @@
 			</header>
 			<section class="modal-card-body">
 				<div class="columns">
-					<div class="column is-7">
+					<div class="column is-8">
 						<div class="columns" style="margin-top:-20px;margin-bottom:-25px">
 							<div class="column">
 								<label class="label">Ventas del {{fechaCorte}} Caja - {{noCaja}}</label>
@@ -571,23 +563,25 @@
 									<col width="15%">
 									<col width="20%">
 									<col width="30%">
-									<tr>
-										<td>Documento</td>
-										<td>Part</td>
-										<td>FP</td>
-										<td>Importe</td>
-									</tr>
+                  <thead>
+                    <tr class="tbl-header">
+                      <th style="text-align:center">Documento</th>
+                      <th style="text-align:center">Part</th>
+                      <th style="text-align:center">FP</th>
+                      <th style="text-align:center">Importe</th>
+                    </tr>
+                  </thead>
 								</table>
 								<div style="overflow:auto; height:200px;">
 									<table class="table is-bordered" style="width:100%">
 										<col width="35%">
-										<col width="16%">
+										<col width="15%">
 										<col width="20%">
-										<col width="29%">
-										<tr ng-repeat="x in lstVentas">
+										<col width="30%">
+										<tr ng-repeat="x in lstVentas" ng-click="selOperacion(x.ID_VENTA,$index)"  ng-class="{selected: x.ID_VENTA === idOpSel}">
 											<td>{{x.DOCUMENTO.trim()}}</td>
-											<td>{{x.COUNT}}</td>
-											<td>{{x.ID_TIPO_PAGO == '1' ? 'EF':'CR'}}</td>
+											<td style="text-align:center">{{x.COUNT}}</td>
+											<td style="text-align:center">{{x.ID_TIPO_PAGO == '1' ? 'EF':'CR'}}</td>
 											<td style="text-align:right;">{{x.IMPORTE | currency}}</td>
 										</tr>
 									</table>
@@ -595,7 +589,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="column is-5">
+					<div class="column is-4">
 						<div class="columns" style="margin-bottom:30px">
 							<nav class="level">
 								<div class="level-right">
@@ -606,24 +600,27 @@
 											</span>
 										</a>
 									</p>
-									<p class="level-item">
-										<a ng-click="eliminaCorteCaja()">
+									<p class="level-item" ng-show="idxOperacion == -1">
+                    <span class="icon has-text-danger">
+                      <i title="Cancela partida" class="fas fa-times" style="color:grey"></i>
+                    </span>
+									</p>
+                  <p class="level-item" ng-show="idxOperacion != -1">
+										<a ng-click="eliminaOperacion()">
 											<span class="icon has-text-danger">
 												<i title="Cancela partida" class="fas fa-times"></i>
 											</span>
 										</a>
 									</p>
-									<p class="level-item">
-										<a ng-click="update()">
+									<p class="level-item" ng-show="idxOperacion == -1">
 											<span class="icon has-text-info">
-												<i title="Editar una partida" class="fas fa-edit" ></i>
+												<i title="Imprime Operación" class="fas fa-print" style="color:grey"></i>
 											</span>
-										</a>
 									</p>
-									<p class="level-item">
-										<a ng-click="printCorte()">
+                  <p class="level-item" ng-show="idxOperacion != -1">
+										<a ng-click="imprimeCompra()">
 											<span class="icon has-text-info">
-												<i title="Imprime Corte" class="fas fa-print"></i>
+												<i title="Imprime Operación" class="fas fa-print"></i>
 											</span>
 										</a>
 									</p>
@@ -644,7 +641,7 @@
 									<tr>
 										<td>Canceladas</td>
 										<td>&nbsp;</td>
-										<td style="text-align:right;">0</td>
+										<td style="text-align:right;">{{cancelados}}</td>
 									</tr>
 									<tr>
 										<td colspan="3">&nbsp;</td>
@@ -745,6 +742,7 @@
 			</footer>
 		</div>
 	</div>
+
 	<div class="{{modalVerfClte ? 'modal is-active' : 'modal' }}">
 	  <div class="modal-background"></div>
 	  <div class="modal-card">
@@ -860,6 +858,7 @@
 	    </footer>
 	  </div>
 	</div>
+
 	<div class="{{modalAddDscnt ? 'modal is-active' : 'modal' }}" id="adddscnt">
 		<div class="modal-background"></div>
 		<div class="modal-card" style="width:700px">
@@ -899,7 +898,7 @@
 									<col width="15%">
 									<col width="10%">
 								</colgroup>
-								<tr>
+								<tr class="tbl-header">
 									<td>Descripcion</td>
 									<td>Cantidad</td>
 									<td>Unidad</td>
@@ -912,7 +911,7 @@
 					<tr>
 					<tr>
 						<td>
-							<div style="width:100%; height:150px; overflow:auto;">
+							<div style="width:100%; height:150px; overflow:auto;border:2px solid black">
 								<table class="table" style="width:100%;">
 									<colgroup>
 										<col width="30%">
@@ -923,12 +922,12 @@
 										<col width="10%">
 									</colgroup>
 									<tr ng-repeat="p in lstProdCompra" ng-click="setSelectedDscnt($index)" ng-class="{selected: $index === indexRowCompra}">
-										<td>{{p.DESCRIPCION}}</td>
-										<td align="center">{{p.CANTIDAD}}</td>
-										<td align="center">{{p.UNIDAD}}</td>
-										<td align="right">$ {{p.PRECIO_LISTA | number:2}}</td>
-										<td style="text-align:right">$ {{p.IMPORTE | number:2}}</td>
-										<td style="text-align:center">{{p.DESCUENTO}}%</td>
+										<td class="font12">{{p.DESCRIPCION}}</td>
+										<td class="font12" style="text-align:center">{{p.CANTIDAD}}</td>
+										<td class="font12" style="text-align:center">{{p.UNIDAD}}</td>
+										<td class="font12" style="text-align:right">$ {{p.PRECIO_LISTA | number:2}}</td>
+										<td class="font12" style="text-align:right">$ {{p.IMPORTE | number:2}}</td>
+										<td class="font12" style="text-align:center">{{p.DESCUENTO}}%</td>
 									</tr>
 								</table>	
 							</div>
@@ -941,6 +940,7 @@
 			</footer>
 		</div>
 	</div>
+
 	<div id="ticket" style="display:none">
 		<div class="ticket ffont">
 			<table>
@@ -1013,8 +1013,9 @@
 				</tr>
 				<tr>
 					<td colspan="2" class="cantidad">Forma de Pago:</td>
-					<td style="text-align:right;width:40px" id="formapago"</td>
+					<td style="text-align:right;width:40px">{{formaPago}}</td>
 				</tr>
+        
 				<tr>
 					<td colspan="3">&nbsp;</td>
 				</tr>

@@ -90,6 +90,7 @@ class Tpv extends CI_Controller
 			$data['idproveedor'],
 			$data['idusuario'],
 			$data['idmoneda'],
+      $data['descuento']
 			)
 		);
 		return $this->output
@@ -126,6 +127,20 @@ class Tpv extends CI_Controller
 					->set_content_type('application/json')
 					->set_output($result);
 	}
+
+  function datoimprtkt($idventa){
+    $result = $this->tpvmodel->get_data_impr_ticket($idventa);
+		return $this->output
+					->set_content_type('application/json')
+					->set_output($result);
+  }
+
+  function deloperacion($idventa){
+    $result = $this->tpvmodel->delete_venta_by_id($idventa);
+		return $this->output
+					->set_content_type('application/json')
+					->set_output($result);
+  }
 
 }
 ?>

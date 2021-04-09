@@ -198,6 +198,7 @@
 <script src="../js/cobranza.js"></script>
 <script src="../js/pagos.js"></script>
 <script src="../js/inicio.js"></script>
+<script src="../js/cortecaja.js"></script>
 <script>
   $(document).ready(function(){
     $('.menus li:has(ul)').click(function(e){

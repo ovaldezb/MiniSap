@@ -195,7 +195,7 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 
 	$scope.buscaprodbycodigo = function (event) {
 		if (event.keyCode == 13) {
-			$http.get(pathProd + 'prodbycode/' + $scope.codigo+'/'+$scope.idempresa, { responseType: 'json' }).
+			$http.get(pathProd + 'prodbycode/' + $scope.codigo+'/'+$scope.idempresa+'/'+$scope.idsucursal, { responseType: 'json' }).
 				then(function (res) {
 					if (res.data != false) {
 						$scope.descripcion = res.data[0].DESCRIPCION;

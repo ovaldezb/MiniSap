@@ -10,7 +10,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
   $scope.cambio = 0.00;
   $scope.cantidad = 0;
   $scope.idSelCompra = '';
-  $scope.indexRowCompra = 0;
+  $scope.indexRowCompra = -1;
   $scope.qtyProdSuc = -1;
   $scope.lstProdBusqueda = [];
   $scope.lstProdCompra = [];
@@ -18,7 +18,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
   $scope.lstVendedor = [];
   $scope.lstPrdSucExis = [];
   $scope.idDocumento = '';
-  $scope.indexRowPedido = '';
+  $scope.indexRowPedido = -1;
   $scope.idPedido = 0;
   $scope.importeNeto = 0;
   $scope.dsctoValor = 0;
@@ -49,6 +49,8 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
   $scope.fechaentrega = '';
   $scope.idUsuario = '';
   $scope.listaVendedores = false;
+  $scope.modalAddDscnt = false;
+  $scope.dispsearch = false;
   $scope.idProceso = $routeParams.idproc;
   $scope.permisos = {
     alta: false,
@@ -116,6 +118,14 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
     id_uso_cfdi:"",
     idempresa:""
   };
+
+  $scope.proddscnt ={
+    producto:undefined,
+    precio:undefined,
+    descuento:0,
+    descuentoTodos:0
+  }
+
   $scope.init = function()
   {
       var foopicker = new FooPicker({
@@ -124,7 +134,6 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
       });
 
       $scope.regpedido = true;
-      $('#codigo_prodto').prop('disabled',true);
       $http.get(pathAcc+'getdata',{responseType:'json'}).
       then(function(res){
         if(res.data.value=='OK'){
@@ -399,29 +408,11 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
 		}
 	}
 
-  $scope.capturaRapida = function()
-  {
-    if($scope.captura_rapida)
-    {
-      $('#prod_desc').prop('disabled',true);
-      $('#codigo_prodto').prop('disabled',false);
-      $scope.counter = 1;
-  		$scope.cantidad = $scope.counter;
-    }else {
-      {
-        $('#prod_desc').prop('disabled',false);
-        $('#codigo_prodto').prop('disabled',true);
-        $scope.counter = 0;
-    		$scope.cantidad = $scope.counter;
-      }
-    }
-  }
-
   $scope.buscaprodbycodigo = function(event)
   {
     if(event.keyCode==13)
     {
-      $http.get(pathProd+'prodbycode/'+$scope.producto.codigo_prodto+'/'+$scope.pedido.idempresa,{responseType: 'json'}).
+      $http.get(pathProd+'prodbycode/'+$scope.producto.codigo_prodto+'/'+$scope.pedido.idempresa+'/'+$scope.pedido.idsucursal,{responseType: 'json'}).
       then(function(res)
       {
         if(res.data != false)
@@ -439,7 +430,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
           $scope.producto.esDscto = res.data[0].ES_DESCUENTO == 't' ? true:false;
           $scope.producto.descuento = res.data[0].PRECIO_DESCUENTO;
           $scope.producto.promocion = res.data[0].PRECIO_PROMO;
-
+          $scope.isVerifExis = true;
           if($scope.producto.imagePath!='')
           {
             $('#imgfig').show();
@@ -459,7 +450,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
       {
         return;
       }
-    	$('#dispsearch').show();
+    	$scope.dispsearch = true;
     	var searchword = $scope.producto.prod_desc !='' ? $scope.producto.prod_desc : 'vacio';
     	$http.get(pathTpv+'getitems/'+$scope.pedido.idempresa+'/'+searchword+'/V', {responseType: 'json'}).
     	then(function(res)
@@ -521,7 +512,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
 
     $scope.closeDivSearch = function()
     {
-    	$('#dispsearch').hide();
+      $scope.dispsearch = false;
     	$scope.lstProdBusqueda = [];
     }
 
@@ -551,7 +542,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
           PRECIO_LISTA:$scope.producto.precio,
           IMPORTE:importe,
           CODIGO:$scope.producto.codigo_prodto,
-          UNIDAD:$scope.producto.unidad,
+          UNIDAD_MEDIDA:$scope.producto.unidad,
           IMG:$scope.producto.imagePath,
           IVA:$scope.producto.iva,
           ID_PRODUCTO:$scope.producto.id_producto,
@@ -604,7 +595,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
 
     $scope.editaProducto = function()
     {
-      $scope.id_producto = $scope.lstProdCompra[$scope.indexRowCompra].producto.id_producto;
+      $scope.id_producto = $scope.lstProdCompra[$scope.indexRowCompra].ID_PRODUCTO;
       $scope.producto.codigo_prodto = $scope.lstProdCompra[$scope.indexRowCompra].CODIGO;
       $scope.producto.prod_desc = $scope.lstProdCompra[$scope.indexRowCompra].DESCRIPCION;
       $scope.producto.unidad = $scope.lstProdCompra[$scope.indexRowCompra].UNIDAD;
@@ -639,6 +630,38 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
       }
     }
 
+    $scope.calculaDescInd = () =>{
+      if(isNaN($scope.proddscnt.descuento)){
+        swal('Solo se aceptan numeros');
+        return;
+      }
+      if($scope.proddscnt.descuento > 10 ){
+        swal('No puede dar un descuento mayor al 10%','Pida ayuda a su superior','error');
+      }
+      $scope.lstProdCompra[$scope.indexRowCompra].IMPORTE = $scope.lstProdCompra[$scope.indexRowCompra].PRECIO_LISTA * $scope.lstProdCompra[$scope.indexRowCompra].CANTIDAD * (1-($scope.proddscnt.descuento / 100));
+      $scope.lstProdCompra[$scope.indexRowCompra].DESCUENTO = $scope.proddscnt.descuento;
+      $scope.lstProdCompra[$scope.indexRowCompra].ESDSCTO = $scope.proddscnt.descuento > 0;
+      $scope.calculaValoresMostrar();
+    }
+
+    $scope.calculaDescTodos = () =>{
+      $scope.lstProdCompra.map(prod =>{  
+        prod.ESDSCTO = $scope.proddscnt.descuentoTodos > 0;
+        prod.DESCUENTO = $scope.proddscnt.descuentoTodos ;
+        prod.IMPORTE = prod.PRECIO_LISTA * prod.CANTIDAD * (1-($scope.proddscnt.descuentoTodos / 100));
+      });
+      $scope.calculaValoresMostrar();
+    }
+
+    $scope.setSelectedDscnt = function(indexRowCompra)
+    {
+      $scope.indexRowCompra = indexRowCompra;
+      $scope.proddscnt.producto = $scope.lstProdCompra[indexRowCompra].DESCRIPCION;
+      $scope.proddscnt.precio= $scope.lstProdCompra[indexRowCompra].PRECIO_LISTA;
+      $scope.proddscnt.descuento = $scope.lstProdCompra[indexRowCompra].DESCUENTO;
+      
+    }
+
     $scope.calculaValoresMostrar = function()
     {
       $scope.pedido.total = 0;
@@ -652,8 +675,8 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
       {
         $scope.pedido.total += Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) ;
         $scope.dsctoValor += Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) * ($scope.lstProdCompra[i].ESDSCTO ? Number($scope.lstProdCompra[i].DESCUENTO/100) : 0);
-        $scope.importeNeto = $scope.pedido.total   / (1+Number($scope.lstProdCompra[i].IVA/100));
-        $scope.impuestos = ($scope.importeNeto) * Number($scope.lstProdCompra[i].IVA/100);
+        $scope.importeNeto += (Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) - Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) * ($scope.lstProdCompra[i].ESDSCTO ? Number($scope.lstProdCompra[i].DESCUENTO/100) : 0))  * (1-Number($scope.lstProdCompra[i].IVA/100));
+        $scope.impuestos += (Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) - Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) * ($scope.lstProdCompra[i].ESDSCTO ? Number($scope.lstProdCompra[i].DESCUENTO/100) : 0))* Number($scope.lstProdCompra[i].IVA/100);
       }
       $scope.pedido.total = $scope.pedido.total - $scope.dsctoValor;
     }
@@ -814,7 +837,8 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
           cantidad:$scope.lstProdCompra[i].CANTIDAD,
           precio:$scope.lstProdCompra[i].PRECIO_LISTA,
           importe:$scope.lstProdCompra[i].IMPORTE,
-          idsucursal:$scope.pedido.idsucursal
+          //idsucursal:$scope.pedido.idsucursal,
+          descuento:$scope.lstProdCompra[i].DESCUENTO == null ? 0 : $scope.lstProdCompra[i].DESCUENTO
         }
         $http.put(pathPedi+'registrapedidoprod',pediProd).
         then(function(res)
@@ -844,6 +868,23 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
       {
         console.log(err);
       });
+    }
+
+    $scope.addDescuento = ()=>{
+      $scope.modalAddDscnt = true;
+    }
+
+    $scope.closeAddDscnt = ()=>{
+      $scope.proddscnt.producto = undefined;
+      $scope.modalAddDscnt = false;
+      $scope.proddscnt.descuento = '';
+      $scope.proddscnt.descuentoTodos = '';
+      $scope.indexRowCompra = -1
+    }
+
+    $scope.escondeRenglon = () =>{
+      $scope.proddscnt.producto = undefined;
+      $scope.indexRowCompra = -1
     }
 
     $scope.abrePedido = function(){
@@ -940,10 +981,12 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
 
     $scope.imprimePedido = function(printSectionId) {
       var innerContents = document.getElementById(printSectionId).innerHTML;
-      var popupWinindow = window.open('', '_blank', 'width=600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
-      popupWinindow.document.open();
+      //var popupWinindow = window.open('', '_blank', 'width=600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
+      var popupWinindow = window.open(' ', 'popimpr');
+      //popupWinindow.document.open();
       popupWinindow.document.write('<html><head><link rel="stylesheet" type="text/css" href="style.css" /></head><body onload="window.print()">' + innerContents + '</html>');
-      popupWinindow.document.close();
+      popupWinindow.print();
+      popupWinindow.close();
     }
 
     $scope.limpiar = function(){

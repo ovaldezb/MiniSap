@@ -493,7 +493,7 @@ app.controller('myCtrlProducto', function($scope,$http,$routeParams)
 
   $scope.validarcodigo = function(){
     if($scope.btnAccion == 'Agregar'){
-      $http.get(pathProd+'prodbycode/'+$scope.codigo+'/'+$scope.idempresa)
+      $http.get(pathProd+'prodbycode/'+$scope.codigo+'/'+$scope.idempresa+'/'+$scope.idsucursal)
         .then(res=>{
           if(res.data.length==1){
             swal("El código de producto "+$scope.codigo+" ya existe","Verifique el código","warning");

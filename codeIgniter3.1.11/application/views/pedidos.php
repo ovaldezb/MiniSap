@@ -22,10 +22,28 @@
 						<a ng-click="agregaPEdido();"><span class="icon has-text-success"><i class="fas fa-plus-square" title="Agrega Pedido"></i></span></a>
 					</p>
 					<p class="level-item" ng-show="permisos.modificacion">
-						<a ng-click="abrePedido()"><span class="icon has-text-info"><i class="fas fa-edit" title="Ver Pedido"></i></span></a>
+						<a ng-show="indexRowPedido == -1">
+              <span class="icon has-text-info">
+                <i class="fas fa-edit" title="Ver Pedido" style="color:grey"></i>
+              </span>
+            </a>
+            <a ng-click="abrePedido()" ng-show="indexRowPedido != -1">
+              <span class="icon has-text-info">
+                <i class="fas fa-edit" title="Ver Pedido"></i>
+              </span>
+            </a>
 					</p>
 					<p class="level-item" ng-show="permisos.baja">
-						<a ng-click="preguntaElimnaPedido()"><span class="icon has-text-danger"><i class="far fa-trash-alt" title="Elimna Pedido"></i></span></a>
+						<a ng-show="indexRowPedido == -1">
+              <span class="icon has-text-danger">
+                <i class="far fa-trash-alt" title="Elimna Pedido" style="color:grey"></i>
+              </span>
+            </a>
+            <a ng-click="preguntaElimnaPedido()" ng-show="indexRowPedido != -1">
+              <span class="icon has-text-danger">
+                <i class="far fa-trash-alt" title="Elimna Pedido"></i>
+              </span>
+            </a>
 					</p>
 				</div>
 			</nav>
@@ -34,13 +52,15 @@
 			<table border="1" style="width:100%">
 				<tr>
 					<td>
-						<table class="table" style="width:100%">
-							<col width="9%"> 
-							<col width="25%">
-							<col width="15%">
-							<col width="15%">
-							<col width="26%">
-							<col width="10%">
+						<table class="table is-bordered" style="width:100%">
+              <colgroup>
+							  <col width="12%"> 
+							  <col width="23%">
+							  <col width="15%">
+							  <col width="15%">
+							  <col width="25%">
+							  <col width="10%">
+              </colgroup>
 							<thead>
 								<tr class="tbl-header">
 									<td style="color:white; text-align:left; ">DOCUMENTO</td>
@@ -57,20 +77,22 @@
 				<tr>
 					<td>
 						<div style="width:100%; height:500px; overflow:auto;">
-							<table class="table" style="width:100%" id="tblClientes">
-								<col width="8%"> 
-								<col width="25%">
-								<col width="17%">
-								<col width="15%">
-								<col width="25%">
-								<col width="10%">
+							<table class="table is-hoverable is-bordered" style="width:100%" id="tblClientes">
+                <colgroup>
+								  <col width="12%"> 
+								  <col width="23%">
+								  <col width="15%">
+								  <col width="15%">
+								  <col width="25%">
+								  <col width="10%">
+                </colgroup>
 								<tr ng-repeat="x in lstPedidos" ng-click="selectRowPedido(x.DOCUMENTO,$index)" ng-class="{selected: x.DOCUMENTO === idDocumento}">
-									<td style="text-align:center;">{{x.DOCUMENTO}}</td>
-									<td style="text-align:center;">{{x.CLIENTE}}</td>
-									<td style="text-align:center;">{{x.FECHA_PEDIDO | date : "dd-MM-y"}}</td>
-									<td style="text-align:center;">{{x.IMPORTE | currency}}</td>
-									<td style="text-align:center;">{{x.VENDEDOR}}</td>
-									<td style="text-align:center;">{{x.VENDIDO=='f' ? 'No' : 'Si'}}</td>
+									<td class="font12" style="text-align:left;">{{x.DOCUMENTO}}</td>
+									<td class="font12" style="text-align:left;">{{x.CLIENTE}}</td>
+									<td class="font12" style="text-align:center;">{{x.FECHA_PEDIDO | date : "dd-MM-y"}}</td>
+									<td class="font12" style="text-align:center;">{{x.IMPORTE | currency}}</td>
+									<td class="font12" style="text-align:center;">{{x.VENDEDOR}}</td>
+									<td class="font12" style="text-align:center;">{{x.VENDIDO=='f' ? 'No' : 'Si'}}</td>
 								</tr>
 							</table>
 						</div>
@@ -106,14 +128,6 @@
 									<div class="select is-small">
 										<select class="select is-small" ng-model="pedido.idmoneda" ng-options="x.ID_MONEDA as x.NOMBRE for x in lstMoneda"></select>
 									</div>
-								</div>
-							</div>
-							<div class="columns">
-								<div class="column is-narrow">
-									<p class="control">
-									<label class="label">Captura Rápida</label>
-									<input type="checkbox" ng-model="captura_rapida" ng-click="capturaRapida()" name="caprap" >
-									</p>
 								</div>
 							</div>
 						</div>
@@ -309,14 +323,17 @@
 							</div>
 						</div>
 						<div class="level-right">
-						<div class="level-item">
+              <div class="level-item" ng-show="lstProdCompra.length > 0">
+							  <button class="button is-info" ng-click="addDescuento()">Descuento</button>
+						  </div>
+						  <div class="level-item">
 								<button class="button is-success" ng-click="verificaExistencia()" style="display:{{isVerifExis ? 'block':'none'}}">Verificar Existencia</button>
 							</div>
 						</div>
 					</nav>
 					<div class="columns" ng-show="!isImprimir">
 						<div class="column is-2">
-							<input type="text" id="codigo_prodto" ng-model="producto.codigo_prodto"  ng-keyup="buscaprodbycodigo($event)" class="input is-small" >
+							<input type="text"  ng-model="producto.codigo_prodto"  ng-keyup="buscaprodbycodigo($event)" class="input is-small" >
 						</div>
 						<div class="column is-4">
 							<input type="text"  ng-model="producto.prod_desc" ng-keyup="buscprodbydesc($event)" class="input is-small" >
@@ -355,22 +372,24 @@
 							</a>
 						</div>
 					</div>
-					<div class="table-container" style="display:none;" id="dispsearch">
+					<div class="table-container" ng-show="dispsearch">
 						<table style="width:100%;">
 							<tr>
 								<td>
-									<table class="table" style="width:100%" border="1" >
-										<col width="15%">
-										<col width="40%">
-										<col width="15%">
-										<col width="15%">
-										<col width="15%">
+									<table class="table" style="width:99%" border="1" >
+                    <colgroup>
+                      <col width="20%">
+                      <col width="35%">
+                      <col width="15%">
+                      <col width="15%">
+                      <col width="15%">
+                    </colgroup>
 										<tr style="background-color:Crimson; color:Ivory;">
-											<th align="center">Código</th>
-											<th>Descripción</th>
-											<th align="center">Unidad</th>
-											<th align="center">Precio</th>
-											<th align="center">Existencia</th>
+											<td style="text-align:center">Código</td>
+											<td>Descripción</td>
+											<td style="text-align:center">Unidad</td>
+											<td style="text-align:center">Precio</td>
+											<td style="text-align:center">Existencia</td>
 										</tr>
 									</table>
 								</td>
@@ -385,17 +404,20 @@
 							<tr>
 								<td>
 									<div style="width:100%; height:200px; overflow:auto; border:2px solid red">
-										<table class="table is-hoverable" style="width:100%;">
-											<col width="15%">
-											<col width="40%">
-											<col width="15%">
-											<col width="15%">
+										<table class="table is-hoverable is-bordered" style="width:100%;">
+                      <colgroup>
+											  <col width="20%">
+											  <col width="35%">
+											  <col width="15%">
+											  <col width="15%">
+                        <col width="15%">
+                      </colgroup>
 											<tr ng-repeat="x in lstProdBusqueda" ng-click="selectProdBus($index)">
-												<td align="center">{{x.CODIGO}}</td>
-												<td>{{x.DESCRIPCION}}</td>
-												<td align="center">{{x.UNIDAD_MEDIDAD}}</td>
-												<td align="right">{{x.PREC_LISTA_DISP}}</td>
-												<td align="right">{{x.STOCK}}</td>
+												<td class="font12" style="text-align:center">{{x.CODIGO}}</td>
+												<td class="font12">{{x.DESCRIPCION}}</td>
+												<td class="font12" style="text-align:center">{{x.UNIDAD_MEDIDA}}</td>
+												<td class="font12" style="text-align:right">{{x.PREC_LISTA_DISP}}</td>
+												<td class="font12" style="text-align:right">{{x.STOCK}}</td>
 											</tr>
 										</table>
 									</div>
@@ -405,53 +427,47 @@
 						<hr class="hr">
 					</div>
 					<div class="columns">
-						<div class="column">
-							<table border="1" style="width:100%; border: 2px blue">
-								<tr>
-									<td>
-										<table class="table" style="width:100%">
-											<colgroup>
-												<col width="40%">
-												<col width="15%">
-												<col width="15%">
-												<col width="15%">
-												<col width="15%">
-										</colgroup>
-											<thead>
-											<tr class="th" style="background-color:CornflowerBlue; color:Ivory;">
-												<th>Descripción</th>
-												<th align="center">Cantidad</th>
-												<th align="center">Unidad</th>
-												<th align="right">Precio</th>
-												<th align="right">Importe</th>
-											</tr>
-											</thead>
-										</table>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<div style="width:100%; height:285px; overflow:auto;">
-											<table class="table" style="width:100%;">
-												<colgroup>
-													<col width="40%">
-													<col width="15%">
-													<col width="15%">
-													<col width="15%">
-													<col width="15%">
-											</colgroup>
-												<tr ng-repeat="p in lstProdCompra" ng-click="setSelected($index,p.CODIGO)" ng-class="{selected: p.CODIGO === idSelCompra}">
-													<td>{{p.DESCRIPCION}}</td>
-													<td align="center">{{p.CANTIDAD}}</td>
-													<td align="center">{{p.UNIDAD}}</td>
-													<td align="right">$ {{p.PRECIO_LISTA | number:2}}</td>
-													<td align="right">$ {{p.IMPORTE | number:2}}</td>
-												</tr>
-											</table>
-									</div>
-									</td>
-								</tr>
-							</table>
+						<div class="column">		
+              <table class="table is-bordered" style="width:100%">
+                <colgroup>
+                  <col width="40%">
+                  <col width="12%">
+                  <col width="12%">
+                  <col width="12%">
+                  <col width="12%">
+                  <col width="12%">
+              </colgroup>
+                <tbody>
+                <tr class="tbl-header">
+                  <td>Descripción</td>
+                  <td style="text-align:center">Cantidad</td>
+                  <td style="text-align:center">Unidad</td>
+                  <td style="text-align:right">Precio</td>
+                  <td style="text-align:right">Descto</td>
+                  <td style="text-align:right">Importe</td>
+                </tr>
+                </tbody>
+              </table>
+              <div style="width:100%; height:285px; overflow:auto;margin-top:-25px">
+                <table class="table is-bordered is-hoverable" style="width:100%;">
+                  <colgroup>
+                    <col width="39%">
+                    <col width="13%">
+                    <col width="12%">
+                    <col width="12%">
+                    <col width="12%">
+                    <col width="12%">
+                  </colgroup>
+                  <tr ng-repeat="p in lstProdCompra" ng-click="setSelected($index,p.CODIGO)" ng-class="{selected: p.CODIGO === idSelCompra}">
+                    <td class="font12">{{p.DESCRIPCION}}</td>
+                    <td class="font12" style="text-align:center">{{p.CANTIDAD}}</td>
+                    <td class="font12" style="text-align:center">{{p.UNIDAD_MEDIDA}}</td>
+                    <td class="font12" style="text-align:right">{{p.PRECIO_LISTA | currency}}</td>
+                    <td class="font12" style="text-align:right">{{p.DESCUENTO * p.CANTIDAD * p.PRECIO_LISTA / 100 | currency}}</td>
+                    <td class="font12" style="text-align:right">{{p.IMPORTE | currency}}</td>
+                  </tr>
+                </table>
+            </div>
 						</div>
 					</div>
 					<button class="button is-info is-rounded" ng-click="registraPedido()" ng-disabled="regpedido" ng-show="!isImprimir">Registrar Pedido</button>
@@ -713,6 +729,89 @@
 	    </footer>
 	  </div>
 	</div>
+  <div class="modal is-active" id="adddscnt" ng-show="modalAddDscnt">
+		<div class="modal-background"></div>
+		<div class="modal-card" style="width:700px">
+			<header class="modal-card-head">
+				<p class="modal-card-title">Agregar descuento a los Productos</p>
+				<button class="delete" aria-label="close" ng-click="closeAddDscnt();"></button>
+			</header>
+			<section class="modal-card-body">				
+				<div class="columns" ng-show="!proddscnt.producto">
+					<div class="column is-5">Descuento total:</div>
+					<div class="column is-2"><input type="number" class="input is-small" ng-model="proddscnt.descuentoTodos" ng-keyup="calculaDescTodos()"></div>
+					
+				</div>
+				<div class="columns" ng-show="proddscnt.producto">
+					<div class="column is-5">{{proddscnt.producto}}</div>
+					<div class="column is-2">{{proddscnt.precio | currency}}</div>						
+					<div class="column is-2"><input type="number" class="input is-small is-1" ng-keyup="calculaDescInd()" ng-chage="calculaDescInd()" ng-model="proddscnt.descuento"></div>
+					
+					<div class="column is-2">
+						<a ng-click="escondeRenglon()">
+							<span class="icon has-text-danger">
+								<i title="Limpia el renglon" class="fas fa-times-circle"></i>
+							</span>
+						</a>
+					</div>
+				</div>
+					
+				<table style="width:100%">
+					<tr>
+						<td>
+							<table class="table" style="width:100%">
+								<colgroup>
+									<col width="30%">
+									<col width="15%">
+									<col width="15%">
+									<col width="15%">
+									<col width="15%">
+									<col width="10%">
+								</colgroup>
+                <tbody>
+                  <tr class="tbl-header">
+                    <td>Descripcion</td>
+                    <td>Cantidad</td>
+                    <td>Unidad</td>
+                    <td>Precio</td>
+                    <td>Importe</td>
+                    <td>Desc</td>
+                  </tr>
+                </tbody>
+							</table>
+						</td>
+					<tr>
+					<tr>
+						<td>
+							<div style="width:100%; height:150px; overflow:auto;">
+								<table class="table" style="width:100%;">
+									<colgroup>
+										<col width="30%">
+										<col width="15%">
+										<col width="15%">
+										<col width="15%">
+										<col width="15%">
+										<col width="10%">
+									</colgroup>
+									<tr ng-repeat="p in lstProdCompra" ng-click="setSelectedDscnt($index)" ng-class="{selected: $index === indexRowCompra}">
+										<td class="font12" >{{p.DESCRIPCION}}</td>
+										<td class="font12" style="text-align:center">{{p.CANTIDAD}}</td>
+										<td class="font12" style="text-align:center">{{p.UNIDAD}}</td>
+										<td class="font12" style="text-align:right">{{p.PRECIO_LISTA | currency}}</td>
+										<td class="font12" style="text-align:right">{{p.IMPORTE | currency}}</td>
+										<td class="font12" style="text-align:right">{{p.DESCUENTO}}%</td>
+									</tr>
+								</table>	
+							</div>
+						</td>
+					<tr>
+				</table>
+			</section>
+			<footer class="modal-card-foot">
+				<button class="button" ng-click="closeAddDscnt();">Cerrar</button>
+			</footer>
+		</div>
+	</div>
 	<div class="modal is-active" ng-show="pregElimiPedi">
 	  <div class="modal-background"></div>
 	  <div class="modal-card">
@@ -731,12 +830,14 @@
 	</div>
 	<table style="width: 100%; display:none" id="pedido">
 		<tbody>
-			<tr>`
-				<td style="width: 107.067px">Logo</td>
-				<td style="width: 414.933px">
-					<table style="border:2px solid black">
+			<tr>
+				<td >
+					<table style="border:2px solid black; width:100%">
 						<tr>
-							<td colspan="2">EMPRESA</td>
+              <td rowspan="4">
+                <img src="../img/logo.png" style="width:40px">
+              </td>
+							<td >EMPRESA</td>
 						</tr>
 						<tr>
 							<td>Nombre:</td>
@@ -753,9 +854,11 @@
 					</table>
 				</td>
 			</tr>
-			<tr><td>&nbsp;</td></tr>
 			<tr>
-				<td style="width: 100%" colspan="2">
+        <td colspa="2">&nbsp;</td>
+      </tr>
+			<tr>
+				<td colspan="2">
 					<table tyle="border:2px solid black">
 						<tr>
 							<td colspan="2">CLIENTE</td>
@@ -776,10 +879,10 @@
 				</td>
 			</tr>
 			<tr>
-				<td style="width: 100%" colspan="2">&nbsp;</td>
+				<td  colspan="2">&nbsp;</td>
 			</tr>
 			<tr>
-			<td style="width: 100%" colspan="2">
+			<td colspan="2">
 				<div style="border: 2px solid black; height: 350px; width: 100%;">
 				<table style="width: 100%" >
 					<tbody>
@@ -788,14 +891,16 @@
 							<td style="width: 73.8px; text-align: center">Cantidad</td>
 							<td style="width: 81.2px; text-align: center">Unidad</td>
 							<td style="width: 128px; text-align: right">Costo Unitario</td>
+              <td style="width: 128px; text-align: right">Descuento</td>
 							<td style="width: 104px; text-align: right">Costo Total</td>
 						</tr>
 						<tr ng-repeat="p in lstProdCompra">
 							<td style="width: 200px; text-align: center">{{p.DESCRIPCION}}</td>
 							<td style="width: 73.8px; text-align: center">{{p.CANTIDAD}}</td>
-							<td style="width: 81.2px; text-align: center">{{p.UNIDAD}}</td>
-							<td style="width: 128px; text-align: right">$ {{p.PRECIO_LISTA | number:2}}</td>
-							<td style="width: 104px; text-align: right">$ {{p.IMPORTE | number:2}}</td>
+							<td style="width: 81.2px; text-align: center">{{p.UNIDAD_MEDIDA}}</td>
+							<td style="width: 128px; text-align: right">{{p.PRECIO_LISTA | currency}}</td>
+              <td style="width: 104px; text-align: right">{{p.DESCUENTO * p.CANTIDAD * p.PRECIO_LISTA / 100 | currency}}</td>
+							<td style="width: 104px; text-align: right">{{p.IMPORTE | currency}}</td>
 						</tr>
 					</tbody>
 				</table>
@@ -803,20 +908,24 @@
 			</td>
 			</tr>
 			<tr>
-				<td style="width:100%;" colspan="2">
+				<td colspan="2">
 					<table style="width: 100%" >
 						<tbody>
 						<tr>
 							<td style="width: 83%; text-align: right">Subtotal</td>
-							<td style="width: 17%; text-align: right">$132.16</td>
+							<td style="width: 17%; text-align: right">{{importeNeto | currency}}</td>
+						</tr>
+            <tr>
+							<td style="width: 83%; text-align: right">Descuento</td>
+							<td style="width: 17%; text-align: right">{{dsctoValor | currency}}</td>
 						</tr>
 						<tr>
 							<td style="width: 83%; text-align: right">Impuestos</td>
-							<td style="width: 17%; text-align: right">$21.14</td>
+							<td style="width: 17%; text-align: right">{{impuestos | currency}}</td>
 						</tr>
 						<tr>
 							<td style="width: 83%; text-align: right">Total</td>
-							<td style="width: 17%; text-align: right">$153.30</td>
+							<td style="width: 17%; text-align: right">{{pedido.total | currency}}</td>
 						</tr>
 						</tbody>
 					</table>

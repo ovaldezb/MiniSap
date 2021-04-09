@@ -29,15 +29,15 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
   $scope.lstVentas = [];
   $scope.idSelCompra = 0;
   $scope.idVenta = 0;
-  $scope.indexRowCompra = 0;
+  $scope.indexRowCompra = -1;
   $scope.importeNeto = 0;
   $scope.descuento = 0;
   $scope.dsctoValor = 0;
   $scope.impuestos = 0;
-  $scope.nombre_cliente = 'Ventas Mostrador';
+  $scope.nombre_cliente = '';
   $scope.rfc_cliente = '';
   $scope.idcliente = 0;
-  $scope.claveclte = 'C0000';
+  $scope.claveclte = '';
   $scope.fechaCorte = '';
   $scope.fechaTicket = '';
   $scope.pagos = '';
@@ -78,6 +78,9 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
   $scope.idvales = '0';
   $scope.idtarjeta = '0';
   $scope.idbanco = '0';
+  idventasmostrador = 0;
+  $scope.idOpSel = -1;
+  $scope.idxOperacion = -1;
   $scope.proddscnt ={
     producto:undefined,
     precio:undefined,
@@ -133,7 +136,6 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
   $scope.init = function()
   {
       $('#regcompra').prop('disabled',true);
-      $('#codigo_prodto').prop('disabled',true);
       var hoy = new Date();
       $scope.fechaCorte = hoy.getDate()+'/'+hoy.getMonth()+'/'+hoy.getFullYear();
       $http.get(pathAcc+'getdata',{responseType:'json'}).
@@ -149,6 +151,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
           $scope.getNextDocFact();
           $scope.getEmpresa();
           $scope.getvendedores();
+          $scope.getIdClienteVentasMostrador();
         }
       }).catch(function(err){
         console.log(err);
@@ -159,6 +162,21 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
       $scope.getvales();
   }
   
+
+  $scope.getIdClienteVentasMostrador = () =>{
+    $http.get(pathClte+'getidvtsmostr/'+$scope.idempresa)
+    .then(res=>{
+      if(res.data){
+        idventasmostrador = res.data[0].ID_CLIENTE;
+        $scope.idcliente = res.data[0].ID_CLIENTE;
+        $scope.claveclte = res.data[0].CLAVE;
+        claveCliente = res.data[0].CLAVE;
+        $scope.nombre_cliente = res.data[0].NOMBRE;
+        nombreCliente = res.data[0].NOMBRE;
+      }
+    }).catch();
+  }
+
   $scope.getNextDocTpv = function(){
 		$http.get(pathUtils+'incremento/TPVS/'+$scope.idempresa+'/7').
 		then(function(res)
@@ -332,7 +350,6 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
     $scope.proddscnt.producto = $scope.lstProdCompra[indexRowCompra].DESCRIPCION;
     $scope.proddscnt.precio= $scope.lstProdCompra[indexRowCompra].PRECIO_LISTA;
     $scope.proddscnt.descuento = $scope.lstProdCompra[indexRowCompra].DESCUENTO;
-    
   }
 
   $scope.manualenter = function()
@@ -361,29 +378,12 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
 		}
 	}
 
-  $scope.capturaRapida = function()
-  {
-    if($scope.captura_rapida)
-    {
-      $('#prod_desc').prop('disabled',true);
-      $('#codigo_prodto').prop('disabled',false);
-      $scope.counter = 1;
-  		$scope.cantidad = $scope.counter;
-    }else {
-      {
-        $('#prod_desc').prop('disabled',false);
-        $('#codigo_prodto').prop('disabled',true);
-        $scope.counter = 0;
-    		$scope.cantidad = $scope.counter;
-      }
-    }
-  }
 
   $scope.buscaprodbycodigo = function(event)
   {
     if(event.keyCode==13)
     {
-      $http.get(pathProd+'prodbycode/'+$scope.codigo_prodto,{responseType: 'json'}).
+      $http.get(pathProd+'prodbycode/'+$scope.codigo_prodto+'/'+$scope.idempresa+'/'+$scope.idsucursal,{responseType: 'json'}).
       then(function(res)
       {
         if(res.data != false)
@@ -395,6 +395,20 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
           $scope.iva = res.data[0].IVA;
           $scope.id_producto = res.data[0].ID_PRODUCTO;
           $scope.tipo_ps = res.data[0].TIPO_PS;
+          $scope.codigo_prodto = res.data[0].CODIGO;
+          $scope.cantProd = res.data[0].STOCK;
+          $scope.esPromo = res.data[0].ES_PROMO == 't' ? true:false;
+          $scope.esDscto = res.data[0].ES_DESCUENTO == 't' ? true:false;
+          $scope.descuento = res.data[0].PRECIO_DESCUENTO;
+          $scope.promocion = res.data[0].PRECIO_PROMO;
+
+          if($scope.tipo_ps =='S')
+          {
+            $scope.isVerifExis = false;
+          }else if($scope.tipo_ps =='P')
+          {
+            $scope.isVerifExis = true;
+          }
           if($scope.imagePath!='')
           {
             $('#imgfig').show();
@@ -620,10 +634,11 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
       {
         $scope.total += Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) ;
         $scope.dsctoValor += Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) * ($scope.lstProdCompra[i].ESDSCTO ? Number($scope.lstProdCompra[i].DESCUENTO/100) : 0);
-        $scope.importeNeto = $scope.total   / (1+Number($scope.lstProdCompra[i].IVA/100));
-        $scope.impuestos = ($scope.importeNeto) * Number($scope.lstProdCompra[i].IVA/100);
+        $scope.importeNeto += (Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) - Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) * ($scope.lstProdCompra[i].ESDSCTO ? Number($scope.lstProdCompra[i].DESCUENTO/100) : 0))  * (1-Number($scope.lstProdCompra[i].IVA/100));
+        $scope.impuestos += (Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) - Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) * ($scope.lstProdCompra[i].ESDSCTO ? Number($scope.lstProdCompra[i].DESCUENTO/100) : 0))* Number($scope.lstProdCompra[i].IVA/100);
       }
       $scope.total = Number($scope.total - $scope.dsctoValor).toFixed(2);
+      
     }
 
     $scope.buscacliente = function(event)
@@ -851,7 +866,8 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
         idsucursal:$scope.idsucursal,
         formapago: $scope.fact.req_factura ? $scope.cliente.id_forma_pago : null,
         usocfdi:$scope.fact.req_factura ? $scope.fact.usocfdi : null,
-        metodopago:$scope.fact.req_factura ? $scope.fact.metodopago : null
+        metodopago:$scope.fact.req_factura ? $scope.fact.metodopago : null,
+        contacto:null
       };
 
       if($scope.fact.tipopago==2){
@@ -866,9 +882,9 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
                     if($scope.fact.req_factura){
                       $scope.registraFactura(); 
                     }
-                    swal('La venta se registro exitosamente','Felicidades!','success');      
-                    //$scope.imprimeCompra();
+                    $scope.imprimeCompra();      
                     $scope.limpiaCompra();
+                    swal('La venta se registro exitosamente','Felicidades!','success');
                   })
                   .catch(function(err)
                   {
@@ -887,6 +903,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
           if($scope.fact.req_factura){
             $scope.registraFactura(); 
           }
+          $scope.imprimeCompra();
           swal('La venta se registro exitosamente','Felicidades!','success');    
           $scope.limpiaCompra();
         }).
@@ -898,41 +915,41 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
      
   }
 
-    $scope.limpiaCompra = function(){
-      $scope.lstProdCompra = [];
-      $scope.total = 0.0;
-      $scope.cambio = 0.0;
-      $scope.docto = '';
-      $scope.idcliente = 0;
-      $scope.nombre_cliente = 'Ventas Mostrador';
-      $scope.rfc_cliente = '';
-      $scope.claveclte = 'C0000';
-      $scope.idvendedor = '';
-      $scope.nombre_vendedor = '';
-      $scope.pago_efectivo = 0;
-      $scope.pago_tarjeta = 0.0;
-      $scope.pago_cheque = 0.0;
-      $scope.pago_vales = 0.0;
-      $scope.impuestos = 0.0;
-      $scope.importeNeto = 0.0;
-      $scope.rgstracompra = false;
-      $scope.cliente.dcredito = 0;
-      $scope.idbanco = '0';
-      $scope.idtarjeta = '0';
-      $scope.idvales = '0';
-      $('#regcompra').prop('disabled',true);
-      $scope.getNextDocTpv(); 
-    }
+  $scope.limpiaCompra = function(){
+    $scope.lstProdCompra = [];
+    $scope.total = 0.0;
+    $scope.cambio = 0.0;
+    $scope.docto = '';
+    $scope.idcliente = idventasmostrador;
+    $scope.nombre_cliente = nombreCliente;
+    $scope.rfc_cliente = '';
+    $scope.claveclte = claveCliente;
+    $scope.idvendedor = '';
+    $scope.nombre_vendedor = '';
+    $scope.pago_efectivo = 0;
+    $scope.pago_tarjeta = 0.0;
+    $scope.pago_cheque = 0.0;
+    $scope.pago_vales = 0.0;
+    $scope.impuestos = 0.0;
+    $scope.importeNeto = 0.0;
+    $scope.rgstracompra = false;
+    $scope.cliente.dcredito = 0;
+    $scope.idbanco = '0';
+    $scope.idtarjeta = '0';
+    $scope.idvales = '0';
+    $('#regcompra').prop('disabled',true);
+    $scope.getNextDocTpv(); 
+  }
 
-    $scope.limpiaCancelVenta = function(){
-      $scope.pago_efectivo = 0;
-      $scope.pago_tarjeta = 0.0;
-      $scope.pago_cheque = 0.0;
-      $scope.pago_vales = 0.0;
-      $scope.idbanco = '0';
-      $scope.idtarjeta = '0';
-      $scope.idvales = '0';
-    }
+  $scope.limpiaCancelVenta = function(){
+    $scope.pago_efectivo = 0;
+    $scope.pago_tarjeta = 0.0;
+    $scope.pago_cheque = 0.0;
+    $scope.pago_vales = 0.0;
+    $scope.idbanco = '0';
+    $scope.idtarjeta = '0';
+    $scope.idvales = '0';
+  }
 
     $scope.registraVentaProd = function()
     {
@@ -955,7 +972,8 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
           idcliente:$scope.idcliente,
           idproveedor:null,
           idusuario:null,
-          idmoneda:1 //la venta siempre es en pesos
+          idmoneda:1, //la venta siempre es en pesos
+          descuento:$scope.lstProdCompra[i].DESCUENTO == null ? 0 : $scope.lstProdCompra[i].DESCUENTO
         }
         $http.post(pathTpv+'registraventaprod',vntaProd).
         then(function(res)
@@ -1109,7 +1127,6 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
   }
 
   $scope.addDescuento = ()=>{
-    
     $scope.modalAddDscnt = true;
   }
 
@@ -1132,7 +1149,6 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
       $scope.formaPago = 'Cheque';
     }
     
-    document.getElementById("formapago").innerHTML = $scope.formaPago;
     var h = new Date();
     var ft = document.getElementById("fechaTicket");
     ft.innerHTML = formatDateInsert(h);
@@ -1149,10 +1165,12 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
     $scope.modalAddDscnt = false;
     $scope.proddscnt.descuento = '';
     $scope.proddscnt.descuentoTodos = '';
+    $scope.indexRowCompra = -1
   }
 
   $scope.escondeRenglon = () =>{
     $scope.proddscnt.producto = undefined;
+    $scope.indexRowCompra = -1
   }
 
   $scope.calculaDescInd = () =>{
@@ -1198,11 +1216,10 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
     var year = hoy.getFullYear();
     $http.get(pathTpv+'getdataoper/'+$scope.idempresa+'/'+$scope.aniofiscal+'/'+(mes+'-'+dia+'-'+year+' 00:00:00')+'/'+(mes+'-'+dia+'-'+year+' 23:59:59'))
         .then(res=>{
-            if(res.data.ventas.length > 0){
-              $scope.lstVentas = res.data.ventas;
+              $scope.lstVentas = res.data.ventas ? res.data.ventas : [];
               $scope.pagos = res.data.pagos;
               $scope.tipopago = res.data.tipopago;
-            }
+              $scope.cancelados = res.data.cancelados.TOTAL;
         })
         .catch(err => {
           console.log(err);
@@ -1214,6 +1231,9 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
     $scope.lstVentas = [];
     $scope.pagos = '';
     $scope.tipopago = '';
+    $scope.idOpSel = -1;
+    $scope.idxOperacion = -1;
+    $scope.limpiaCompra();
   }
 
   $scope.corteCaja = ()=>{
@@ -1224,7 +1244,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
     var dataFactura = {
       documento: $scope.fact.documento,
       ffactura: formatDateInsert(new Date()),
-      idcliente: 'C0000',
+      idcliente: idventasmostrador, 
       importe: 0,
       saldo: 0,
       tipopago:1,
@@ -1236,7 +1256,8 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
       idsucursal:$scope.idsucursal,
       formapago:null,
       usocfdi:null,
-      metodopago:null
+      metodopago:null,
+      contacto:null
     };
     
     swal({
@@ -1266,20 +1287,63 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
                 .catch(err => {
                   console.log(err);
                 });
-              }              
+              }
+            swal('Se ha hecho el corte de caja','Ok','success');
+            $scope.lstVentas = [];
+            $scope.closeOperaciones();           
               
             })
             .catch(err =>{
               console.log(err);
             });
-          }else{
-
           }
-          swal('Se ha hecho el corte de caja','Ok','success');
-            $scope.lstVentas = [];
-            $scope.closeOperaciones();
         }
       });
+    }
+
+    $scope.selOperacion = (idOperacion, index)=>{
+      $scope.idOpSel = idOperacion;
+      $scope.idxOperacion = index;
+      $scope.lstProdCompra = [];
+      $http.get(pathTpv+'datoimprtkt/'+$scope.idOpSel)
+      .then(res =>{
+        if(res.data){
+          $scope.lstProdCompra = res.data.ventas;
+          $scope.docto = res.data.datos.DOCUMENTO.trim();
+          $scope.nombre_cliente = res.data.datos.NOMBRE;
+          $scope.pago_efectivo = res.data.datos.PAG_EFECTIVO;
+          $scope.pago_tarjeta = res.data.datos.PAG_TARJETA;
+          $scope.pago_vales = res.data.datos.PAG_VALES;
+          $scope.pago_cheque = res.data.datos.PAG_CHEQUE; 
+          $scope.calculaValoresMostrar();       
+        }
+      })
+      .catch(err=>{
+        console.log(err);
+      });
+    }
+
+
+    $scope.eliminaOperacion = () =>{
+      swal({
+        title: "Esta seguro que desea eliminar la operación, una vez hecho esto, no se podrá recuperar!",
+        text: "Continuar?",
+        icon: "warning",
+        buttons: [true,true],
+        dangerMode: true,
+      })
+      .then(answer=>{
+        if(answer){
+          $http.delete(pathTpv+'deloperacion/'+$scope.idOpSel)
+          .then(res =>{
+            $scope.abreOperaciones();
+            swal('Se ha eliminado la operación con éxito!');
+          })
+          .catch(err=>{
+
+          });
+        }
+      })
     }
 
   });

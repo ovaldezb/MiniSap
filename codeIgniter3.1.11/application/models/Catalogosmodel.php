@@ -55,7 +55,7 @@ class Catalogosmodel extends CI_model
 
 	function get_regimenes()
 	{
-		$query = 'SELECT * FROM "REGIMEN"';
+		$query = 'SELECT * FROM "REGIMEN" ORDER BY "CLAVE"';
 		$result = pg_fetch_all(pg_query($this->conn, $query));
 		return $result;
 	}

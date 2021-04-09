@@ -153,6 +153,14 @@ class Clientemodel extends CI_model
 		$result = pg_fetch_all(pg_execute($this->conn,"selqry",array($idcliente,$anioFiscal,$idcliente,$anioFiscal)));
 		return json_encode($result);
   }
+
+  function get_id_clte_ventasmostrador($idempresa){
+    $query = 'SELECT "ID_CLIENTE","CLAVE","NOMBRE"
+							FROM  "CLIENTE" WHERE "CLAVE" = \'0001\' AND "ID_EMPRESA"=$1';
+		pg_prepare($this->conn,"selqry",$query);
+		$result = pg_fetch_all(pg_execute($this->conn,"selqry",array($idempresa)));
+		return json_encode($result,JSON_NUMERIC_CHECK);
+  }
 }
 
 ?>

@@ -22,6 +22,7 @@ var pathCargaMasiva = pathCliente + 'cargamasiva/';
 var pathInv = pathCliente+'inventario/';
 var pathCob = pathCliente+'cobranza/';
 var pathPag = pathCliente+'pagos/';
+var pathCorte = pathCliente+'cortecaja/';
 var app = angular.module("myApp", ["ngRoute","chart.js"]);
 app.config(function($routeProvider) {
     $routeProvider
@@ -87,6 +88,9 @@ app.config(function($routeProvider) {
     })
     .when("/pago/:idproc",{
       templateUrl : pathPag
+    })
+    .when("/crdc/:idproc",{
+      templateUrl : pathCorte
     });
 });
 

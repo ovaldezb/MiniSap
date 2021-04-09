@@ -60,15 +60,16 @@ class Pedidos extends CI_Controller
 
 	function registrapedidoprod()
 	{
+    /**Se removio la sucursal, no recuerdo para que se requeria */
 		$data = json_decode(file_get_contents("php://input"),true);
-		$result = $this->pedidosmodel->registra_pedido_producto(
+		$result = $this->pedidosmodel->registra_pedido_producto(array(
 			$data['idpedido'],
 			$data['idProducto'],
 			$data['cantidad'],
 			$data['precio'],
 			$data['importe'],
-			$data['idsucursal']
-		);
+      $data['descuento']
+    ));
 		return $this->output
 					 ->set_content_type('application/json')
 					 ->set_output($result);

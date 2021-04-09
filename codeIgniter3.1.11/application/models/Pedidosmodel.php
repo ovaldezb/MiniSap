@@ -20,11 +20,13 @@ class Pedidosmodel extends CI_model
 		return json_encode($result);
 	}
 
-	function registra_pedido_producto($idventa,$idProducto,$cantidad,$precio,$importe,$idsucursal)
+	function registra_pedido_producto($pedido_data)
 	{
-		$pstmt = 'SELECT * FROM pedido_producto($1,$2,$3,$4,$5,$6)';
+		$pstmt = 'INSERT INTO "PEDIDO_PRODUCTO" 
+    ("ID_PEDIDO","ID_PRODUCTO","CANTIDAD","PRECIO","IMPORTE","DESCUENTO") 
+    VALUES($1,$2,$3,$4,$5,$6)';
 		pg_prepare($this->conn,"prstmt",$pstmt);
-		$result = pg_fetch_all(pg_execute($this->conn, "prstmt", array($idventa,$idProducto,$cantidad,$precio,$importe,$idsucursal)));
+		$result = pg_fetch_all(pg_execute($this->conn, "prstmt", $pedido_data));
 		return json_encode($result);
 	}
 
@@ -53,7 +55,7 @@ class Pedidosmodel extends CI_model
 			P."DOCUMENTO", 
 			C."NOMBRE" AS "CLIENTE", 
 			C."CLAVE", V."NOMBRE" AS "VENDEDOR", 
-			P."FECHA_PEDIDO", 
+			TO_CHAR(P."FECHA_PEDIDO",\'DD-Mon-YYYY HH24:MM\') as "FECHA_PEDIDO", 
 			P."IMPORTE", 
 			P."VENDIDO"
 		FROM "PEDIDOS" AS P
@@ -61,7 +63,7 @@ class Pedidosmodel extends CI_model
 		INNER JOIN "VENDEDOR" AS V ON V."ID_VENDEDOR" = P."ID_VENDEDOR"
 		WHERE P."ID_EMPRESA" = $1
 		AND P."ANIO_FISCAL" = $2
-		ORDER BY P."DOCUMENTO"';
+		ORDER BY P."FECHA_PEDIDO" DESC';
 		pg_prepare($this->conn,"select_venta",$query);
 		$result = pg_fetch_all(pg_execute($this->conn,"select_venta",array($idempresa,$aniofiscal)));
 		return json_encode($result,JSON_NUMERIC_CHECK);
@@ -94,6 +96,8 @@ class Pedidosmodel extends CI_model
 	function getpedidodetallebyid($idPedido){
 		$query = 'SELECT VP."CANTIDAD",VP."PRECIO" as "PRECIO_LISTA",
 				VP."IMPORTE",
+        VP."DESCUENTO",
+        \'true\' as "ESDSCTO",
 				TRIM(P."DESCRIPCION") as "DESCRIPCION",
 				TRIM(P."UNIDAD_MEDIDA") as "UNIDAD_MEDIDA", 
 				TRIM(P."COD_CFDI") as "COD_CFDI",

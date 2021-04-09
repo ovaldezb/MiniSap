@@ -159,6 +159,13 @@ class Cliente extends CI_Controller
 		->set_output($result);
   }
 
+  function getidvtsmostr($idempresa){
+    $result = $this->clientemodel->get_id_clte_ventasmostrador($idempresa);
+		return $this->output
+		->set_content_type('application/json')
+		->set_output($result);
+  }
+
 }
 
 ?>

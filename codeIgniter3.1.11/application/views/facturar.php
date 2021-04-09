@@ -21,9 +21,25 @@
 					<p class="level-item" ng-show="permisos.alta">
 						<a ng-click="agregaFactura();"><span class="icon has-text-success"><i class="fas fa-plus-square" title="Agrega Factura"></i></span></a></p>
 					<p class="level-item" ng-show="permisos.modificacion">
-						<a ng-click="abreFactura()"><span class="icon has-text-info"><i class="fas fa-edit" title="Ver Factura"></i></span></a></p>
+						<a ng-show="indexRowFactura == -1">
+              <span class="icon has-text-info"><i class="fas fa-edit" title="Ver Factura" style="color:grey"></i></span>
+            </a>
+            <a ng-click="abreFactura()" ng-show="indexRowFactura != -1">
+              <span class="icon has-text-info"><i class="fas fa-edit" title="Ver Factura"></i></span>
+            </a>
+          </p>
 					<p class="level-item" ng-show="permisos.baja">
-						<a ng-click="preguntaElimnaFactura()"><span class="icon has-text-danger"><i class="far fa-trash-alt" title="Elimina Factura"></i></span></a></p>
+						<a ng-show="indexRowFactura == -1">
+              <span class="icon has-text-danger">
+                <i class="far fa-trash-alt" title="Elimina Factura" style="color:grey"></i>
+              </span>
+            </a>
+            <a ng-click="preguntaElimnaFactura()" ng-show="indexRowFactura != -1">
+              <span class="icon has-text-danger">
+                <i class="far fa-trash-alt" title="Elimina Factura"></i>
+              </span>
+            </a>
+          </p>
 				</div>
 			</nav>
 		</div>
@@ -31,7 +47,7 @@
 			<table style="width:99.5%">
 				<tr>
 					<td>
-						<table class="table is-bordered" style="width:100%">
+						<table class="table is-bordered" style="width:99%">
 							<colgroup>						
 							<col width="9%">
 							<col width="9%">
@@ -50,7 +66,7 @@
 								<td style="text-align:center;font-size:12px">CLIENTE</td>
 								<td style="text-align:center;font-size:12px">IMPORTE</td>
 								<td style="text-align:center;font-size:12px">SALDO</td>
-								<td style="text-align:center;font-size:12px">FORMA DE PAGO</td>
+								<td style="text-align:center;font-size:12px">F/PAGO</td>
 								<td style="text-align:center;font-size:12px">REVISION</td>
 								<td style="text-align:center;font-size:12px">VENCE</td>
 								<td style="text-align:center;font-size:12px">PEDIDO</td>
@@ -117,14 +133,6 @@
 									<div class="select is-small">
 										<select class="select is-small" ng-model="factura.idmoneda" ng-options="x.ID_MONEDA as x.NOMBRE for x in lstMoneda"></select>
 									</div>
-								</div>
-							</div>
-							<div class="columns">
-								<div class="column is-narrow" style="margin-left:-15px">
-									<p class="control">
-									<label class="label">Captura Rápida</label>
-									<input type="checkbox" ng-model="captura_rapida" ng-click="capturaRapida()" name="caprap" >
-									</p>
 								</div>
 							</div>
 						</div>
@@ -269,12 +277,6 @@
 									<input type="number" class="input is-small" value="0" ng-model="factura.dias" ng-disabled="factura.tpago == 1">
 								</div>
 								<div class="column is-narrow" style="width:55px;margin-left:-20px">dias</div>
-								<div class="column is-narrow" style="width:82px;margin-right:-20px">
-									<label class="label">% Desc</label>
-								</div>
-								<div class="column is-narrow" style="width:75px;margin-rigth:-10px">
-									<input type="number" class="input is-small" ng-model="factura.descuento" style="text-align:center">
-								</div>
 								<div class="column is-narrow" style="width:40px;margin-rigth:-10px">
 									<label for="entregar" class="label">Iva</label>
 								</div>
@@ -334,14 +336,17 @@
 							</div>
 						</div>
 						<div class="level-right">
-						<div class="level-item">
+              <div class="level-item" ng-show="lstProdCompra.length > 0">
+                <button class="button is-info" ng-click="addDescuento()">Descuento</button>
+              </div>
+						  <div class="level-item">
 								<button class="button is-success" ng-click="verificaExistencia()" style="display:{{isVerifExis ? 'block':'none'}}">Verificar Existencia</button>
 							</div>
 						</div>
 					</nav>
 					<div class="columns" ng-show="!isImprimir">
 						<div class="column is-2">
-							<input type="text" id="codigo_prodto" ng-model="producto.codigo_prodto"  ng-keyup="buscaprodbycodigo($event)" class="input is-small" >
+							<input type="text" ng-model="producto.codigo_prodto"  ng-keyup="buscaprodbycodigo($event)" class="input is-small" >
 						</div>
 						<div class="column is-4">
 							<input type="text"  ng-model="producto.prod_desc" ng-keyup="buscprodbydesc($event)" class="input is-small" >
@@ -365,7 +370,7 @@
 						<div class="column is-small">
 							<input type="text" class="input is-small" id="precio" ng-model="producto.precio" style="text-align:right;" disabled>
 						</div>
-						<div class="column is-narrow" style="display:{{agregaProd==true ? 'block':'none'}}">
+						<div class="column is-narrow">
 							<a ng-click="agregaProducto()" aria-label="like" >
 							<span class="icon has-text-success" >
 								<i class="fas fa-plus-square" title="Agrega el producto actual"></i>
@@ -433,51 +438,44 @@
 					</div>
 					<div class="columns">
 						<div class="column">
-							<table border="1" style="width:100%; border: 2px blue">
-								<tr>
-									<td>
-										<table class="table" style="width:100%">
-											<colgroup>
-												<col width="40%">
-												<col width="15%">
-												<col width="15%">
-												<col width="15%">
-												<col width="15%">
-											</colgroup>											
-											<tr class="tbl-header">
-												<td>Descripción</td>
-												<td style="text-align:center">Cantidad</td>
-												<td style="text-align:center">Unidad</td>
-												<td style="text-align:right">Precio</td>
-												<td style="text-align:right">Importe</td>
-											</tr>
-											
-										</table>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<div style="width:100%; height:285px; overflow:auto;">
-											<table class="table" style="width:100%;">
-												<colgroup>
-													<col width="40%">
-													<col width="15%">
-													<col width="15%">
-													<col width="15%">
-													<col width="15%">
-											</colgroup>
-												<tr ng-repeat="p in lstProdCompra" ng-click="setSelected($index,p.CODIGO)" ng-class="{selected: p.CODIGO === idSelCompra}">
-													<td class="font12">{{p.DESCRIPCION}}</td>
-													<td class="font12" style="text-align:center">{{p.CANTIDAD}}</td>
-													<td class="font12" style="text-align:center">{{p.UNIDAD_MEDIDA}}</td>
-													<td class="font12" style="text-align:right">$ {{p.PRECIO_LISTA | number:2}}</td>
-													<td class="font12" style="text-align:right">$ {{p.IMPORTE | number:2}}</td>
-												</tr>
-											</table>
-									</div>
-									</td>
-								</tr>
-							</table>
+              <table class="table is-bordered" style="width:100%">
+                <colgroup>
+                  <col width="38%">
+                  <col width="15%">
+                  <col width="15%">
+                  <col width="10%">
+                  <col width="10%">
+                  <col width="12%">
+                </colgroup>											
+                <tr class="tbl-header">
+                  <td>Descripción</td>
+                  <td style="text-align:center">Cantidad</td>
+                  <td style="text-align:center">Unidad</td>
+                  <td style="text-align:right">Precio</td>
+                  <td style="text-align:right">Dscto</td>
+                  <td style="text-align:right">Importe</td>
+                </tr>
+              </table>
+              <div style="width:100%; height:285px; overflow:auto;margin-top:-25px">
+                <table class="table is-bordered" style="width:100%;">
+                  <colgroup>
+                    <col width="38%">
+                    <col width="15%">
+                    <col width="15%">
+                    <col width="10%">
+                    <col width="10%">
+                    <col width="12%">
+                  </colgroup>
+                  <tr ng-repeat="p in lstProdCompra" ng-click="setSelected($index,p.CODIGO)" ng-class="{selected: p.CODIGO === idSelCompra}">
+                    <td class="font12">{{p.DESCRIPCION}}</td>
+                    <td class="font12" style="text-align:center">{{p.CANTIDAD}}</td>
+                    <td class="font12" style="text-align:center">{{p.UNIDAD_MEDIDA}}</td>
+                    <td class="font12" style="text-align:right">{{p.PRECIO_LISTA | currency}}</td>
+                    <td class="font12" style="text-align:right">{{p.DESCUENTO * p.CANTIDAD * p.PRECIO_LISTA / 100 | currency}}</td>
+                    <td class="font12" style="text-align:right">{{p.IMPORTE | currency}}</td>
+                  </tr>
+                </table>
+							</div>
 						</div>
 					</div>
 					<button class="button is-info is-rounded" ng-click="registraFactura()" ng-disabled="regfactura" >Registrar</button>
@@ -572,6 +570,141 @@
 			</div>
 		</div>
 	</div>
+
+<div class="{{modalVerifProdSuc ? 'modal is-active' : 'modal' }}" id="avisoborrar">
+		<div class="modal-background"></div>
+		<div class="modal-card">
+			<header class="modal-card-head">
+				<p class="modal-card-title">Verifica Existencia de Productos</p>
+				<button class="delete" aria-label="close" ng-click="closeVerifProdSuc();"></button>
+			</header>
+			<section class="modal-card-body">
+				<label class="label">Filtro:<input type="text" class="input is-small" onKeyUp="doFilter(this.value,'lstPrdSucExis')"></label>
+				<table style="width:100%">
+					<tr>
+						<td>
+							<table class="table" style="width:100%" border="1">
+								<col width="10%">
+								<col width="20%">
+								<col width="60%">
+								<col width="10%">
+								<tr>
+									<td>No</td>
+									<td ng-click="orderByMe('ALIAS')">Alias</td>
+									<td style="text-align:center" ng-click="orderByMe('DIRECCION')">DIRECCION</td>
+									<td ng-click="orderByMe('STOCK')">Existencias</td>
+								</tr>
+							</table>
+						</td>
+					<tr>
+					<tr>
+						<td>
+							<div style="width:100%; height:300px; overflow:auto;">
+								<table class="table is-striped" border="1" style="width:100%" id="lstPrdSucExis">
+									<col width="10%">
+									<col width="20%">
+									<col width="60%">
+									<col width="10%">
+									<tr ng-repeat="x in lstPrdSucExis |orderBy:myOrderBy:sortDir" >
+										<td>{{$index+1}}</td>
+										<td>{{x.ALIAS}}</td>
+										<td>{{x.DIRECCION}}</td>
+										<td style="text-align:right">{{x.STOCK}}</td>
+									</tr>
+								</table>
+						</div>
+						</td>
+					<tr>
+				</table>
+			</section>
+			<footer class="modal-card-foot">
+				<button class="button" ng-click="closeVerifProdSuc();">Cerrar</button>
+			</footer>
+		</div>
+	</div>
+
+  <div class="{{modalAddDscnt ? 'modal is-active' : 'modal' }}" id="adddscnt">
+		<div class="modal-background"></div>
+		<div class="modal-card" style="width:700px">
+			<header class="modal-card-head">
+				<p class="modal-card-title">Agregar descuento a los Productos</p>
+				<button class="delete" aria-label="close" ng-click="closeAddDscnt();"></button>
+			</header>
+			<section class="modal-card-body">				
+				<div class="columns" ng-show="!proddscnt.producto">
+					<div class="column is-5">Descuento total:</div>
+					<div class="column is-2"><input type="number" class="input is-small" ng-model="proddscnt.descuentoTodos" ng-keyup="calculaDescTodos()"></div>
+					
+				</div>
+				<div class="columns" ng-show="proddscnt.producto">
+					<div class="column is-5">{{proddscnt.producto}}</div>
+					<div class="column is-2">{{proddscnt.precio | currency}}</div>						
+					<div class="column is-2"><input type="number" class="input is-small is-1" ng-keyup="calculaDescInd()" ng-chage="calculaDescInd()" ng-model="proddscnt.descuento"></div>
+					
+					<div class="column is-2">
+						<a ng-click="escondeRenglon()">
+							<span class="icon has-text-danger">
+								<i title="Limpia el renglon" class="fas fa-times-circle"></i>
+							</span>
+						</a>
+					</div>
+				</div>
+					
+				<table style="width:100%">
+					<tr>
+						<td>
+							<table class="table is-bordered" style="width:100%" >
+								<colgroup>
+									<col width="36%">
+									<col width="15%">
+									<col width="12%">
+									<col width="12%">
+									<col width="15%">
+									<col width="10%">
+								</colgroup>
+								<tr class="tbl-header">
+									<td style="text-align:left">Descripción</td>
+									<td style="text-align:center">Cantidad</td>
+									<td style="text-align:center">Unidad</td>
+									<td style="text-align:center">Precio</td>
+									<td style="text-align:center">Importe</td>
+									<td style="text-align:center">Desc</td>
+								</tr>
+							</table>
+						</td>
+					<tr>
+					<tr>
+						<td>
+							<div style="width:100%; height:150px; overflow:auto;">
+								<table class="table is-bordered is-hoverable" style="width:100%;">
+									<colgroup>
+										<col width="36%">
+										<col width="15%">
+										<col width="12%">
+										<col width="12%">
+										<col width="15%">
+										<col width="10%">
+									</colgroup>
+									<tr ng-repeat="p in lstProdCompra" ng-click="setSelectedDscnt($index)" ng-class="{selected: $index === indexRowCompra}">
+										<td class="font12">{{p.DESCRIPCION}}</td>
+										<td class="font12" style="text-align:center">{{p.CANTIDAD}}</td>
+										<td class="font12" style="text-align:center">{{p.UNIDAD_MEDIDA}}</td>
+										<td class="font12" style="text-align:right">{{p.PRECIO_LISTA | currency}}</td>
+										<td class="font12" style="text-align:right">{{p.IMPORTE | currency}}</td>
+										<td class="font12" style="text-align:center">{{p.DESCUENTO}}%</td>
+									</tr>
+								</table>	
+							</div>
+						</td>
+					<tr>
+				</table>
+			</section>
+			<footer class="modal-card-foot">
+				<button class="button" ng-click="closeAddDscnt();">Cerrar</button>
+			</footer>
+		</div>
+	</div>
+
 	<div class="{{modalVerifProdSuc ? 'modal is-active' : 'modal' }}" id="avisoborrar">
 		<div class="modal-background"></div>
 		<div class="modal-card">
@@ -749,6 +882,7 @@
 				<button class="delete" aria-label="close" ng-click="closeInputData()"></button>
 			</header>
 			<section class="modal-card-body">
+        <label class="label">Filtro:<input type="text" class="input is-small" onKeyUp="doFilter(this.value,'tblPedidos')"></label>
 				<table class="table is-bordered" style="width:100%">
         <thead>
 					<tr>
@@ -761,19 +895,19 @@
           </thead>
 				</table>
 				<div style="width:100%; height:500px; overflow:auto; margin-top:-24px; border:2px solid black">
-					<table class="table is-hoverable" style="width:100%" id="tblClientes">
+					<table class="table is-hoverable" style="width:100%" id="tblPedidos">
 						<tr ng-repeat="x in lstPedidos" ng-click="selectRowPedido(x.DOCUMENTO,$index)" ng-class="{selected: x.DOCUMENTO === idDocumento}">
-							<td style="text-align:center;width:60px">{{x.DOCUMENTO}}</td>
-							<td style="text-align:center;width:150px">{{x.CLIENTE}}</td>
-							<td style="text-align:center;width:120px">{{x.FECHA_PEDIDO}}</td>
-							<td style="text-align:right;width:80px">{{x.IMPORTE | currency}}</td>
-							<td style="text-align:right;width:100px">{{x.VENDEDOR}}</td>
+							<td class="font12" style="text-align:center;width:60px">{{x.DOCUMENTO}}</td>
+							<td class="font12" style="text-align:center;width:150px">{{x.CLIENTE}}</td>
+							<td class="font12" style="text-align:center;width:120px">{{x.FECHA_PEDIDO}}</td>
+							<td class="font12" style="text-align:right;width:80px">{{x.IMPORTE | currency}}</td>
+							<td class="font12" style="text-align:right;width:100px">{{x.VENDEDOR}}</td>
 						</tr>
 					</table>
 				</div>
 			</section>
 			<footer class="modal-card-foot">
-				<button class="button is-success" ng-click="seleccionarPedido()">Seleccionar</button>
+				<button class="button is-success" ng-click="seleccionarPedido()" ng-disabled="indexRowPedido == -1">Seleccionar</button>
 				<button class="button" ng-click="closeInputData()">Cerrar</button>
 			</footer>
 		</div>

@@ -100,13 +100,15 @@ class Facturacionmodel extends CI_model
 		CASE WHEN E."NOMBRE" IS NULL THEN \'Ventas Mostrador\' ELSE E."NOMBRE"END as "VENDEDOR", F."ID_TIPO_PAGO",
 		CASE WHEN C."DIAS_CREDITO" IS NULL THEN 0 ELSE C."DIAS_CREDITO" END as "DIAS_CREDITO",
 		TO_CHAR(F."FECHA_REVISION",\'dd-MM-yyyy\') as "FECHA_REVISION",
-		TO_CHAR(F."FECHA_VENCIMIENTO",\'dd-MM-yyyy\') as "FECHA_VENCIMIENTO"
+		TO_CHAR(F."FECHA_VENCIMIENTO",\'dd-MM-yyyy\') as "FECHA_VENCIMIENTO",
+    V."ID_VENTA"
 		FROM "FACTURA" as F
 		LEFT JOIN "CLIENTE" as C ON C."ID_CLIENTE" = F."ID_CLIENTE"
 		lEFT JOIN "VENDEDOR" as E ON E."ID_VENDEDOR" = F."ID_VENDEDOR"
+    LEFT JOIN "VENTAS" as V ON V."ID_FACTURA" = F."ID_FACTURA"
 		WHERE F."ID_EMPRESA" = $1 
 		AND F."ANIO_FISCAL" = $2
-		ORDER BY F."ID_FACTURA"';
+		ORDER BY F."FECHA_FACTURA" DESC';
 		pg_prepare($this->conn,"select_fact",$query);
 		$result = pg_fetch_all(pg_execute($this->conn,"select_fact",$arrayData));
 		return json_encode($result);
