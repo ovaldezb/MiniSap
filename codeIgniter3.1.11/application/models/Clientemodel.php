@@ -98,8 +98,12 @@ class Clientemodel extends CI_model
 	function delete_cliente($_idCliente)
 	{
 		$query = 'UPDATE "CLIENTE" SET "ACTIVO" = false WHERE "ID_CLIENTE" = $1';
-		$result = pg_prepare($this->conn,"deletequery",$query);
-		$result = pg_execute($this->conn,"deletequery",array($_idCliente));
+		pg_prepare($this->conn,"deletequery1",$query);
+		$result = pg_execute($this->conn,"deletequery1",array($_idCliente));
+    
+    $query2 = 'DELETE FROM "DOMICILIOS" WHERE "ID_CLIENTE" = $1';
+		pg_prepare($this->conn,"deletequery2",$query);
+		$result2 = pg_execute($this->conn,"deletequery2",array($_idCliente));
 		return $result;
 	}
 
@@ -159,6 +163,27 @@ class Clientemodel extends CI_model
 							FROM  "CLIENTE" WHERE "CLAVE" = \'0001\' AND "ID_EMPRESA"=$1';
 		pg_prepare($this->conn,"selqry",$query);
 		$result = pg_fetch_all(pg_execute($this->conn,"selqry",array($idempresa)));
+		return json_encode($result,JSON_NUMERIC_CHECK);
+  }
+
+  function save_domicilio($data){
+    $query = 'INSERT INTO "DOMICILIOS" ("ID_CLIENTE","LUGAR","CALLE","COLONIA","CIUDAD","LATITUD","LONGITUD","CONTACTO","CP") VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9) ';
+		pg_prepare($this->conn,"insert_query",$query);
+		$result = pg_execute($this->conn,"insert_query",$data);
+		return $result;
+  }
+
+  function delete_domicilios($idcliente){
+    $query = 'DELETE FROM "DOMICILIOS" WHERE "ID_CLIENTE" = $1 ';
+		pg_prepare($this->conn,"insert_query",$query);
+		$result = pg_execute($this->conn,"insert_query",array($idcliente));
+		return json_encode($result,JSON_NUMERIC_CHECK);
+  }
+
+  function get_domi_by_id($idcliente){
+    $query = 'SELECT "ID_CLIENTE",TRIM("LUGAR") as "LUGAR", "CALLE", TRIM("CIUDAD") as "CIUDAD", "COLONIA", "CONTACTO","LATITUD","LONGITUD","CP" FROM "DOMICILIOS" WHERE "ID_CLIENTE"=$1';
+		pg_prepare($this->conn,"selqry",$query);
+		$result = pg_fetch_all(pg_execute($this->conn,"selqry",array($idcliente)));
 		return json_encode($result,JSON_NUMERIC_CHECK);
   }
 }

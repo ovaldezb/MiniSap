@@ -138,7 +138,7 @@ class Reportemodel extends CI_model
 	}
 
   function get_valor_inventario($idEmpresa){
-    $query = 'SELECT X."LINEA", X."SUMA", X."SUMA"/R."TOTAL" * 100 as "PORCENTAJE"
+    $query = 'SELECT X."LINEA", X."SUMA", \'$\'||TRIM(TO_CHAR(X."SUMA",\'999,999,999.99\')) as "SUMACURR", X."SUMA"/R."TOTAL" * 100 as "PORCENTAJE"
               FROM
               (SELECT TRIM(L."NOMBRE") as "LINEA", SUM( P."PRECIO_COMPRA" * S."STOCK" ) as "SUMA" 
               FROM "PRODUCTO" as P
@@ -165,6 +165,43 @@ class Reportemodel extends CI_model
     pg_prepare($this->conn,"ventas_aniofiscal",$query);
     $result = pg_fetch_all(pg_execute($this->conn,"ventas_aniofiscal",array($idEmpresa,$anioFiscal)));
     return $result;
+  }
+
+  function get_cuentas_x_cobrar($idEmpresa,$anioFiscal){
+    $query = 
+    'SELECT X."SALDO" as "SALDO",\'$\'||TRIM(TO_CHAR(X."SALDO",\'999,999,999.99\')) as "SALDOCURR", X."NOMBRE" as "CLIENTE", X."SALDO"/Z."TOTAL" * 100 as "PORCENTAJE"
+    FROM 
+    (SELECT SUM(F."SALDO") as "SALDO", C."NOMBRE" 
+     FROM "FACTURA" as F
+     INNER JOIN "CLIENTE" as C ON C."ID_CLIENTE"  = F."ID_CLIENTE" 
+     WHERE F."ID_EMPRESA" = $1
+     AND F."ANIO_FISCAL" = $2
+     AND "SALDO" <> 0
+     GROUP BY C."NOMBRE" ) as X,
+    (SELECT SUM(Y."SALDO") as "TOTAL" 
+     FROM "FACTURA" as Y WHERE Y."ID_EMPRESA" = $3 
+     AND Y."ANIO_FISCAL" = $4 ) as Z';
+    pg_prepare($this->conn,"cuentasxcobrar",$query);
+    $result = pg_fetch_all(pg_execute($this->conn,"cuentasxcobrar",array($idEmpresa,$anioFiscal,$idEmpresa,$anioFiscal)));
+    return json_encode($result, JSON_NUMERIC_CHECK);
+  }
+
+  function get_cuentas_x_pagar($idEmpresa,$anioFiscal){
+    $query = 
+    'SELECT X."SALDO", \'$\'||TRIM(TO_CHAR(X."SALDO",\'999,999,999.99\')) as "SALDOCURR",X."SALDO" / Y."TOTAL" as "PORCENTAJE", X."NOMBRE"
+    FROM
+    (SELECT SUM("SALDO") as "SALDO",TRIM("NOMBRE") as "NOMBRE"
+    FROM "COMPRAS" as C
+    INNER JOIN "PROVEEDORES" as P ON P."ID_PROVEEDOR" = C."ID_PROVEEDOR"
+    WHERE C."ID_EMPRESA" = $1
+    AND C."ANIO_FISCAL" = $2
+    GROUP BY "NOMBRE") as X,
+    (SELECT SUM("SALDO") as "TOTAL" FROM "COMPRAS"
+    WHERE "ID_EMPRESA" = $3
+    AND "ANIO_FISCAL" = $4 ) as Y';
+    pg_prepare($this->conn,"cuentasxcobrar",$query);
+    $result = pg_fetch_all(pg_execute($this->conn,"cuentasxcobrar",array($idEmpresa,$anioFiscal,$idEmpresa,$anioFiscal)));
+    return json_encode($result, JSON_NUMERIC_CHECK);
   }
 
 }

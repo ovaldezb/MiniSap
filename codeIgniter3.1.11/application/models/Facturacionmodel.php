@@ -12,7 +12,7 @@ class Facturacionmodel extends CI_model
 	}
 
 
-	function registra_pedido($pedido_data)
+	/*function registra_pedido($pedido_data)
 	{
 		$pstmt = 'SELECT * FROM registra_pedido($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,false)';
 		pg_prepare($this->conn,"prstmt",$pstmt);
@@ -75,13 +75,11 @@ class Facturacionmodel extends CI_model
 		$query ='DELETE FROM "PEDIDOS" WHERE "ID_PEDIDO"=$1';
 		pg_prepare($this->conn,"del_pedido",$query);
 		$result = pg_execute($this->conn,"del_pedido",array($idPedido));
-		
 		$query ='DELETE FROM "PEDIDO_PRODUCTO" WHERE "ID_PEDIDO"=$1';
 		pg_prepare($this->conn,"del_pedido_det",$query);
 		$result = pg_execute($this->conn,"del_pedido_det",array($idPedido));
-		
 		return json_encode($result);
-	}
+	}*/
 
 	function savefactura($arrayDatFact){
 		$query = 'SELECT * FROM registra_factura($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16)';

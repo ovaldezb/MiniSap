@@ -1,4 +1,4 @@
-app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
+app.controller('myCtrlTpv', function($scope,$http,$interval,$routeParams)
 {
   $scope.fecha = formatDatePrint(new Date());
   $scope.fechaPantalla = formatDatePantalla(new Date());
@@ -81,6 +81,14 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
   idventasmostrador = 0;
   $scope.idOpSel = -1;
   $scope.idxOperacion = -1;
+  $scope.idUsuario = '';
+  $scope.idProceso = $routeParams.idproc;
+  $scope.permisos = {
+    alta: false,
+    baja: false,
+    modificacion:false,
+    consulta:false
+  };
   $scope.proddscnt ={
     producto:undefined,
     precio:undefined,
@@ -144,12 +152,14 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
           $scope.idempresa = res.data.idempresa;
           $scope.idsucursal = res.data.idsucursal;
           $scope.aniofiscal = res.data.aniofiscal;
+          $scope.idUsuario = res.data.idusuario;
           $scope.fact.idempresa = res.data.idempresa;
           $scope.fact.idsucursal = res.data.idsucursal;
           $scope.getsucdisponible();
           $scope.getNextDocTpv();
           $scope.getNextDocFact();
           $scope.getEmpresa();
+          $scope.permisos();
           $scope.getvendedores();
           $scope.getIdClienteVentasMostrador();
         }
@@ -162,7 +172,6 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
       $scope.getvales();
   }
   
-
   $scope.getIdClienteVentasMostrador = () =>{
     $http.get(pathClte+'getidvtsmostr/'+$scope.idempresa)
     .then(res=>{
@@ -276,6 +285,18 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
     }).catch(err =>	{
 			console.log(err);
 		});
+  }
+
+  $scope.permisos = function(){
+    $http.get(pathUsr+'permusrproc/'+$scope.idUsuario+'/'+$scope.idProceso)
+    .then(res =>{
+      $scope.permisos.alta = res.data[0].A == 't';
+      $scope.permisos.baja = res.data[0].B == 't';
+      $scope.permisos.modificacion = res.data[0].M == 't';
+      $scope.permisos.consulta = res.data[0].C == 't';
+    }).catch(err => {
+      console.log(err);
+    });
   }
 
   $scope.getsucdisponible = function(){
@@ -623,6 +644,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
 
     $scope.calculaValoresMostrar = function()
     {
+      $scope.totalBruto = 0;
       $scope.total = 0;
       $scope.importeNeto = 0;
       $scope.impuestos = 0;
@@ -632,12 +654,13 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
 
       for(var i=0;i<$scope.lstProdCompra.length;i++)
       {
-        $scope.total += Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) ;
+        $scope.totalBruto += Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) ;
+        //$scope.total += Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) ;
         $scope.dsctoValor += Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) * ($scope.lstProdCompra[i].ESDSCTO ? Number($scope.lstProdCompra[i].DESCUENTO/100) : 0);
-        $scope.importeNeto += (Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) - Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) * ($scope.lstProdCompra[i].ESDSCTO ? Number($scope.lstProdCompra[i].DESCUENTO/100) : 0))  * (1-Number($scope.lstProdCompra[i].IVA/100));
-        $scope.impuestos += (Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) - Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) * ($scope.lstProdCompra[i].ESDSCTO ? Number($scope.lstProdCompra[i].DESCUENTO/100) : 0))* Number($scope.lstProdCompra[i].IVA/100);
+        $scope.importeNeto += (Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) - Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) * ($scope.lstProdCompra[i].ESDSCTO ? Number($scope.lstProdCompra[i].DESCUENTO/100) : 0))  / (1+Number($scope.lstProdCompra[i].IVA/100));
+        $scope.impuestos += (Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) - Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) * ($scope.lstProdCompra[i].ESDSCTO ? Number($scope.lstProdCompra[i].DESCUENTO/100) : 0)) / (1+Number($scope.lstProdCompra[i].IVA/100)) * Number($scope.lstProdCompra[i].IVA/100);
       }
-      $scope.total = Number($scope.total - $scope.dsctoValor).toFixed(2);
+      $scope.total = Number($scope.totalBruto - $scope.dsctoValor).toFixed(2);
       
     }
 
@@ -993,17 +1016,17 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
       $scope.fact.idventa = $scope.idVenta;
       $scope.fact.folio = $scope.docto;
       $http.post(pathCreaFact+'creacfdi',$scope.fact)
-          .then(res =>{
-            if(res.data.status=="success"){
-              swal('La venta se registro exitosamente', 'Se creó la factura','success');
-            }else{
-              swal('Error al generar la factura:\n'+res.data.error,'No se pudo generar la factura','error');
-            }
-          })
-          .catch(function(err)
-          {
-            console.log(err);
-          });
+      .then(res =>{
+        if(res.data.status=="success"){
+          swal('La venta se registro exitosamente', 'Se creó la factura','success');
+        }else{
+          swal('Error al generar la factura:\n'+res.data.error,'No se pudo generar la factura','error');
+        }
+      })
+      .catch(function(err)
+      {
+        console.log(err);
+      });
     }
 
   $scope.VerificarCliente = ()=>
@@ -1027,8 +1050,8 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
             $('#revision').val(res.data[0].ID_REVISION);
             $('#pagos').val(res.data[0].ID_PAGOS);
             $('#id_forma_pago').val(res.data[0].ID_FORMA_PAGO);
-            $scope.cliente.id_vendedor = res.data[0].ID_VENDEDOR;
-            $('#id_uso_cfdi').val(res.data[0].ID_USO_CFDI);
+            $scope.cliente.id_vendedor = res.data[0].ID_VENDEDOR.toString();
+            $scope.cliente.id_uso_cfdi = res.data[0].ID_USO_CFDI;
             $scope.cliente.dcredito = res.data[0].DIAS_CREDITO;
             $scope.cliente.email = res.data[0].EMAIL;
             $scope.cliente.num_proveedor = res.data[0].NUM_PROVEEDOR;
@@ -1097,7 +1120,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$timeout)
         console.log(err);
       });
      }else{
-       $http.put(pathClte+'update/'+$scope.idcliente, $scope.cliente).
+       $http.put(pathClte+'updatecliente/'+$scope.idcliente, $scope.cliente).
        then(function(res)
        {
          swal('Se actualizó correctamente el cliente');

@@ -17,6 +17,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
   $scope.lstCliente = [];
   $scope.lstVendedor = [];
   $scope.lstPrdSucExis = [];
+  $scope.lstDomis = [];
   $scope.idDocumento = '';
   $scope.indexRowPedido = -1;
   $scope.idPedido = 0;
@@ -73,9 +74,18 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
     dias : '',
     tpago : 1,
     fpago : 1,
-    fechaentrega:''
+    fechaentrega:'',
+    domi:'',
+    bruto:''
   };
 
+  $scope.domientrega = {
+    calle:'',
+    colonia:'',
+    cp:'',
+    ciudad:'',
+    contacto:''
+  }
   $scope.producto = {
       codigo_prodto: '',
       prod_desc : '',
@@ -285,8 +295,8 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
             $('#revision').val(res.data[0].ID_REVISION);
             $('#pagos').val(res.data[0].ID_PAGOS);
             $('#id_forma_pago').val(res.data[0].ID_FORMA_PAGO);
-            $scope.cliente.id_vendedor = res.data[0].ID_VENDEDOR;
-            $('#id_uso_cfdi').val(res.data[0].ID_USO_CFDI);
+            $scope.cliente.id_vendedor = res.data[0].ID_VENDEDOR.toString();
+            $scope.cliente.id_uso_cfdi = res.data[0].ID_USO_CFDI
             $scope.cliente.email = res.data[0].EMAIL;
             $scope.cliente.num_proveedor = res.data[0].NUM_PROVEEDOR;
             $scope.cliente.notas = res.data[0].NOTAS;
@@ -363,7 +373,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
         console.log(err);
       });
      }else{
-       $http.put(pathClte+'update/'+$scope.pedido.idcliente, $scope.cliente).
+       $http.put(pathClte+'updatecliente/'+$scope.pedido.idcliente, $scope.cliente).
        then(function(res)
        {
          swal('Se actualizó correctamente el cliente');
@@ -375,6 +385,12 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
     }
   }
 
+  $scope.getDomicilios = () =>{
+    $http.get(pathClte+'getdomis/'+$scope.pedido.idcliente)
+    .then(res=>{
+      $scope.lstDomis = res.data;
+    })
+  }
 
   $scope.selectRowPedido = function(docuento, indexRowPedido)
   {
@@ -664,6 +680,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
 
     $scope.calculaValoresMostrar = function()
     {
+      $scope.pedido.bruto = 0;
       $scope.pedido.total = 0;
       $scope.importeNeto = 0;
       $scope.impuestos = 0;
@@ -673,12 +690,12 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
 
       for(var i=0;i<$scope.lstProdCompra.length;i++)
       {
-        $scope.pedido.total += Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) ;
+        $scope.pedido.bruto += Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) ;
         $scope.dsctoValor += Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) * ($scope.lstProdCompra[i].ESDSCTO ? Number($scope.lstProdCompra[i].DESCUENTO/100) : 0);
-        $scope.importeNeto += (Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) - Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) * ($scope.lstProdCompra[i].ESDSCTO ? Number($scope.lstProdCompra[i].DESCUENTO/100) : 0))  * (1-Number($scope.lstProdCompra[i].IVA/100));
-        $scope.impuestos += (Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) - Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) * ($scope.lstProdCompra[i].ESDSCTO ? Number($scope.lstProdCompra[i].DESCUENTO/100) : 0))* Number($scope.lstProdCompra[i].IVA/100);
+        $scope.importeNeto += (Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA))  / (1+Number($scope.lstProdCompra[i].IVA/100));
+        $scope.impuestos += (Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA))  / (1+Number($scope.lstProdCompra[i].IVA/100)) * Number($scope.lstProdCompra[i].IVA/100);
       }
-      $scope.pedido.total = $scope.pedido.total - $scope.dsctoValor;
+      $scope.pedido.total = $scope.pedido.bruto - $scope.dsctoValor;
     }
 
     $scope.buscacliente = function(event)
@@ -710,6 +727,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
       $scope.pedido.idcliente = $scope.lstCliente[indxRowClte].ID_CLIENTE;           
       $scope.lstCliente = [];
       $scope.showLstClte = false;      
+      $scope.getDomicilios();
     }
 
     $scope.buscacodcliente = (event) =>{
@@ -721,7 +739,8 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
             $scope.nombre_cliente =res.data[0].NOMBRE;
             $scope.rfc_cliente = res.data[0].RFC;
             $scope.cliente.id_uso_cfdi = res.data[0].ID_USO_CFDI;      
-            $scope.pedido.idcliente = res.data[0].ID_CLIENTE;           
+            $scope.pedido.idcliente = res.data[0].ID_CLIENTE;  
+            $scope.getDomicilios();         
           }else{
             swal('No existe el cliente con codigo '+$scope.claveclte+', puede hacer la búsqueda por nombre');
             $scope.nombre_cliente = '';
@@ -837,7 +856,6 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
           cantidad:$scope.lstProdCompra[i].CANTIDAD,
           precio:$scope.lstProdCompra[i].PRECIO_LISTA,
           importe:$scope.lstProdCompra[i].IMPORTE,
-          //idsucursal:$scope.pedido.idsucursal,
           descuento:$scope.lstProdCompra[i].DESCUENTO == null ? 0 : $scope.lstProdCompra[i].DESCUENTO
         }
         $http.put(pathPedi+'registrapedidoprod',pediProd).
@@ -896,16 +914,24 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
               $scope.nombre_cliente = res.data[0].CLIENTE;
               $scope.pedido.idvendedor  = res.data[0].ID_VENDEDOR;
               $scope.nombre_vendedor  = res.data[0].VENDEDOR;
-              $scope.pedido.contacto = res.data[0].CONTACTO;
+              $scope.pedido.comentarios = res.data[0].COMENTARIOS;
               $scope.pedido.cuenta = res.data[0].CUENTA == null ? '' :res.data[0].CUENTA ;
               $scope.pedido.dias = res.data[0].DIAS == null ? '' :res.data[0].DIAS ;
               $scope.pedido.idmoneda = res.data[0].ID_MONEDA;
               $scope.pedido.tpago = res.data[0].ID_TIPO_PAGO;
-              $scope.pedido.fpago = res.data[0].ID_FORMA_PAGO;
+              $scope.pedido.fpago = res.data[0].ID_FORMA_PAGO.toString();
               $scope.fechaentrega = res.data[0].FECHA_ENTREGA;
-              $scope.cliente.domicilio = res.data[0].DOMICILIO;
+              $scope.cliente.domicilio = res.data[0].CLI_DOMICILIO;
+              $scope.pedido.domi = res.data[0].DOMICILIO;
               $scope.isCapturaPedido = true;
               $scope.isImprimir = true;
+              $scope.pedido.idcliente = res.data[0].ID_CLIENTE;
+              $scope.domientrega.calle =res.data[0].CALLE;
+              $scope.domientrega.colonia =res.data[0].COLONIA;
+              $scope.domientrega.cp =res.data[0].CP;
+              $scope.domientrega.ciudad =res.data[0].CIUDAD;
+              $scope.domientrega.contacto =res.data[0].CONTACTO;
+              $scope.getDomicilios();
             }
           })
           .catch(err=>{
@@ -929,7 +955,6 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
               $scope.empresa.nombre = res.data[0].NOMBRE;
               $scope.empresa.domicilio = res.data[0].DOMICILIO;
               $scope.empresa.rfc = res.data[0].RFC;
-              console.log($scope.empresa.nombre);
             }
           })
           .catch(err =>{
@@ -979,6 +1004,15 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
       $scope.modalVerifProdSuc = false;
     }
 
+    $scope.cambiaDomicilio = () =>{
+      let cmboIdx = $('#domicilios').prop('selectedIndex');
+      $scope.domientrega.calle = $scope.lstDomis[cmboIdx].CALLE;
+      $scope.domientrega.colonia = $scope.lstDomis[cmboIdx].COLONIA;
+      $scope.domientrega.cp = $scope.lstDomis[cmboIdx].CP;
+      $scope.domientrega.ciudad = $scope.lstDomis[cmboIdx].CIUDAD;
+      $scope.domientrega.contacto = $scope.lstDomis[cmboIdx].CONTACTO;
+    }
+
     $scope.imprimePedido = function(printSectionId) {
       var innerContents = document.getElementById(printSectionId).innerHTML;
       //var popupWinindow = window.open('', '_blank', 'width=600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
@@ -1003,7 +1037,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
         $scope.impuestos = 0.0;
         $scope.importeNeto = 0.0;
         $scope.regpedido = true;
-        $scope.pedido.contacto = '';
+        $scope.pedido.comentarios = '';
         $scope.pedido.fechaentrega = '';
         $scope.fechaentrega = '';
         $scope.pedido.dias = '';

@@ -46,11 +46,12 @@ class Pedidos extends CI_Controller
 			$data['idsucursal'],
 			$data['fpago'],
 			$data['tpago'],
-			$data['contacto'],
+			$data['comentarios'],
 			$data['cuenta'],
 			$data['dias'],
 			$data['idmoneda'],
-			$data['fechaentrega']
+			$data['fechaentrega'],
+      $data['domi']
 			)
 		);
 		return $this->output

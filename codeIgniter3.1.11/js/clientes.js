@@ -4,6 +4,7 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
   $scope.lstTipoClte = [];
   $scope.lstFactDtl = [];
   $scope.lstVendedor = [];
+  $scope.lstDomicilios = [];
   $scope.totalImporFact = 0;
   $scope.totalImporCobr = 0;
   $scope.totalSaldoFact = 0;
@@ -32,11 +33,26 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
   $scope.msjBoton = 'Agregar';
   $scope.idProceso = $routeParams.idproc;
   $scope.aniofiscal = '';
+  $scope.addDomEntrega = false;
+  $scope.cltedsbl = true;
+  $scope.idxRowDom = -1;
+  let indexRow = -1;
+  $scope.btnName = 'Guardar';
   $scope.permisos = {
     alta: false,
     baja: false,
     modificacion:false,
     consulta:false
+  };
+  $scope.domicilios = {
+    ID_CLIENTE:'',
+    LUGAR:'',
+    CALLE:'',
+    COLONIA:'',
+    CIUDAD:'',
+    LATITUD:'',
+    LONGITUD:'',
+    CONTACTO:''
   };
 
   $scope.init = function()
@@ -129,9 +145,21 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
     }
   }
 
+  $scope.getDomicilios = () =>{
+    $http.get(pathClte+'getdomis/'+$scope.idCliente)
+    .then(res =>{
+      if(res.data.length>0){
+        $scope.lstDomicilios = res.data;
+      }
+    })
+    .catch(err =>{
+      console.log(err);
+    });
+  }
+
   $scope.orderByMe = function(x) {
-      $scope.myOrderBy = x;
-      $scope.sortDir = !$scope.sortDir;
+    $scope.myOrderBy = x;
+    $scope.sortDir = !$scope.sortDir;
   }
 
   $scope.selectRowCliente = function(idSelCompra,index,idCliente)
@@ -196,17 +224,47 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
           $scope.lstCliente.push(row);
           $scope.cancelCliente();
           $scope.getNextDocClte();
+          if($scope.lstDomicilios.length > 0){
+            $scope.lstDomicilios.forEach(elem =>{
+              elem.ID_CLIENTE = res.data[0].crea_cliente
+              $http.post(pathClte+'savedomi',elem)
+              .then(resp =>{
+                //console.log(resp);
+              }).catch(err=>{
+                console.log(err);
+              });
+            });
+            $scope.lstDomicilios = [];
+          }
           swal('El cliente se insertó correctamente');
         }
       }).catch(function(err) {
         console.log(err);
       });
+
     }else{
-      $http.put(pathClte+'update/'+$scope.idCliente, dataClte).
+      if($scope.lstDomicilios.length > 0){
+        $http.delete(pathClte+'deletedomi/'+$scope.idCliente)
+        .then(res=>{
+          $scope.lstDomicilios.forEach(elem =>{
+            elem.ID_CLIENTE = $scope.idCliente;
+            $http.post(pathClte+'savedomi',elem)
+            .then(resp =>{
+              
+            }).catch(err=>{
+              console.log(err);
+            });
+          });
+          $scope.lstDomicilios = [];
+        })
+        .catch(err=>{
+          console.log(err);
+        });
+      }
+      $http.put(pathClte+'updatecliente/'+$scope.idCliente, dataClte).
       then(function(res)
     	{
-    		if(res.status==200)
-    		{
+    		if(res.status==200){
           row = {
             CLAVE:$scope.clave,
             NOMBRE:$scope.nombre,
@@ -242,7 +300,7 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
     })
     .then((willDelete) => {
       if(willDelete){
-        $http.delete(pathClte+'delete/'+$scope.idCliente).
+        $http.delete(pathClte+'deleteclte/'+$scope.idCliente).
         then(function(res){
           if(res.status==200)
             {
@@ -257,8 +315,6 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
         });
       }
     });
-
-    
   }
 
   $scope.editaCliente = function()
@@ -284,14 +340,14 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
         $("#revision").val(res.data[0].ID_REVISION);
         $("#pagos").val(res.data[0].ID_PAGOS);
         $("#id_forma_pago").val(res.data[0].ID_FORMA_PAGO);
-        //$("#id_vendedor").val(res.data[0].ID_VENDEDOR);
-        $scope.idVendedor = res.data[0].ID_VENDEDOR;
+        $scope.idVendedor = res.data[0].ID_VENDEDOR.toString();
         $("#id_uso_cfdi").val(res.data[0].ID_USO_CFDI);
       }
     }).catch(function(err)
     {
       console.log(err);
     });
+    $scope.getDomicilios();
     $scope.isAddOpen = true;
     $scope.msjBoton = 'Actualizar';
   }
@@ -311,6 +367,60 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
     .catch(err=>{
 
     });
+  }
+
+  $scope.selectRowDom = (index) =>{
+    $scope.idxRowDom = index;
+    $scope.domicilios = $scope.lstDomicilios[$scope.idxRowDom];
+    $scope.cltedsbl = false;
+    $scope.btnName = "Actualizar";
+  }
+
+  $scope.guardaDom =()=>{
+    if($scope.btnName === 'Guardar'){
+      $scope.lstDomicilios.push($scope.domicilios);
+    }else{
+      var dom = $scope.domicilios;
+      $scope.lstDomicilios[$scope.idxRowDom] = dom;
+      $scope.btnName = 'Guardar';
+    }
+    $scope.limpiaDom();
+  }
+
+  $scope.eliminaDom = ()=>{
+    swal({
+      title: "Esta seguro que desea eliminar el Domiclio ",
+      text: "Una vez eliminado, no se podrá recuperar!",
+      icon: "warning",
+      buttons: [true,true],
+      dangerMode: true,
+    })
+    .then((willDelete) => {
+      if(willDelete){
+        $scope.lstDomicilios.splice($scope.idxRowDom,1);
+        $scope.limpiaDom();
+      }
+    });
+  }
+
+  $scope.limpiaDom = ()=>{
+    $scope.domicilios = {};
+    $scope.cltedsbl = true;
+    $scope.btnName = 'Guardar';
+    $scope.idxRowDom = -1;
+  }
+
+  $scope.agregaDom = ()=>{
+    $scope.limpiaDom();
+    $scope.cltedsbl = false;
+  }
+
+  $scope.agregaDomEntrega = () =>{
+    $scope.addDomEntrega = true;
+  }
+
+  $scope.clseDomEntrega = () =>{
+    $scope.addDomEntrega = false;
   }
 
   $scope.cerrarBorraCliente = function()

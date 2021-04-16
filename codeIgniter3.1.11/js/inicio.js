@@ -6,13 +6,17 @@ app.controller('myInicio', function($scope,$http,$interval){
   $scope.response = 'ERROR';
   $scope.counter = 0;
   $scope.valorinventario = 0;
-  $scope.titulografica1 = 'Grafica de Ventas';
+  $scope.valorcxc = 0;
+  $scope.valorcxp = 0;
   $scope.labels = [];
   $scope.series = [];
   $scope.datinvent = [];
   $scope.labinvent = [];
   $scope.qtyinvent = [];
-  
+  $scope.datacxc = [];
+  $scope.labelscxc = [];
+  $scope.datacxp = [];
+  $scope.labelscxp = [];
   var stop = $interval(()=>{
     if($scope.response === 'ERROR'){
       $scope.getData();
@@ -34,6 +38,8 @@ app.controller('myInicio', function($scope,$http,$interval){
           $scope.aniofiscal = res.data.aniofiscal;
           $scope.getInventario();
           $scope.getVentas();  
+          $scope.getCuentasXCobrar();
+          $scope.getCuentasXPagar();
         }
       });
   }
@@ -45,10 +51,9 @@ app.controller('myInicio', function($scope,$http,$interval){
         $scope.qtyinvent = res.data;
         res.data.forEach(element => {
           $scope.datinvent.push(Number(element.PORCENTAJE).toFixed(2));
-          $scope.labinvent.push(element.LINEA);
+          $scope.labinvent.push(element.LINEA+' '+element.SUMACURR);
           $scope.valorinventario += Number(element.SUMA)
         });
-        
       }
     }).catch(err =>{
 
@@ -70,6 +75,32 @@ app.controller('myInicio', function($scope,$http,$interval){
     .catch(err=>{
       console.log(err);
     });
+  }
+
+  $scope.getCuentasXCobrar = () =>{
+    $http.get(pathRepo+'ctsxcob/'+$scope.idempresa+'/'+$scope.aniofiscal)
+    .then(res =>{
+      if(res.data.length > 0){
+        res.data.forEach(element => {
+          $scope.datacxc.push(Number(element.PORCENTAJE).toFixed(2));
+          $scope.labelscxc.push(element.CLIENTE+' '+element.SALDOCURR);
+          $scope.valorcxc += Number(element.SALDO)
+        });
+      }
+    })
+  }
+
+  $scope.getCuentasXPagar = () =>{
+    $http.get(pathRepo+'ctsxpag/'+$scope.idempresa+'/'+$scope.aniofiscal)
+    .then(res =>{
+      if(res.data.length > 0){
+        res.data.forEach(element => {
+          $scope.datacxp.push(Number(element.PORCENTAJE).toFixed(2));
+          $scope.labelscxp.push(element.NOMBRE+' '+element.SALDOCURR);
+          $scope.valorcxp += Number(element.SALDO)
+        });
+      }
+    })
   }
 
 });

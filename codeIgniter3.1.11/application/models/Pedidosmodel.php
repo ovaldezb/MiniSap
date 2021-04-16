@@ -14,7 +14,7 @@ class Pedidosmodel extends CI_model
 
 	function registra_pedido($pedido_data)
 	{
-		$pstmt = 'SELECT * FROM registra_pedido($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,false)';
+		$pstmt = 'SELECT * FROM registra_pedido($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,false,$16)';
 		pg_prepare($this->conn,"prstmt",$pstmt);
 		$result = pg_fetch_all(pg_execute($this->conn, "prstmt", $pedido_data));
 		return json_encode($result);
@@ -77,16 +77,23 @@ class Pedidosmodel extends CI_model
 			V."ID_VENDEDOR",
 			P."FECHA_PEDIDO", 
 			P."IMPORTE", 
-			P."VENDIDO", P."CONTACTO", P."CUENTA",to_char(P."FECHA_ENTREGA",\'DD/MM/YYYY\') as "FECHA_ENTREGA",
+			P."VENDIDO", P."COMENTARIOS", P."CUENTA",to_char(P."FECHA_ENTREGA",\'DD/MM/YYYY\') as "FECHA_ENTREGA",
 			P."ID_MONEDA",
 			P."ID_TIPO_PAGO",
 			P."DIAS",
 			P."ID_FORMA_PAGO", 
-			C."DOMICILIO",
-			P."ID_CLIENTE"
+			P."DOMICILIO",
+			P."ID_CLIENTE",
+      D."CALLE",
+      D."COLONIA",
+      D."CIUDAD",
+      D."CP",
+      D."CONTACTO",
+      C."DOMICILIO" as "CLI_DOMICILIO"
 		FROM "PEDIDOS" AS P
 		INNER JOIN "CLIENTE" AS C ON C."ID_CLIENTE" = P."ID_CLIENTE"
 		INNER JOIN "VENDEDOR" AS V ON V."ID_VENDEDOR" = P."ID_VENDEDOR"
+    LEFT JOIN "DOMICILIOS" as D ON D."LUGAR" = P."DOMICILIO"
 		WHERE P."ID_PEDIDO" = $1';
 		pg_prepare($this->conn,"select_venta",$query);
 		$result = pg_fetch_all(pg_execute($this->conn,"select_venta",array($idPedido)));

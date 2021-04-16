@@ -113,7 +113,7 @@
 			<div class="column is-8">
 				<div class="box">
 					<div class="columns">
-						<div class="column is-narrow" style="width:200px">
+						<div class="column is-3">
 							<div class="columns is-gapless">
 								<div class="column is-narrow" style="width:70px;margin-left:-15px">
 									<label class="label">Número</label>
@@ -136,16 +136,16 @@
 								</div>
 							</div>
 						</div>
-						<div class="column">
+						<div class="column is-8">
 							<div class="columns is-gapless is-multiline">
-								<div class="column is-narrow" style="width:60px;margin-left:20px">
+								<div class="column is-2">
 									<label class="label">Cliente</label>
 								</div>
-								<div class="column is-narrow" style="width:90px">
+								<div class="column is-2">
 									<input type="text" ng-model="claveclte" ng-keyup="buscacodcliente($event)" class="input is-small">
 								</div>
-								<div class="column is-narrow">
-									<div class="field has-addons" style="width:340px">
+								<div class="column is-7">
+									<div class="field has-addons">
 										<p class="control is-expanded has-icons-left">
 											<input class="input is-small" ng-keyup="buscacliente($event)" ng-model="nombre_cliente" type="text" placeholder="Cliente">
 											<span class="icon is-small is-left">
@@ -200,7 +200,7 @@
 								</div>
 							</div>
 							<div class="columns is-gapless is-multiline">
-								<div class="column is-narrow" style="width:80px">
+								<div class="column is-2">
 									<label class="label">Vendedor</label>
 								</div>
 								<div class="column is-2">
@@ -259,7 +259,7 @@
 								</div>
 							</div>
 							<div class="columns">
-								<div class="column is-narrow" style="width:80px">
+								<div class="column is-2">
 									<label class="label">Contacto</label>
 								</div>
 								<div class="column is-narrow">
@@ -267,34 +267,32 @@
 								</div>
 							</div>
 							<div class="columns">
-								<div class="column is-narrow" style="width:80px">
+								<div class="column is-2">
 									<label class="label">F/Pago</label>
 								</div>
 								<div class="column is-narrow" style="width:130px">
-									<select ng-model="factura.tpago" ng-change="cambioTpago()" ng-options="x.ID_TIPO_PAGO as x.DESCRIPCION for x in lstTipopago"></select>
+                    <div class="select is-small">
+									    <select ng-model="factura.tpago" ng-change="cambioTpago()" ng-options="x.ID_TIPO_PAGO as x.DESCRIPCION for x in lstTipopago"></select>
+                    </div>
 								</div>
 								<div class="column is-narrow" style="width:78px;margin-left:-25px">
 									<input type="number" class="input is-small" value="0" ng-model="factura.dias" ng-disabled="factura.tpago == 1">
 								</div>
 								<div class="column is-narrow" style="width:55px;margin-left:-20px">dias</div>
-								<div class="column is-narrow" style="width:40px;margin-rigth:-10px">
-									<label for="entregar" class="label">Iva</label>
-								</div>
-								<div class="column is-narrow" style="width:75px">
-									<input type="number" class="input is-small" id="iva" ng-model="factura.iva" style="text-align:center">
-								</div>
 							</div>
 							<div class="columns">
-								<div class="column is-narrow" style="width:160px">
-									<label for="mpago" class="label">M&eacute;todo de Pago</label>
+								<div class="column is-2">
+									<label for="mpago" class="label">M/Pago</label>
 								</div>
-								<div class="colummn is-narrow" style="width:188px">									
-									<select ng-model="factura.fpago" ng-options="x.CLAVE as x.DESCRIPCION for x in lstFormpago"></select>
+								<div class="column is-narrow" style="width:188px">	
+                  <div class="select is-small">								
+									  <select ng-model="factura.fpago" ng-options="x.CLAVE as x.DESCRIPCION for x in lstFormpago"></select>
+                  </div>
 								</div>
-								<div class="colummnvis-narrow" style="width:60px;margin-left:10px">
+								<div class="column is-2" style="margin-left:10px">
 									<label for="cuenta" class="label">Cuenta</label>
 								</div>
-								<div class="colummn is-narrow" style="width:135px">
+								<div class="column is-narrow" style="width:135px">
 									<input type="text" class="input is-small" ng-model="factura.cuenta" >
 								</div>
 							</div>
@@ -303,16 +301,20 @@
 									<label class="label">Uso del CFDI</label>
 								</div>
 								<div class="column is-narrow" style="width:380px">
+                  <div class="select is-small">
 									<select ng-model="factura.cfdi" ng-options="x.ID_CFDI as x.CLAVE+' '+x.DESCRIPCION for x in lstUsocfdi "></select>
-								</div>
+                  </div>
+                </div>
 							</div>
 							<div class="columns">
 								<div class="column is-narrow" style="width:80px">
 									<label class="label">M&eacute;todo</label>
 								</div>
 								<div class="column is-narrow" style="width:280px">
-									<select ng-model="factura.mpago" ng-options="x.ID_MET_PAGO as x.MET_PAGO+' '+x.DESCRIPCION for x in lstMetpago"></select>
-								</div>
+                  <div class="select is-small">
+									  <select ng-model="factura.mpago" ng-options="x.ID_MET_PAGO as x.MET_PAGO+' '+x.DESCRIPCION for x in lstMetpago"></select>
+                  </div>
+                </div>
 							</div>
 						</div>
 					</div>
@@ -368,13 +370,13 @@
 							<input type="text" class="input is-small" id="unidad" ng-model="producto.unidad" style="text-align:right;" disabled>
 						</div>
 						<div class="column is-small">
-							<input type="text" class="input is-small" id="precio" ng-model="producto.precio" style="text-align:right;" disabled>
+							<input type="text" class="input is-small" id="precio" ng-model="producto.precio" style="text-align:right;" ng-disabled="!permisos.modificacion">
 						</div>
 						<div class="column is-narrow">
 							<a ng-click="agregaProducto()" aria-label="like" >
-							<span class="icon has-text-success" >
-								<i class="fas fa-plus-square" title="Agrega el producto actual"></i>
-							</span>
+							  <span class="icon has-text-success">
+								  <i class="fas fa-plus-square" title="Agrega el producto actual"></i>
+							  </span>
 							</a>
 						</div>
 						<div class="column is-narrow">
@@ -536,26 +538,34 @@
 
 					<div class="columns">
 						<div class="column">
-							<label>Importe Neto:</label>
+							<label>Importe Bruto:</label>
 						</div>
 						<div class="column">
-							<label>$ {{importeNeto | number:2}}</label>
+							<label>{{factura.bruto | currency}}</label>
 						</div>
 					</div>
 					<div class="columns">
 						<div class="column">
 							<label>Descuento(-):</label>
 						</div>
+						<div class="column" style="border-bottom:2px solid black">
+							<label>{{dsctoValor | currency}}</label>
+						</div>
+					</div>
+          <div class="columns">
 						<div class="column">
-							<label>$ {{dsctoValor | number:2}}</label>
+							<label>Subtotal:</label>
+						</div>
+						<div class="column">
+							<label>{{importeNeto | currency}}</label>
 						</div>
 					</div>
 					<div class="columns">
 						<div class="column">
 							<label>Impuestos(+):</label>
 						</div>
-						<div class="column">
-							<label>$ {{impuestos | number:2}}</label>
+						<div class="column" style="border-bottom:2px solid black">
+							<label>{{impuestos | currency}}</label>
 						</div>
 					</div>
 					<div class="columns">
@@ -563,7 +573,7 @@
 							<label class="label">Total:</label>
 						</div>
 						<div class="column">
-							<label>$ {{factura.total | number:2}}</label>
+							<label>{{factura.total | currency}}</label>
 						</div>
 					</div>
 				</div>
@@ -571,7 +581,7 @@
 		</div>
 	</div>
 
-<div class="{{modalVerifProdSuc ? 'modal is-active' : 'modal' }}" id="avisoborrar">
+  <div class="{{modalVerifProdSuc ? 'modal is-active' : 'modal' }}" id="avisoborrar">
 		<div class="modal-background"></div>
 		<div class="modal-card">
 			<header class="modal-card-head">
@@ -839,16 +849,15 @@
               <select ng-model="idVendedor" >
                 <option ng-repeat=" x in lstVendedorVer" value="{{x.ID_VENDEDOR}}">{{x.NOMBRE}}</option>
               </select>	
-      				</select>
             </td>
 					</tr>
 					<tr>
 						<td>Uso CFDI:</td>
 						<td colspan="3">
-						<div class="select is-small">
-						<select class="select is-small" ng-model="cliente.id_uso_cfdi" ng-options="x.ID_CFDI as x.DESCRIPCION for x in lstUsocfdi"></select>
-						</div>
-            			</td>
+						  <div class="select is-small">
+						    <select class="select is-small" ng-model="cliente.id_uso_cfdi" ng-options="x.ID_CFDI as x.DESCRIPCION for x in lstUsocfdi"></select>
+						  </div>
+            </td>
 					</tr>
 					<tr>
 						<td>Email:</td>
@@ -972,15 +981,15 @@
 						<tbody>
 						<tr>
 							<td style="width: 83%; text-align: right">Subtotal</td>
-							<td style="width: 17%; text-align: right">$132.16</td>
+							<td style="width: 17%; text-align: right">{{factura.total | currency}}</td>
 						</tr>
 						<tr>
 							<td style="width: 83%; text-align: right">Impuestos</td>
-							<td style="width: 17%; text-align: right">$21.14</td>
+							<td style="width: 17%; text-align: right">{{impuestos | currency}}</td>
 						</tr>
 						<tr>
 							<td style="width: 83%; text-align: right">Total</td>
-							<td style="width: 17%; text-align: right">$153.30</td>
+							<td style="width: 17%; text-align: right">{{importeNeto | currency}}</td>
 						</tr>
 						</tbody>
 					</table>

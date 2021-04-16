@@ -1,8 +1,7 @@
-<br>
 <input type="hidden" id="updtTblComp" value="F">
 <div class="container">
   <div class="notification" align="center">
-    <h1 class="title is-1">Registro de Pedidos</h1>
+    <h1 class="title is-4">Registro de Pedidos</h1>
   </div>
 </div>
 <div class="container"  ng-controller="myCtrlPedi" data-ng-init="init()">
@@ -63,7 +62,7 @@
               </colgroup>
 							<thead>
 								<tr class="tbl-header">
-									<td style="color:white; text-align:left; ">DOCUMENTO</td>
+									<td style="color:white; text-align:left;">DOCUMENTO</td>
 									<td style="color:white; text-align:center;">CLIENTE</td>
 									<td style="color:white; text-align:center;">FECHA PEDIDO</td>
 									<td style="color:white; text-align:center;">IMPORTE</td>
@@ -106,12 +105,12 @@
 			<div class="column is-8">
 				<div class="box">
 					<div class="columns">
-						<div class="column is-narrow" style="width:200px">
+						<div class="column is-narrow" style="width:220px">
 							<div class="columns">
-								<div class="column is-narrow" style="width:70px">
+								<div class="column is-4">
 									<label class="label">Pedido</label>
 								</div>
-								<div class="column is-narrow" style="width:130px">
+								<div class="column is-8">
 									<p class="control is-expanded has-icons-left">
 										<input class="input is-small" type="text" ng-model="pedido.docto" id="docto" placeholder="Docto" required>
 										<span class="icon is-small is-left">
@@ -121,26 +120,42 @@
 								</div>
 							</div>
 							<div class="columns">
-								<div class="column is-narrow" style="width:70px">
+								<div class="column is-4">
 									<label for="mooneda" class="label">Moneda</label>
 								</div>
-								<div class="column is-narrow" style="width:130px">
+								<div class="column is-8">
 									<div class="select is-small">
 										<select class="select is-small" ng-model="pedido.idmoneda" ng-options="x.ID_MONEDA as x.NOMBRE for x in lstMoneda"></select>
 									</div>
 								</div>
 							</div>
+              <div class="columns">
+                <div class="column is-4">
+									<label for="entregar" class="label">Entregar</label>
+								</div>
+								<div class="column is-8">
+									<input type="text" class="input is-small" id="fechaentrega" ng-model="fechaentrega" ng-blur="fecEntrega()">
+								</div>
+              </div>
+              <div class="columns">
+                <div class="column is-4 " >
+									<label for="cuenta" class="label">Cuenta</label>
+								</div>
+								<div class="column is-8">
+									<input type="text" class="input is-small" ng-model="pedido.cuenta" >
+								</div>
+              </div>
 						</div>
 						<div class="column">
 							<div class="columns is-gapless is-multiline">
-								<div class="column is-narrow" style="width:80px">
+								<div class="column is-2">
 									<label class="label">Cliente</label>
 								</div>
-								<div class="column is-narrow" style="width:90px">
+								<div class="column is-2">
 									<input type="text" ng-model="claveclte" ng-keyup="buscacodcliente($event)" class="input is-small">
 								</div>
 								<div class="column is-narrow">
-									<div class="field has-addons" style="width:340px">
+									<div class="field has-addons" style="width:300px">
 										<p class="control is-expanded has-icons-left">
 											<input class="input is-small" ng-keyup="buscacliente($event)" ng-model="nombre_cliente" type="text" placeholder="Cliente">
 											<span class="icon is-small is-left">
@@ -187,8 +202,8 @@
 														  <col width="74%">
                             </colgroup>
 														<tr ng-repeat="x in lstCliente" ng-click="seleccionaCliente($index)">
-															<td style="text-align=left;">{{x.CLAVE}}</td>
-															<td style="text-align:center;">{{x.NOMBRE}}</td>
+															<td class="font12" style="text-align=left;">{{x.CLAVE}}</td>
+															<td class="font12" style="text-align:center;">{{x.NOMBRE}}</td>
 														</tr>
 													</table>
 											</div>
@@ -199,13 +214,13 @@
 							</div>
 
 							<div class="columns is-gapless is-multiline">
-								<div class="column is-narrow" style="width:80px">
+								<div class="column is-2">
 									<label class="label">Vendedor</label>
 								</div>
 								<div class="column is-2">
 									<input type="text" ng-model="pedido.idvendedor" ng-keyup="buscacodvendedor($event)" class="input is-small">
 								</div>
-								<div class="column is-6">
+								<div class="column is-narrow" style="width:228px">
 									<div class="field has-addons">
 										<p class="control is-expanded has-icons-left">
 											<input class="input is-small" type="text" ng-model="nombre_vendedor" ng-keyup="buscavendedor($event)" placeholder="Vendedor">
@@ -215,11 +230,7 @@
 										</p>
 									</div>
 								</div>
-								<div class="column is-1">
-								</div>
-								<div class="column is-2">
-								</div>
-								<div class="column is-8" ng-show="listaVendedores" style="" >
+								<div class="column is-8" ng-show="listaVendedores" style="margin-left:90px" >
 									<table style="width:100%; border:2px red">
 										<tr>
 											<td>
@@ -249,8 +260,8 @@
 														<col width="25%">
 														<col width="75%">
 														<tr ng-repeat="x in lstVendedor" ng-click="seleccionaVendedor($index)">
-															<td style="text-align:left;font-size:14px;">{{x.ID_VENDEDOR}}</td>
-															<td style="text-align:left;font-size:14px;">{{x.NOMBRE}}</td>
+															<td class="font12" style="text-align:left;">{{x.ID_VENDEDOR}}</td>
+															<td class="font12" style="text-align:left;">{{x.NOMBRE}}</td>
 														</tr>
 													</table>
 											</div>
@@ -260,15 +271,7 @@
 								</div>
 							</div>
 							<div class="columns">
-								<div class="column is-narrow" style="80px">
-									<label class="label">Contacto</label>
-								</div>
-								<div class="column is-narrow">
-									<input type="text" class="input is-small" ng-model="pedido.contacto" required>
-								</div>
-							</div>
-							<div class="columns">
-								<div class="column is-narrow" style="width:80px">
+								<div class="column is-2" >
 									<label for="fpago" class="label">F/Pago</label>
 								</div>
 								<div class="column is-narrow" style="width:130px">
@@ -277,34 +280,39 @@
 									</div>
 								</div>
 								<div class="column is-narrow" style="width:78px;margin-left:-25px">
-									<input type="number" class="input is-small" value="0" ng-model="pedido.dias">
+									<input type="number" class="input is-small" value="0" ng-model="pedido.dias" ng-disabled="pedido.tpago==1" title="dias de crédito">
 								</div>
-								<div class="column is-narrow" style="width:95px;margin-left:-20px">dias</div>
-								<div class="column is-narrow" style="width:70px">
-									<label for="entregar" class="label">Entregar</label>
+                <div class="column is-narrow" style="margin-left:-15px">
+									<label for="mpago" class="label">M/Pago</label>
 								</div>
-								<div class="column is-narrow" style="width:156px">
-									<input type="text" class="input is-small" id="fechaentrega" ng-model="fechaentrega" ng-blur="fecEntrega()">
+                <div class="column is-narrow" style="margin-left:-20px">
+                  <div class="select is-small">
+									  <select ng-model="pedido.fpago" ng-options="x.ID_FORMA_PAGO as x.DESCRIPCION for x in lstFormpago"></select>
+                  </div>
 								</div>
 							</div>
 							<div class="columns">
-								<div class="column is-narrow" style="width:160px">
-									<label for="mpago" class="label">Metodo de Pago</label>
+								<div class="column is-narrow">
+                  <label class="label">Entregar en:</label>
+                </div>
+                <div class="column is-narrow">
+                  <div class="select is-small">
+                    <select ng-model="pedido.domi" id="domicilios" ng-options="x.LUGAR as x.LUGAR+' Clle:'+x.CALLE+' Col:'+x.COLONIA+' CP:'+x.CP+' Cd:'+x.CIUDAD for x in lstDomis" ng-change="cambiaDomicilio()"></select>
+                  </div>
+                </div>
+							</div>
+              <div class="columns">
+								<div class="column is-2">
+									<label class="label">Notas</label>
 								</div>
-								<div class="colummn is-narrow select is-small" style="width:188px">									
-									<select ng-model="pedido.fpago" ng-options="x.ID_FORMA_PAGO as x.DESCRIPCION for x in lstFormpago"></select>
-								</div>
-								<div class="colummnvis-narrow" style="width:60px;margin-left:10px">
-									<label for="cuenta" class="label">Cuenta</label>
-								</div>
-								<div class="colummn is-narrow" style="width:135px">
-									<input type="text" class="input is-small" ng-model="pedido.cuenta" >
+								<div class="column is-narrow">
+									<input type="text" class="input is-small" ng-model="pedido.comentarios" required>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="box" id="compras">
+				<div class="box" id="compras" style="border:1px grey solid;margin-top:-20px">
 					<nav class="level" id="barraProducto" ng-show="!isImprimir">
 						<div class="level-left">
 							<div class="level-item">
@@ -331,7 +339,7 @@
 							</div>
 						</div>
 					</nav>
-					<div class="columns" ng-show="!isImprimir">
+					<div class="columns" ng-show="!isImprimir" style="margin-top:-30px">
 						<div class="column is-2">
 							<input type="text"  ng-model="producto.codigo_prodto"  ng-keyup="buscaprodbycodigo($event)" class="input is-small" >
 						</div>
@@ -355,7 +363,7 @@
 							<input type="text" class="input is-small" id="unidad" ng-model="producto.unidad" style="text-align:right;" disabled>
 						</div>
 						<div class="column is-small">
-							<input type="text" class="input is-small" id="precio" ng-model="producto.precio" style="text-align:right;" disabled>
+							<input type="text" class="input is-small" id="precio" ng-model="producto.precio" style="text-align:right;" ng-disabled="!permisos.modificacion">
 						</div>
 						<div class="column is-narrow" style="display:{{agregaProd==true ? 'block':'none'}}">
 							<a ng-click="agregaProducto()" aria-label="like" >
@@ -426,7 +434,7 @@
 						</table>
 						<hr class="hr">
 					</div>
-					<div class="columns">
+					<div class="columns" style="margin-top:-25px">
 						<div class="column">		
               <table class="table is-bordered" style="width:100%">
                 <colgroup>
@@ -448,7 +456,7 @@
                 </tr>
                 </tbody>
               </table>
-              <div style="width:100%; height:285px; overflow:auto;margin-top:-25px">
+              <div style="width:100%; height:185px; overflow:auto;margin-top:-25px">
                 <table class="table is-bordered is-hoverable" style="width:100%;">
                   <colgroup>
                     <col width="39%">
@@ -524,31 +532,38 @@
 									</td>
 								</tr>
 							</table>
+					  </div>
 					</div>
-					</div>
-
 					<div class="columns">
 						<div class="column">
-							<label>Importe Neto:</label>
+							<label>Importe Bruto:</label>
 						</div>
 						<div class="column">
-							<label>$ {{importeNeto | number:2}}</label>
+							<label>{{pedido.bruto | currency}}</label>
 						</div>
 					</div>
 					<div class="columns">
 						<div class="column">
 							<label>Descuento(-):</label>
 						</div>
+						<div class="column" style="border-bottom:2px solid black">
+							<label>{{dsctoValor | currency}}</label>
+						</div>
+					</div>
+          <div class="columns">
 						<div class="column">
-							<label>$ {{dsctoValor | number:2}}</label>
+							<label>Subtotal:</label>
+						</div>
+						<div class="column">
+							<label>{{importeNeto | currency}}</label>
 						</div>
 					</div>
 					<div class="columns">
 						<div class="column">
 							<label>Impuestos(+):</label>
 						</div>
-						<div class="column">
-							<label>$ {{impuestos | number:2}}</label>
+						<div class="column" style="border-bottom:2px solid black">
+							<label>{{impuestos | currency}}</label>
 						</div>
 					</div>
 					<div class="columns">
@@ -556,7 +571,7 @@
 							<label class="label">Total:</label>
 						</div>
 						<div class="column">
-							<label>$ {{pedido.total | number:2}}</label>
+							<label>{{pedido.total | currency}}</label>
 						</div>
 					</div>
 				</div>
@@ -828,10 +843,10 @@
 	    </footer>
 	  </div>
 	</div>
-	<table style="width: 100%; display:none" id="pedido">
+	<table style="width: 100%; display:none" id="pedido" border="1">
 		<tbody>
 			<tr>
-				<td >
+				<td colspan="2">
 					<table style="border:2px solid black; width:100%">
 						<tr>
               <td rowspan="4">
@@ -879,7 +894,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td  colspan="2">&nbsp;</td>
+				<td colspan="2">&nbsp;</td>
 			</tr>
 			<tr>
 			<td colspan="2">
@@ -895,12 +910,12 @@
 							<td style="width: 104px; text-align: right">Costo Total</td>
 						</tr>
 						<tr ng-repeat="p in lstProdCompra">
-							<td style="width: 200px; text-align: center">{{p.DESCRIPCION}}</td>
-							<td style="width: 73.8px; text-align: center">{{p.CANTIDAD}}</td>
-							<td style="width: 81.2px; text-align: center">{{p.UNIDAD_MEDIDA}}</td>
-							<td style="width: 128px; text-align: right">{{p.PRECIO_LISTA | currency}}</td>
-              <td style="width: 104px; text-align: right">{{p.DESCUENTO * p.CANTIDAD * p.PRECIO_LISTA / 100 | currency}}</td>
-							<td style="width: 104px; text-align: right">{{p.IMPORTE | currency}}</td>
+							<td class="font12" style="width: 200px; text-align: center">{{p.DESCRIPCION}}</td>
+							<td class="font12" style="width: 73.8px; text-align: center">{{p.CANTIDAD}}</td>
+							<td class="font12" style="width: 81.2px; text-align: center">{{p.UNIDAD_MEDIDA}}</td>
+							<td class="font12" style="width: 128px; text-align: right">{{p.PRECIO_LISTA | currency}}</td>
+              <td class="font12" style="width: 104px; text-align: right">{{p.DESCUENTO * p.CANTIDAD * p.PRECIO_LISTA / 100 | currency}}</td>
+							<td class="font12" style="width: 104px; text-align: right">{{p.IMPORTE | currency}}</td>
 						</tr>
 					</tbody>
 				</table>
@@ -908,28 +923,52 @@
 			</td>
 			</tr>
 			<tr>
-				<td colspan="2">
-					<table style="width: 100%" >
-						<tbody>
-						<tr>
-							<td style="width: 83%; text-align: right">Subtotal</td>
-							<td style="width: 17%; text-align: right">{{importeNeto | currency}}</td>
-						</tr>
-            <tr>
-							<td style="width: 83%; text-align: right">Descuento</td>
-							<td style="width: 17%; text-align: right">{{dsctoValor | currency}}</td>
-						</tr>
-						<tr>
-							<td style="width: 83%; text-align: right">Impuestos</td>
-							<td style="width: 17%; text-align: right">{{impuestos | currency}}</td>
-						</tr>
-						<tr>
-							<td style="width: 83%; text-align: right">Total</td>
-							<td style="width: 17%; text-align: right">{{pedido.total | currency}}</td>
-						</tr>
-						</tbody>
-					</table>
-				</td>
+        <td colspan="2">
+          <table style="width:100%">
+            <tbody>
+              <tr>
+                <td>Entregar en </td>
+                <td>{{pedido.domi}}</td>
+                <td></td>
+                <td style="text-align: right">Importe Bruto</td>
+							  <td style="text-align: right">{{pedido.bruto | currency}}</td>
+              </tr>
+              <tr>
+                <td>Calle:</td>
+                <td>{{domientrega.calle}}</td>
+                <td></td>
+                <td style="text-align: right">Descuento</td>
+							  <td style="text-align: right">{{dsctoValor | currency}}</td>
+              </tr>
+              <tr>
+                <td>Colonia:</td>
+                <td>{{domientrega.colonia}}</td>
+                <td></td>
+                <td style="text-align: right">Subtotal</td>
+							  <td style="text-align: right">{{importeNeto | currency}}</td>
+              </tr>
+              <tr>
+                <td>CP:</td>
+                <td>{{domientrega.cp}}</td>
+                <td></td>
+                <td style="text-align: right">Impuestos</td>
+							  <td style="text-align: right">{{impuestos | currency}}</td>
+              </tr>
+              <tr>
+                <td>Ciudad:</td>
+                <td>{{domientrega.ciudad}}</td>
+                <td></td>
+                <td style="text-align: right">Total</td>
+							  <td style="text-align: right">{{pedido.total | currency}}</td>
+              </tr>
+              <tr>
+                <td>Contacto:</td>
+                <td>{{domientrega.contacto}}</td>
+                <td colspan="3"></td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
 			</tr>
 		</tbody>
 	</table>

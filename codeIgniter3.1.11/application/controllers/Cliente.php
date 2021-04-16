@@ -97,7 +97,7 @@ class Cliente extends CI_Controller
 		->set_output($result);
 	}
 
-	function delete($id)
+	function deleteclte($id)
 	{
 		$result = $this->clientemodel->delete_cliente($id);
 		if($result)
@@ -113,7 +113,7 @@ class Cliente extends CI_Controller
 			->set_output(json_encode(array('value'=>$res)));
 	}
 
-	function update($id)
+	function updatecliente($id)
 	{
 		$data = json_decode(file_get_contents("php://input"),true);
 		$result = $this->clientemodel->update_cliente($id,
@@ -161,6 +161,35 @@ class Cliente extends CI_Controller
 
   function getidvtsmostr($idempresa){
     $result = $this->clientemodel->get_id_clte_ventasmostrador($idempresa);
+		return $this->output
+		->set_content_type('application/json')
+		->set_output($result);
+  }
+
+  function savedomi(){
+    $data = json_decode(file_get_contents("php://input"),true);
+    $result = $this->clientemodel->save_domicilio(array(
+      $data['ID_CLIENTE'],
+      $data['LUGAR'],
+      $data['CALLE'],
+      $data['COLONIA'],
+      $data['CIUDAD'],
+      $data['LATITUD'],
+      $data['LONGITUD'],
+      $data['CONTACTO'],
+      $data['CP']
+    ));
+  }
+
+  function deletedomi($idcliente){
+    $result = $this->clientemodel->delete_domicilios($idcliente);
+		return $this->output
+		->set_content_type('application/json')
+		->set_output($result);
+  }
+
+  function getdomis($idcliente){
+    $result = $this->clientemodel->get_domi_by_id($idcliente);
 		return $this->output
 		->set_content_type('application/json')
 		->set_output($result);

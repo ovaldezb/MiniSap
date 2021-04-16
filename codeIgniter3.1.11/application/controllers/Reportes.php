@@ -73,5 +73,17 @@ class Reportes extends CI_Controller {
             ->set_output(json_encode($this->reportemodel->get_ventas_aniofiscal($idEmpresa,$anioFiscal)));
   }
 
+  function ctsxcob($idEmpresa,$anioFiscal){
+    return $this->output
+    ->set_content_type('application/json')
+    ->set_output($this->reportemodel->get_cuentas_x_cobrar($idEmpresa,$anioFiscal));
+  }
+
+  function ctsxpag($idEmpresa,$anioFiscal){
+    return $this->output
+    ->set_content_type('application/json')
+    ->set_output($this->reportemodel->get_cuentas_x_pagar($idEmpresa,$anioFiscal));
+  }
+
 
 }

@@ -85,7 +85,8 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
     mpago : 1,
     iva : '',
     descuento : 0,
-    cfdi:1
+    cfdi:1,
+    bruto:0
   };
 
   $scope.producto = {
@@ -264,13 +265,13 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
 
   $scope.eliminarFactura = function(){
     $http.delete(pathFactura+'eliminafact/'+$scope.lstFacturas[$scope.indexRowFactura].ID_VENTA+'/'+$scope.factura.idsucursal)
-        .then(res=>{
-          $scope.lstFacturas.splice($scope.indexRowFactura,1);
-          $scope.showEliminaFactura = false;
-        })
-        .catch(err =>{
-          console.log(err);
-        });
+    .then(res=>{
+      $scope.lstFacturas.splice($scope.indexRowFactura,1);
+      $scope.showEliminaFactura = false;
+    })
+    .catch(err =>{
+      console.log(err);
+    });
   }
 
   $scope.entrydata = function(){
@@ -744,6 +745,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
 
     $scope.calculaValoresMostrar = function()
     {
+      $scope.factura.bruto = 0;
       $scope.factura.total = 0;
       $scope.importeNeto = 0;
       $scope.impuestos = 0;
@@ -753,12 +755,13 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
       
       for(var i=0;i<$scope.lstProdCompra.length;i++)
       {
-        $scope.factura.total += Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) ;
+        $scope.factura.bruto += Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) ;
+        //$scope.factura.total += Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) ;
         $scope.dsctoValor += Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) * ($scope.lstProdCompra[i].ESDSCTO ? Number($scope.lstProdCompra[i].DESCUENTO/100) : 0);
-        $scope.importeNeto += (Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) - Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) * ($scope.lstProdCompra[i].ESDSCTO ? Number($scope.lstProdCompra[i].DESCUENTO/100) : 0))  * (1-Number($scope.lstProdCompra[i].IVA/100));
-        $scope.impuestos += (Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) - Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) * ($scope.lstProdCompra[i].ESDSCTO ? Number($scope.lstProdCompra[i].DESCUENTO/100) : 0))* Number($scope.lstProdCompra[i].IVA/100);
+        $scope.importeNeto += (Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) - (Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) * ($scope.lstProdCompra[i].ESDSCTO ? Number($scope.lstProdCompra[i].DESCUENTO/100) : 0)) )   / (1+Number($scope.lstProdCompra[i].IVA/100));
+        $scope.impuestos += (Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) - (Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) * ($scope.lstProdCompra[i].ESDSCTO ? Number($scope.lstProdCompra[i].DESCUENTO/100) : 0)) )/ (1+Number($scope.lstProdCompra[i].IVA/100)) * Number($scope.lstProdCompra[i].IVA/100);
       }
-      $scope.factura.total = $scope.factura.total - $scope.dsctoValor;
+      $scope.factura.total = $scope.factura.bruto - $scope.dsctoValor;
       $scope.regfactura = $scope.factura.total <= 0;
     }
 

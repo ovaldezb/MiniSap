@@ -38,7 +38,16 @@
 				<label class="label">Domicilio</label>
 			</div>
 			<div class="column is-4">
-				<textarea name="domicilio" id="domicilio" ng-model="domicilio" class="input is-small" placeholder="Domicilio" required></textarea>
+        <div class="field has-addons">
+          <p class="control is-expanded has-icons-left">
+				    <textarea name="domicilio" id="domicilio" ng-model="domicilio" class="input is-small" placeholder="Domicilio" required></textarea>
+          </p>
+          <p class="control">
+            <a class="button is-info is-small" ng-click="agregaDomEntrega()">
+              <i class="fas fa-truck"></i>
+            </a>
+          </p>
+        </div>
 			</div>
 		</div>
 		<div class="columns">
@@ -149,9 +158,7 @@
 				<label class="label">Vendedor</label>
 			</div>
 			<div class="column is-2">
-        <select ng-model="idVendedor" >
-            <option ng-repeat=" x in lstVendedor" value="{{x.ID_VENDEDOR}}">{{x.NOMBRE}}</option>
-        </select>	
+        <select ng-model="idVendedor" ng-options="x.ID_VENDEDOR as x.NOMBRE for x in lstVendedor"></select>	
 			</div>
 		</div>
 		<div class="columns">
@@ -288,4 +295,127 @@
 	    </footer>
 	  </div>
 	</div>
+
+  <div class="modal is-active" ng-show="addDomEntrega">
+	  <div class="modal-background"></div>
+	  <div class="modal-card">
+	    <header class="modal-card-head">
+	      <p class="modal-card-title">Domicilios de Entrega</p>
+	      <button class="delete" aria-label="close" ng-click="clseDomEntrega()"></button>
+	    </header>
+	    <section class="modal-card-body">
+	      <table style="width:70%" border="1">
+          <colgroup>
+            <col width="90%" />
+            <col width="10%" />
+          </colgroup>
+          <tr>
+            <td>
+              <table class="table" style="width:100%">
+                <tbody>
+                  <tr class="tbl-header">
+                    <td>#</td>
+                    <td>Lugar de Entrega</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div style="width:100%;overflow:auto;height:100px;margin-top:-24px">
+                <table class="table" style="width:100%">
+                  <tbody>
+                    <tr ng-repeat="x in lstDomicilios" ng-click="selectRowDom($index)" ng-class="{selected: $index === idxRowDom}">
+                      <td>{{$index+1}}</td>
+                      <td>{{x.LUGAR}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </td>
+            <td>
+              <table class="table">
+                <tr>
+                  <td>
+                    <a ng-click="agregaDom()">
+                      <span class="icon has-text-success">
+                        <i class="fas fa-plus-square" title="Agrega un nuevo Domicilio"></i>
+                      </span>
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <a ng-click="eliminaDom()">
+                      <span class="icon has-text-success">
+                        <i class="fas fa-trash-alt" title="Elimina un Domicilio"></i>
+                      </span>
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <form name="myForm">
+              <table class="table" style="width:100%">
+                <colgroup>
+                  <col width="25%" />
+                  <col width="25%" />
+                  <col width="25%" />
+                  <col width="25%" />
+                </colgroup>
+                <tbody>
+                  <tr>
+                    <td>Lugar</td>
+                    <td colspan="3">
+                      <input type="text" class="input is-small" ng-model="domicilios.LUGAR" ng-disabled="cltedsbl">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Calle</td>
+                    <td colspan="3">
+                      <input type="text" class="input is-small" ng-model="domicilios.CALLE" ng-disabled="cltedsbl"></td>
+                  </tr>
+                  <tr>
+                    <td>Colonia</td>
+                    <td colspan="3">
+                      <input type="text" class="input is-small" ng-model="domicilios.COLONIA" ng-disabled="cltedsbl"></td>
+                  </tr>
+                  <tr>
+                    <td>CP</td>
+                    <td colspan="3">
+                      <input type="text" class="input is-small" ng-model="domicilios.CP" ng-disabled="cltedsbl"></td>
+                  </tr>
+                  <tr>
+                    <td>Ciudad</td>
+                    <td colspan="3">
+                      <input type="text" class="input is-small" ng-model="domicilios.CIUDAD" ng-disabled="cltedsbl"></td>
+                  </tr>
+                  <tr>
+                    <td>Latitud</td>
+                    <td><input type="text" class="input is-small" ng-model="domicilios.LATITUD" ng-disabled="cltedsbl"></td>
+                    <td>Longitud</td>
+                    <td><input type="text" class="input is-small" ng-model="domicilios.LONGITUD" ng-disabled="cltedsbl"></td>
+                  </tr>
+                  <tr>
+                    <td>Contacto</td>
+                    <td colspan="3"><input type="text" class="input is-small" ng-model="domicilios.CONTACTO" ng-disabled="cltedsbl"></td>
+                  </tr>
+                  <tr>
+                    <td colspan="2" style="text-align:right"><button class="button is-info" ng-disabled="cltedsbl" ng-click="guardaDom()">{{btnName}}</button></td>
+                    <td colspan="2" style="text-align:right"><button class="button is-danger" ng-disabled="cltedsbl" ng-click="limpiaDom()">Limpiar</button></td>
+                  </tr>
+                </tbody>
+              </table>
+              </form>
+            </td>
+          </tr>
+        </table>
+        
+	    </section>
+	    <footer class="modal-card-foot">
+	      <button class="button is-warning" ng-click="clseDomEntrega()">Cerrar</button>
+	    </footer>
+	  </div>
+	</div>
+
 </div>

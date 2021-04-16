@@ -1,4 +1,4 @@
-var pathCliente = '/paty/';
+var pathCliente = '/pinabete/';
 var pathPrve = pathCliente+'proveedor/';
 var pathClte = pathCliente+'cliente/';
 var pathUtils = pathCliente+'utils/';
