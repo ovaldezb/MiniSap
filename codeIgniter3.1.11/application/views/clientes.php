@@ -79,7 +79,7 @@
 				<label class="label">RFC</label>
 			</div>
 			<div class="column is-2">
-				<input maxlength="20" ng-model="rfc" onKeyUp="this.value = this.value.toUpperCase();" class="input is-small" type="input" placeholder="RFC">
+				<input maxlength="20" ng-model="rfc" onKeyUp="this.value = this.value.toUpperCase();" class="input is-small" type="input" placeholder="RFC" required>
 			</div>
 		</div>
 		<div class="columns">

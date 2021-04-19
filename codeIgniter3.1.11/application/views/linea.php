@@ -1,6 +1,6 @@
 <div class="container" ng-controller="myCtrlLinea" data-ng-init="init()">
     <div class="notification" >
-    <h1 class="title is-2 has-text-centered">Gestión de Líneas</h1>
+    <h1 class="title is-4 has-text-centered">Gestión de Líneas</h1>
     </div>
   <nav class="level" ng-show="isListaActivo">
     <div class="level-left">

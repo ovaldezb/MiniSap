@@ -3,7 +3,7 @@
 
     class Xml2pdf{
         
-        function convierte($xml,$cliente,$empresa,$formapagoArray,$uso_cfdiArray,$cadenaSAT,$path){                
+        function convierte($xml,$cadena_sat,$cliente,$empresa,$formapagoArray,$uso_cfdiArray,$qr){                
             $xml_doc = new DOMDocument('1.0','utf-8');
             $xml_doc->loadXML($xml);
             $complemento = $xml_doc->getElementsByTagNameNS('http://www.sat.gob.mx/TimbreFiscalDigital', 'TimbreFiscalDigital')->item(0);
@@ -32,7 +32,7 @@
             $sizeImp = sizeof($impuestos);
             $imptrans = $impuestos[$sizeImp-1]->getAttribute('Importe');
             $timbreFiscal = $xml_doc->getElementsByTagName('TimbreFiscalDigital')[0];
-            $selloCFDI = $timbreFiscal->getAttribute('SelloCFD');
+            $selloCFD = $timbreFiscal->getAttribute('SelloCFD');
             $selloSAT = $timbreFiscal->getAttribute('SelloSAT');    
             $formaPagoDesc = '';
             foreach($formapagoArray as $fp){                
@@ -140,7 +140,7 @@
                 <tbody>
                     <tr>
                         <td style='width:100px'>
-                            <img src='./img/cercanias.png' alt='' width='123' height='123' />
+                            <img src='./img/logo.png' alt='' width='123' height='123' />
                         </td>
                         <td style='width:180px;'>&nbsp;</td>
                         <td style='width:350px;' align='right'>
@@ -277,7 +277,7 @@
                             <table>
                                 <tbody>
                                     <tr>
-                                        <td style='width: 52px;' rowspan='3'><img src='./0000031.png' alt='' width='140' height='140' />&nbsp;&nbsp;</td>
+                                        <td style='width: 52px;' rowspan='3'><img src='{$qr}' alt='' width='140' height='140' />&nbsp;&nbsp;</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -289,19 +289,19 @@
                                         <td style='width: 135px;'>&nbsp;</td>
                                         <td style='width: 102px;'>&nbsp;</td>
                                         <td style='width: 130px; text-align: right;'><strong>Sub Total:</strong></td>
-                                        <td style='width: 112px; text-align: right;'>&nbsp;$137.26</td>
+                                        <td style='width: 112px; text-align: right;'>$ {$subtotal}</td>
                                     </tr>
                                     <tr>
                                         <td style='width: 135px; text-align: right;'>&nbsp;</td>
                                         <td style='width: 102px;'>&nbsp;</td>
                                         <td style='width: 130px; text-align: right;'><strong>IVA:</strong></td>
-                                        <td style='width: 112px; text-align: right;'>$21.96</td>
+                                        <td style='width: 112px; text-align: right;'>$ {$imptrans}</td>
                                     </tr>
                                     <tr>
                                         <td style='width: 135px;'>&nbsp;</td>
                                         <td style='width: 102px; text-align: right;'>&nbsp;</td>
                                         <td style='width: 130px; text-align: right;'><strong>Total:</strong></td>
-                                        <td style='width: 112px; text-align: right;'>$152.29</td>
+                                        <td style='width: 112px; text-align: right;'>$ {$total}</td>
                                     </tr>                                                        
                                 </tbody>
                             </table>
@@ -316,19 +316,19 @@
                         <td class='t4head'>CADENA ORIGINAL DEL COMPLEMENTO DE CERTIFICACION DIGITAL DEL SAT</td>
                     </tr>
                     <tr>
-                        <td class='t4cell'>||1.1|baf349fb-0652-4caf-b756-ff5841b7d4b5|2017-05-11T18:27:19|AAA010101AAA|YHvkKPCGUhxHRoqk8vAnNeiHVNo5KaGYa3EBU1yMOiiTNnUASQJZxFkNbn52RUMtnepI1IAXDh7FlqCm5Vjofh3vLSJFCl8A+KUYO/GRoiYXOqwPpIhBMs9JPDXnshQzgDeL4NCd6/dSuQj3hdCVZCPgUnyYjRaFUBtqfJKTuIyP3n1o0QHq9pNvQTe+I6pumMcZoK2cWsFcgj3gZ++qO/SeV8bcWpXWGVQ43dvMCggI/z3q6sMTli6TcqoLYjS/aXmtKcPXE7Lay9uEGUNXlRaNDeGFyhtRh4ABGcFzIUuOVu1aPoq5s9wX81CaYx7hgTHFg74vNVGmxbTUwMbDSg==|20001000000300022323||</td>
+                        <td class='t4cell'>{$cadena_sat}</td>
                     </tr>
                     <tr>
                         <td class='t4head'>SELLO DIGITAL DEL CFDI</td>
                     </tr>
                     <tr>
-                        <td class='t4cell'>Rd5/vHgpCeGWCDOMQWYXoM16QjCTw+rYPmmO97cTcpmbxPFx5CcleYEJpP45kYv40zP4lCuPnDdh4PtNzK7tqavjZJN6ZOem+Zr3sGXSxpn8HIu6kKflhhrK6HME0XZyuhNHUBHNKCR+kve8x3Oz29c1jDRxxM3L2zpMAgLLVbwiYUHTcanmnjY69n59MdEQGfhg/YF2b4Eyx397SkFA92uvVV1U+dCW0NfxRae66P+yfGhnHGLjUC2LuLsDmJ26zDtlnIfrkJPiFxlakPh1UZDG/AQWgOtWx5OQejBndQuT9dMsReCJ8ocDGsEqCG3C90SqDwrLZGkJ72RP8KQS0w==</td>
+                        <td class='t4cell'>{$selloCFD}</td>
                     </tr>
                     <tr>
-                        <td class='t4head'>SELLO DIGITAL DEL SAT<br /></td>
+                        <td class='t4head'>SELLO DIGITAL DEL SAT<br/></td>
                     </tr>
                     <tr>
-                        <td class='t4cell'>tHF1ZW4TzxSsv7A8EG0t82jCiDsuViQKeB7sbV8/K7Clv9N6zfygh3DJQ03Pa27m8NMFZEGxQRDAR2sA4R8VCxhDplzqA/nORdXhNcJqh2NaNW6FzPiftRrTDcZmU1NGjRnMz5EjqJrF0Lmoml1oXyyllrbdAlRyHxPZntqoi/a4VbjhZUuTT+9WMM1OGGBhjOhZl+4Xziq1VU9CQ1QJ08YJj7xmCeaoQVtRjIl6BxI4Dnbluc/C2cPC9h6iwPAz1U547F41gr2VEZlN5ddTKnorabDpLnxVlZoN0xRulL9dqp8YCDoNAEnCJEBahFxbsOgvahcmaunoMvZGuvHNtA==</td>
+                        <td class='t4cell'>{$selloSAT}</td>
                     </tr>
                 </tbody>
             </table>            

@@ -88,11 +88,13 @@
 							<label class="label">Unidad de Medidad</label>
 						</div>
 						<div class="column is-2">
+              <div class="select is-small">
 							<select id="umedida">
 <?php	foreach ($umedidas as $umedida) { ?>
 								<option value=<?php echo $umedida['UNIDAD'] ?>><?php echo $umedida['UNIDAD']?></option>
 <?php	} ?>
 							</select>
+              </div>
 						</div>
 						<div class="column is-narrow" style="margin-left:70px">
 							<div class="control" id="cargarimg">
@@ -134,7 +136,7 @@
 				<div class="field-label is-normal">
 					<label class="label">Código</label>
 				</div>
-				<input ng-model="codigocfdi" class="input is-small" type="text" placeholder="CÓDIGO CFDI" >
+				<input ng-model="codigocfdi" class="input is-small" ng-keyup="getCodigoSAT($event)" type="text" placeholder="CÓDIGO CFDI" >
 			</div>
 		</div>
 		<div class="column is-6">
@@ -197,7 +199,7 @@
 				<div class="field-label is-normal">
 					<label class="label">Unidad</label>
 				</div>
-				<input ng-model="unidad_sat" class="input is-small" type="text" placeholder="UNIDAD SAT">
+				<input ng-model="unidad_sat" class="input is-small" type="text" ng-keyup="getMedidaSATCode($event)" placeholder="UNIDAD SAT">
 			</div>
 		</div>
 		<div class="column is-6">
@@ -261,7 +263,7 @@
 					<label class="label">Precio de Venta $</label>
 				</div>
 				<div class="column is-1">
-					<input ng-model="preciolista" class="input is-small" type="number" placeholder="PRECIO" required>
+					<input ng-model="preciolista" class="input is-small" type="number" step="any" placeholder="PRECIO" required>
 				</div>
 				<div class="column is-1"></div>
 				<div class="column is-narrow" style="width:400px">

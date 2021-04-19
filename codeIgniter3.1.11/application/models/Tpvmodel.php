@@ -145,9 +145,8 @@ class Tpvmodel extends CI_model
   }
 
 
-  //EL descuento se pone en 0 porque en Factura aun no se tiene una funcionalidad de descuento
 	function getventadetallebyid($idFactura){
-		$query = 'SELECT VP."CANTIDAD",VP."PRECIO" as "PRECIO_LISTA",VP."IMPORTE", 0 as "DESCUENTO",
+		$query = 'SELECT VP."CANTIDAD",VP."PRECIO" as "PRECIO_LISTA",VP."IMPORTE", VP."DESCUENTO" as "DESCUENTO",
               TRIM(P."DESCRIPCION") as "DESCRIPCION",TRIM(P."UNIDAD_MEDIDA") as "UNIDAD_MEDIDA", TRIM(P."COD_CFDI") as "COD_CFDI",
               P."IVA",TRIM(P."UNIDAD_SAT") as "UNIDAD_SAT",
               CASE WHEN P."IEPS" IS NULL THEN \'0\' ELSE P."IEPS" END as "IEPS",TRIM(I."NOMBRE") as "TIPOFACTOR",
@@ -161,6 +160,23 @@ class Tpvmodel extends CI_model
 		$result = pg_fetch_all(pg_execute($this->conn,"select_venta_prod",array($idFactura)));		
 		return json_decode(json_encode($result,JSON_NUMERIC_CHECK),false);
 	}
+
+
+  function getventadetallebyVentaId($idFactura){
+    $query = 'SELECT VP."CANTIDAD",VP."PRECIO" as "PRECIO",VP."IMPORTE", VP."DESCUENTO" as "DESCUENTO",
+              TRIM(P."DESCRIPCION") as "DESCRIPCION",TRIM(P."UNIDAD_MEDIDA") as "UNIDAD_MEDIDA", TRIM(P."COD_CFDI") as "COD_CFDI",
+              P."IVA",TRIM(P."UNIDAD_SAT") as "UNIDAD_SAT",
+              CASE WHEN P."IEPS" IS NULL THEN \'0\' ELSE P."IEPS" END as "IEPS",TRIM(I."NOMBRE") as "TIPOFACTOR",
+              TRIM(P."CODIGO") as "CODIGO"
+              FROM "VENTAS_PRODUCTO" as VP
+              INNER JOIN "VENTAS" as V ON V."ID_VENTA" = VP."ID_VENTA"
+              INNER JOIN "PRODUCTO" as P ON VP."ID_PRODUCTO" = P."ID_PRODUCTO"
+              INNER JOIN "IEPS" as I on P."ID_IEPS" = I."ID_IEPS"
+              WHERE VP."ID_VENTA" = $1';				
+    pg_prepare($this->conn,"select_venta_prod",$query);
+    $result = pg_fetch_all(pg_execute($this->conn,"select_venta_prod",array($idFactura)));		
+    return json_decode(json_encode($result,JSON_NUMERIC_CHECK),false);
+  }
 
 	public function dataOperByDate($arrayDates){
 		$query1 = 'SELECT V."DOCUMENTO", VP."COUNT",V."ID_TIPO_PAGO", V."IMPORTE",

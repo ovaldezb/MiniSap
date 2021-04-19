@@ -149,8 +149,15 @@ class Producto extends CI_Controller
 		return $this->output
             ->set_content_type('application/json')
             ->set_output($result);
-
 	}
+
+  function satitembycode($clave)
+  {
+    $result = $this->catalogosmodel->get_sat_item_by_code($clave);
+		return $this->output
+            ->set_content_type('application/json')
+            ->set_output($result);
+  }
 
 	function unidadsat($desc)
 	{
@@ -159,8 +166,15 @@ class Producto extends CI_Controller
 		return $this->output
             ->set_content_type('application/json')
             ->set_output($result);
-
 	}
+
+  function satunidadbycode($clave)
+  {
+    $result = $this->catalogosmodel->get_unidad_by_code($clave);
+		return $this->output
+            ->set_content_type('application/json')
+            ->set_output($result);
+  }
 
 	function prodbycode($codigo,$idempresa,$idsucursal)
 	{

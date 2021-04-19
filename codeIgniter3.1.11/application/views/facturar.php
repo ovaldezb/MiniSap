@@ -1,8 +1,8 @@
 <br>
 <input type="hidden" id="updtTblComp" value="F">
 <div class="container">
-  <div class="notification" align="center">
-    <h1 class="title is-1">Facturas</h1>
+  <div class="notification">
+    <h1 class="title is-4 has-text-centered">Facturas</h1>
   </div>
 </div>
 <div class="container"  ng-controller="myCtrlFacturacion" data-ng-init="init()">
@@ -18,8 +18,15 @@
 					</div>
 				</div>
 				<div class="level-right">
+          <p class="level-item" ng-show="showEmail">
+						<a ng-click="mostrarEnviarEmail();"><span class="icon has-text-success"><i class="fas fa-envelope" title="Enviar Factura por correo electrónico"></i></span></a>
+          </p>
+          <p class="level-item" ng-show="!showEmail">
+						<a ><span class="icon has-text-success"><i class="fas fa-envelope" style="color:grey" title="Enviar Factura por correo electrónico"></i></span></a>
+          </p>
 					<p class="level-item" ng-show="permisos.alta">
-						<a ng-click="agregaFactura();"><span class="icon has-text-success"><i class="fas fa-plus-square" title="Agrega Factura"></i></span></a></p>
+						<a ng-click="agregaFactura();"><span class="icon has-text-success"><i class="fas fa-plus-square" title="Agrega Factura"></i></span></a>
+          </p>
 					<p class="level-item" ng-show="permisos.modificacion">
 						<a ng-show="indexRowFactura == -1">
               <span class="icon has-text-info"><i class="fas fa-edit" title="Ver Factura" style="color:grey"></i></span>
@@ -57,11 +64,12 @@
 							<col width="10%">
 							<col width="10%">
 							<col width="10%">
-							<col width="10%">
+							<col width="5%">
+              <col width="5%">
 							<col width="12%">
 							</colgroup>
 							<tr class="tbl-header">
-								<td style="text-align:center;font-size:12px">DOCUMENTO</td>									
+								<td style="text-align:center;font-size:12px">DCTO</td>									
 								<td style="text-align:center;font-size:12px">FECHA</td>
 								<td style="text-align:center;font-size:12px">CLIENTE</td>
 								<td style="text-align:center;font-size:12px">IMPORTE</td>
@@ -69,7 +77,8 @@
 								<td style="text-align:center;font-size:12px">F/PAGO</td>
 								<td style="text-align:center;font-size:12px">REVISION</td>
 								<td style="text-align:center;font-size:12px">VENCE</td>
-								<td style="text-align:center;font-size:12px">PEDIDO</td>
+								<td style="text-align:center;font-size:12px">F</td>
+                <td style="text-align:center;font-size:12px">&nbsp;</td>
 								<td style="text-align:center;font-size:12px">VENDEDOR</td>
 							</tr>							
 						</table>
@@ -87,7 +96,8 @@
 								<col width="10%">
 								<col width="10%">
 								<col width="10%">
-								<col width="10%">
+								<col width="5%">
+                <col width="5%">
 								<col width="12%">
 								<tr ng-repeat="x in lstFacturas" ng-click="selectRowFactura(x.DOCUMENTO,$index)" ng-class="{selected: x.DOCUMENTO === idDocumento}">
 									<td class="font12" style="text-align:center;">{{x.DOCUMENTO}}</td>									
@@ -98,7 +108,10 @@
 									<td class="font12" style="text-align:center;">{{x.ID_TIPO_PAGO == 1 ? 'Contado':'Crédito'}}</td>
 									<td class="font12" style="text-align:center;">{{x.FECHA_REVISION}}</td>
 									<td class="font12" style="text-align:center;">{{x.FECHA_VENCIMIENTO}}</td>
-									<td class="font12" style="text-align:center;">&nbsp;</td>
+									<td class="font12" style="text-align:center;" ng-show="x.FACTURADO == 't'"><i class="fas fa-check"></i></td>
+                  <td class="font12" style="text-align:center;" ng-show="x.FACTURADO == 'f'">&nbsp;</td>
+                  <td class="font12" style="text-align:center;" ng-show="x.FACTURADO == 't'"><a href="../creacfdixml/sendfacturaby/1/{{x.ID_FACTURA}}/{{x.ID_CLIENTE}}/{{x.ID_EMPRESA}}" style="color:green" ><i class="fas fa-download"></i></a></td>
+                  <td class="font12" style="text-align:center;" ng-show="x.FACTURADO == 'f'">&nbsp;</td>
 									<td class="font12" style="text-align:center;">{{x.VENDEDOR}}</td>
 								</tr>
 							</table>
@@ -135,6 +148,14 @@
 									</div>
 								</div>
 							</div>
+              <div class="columns">
+                <div class="column is-2">Requiere CFDI</div>
+              </div>
+              <div class="columns">
+                <div class="column">
+                  <input type="checkbox" ng-model="requiere_fact" id="">
+                </div>
+              </div>
 						</div>
 						<div class="column is-8">
 							<div class="columns is-gapless is-multiline">
@@ -766,6 +787,36 @@
 			</footer>
 		</div>
 	</div>
+
+  <div class="modal is-active" ng-show="enviaremail">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+          <p class="modal-card-title">Aviso</p>
+          <button class="delete" aria-label="close" ng-click="mostrarEnviarEmail(false,idFactura,idCliente,idEmpresa);"></button>
+      </header>
+      <section class="modal-card-body">
+        <label class="label">Enviar el correo a la(s) siguiente(s) persona(s)</label>
+        <form name="myEmailForm">
+         <input type="text" name="nvoEmail" class="input" ng-model="nvoEmail" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required>
+          <button class="button is-info is-small" ng-click="addEmail()"  ng-disabled="myEmailForm.nvoEmail.$invalid || myForm.nvoEmail.$dirty">Agregar</button>
+        </form>
+        <div style="width: 50%;  margin: 0 auto;">
+          <table class="table is-bordered">                            
+            <tr ng-repeat="x in lstCorreos">
+              <td>{{x.EMAIL}}</td>
+              <td><button class="button is-danger is-small" ng-click="eliminarEmail($index)">Eliminar</button></td>
+            </tr>
+          </table>
+        </div>
+      </section>
+      <footer class="modal-card-foot">
+        <button class="button is-success" ng-click="enviaCorreo()">Enviar</button>
+        <button class="button is-error" ng-click="cerrarEnviarEmail()">Cerrar</button>
+      </footer>
+    </div>
+  </div>
+
 	<div class="{{modalVerfClte ? 'modal is-active' : 'modal' }}">
 	  <div class="modal-background"></div>
 	  <div class="modal-card">

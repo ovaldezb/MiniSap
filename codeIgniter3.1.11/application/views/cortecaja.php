@@ -1,7 +1,7 @@
 <div class="container" ng-controller="myCtrlCortecaja" data-ng-init="init()">
   <div class="container">
-    <div class="notification" align="center">
-      <h1 class="title is-1">Cortes de Caja</h1>
+    <div class="notification">
+      <h1 class="title is-4 has-text-centered">Consulta Cortes de Caja</h1>
     </div>
   </div>
   <div class="container">

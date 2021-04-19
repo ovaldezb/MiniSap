@@ -523,7 +523,7 @@
 					<div class="column is-narrow" style="width:131px"><label class="label">Uso CFDI:</label></div>
 					<div class="column" >
 						<div class="select is-small">
-						<select ng-model="fact.usocfdi" ng-options="x.CLAVE as x.DESCRIPCION for x in lstUsocfdi"></select>
+						  <select ng-model="fact.usocfdi" ng-options="x.ID_CFDI as x.DESCRIPCION for x in lstUsocfdi"></select>
 						</div>
 					</div>
 				</div>
@@ -541,7 +541,7 @@
 					<div class="column is-narrow" style="width:131px"><label class="label">Metodo Pago:</label></div>
 					<div class="column">
 						<div class="select is-small">
-							<select class="select is-small" ng-model="fact.metodopago" ng-options="x.MET_PAGO as x.DESCRIPCION for x in lstMetpago"></select>
+							<select class="select is-small" ng-model="fact.metodopago" ng-options="x.ID_MET_PAGO as x.DESCRIPCION for x in lstMetpago"></select>
 						</div>
 					</div>
 				</div>

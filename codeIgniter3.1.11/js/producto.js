@@ -160,8 +160,8 @@ app.controller('myCtrlProducto', function($scope,$http,$routeParams)
         $('#umedida').val(res.data[0].UNIDAD_MEDIDA.trim());
         $scope.esequiv = res.data[0].ES_COMPUESTO=='t'?true:false;
         $scope.equivalencia = res.data[0].EQUIVALENCIA;
-        $scope.codigocfdi = res.data[0].COD_CFDI;
-        $scope.unidad_sat = res.data[0].UNIDAD_SAT;
+        $scope.codigocfdi = res.data[0].COD_CFDI != null? res.data[0].COD_CFDI.trim() : '';
+        $scope.unidad_sat = res.data[0].UNIDAD_SAT != null ? res.data[0].UNIDAD_SAT.trim() : '';
         $scope.preciolista = res.data[0].PRECIO_LISTA;
         $('#moneda').val(res.data[0].ID_MONEDA);
         $scope.espromo = res.data[0].ES_PROMO=='t'?true:false;
@@ -348,10 +348,23 @@ app.controller('myCtrlProducto', function($scope,$http,$routeParams)
     });
   }
 
+  $scope.getCodigoSAT = (event) =>{
+    if(event.keyCode == 13 && $scope.codigocfdi != ''){
+      $http.get(pathProd+'satitembycode/'+$scope.codigocfdi)
+      .then(res =>{
+        $scope.codigocfdi = res.data.CLAVE;
+        $scope.cfdidesc = res.data.DESCRIPCION;
+      })
+      .catch(err =>{
+        console.log(err);
+      });
+    }
+  }
+
   $scope.selectRowItemSAT = function(index)
   {
-    $scope.codigocfdi = $scope.lstItemsSAT[index].CLAVE;
-    $scope.cfdidesc = $scope.lstItemsSAT[index].DESCRIPCION;
+    $scope.codigocfdi = $scope.lstItemsSAT[index].CLAVE.trim();
+    $scope.cfdidesc = $scope.lstItemsSAT[index].DESCRIPCION.trim();
     $scope.cierraCFDI();
   }
 
@@ -391,6 +404,19 @@ app.controller('myCtrlProducto', function($scope,$http,$routeParams)
   	{
   		console.log(err);
   	})
+  }
+
+  $scope.getMedidaSATCode = (event) =>{
+    if(event.keyCode == 13 && $scope.unidad_sat != ''){
+      $http.get(pathProd+'satunidadbycode/'+$scope.unidad_sat)
+      .then(res=>{
+        $scope.unidad_sat = res.data.CLAVE.trim();
+        $scope.unidaddesc = res.data.DESCRIPCION.trim();
+      })
+      .catch(err=>{
+        console.log(err);
+      })
+    }
   }
 
   $scope.selectUnidadSAT = function(index)

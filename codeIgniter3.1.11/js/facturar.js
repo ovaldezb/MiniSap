@@ -18,6 +18,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
   $scope.lstCliente = [];
   $scope.lstVendedor = [];
   $scope.lstPrdSucExis = [];
+  $scope.lstCorreos = [];
   $scope.idDocumento = '';
   $scope.indexRowFactura = -1;
   $scope.indexRowPedido = -1;
@@ -38,6 +39,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
   $scope.showLstClte = false;
   $scope.isLstVendedor = false;
   $scope.dispsearch = false;
+  $scope.requiere_fact = false;
   $scope.btnVerifClte = 'Actualizar';
   $scope.tcaptura = 'D';
   $scope.lstMoneda = [];
@@ -54,6 +56,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
   $scope.doctoEliminar = '';
   $scope.idUsuario = '';
   $scope.showInputData = false;
+  $scope.showEmail = false;
   $scope.idProceso = $routeParams.idproc;
   $scope.proddscnt ={
     producto:undefined,
@@ -239,14 +242,18 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
 
   $scope.getfacturas = function(){
     $http.get(pathFactura+'getfacturas/'+$scope.factura.idempresa+'/'+$scope.factura.aniofiscal,{responseType:'json'})
-        .then(res => {
-          if(res.data.length > 0){
-            $scope.lstFacturas = res.data;
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      .then(res => {
+        if(res.data.length > 0){
+          $scope.lstFacturas = res.data.map(fact => {
+            fact.ID_EMPRESA = $scope.factura.idempresa;
+            return fact;
+          });
+
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   $scope.getFacturaDetalleyId = function(idFactura){
@@ -465,6 +472,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
   {
     $scope.idDocumento = docuento;
     $scope.indexRowFactura = indexRowFactura;
+    $scope.showEmail = $scope.lstFacturas[$scope.indexRowFactura].FACTURADO == 't';
   }
 
   $scope.selectRowPedido = function(docuento, indexRowPedido)
@@ -1091,6 +1099,48 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
       $scope.proddscnt.producto = undefined;
       $scope.indexRowCompra = -1
     }
+
+    $scope.mostrarEnviarEmail = () =>{
+      $scope.lstCorreos.push({'EMAIL':$scope.lstFacturas[$scope.indexRowFactura].EMAIL});
+      $scope.enviaremail = true;     
+  }
+  
+  $scope.addEmail  = function(){
+    $scope.lstCorreos.push({'EMAIL':$scope.nvoEmail});
+    $scope.nvoEmail = '';
+  }
+
+  $scope.enviaCorreo = () =>{
+    let correos = ''
+    $scope.lstCorreos.forEach(email => {correos += email.EMAIL+'|'});
+   $http.post(pathCreacfdi+'sendfacturaby/2/'+$scope.lstFacturas[$scope.indexRowFactura].ID_FACTURA+'/'+$scope.lstFacturas[$scope.indexRowFactura].ID_CLIENTE+'/'+$scope.factura.idempresa,{'correos':correos})
+   .then(res =>{
+      if(res.data.value == 'OK'){
+        swal('El correo se ha enviado correctamente!');
+      }else{
+        swal('No se pudo enviar el correo, consulte con el administrador error:'+res.data.value);
+      }
+      $scope.cerrarEnviarEmail();
+   })
+   .catch(err =>{
+    console.log(err);
+   }); 
+  }
+  
+  $scope.cerrarEnviarEmail = ()=>{
+    $scope.lstCorreos = [];
+      $scope.enviaremail = false;     
+  }
+
+  $scope.downloadcfdi = () =>{
+    $http.post(pathCreacfdi+'sendfacturaby/1/'+$scope.lstFacturas[$scope.indexRowFactura].ID_FACTURA+'/'+$scope.lstFacturas[$scope.indexRowFactura].ID_CLIENTE+'/'+$scope.factura.idempresa,{'correos':''})
+   .then(res =>{
+      
+   })
+   .catch(err =>{
+    console.log(err);
+   });
+  }
 
     $scope.limpiar = function(){
         $scope.lstProdCompra = [];

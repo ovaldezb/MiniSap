@@ -14,7 +14,7 @@ class Clientemodel extends CI_model
 	function get_clientes_by_empresa($idEmpresa,$anioFiscal)
 	{
 		$query = 'SELECT C."ID_CLIENTE", C."NOMBRE",
-    TRIM(C."CLAVE") as "CLAVE", C."RFC", 
+    TRIM(C."CLAVE") as "CLAVE", C."RFC", C."DOMICILIO", C."ID_FORMA_PAGO",C."ID_USO_CFDI",
     CASE WHEN F."SALDO" IS NULL THEN 0 ELSE F."SALDO" END as "SALDO"
     FROM "CLIENTE" as C
     LEFT JOIN (SELECT F."ID_CLIENTE", SUM(F."SALDO") as "SALDO"  
@@ -25,7 +25,7 @@ class Clientemodel extends CI_model
     AND C."ID_EMPRESA" = $2';
 		pg_prepare($this->conn, "my_query", $query);
 		$result =  pg_fetch_all(pg_execute($this->conn, "my_query", array($anioFiscal,$idEmpresa)));
-		return json_encode($result);
+		return json_encode($result,JSON_NUMERIC_CHECK);
 	}
 
 	function get_cliente_by_id($_idCliente)
@@ -74,9 +74,8 @@ class Clientemodel extends CI_model
 	function get_clientes_by_nombre($idempresa,$nombre)
 	{
 		$query = 'SELECT C."ID_CLIENTE",C."NOMBRE",TRIM(C."CLAVE") as "CLAVE", 
-					U."CLAVE" as "USO_CFDI",C."ID_USO_CFDI",C."RFC", C."DIAS_CREDITO"
+				C."ID_USO_CFDI",C."RFC", C."DIAS_CREDITO",C."DOMICILIO",C."ID_FORMA_PAGO"
 				FROM "CLIENTE" as C
-				LEFT JOIN "USO_CFDI" as U ON C."ID_USO_CFDI" = U."ID_CFDI"
 				WHERE UPPER(C."NOMBRE")
 				LIKE UPPER($1)
 				AND C."ID_EMPRESA" = $2

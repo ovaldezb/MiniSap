@@ -1,7 +1,7 @@
 <input type="hidden" id="updtTblComp" value="F">
 <div class="container">
-  <div class="notification" align="center">
-    <h1 class="title is-4">Registro de Pedidos</h1>
+  <div class="notification">
+    <h1 class="title is-4 has-text-centered">Registro de Pedidos</h1>
   </div>
 </div>
 <div class="container"  ng-controller="myCtrlPedi" data-ng-init="init()">
@@ -843,16 +843,22 @@
 	    </footer>
 	  </div>
 	</div>
-	<table style="width: 100%; display:none" id="pedido" border="1">
+  <div style="width: 100%; display:block" id="pedido">
+	<table  border="1" style="width:100%">
 		<tbody>
 			<tr>
 				<td colspan="2">
 					<table style="border:2px solid black; width:100%">
+            <colgroup>
+              <col width="20%"/>
+              <col width="15%"/>
+              <col width="65%"/>
+            </colgroup>
 						<tr>
               <td rowspan="4">
-                <img src="../img/logo.png" style="width:40px">
+                <img src="../img/logo.png" style="width:110px;height:100px">
               </td>
-							<td >EMPRESA</td>
+							<td colspan="2" style="text-align:center">EMPRESA</td>
 						</tr>
 						<tr>
 							<td>Nombre:</td>
@@ -873,10 +879,10 @@
         <td colspa="2">&nbsp;</td>
       </tr>
 			<tr>
-				<td colspan="2">
-					<table tyle="border:2px solid black">
+				<td>
+          <table style="width:100%;border:2px solid black">
 						<tr>
-							<td colspan="2">CLIENTE</td>
+							<td colspan="2" style="text-align:center">CLIENTE</td>
 						</tr>
 						<tr>
 							<td>Nombre:</td>
@@ -887,36 +893,64 @@
 							<td>{{cliente.domicilio}}</td>
 						</tr>
 						<tr>
-							<td>Contacto:</td>
-							<td>{{pedido.contacto}}</td>
+							<td>RFC:</td>
+							<td>{{rfc_cliente}}</td>
 						</tr>
 					</table>
 				</td>
+        <td>
+          <table style="width:100%">
+            <tr>
+              <td>PEDIDO NO.</td>
+              <td style="color:red">{{pedido.docto}}</td>
+            </tr>
+            <tr>
+              <td>FECHA PEDIDO</td>
+              <td>{{fechapedido}}</td>
+            </tr>
+            <tr>
+              <td>FECHA ENTREGA</td>
+              <td>{{fechaentrega}}</td>
+            </tr>
+          </table>
+        </td>
 			</tr>
 			<tr>
 				<td colspan="2">&nbsp;</td>
 			</tr>
 			<tr>
 			<td colspan="2">
-				<div style="border: 2px solid black; height: 350px; width: 100%;">
-				<table style="width: 100%" >
+				<table style="width: 100%; border: 5px double black" >
 					<tbody>
 						<tr>
-							<td style="width: 200px; text-align: center">Descripcion</td>
-							<td style="width: 73.8px; text-align: center">Cantidad</td>
-							<td style="width: 81.2px; text-align: center">Unidad</td>
-							<td style="width: 128px; text-align: right">Costo Unitario</td>
-              <td style="width: 128px; text-align: right">Descuento</td>
-							<td style="width: 104px; text-align: right">Costo Total</td>
+              <td style="width: 25px;  text-align:center;border-right:2px solid black;">NP</td>
+							<td style="width: 80px;  text-align:center;border-right:2px solid black;">CANTIDAD</td>
+              <td style="width: 80px;  text-align:center;border-right:2px solid black;">CODIGO</td>
+              <td style="width: 240px; text-align:center;border-right:2px solid black;">DESCRIPCION</td>
+							<td style="width: 100px; text-align:center; border-right:2px solid black;">$/UNIT</td>
+							<td style="width: 100px; text-align:center; border-right:2px solid black;">IMPORTE</td>
 						</tr>
+          </tbody>
+        </table>
+        <div style="height: 350px; width: 100%;">
+        <table style="border: 5px double black; width: 100%;">
+          <tbody>
 						<tr ng-repeat="p in lstProdCompra">
-							<td class="font12" style="width: 200px; text-align: center">{{p.DESCRIPCION}}</td>
-							<td class="font12" style="width: 73.8px; text-align: center">{{p.CANTIDAD}}</td>
-							<td class="font12" style="width: 81.2px; text-align: center">{{p.UNIDAD_MEDIDA}}</td>
-							<td class="font12" style="width: 128px; text-align: right">{{p.PRECIO_LISTA | currency}}</td>
-              <td class="font12" style="width: 104px; text-align: right">{{p.DESCUENTO * p.CANTIDAD * p.PRECIO_LISTA / 100 | currency}}</td>
-							<td class="font12" style="width: 104px; text-align: right">{{p.IMPORTE | currency}}</td>
+              <td style="width: 25px; text-align: center;border:2px solid black;">{{$index + 1}}</td>
+              <td class="font12" style="width: 80px; text-align: center;border-right:2px solid black;">{{p.CANTIDAD}}</td>
+              <td class="font12" style="width: 80px; text-align: center;border-right:2px solid black;">{{p.CODIGO}}</td>
+							<td class="font12" style="width: 240px; text-align: center;border-right:2px solid black;">{{p.DESCRIPCION}}</td>
+							<td class="font12" style="width: 100px; text-align: right;border-right:2px solid black;">{{p.PRECIO_LISTA | currency}}</td>
+							<td class="font12" style="width: 100px; text-align: right;border-right:2px solid black;">{{p.IMPORTE | currency}}</td>
 						</tr>
+            <tr ng-repeat="p in lstComplemento">
+              <td style="width: 25px; border-right:2px solid black;">{{p.val}}</td>
+              <td style="width: 80px; border-right:2px solid black;"></td>
+              <td style="width: 80px; border-right:2px solid black;"></td>
+							<td style="width: 240px; border-right:2px solid black;"></td>
+							<td style="width: 100px; border-right:2px solid black;"></td>
+							<td style="width: 100px; border-right:2px solid black;"></td>
+            </tr>
 					</tbody>
 				</table>
 				</div>
@@ -972,4 +1006,5 @@
 			</tr>
 		</tbody>
 	</table>
+  </div>
 </div>

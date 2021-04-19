@@ -19,7 +19,7 @@
 |<div class="container" ng-app="myApp" ng-controller="myCtrlDatosFactura" data-ng-init="init()">
     <div class="notification" >
     <h1 class="title has-text-centered">
-      <?php if(isset($totalFiles)) echo "Archivos cargados ".count($totalFiles)." files"; ?></h1>
+      <?php if(isset($totalFiles)) echo "Archivos cargados ".count($totalFiles); ?></h1>
     <h2><?php foreach($totalFiles as $tf){
           echo "<li>".$tf."</li>";
         }?>

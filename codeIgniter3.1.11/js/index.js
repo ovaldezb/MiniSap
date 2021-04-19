@@ -1,4 +1,4 @@
-var pathCliente = '/pinabete/';
+var pathCliente = '/core/';
 var pathPrve = pathCliente+'proveedor/';
 var pathClte = pathCliente+'cliente/';
 var pathUtils = pathCliente+'utils/';
@@ -23,38 +23,41 @@ var pathInv = pathCliente+'inventario/';
 var pathCob = pathCliente+'cobranza/';
 var pathPag = pathCliente+'pagos/';
 var pathCorte = pathCliente+'cortecaja/';
+var pathCreacfdi = pathCliente+'creacfdixml/';
 var app = angular.module("myApp", ["ngRoute","chart.js"]);
 app.config(function($routeProvider) {
     $routeProvider
     .when("/", {
-        templateUrl : pathCliente+'access/inicio'
+        //templateUrl : pathCliente+'access/inicio'
+        templateUrl : pathAcc +'/inicio'
     })
     .when("/clss", {
-        templateUrl : pathCliente+'access/logout'
+        //templateUrl : pathCliente+'access/logout'
+        templateUrl : pathAcc +'/logout'
     })
     .when("/clte/:idproc", {
-      templateUrl:    pathCliente+'cliente'
+      templateUrl: pathClte
     })
     .when("/empr/:idproc", {
-        templateUrl : pathCliente+'empresa'
+        templateUrl : pathEmpr
     })
     .when("/prod/:idproc", {
-        templateUrl : pathProd //pathCliente+'producto'
+        templateUrl : pathProd
     })
     .when("/prve/:idproc", {
-        templateUrl : pathCliente+'proveedor'
+        templateUrl : pathPrve
     })
     .when("/sucr/:idproc", {
-        templateUrl : pathCliente+'sucursal'
+        templateUrl : pathSucr
     })
     .when("/cmpr/:idproc", {
-        templateUrl : pathCliente+'compras'
+        templateUrl : pathCmpr
     })
     .when("/tpv/:idproc", {
-        templateUrl : pathCliente+'tpv'
+        templateUrl : pathTpv
     })
     .when("/user/:idproc", {
-        templateUrl : pathCliente+'usuarios'
+        templateUrl : pathUsr
     })
     .when("/mval/:idproc",{
       templateUrl : pathRepo+'rmovalmc'
@@ -63,22 +66,22 @@ app.config(function($routeProvider) {
       templateUrl : pathRepo+'rventas'
     })
     .when("/line/:idproc",{
-      templateUrl : pathCliente+'linea'
+      templateUrl : pathLinea
     })
     .when("/crfc/:idproc",{
-      templateUrl : pathCliente+'datosfactura'
+      templateUrl : pathCFDI
     })
     .when("/pedi/:idproc",{
-      templateUrl : pathCliente+'pedidos'
+      templateUrl : pathPedi
     })
     .when("/fact/:idproc",{
-      templateUrl : pathCliente+'facturacion'
+      templateUrl : pathFacturacion
     })
     .when("/vend/:idproc",{
       templateUrl : pathVend
     })
     .when("/prcm/:idproc",{
-      templateUrl : pathCliente+'cargamasiva'
+      templateUrl : pathCargaMasiva
     })
     .when("/ctin/:idproc",{
       templateUrl : pathInv

@@ -48,7 +48,7 @@ class Catalogosmodel extends CI_model
 
 	function get_uso_cfdi_js()
 	{
-		$query = 'SELECT * FROM "USO_CFDI"';
+		$query = 'SELECT * FROM "USO_CFDI" ORDER BY "ID_CFDI"';
 		$result = pg_fetch_all(pg_query($this->conn, $query));
 		return json_encode($result,JSON_NUMERIC_CHECK);
 	}
@@ -130,16 +130,16 @@ class Catalogosmodel extends CI_model
 	}
 
 
-	function inserta_item_catalogo($clave,$descripcion,$nivel,$tipo,$desc_mayus)
+	/*function inserta_item_catalogo($clave,$descripcion,$nivel,$tipo,$desc_mayus)
 	{
 		$nombre = pg_escape_string($descripcion);
 		$nombre_mayus = pg_escape_string($desc_mayus);
 
-		$query = "INSERT INTO \"CATALOGO_SAT\" (\"CLAVE\", \"DESCRIPCION\", \"NIVEL\", \"TIPO\", \"DESC_MAYUS\")
-				  VALUES ('$clave','$nombre','$nivel','$tipo','$nombre_mayus')";
+		$query = 'INSERT INTO "CATALOGO_SAT" ("CLAVE", "DESCRIPCION", "NIVEL", "TIPO", "DESC_MAYUS")
+				  VALUES ('$clave','$nombre','$nivel','$tipo','$nombre_mayus')';
 		$result = pg_query($this->conn,$query);
 		return $result;
-	}
+	}*/
 
 	function inserta_item_medidas($clave,$descripcion,$desc_mayus)
 	{
@@ -159,12 +159,26 @@ class Catalogosmodel extends CI_model
 		return json_encode($result);
 	}
 
+  function get_sat_item_by_code($clave){
+    $query = 'SELECT * FROM "CATALOGO_SAT" WHERE "CLAVE" = $1';
+    pg_prepare($this->conn,"get_item_code",$query);
+		$result = pg_fetch_all(pg_execute($this->conn,"get_item_code", array($clave)));
+		return json_encode($result[0]);
+  }
+
 	function get_unidad_sat_by_desc($desc)
 	{
-		$query = "SELECT * FROM \"MEDIDAS_SAT\" WHERE \"DESC_MAYUS\" LIKE UPPER('$desc')" ;
+		$query = 'SELECT * FROM "MEDIDAS_SAT" WHERE "DESC_MAYUS" LIKE UPPER(\'$desc\')' ;
 		$result = pg_fetch_all(pg_query($this->conn, $query));
 		return json_encode($result);
 	}
+
+  function get_unidad_by_code($clave){
+    $query = 'SELECT * FROM "MEDIDAS_SAT" WHERE "CLAVE" = $1' ;
+    pg_prepare($this->conn,"get_medida_code",$query);
+		$result = pg_fetch_all(pg_execute($this->conn,"get_medida_code", array($clave)));
+		return json_encode($result[0]);
+  }
 
 	function get_unidad_medida()
 	{

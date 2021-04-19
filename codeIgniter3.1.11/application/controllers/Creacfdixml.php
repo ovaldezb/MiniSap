@@ -23,8 +23,11 @@ class Creacfdixml extends CI_Controller
 {
     
     function __construct() {
-        parent::__construct();						
+        parent::__construct();				
+        $this->ci =& get_instance();		
         $this->load->helper('url');
+        $this->ci->load->config('cfdi');
+        $url = $this->ci->config->item('url');
         $this->load->model('facturamodel');
         $this->load->model('empresamodel');
         $this->load->model('clientemodel');
@@ -46,25 +49,27 @@ class Creacfdixml extends CI_Controller
         $idSucursal = $data['idsucursal'];
         $nombre = $data['cliente'];
         $rfc = $data['rfc'];
-        $usocfdi = $data['usocfdi'];
+        $usocfdi = $data['usocfdicodigo'];
         $serie = $data['serie'];
         $folio = $data['folio'];
         $moneda = $data['moneda'];
         $tipoCambio = $data['tipocambio'];
         $metodopago =  $data['metodopago'];
-        $idCliente = $data['idCliente'];        
+        $idCliente = $data['idCliente'];     
+        $idfactura = $data['idfactura'];
         $cfdi = $this->facturamodel->getDataCFDI($idEmpresa,$idSucursal);         
         $archivoCerPem = $cfdi[0]->RUTA_PEM;
         $archivoKeyPem = $cfdi[0]->RUTA_KEY;
         $empresa = json_decode($this->empresamodel->get_empresa_by_id($idEmpresa),false);
         $venta = $this->tpvmodel->getventabyid($idVenta);
-        $venta_detalle = $this->tpvmodel->getventadetallebyid($idVenta);
+        $venta_detalle = $this->tpvmodel->getventadetallebyVentaId($idVenta);
         $subtotal = 0;
         $traslados = array();
         $conceptosArray = array();
         
         $i = 0;
         $impuestoAcomulado = 0;
+
         foreach($venta_detalle as $vd){
             $iva = ($vd->IVA/100);
             $valorUnitario = ($vd->PRECIO/(1+$iva));
@@ -87,28 +92,28 @@ class Creacfdixml extends CI_Controller
         }
         
         $baseArray = 
-            array(
-                'Serie'=>$serie,
-                'Folio'=>$folio,
-                'Fecha'=> str_replace(' ','T',$venta[0]->FECHA_VENTA), 
-                'FormaPago'=>'01', //De momento solo efectivo
-                'NoCertificado'=>$cfdi[0]->NOCERTIFICADO,
-                'Certificado'=>$cfdi[0]->CERTIFICADO,
-                'SubTotal'=>number_format($venta[0]->IMPORTE-$impuestoAcomulado,2,'.',''),
-                'Moneda'=>$moneda,
-                'TipoCambio'=>$tipoCambio,
-                'Total'=>number_format($venta[0]->IMPORTE,2,'.',''),
-                'TipoDeComprobante'=>'I',
-                'MetodoPago'=>$metodopago,
-                'LugarExpedicion'=>$empresa[0]->CP,
-                'RfcEmisor'=>$cfdi[0]->RFC,
-                'NombreEmisor'=>$cfdi[0]->NOMBRE,
-                'RegimenFiscal'=>'612', //$empresa->ID_REGIMEN //para las pruebas necesito poner 612 porque estoy usando mis datos
-                'RfcReceptor'=>$rfc,
-                'NombreReceptor'=>$nombre,
-                'UsoCFDI'=>$usocfdi,
-                'TotalImpuestosTrasladados'=>round($impuestoAcomulado,2),
-                'Traslados'=>array(array('Impuesto'=>"002", 'TipoFactor'=>"Tasa", 'TasaOCuota'=>number_format($iva,6), 'Importe'=>round($impuestoAcomulado,2)))
+          array(
+              'Serie'=>$serie,
+              'Folio'=>$folio,
+              'Fecha'=> str_replace(' ','T',$venta[0]->FECHA_VENTA), 
+              'FormaPago'=>'01', //De momento solo efectivo
+              'NoCertificado'=>$cfdi[0]->NOCERTIFICADO,
+              'Certificado'=>$cfdi[0]->CERTIFICADO,
+              'SubTotal'=>number_format($venta[0]->IMPORTE-$impuestoAcomulado,2,'.',''),
+              'Moneda'=>$moneda,
+              'TipoCambio'=>$tipoCambio,
+              'Total'=>number_format($venta[0]->IMPORTE,2,'.',''),
+              'TipoDeComprobante'=>'I',
+              'MetodoPago'=>$metodopago,
+              'LugarExpedicion'=>$empresa[0]->CP,
+              'RfcEmisor'=>$cfdi[0]->RFC,
+              'NombreEmisor'=>$cfdi[0]->NOMBRE,
+              'RegimenFiscal'=>'612', //$empresa->ID_REGIMEN //para las pruebas necesito poner 612 porque estoy usando mis datos
+              'RfcReceptor'=>$rfc,
+              'NombreReceptor'=>$nombre,
+              'UsoCFDI'=>$usocfdi,
+              'TotalImpuestosTrasladados'=>round($impuestoAcomulado,2),
+              'Traslados'=>array(array('Impuesto'=>"002", 'TipoFactor'=>"Tasa", 'TasaOCuota'=>number_format($iva,6), 'Importe'=>round($impuestoAcomulado,2)))
         );
                                     
         $sellado = $this->crearcfdi->generaXML($baseArray,$conceptosArray,$archivoCerPem,$archivoKeyPem);                     
@@ -119,11 +124,11 @@ class Creacfdixml extends CI_Controller
                 "user"=>"omar.valdez.becerril@gmail.com",
                 "password"=> "omar.sw"
                 );
-            
+                
             $stamp = StampService::Set($params);
             $result = json_decode(json_encode($stamp::StampV4($sellado)),false);            
             if($result->status == "success"){
-                $dataSAT = array($nombre,$rfc,$result->data->fechaTimbrado,$result->data->qrCode,$result->data->cfdi,$folio,number_format($importe,3,'.',''),$result->data->cadenaOriginalSAT,$idCliente,$idEmpresa);
+                $dataSAT = array($nombre,$rfc,$result->data->fechaTimbrado,$result->data->qrCode,$result->data->cfdi,$folio,number_format($importe,3,'.',''),$result->data->cadenaOriginalSAT,$idCliente,$idEmpresa,$idfactura);
                 $this->facturamodel->saveCFDISAT($dataSAT);
                 return $this->output
 		        ->set_content_type('application/json')
@@ -156,24 +161,27 @@ class Creacfdixml extends CI_Controller
         }
     }
 
-    function getfacturaby($forma,$idfactura,$idCliente,$idEmpresa){
-
+    function sendfacturaby($forma,$idfactura,$idCliente,$idEmpresa){
+        $data = json_decode(file_get_contents("php://input"),true);
+        if($data['correos'] !== null){
+          $emails = substr($data['correos'], 0, -1);
+        }
         $result = json_decode($this->facturamodel->get_factura_by_id($idfactura),false); 
         $cliente = json_decode($this->clientemodel->get_cliente_by_id($idCliente),false);
         $empresa = json_decode($this->empresamodel->get_empresa_by_id($idEmpresa),false);
         $formapago = json_decode($this->catalogosmodel->get_forma_pago_js(),false);
         $uso_cfdi = json_decode(json_encode($this->catalogosmodel->get_uso_cfdi()),false);
-        $cadenaSat = 'Aqui va la cadena SAT desde Controller';
-        file_put_contents($result[0]->FOLIO.'.png',base64_decode($result[0]->QR_CODE));
-        $url = FCPATH.$result[0]->FOLIO.'.png';        
-        $res = $this->xml2pdf->convierte($result[0]->CFDI,$cliente,$empresa,$formapago,$uso_cfdi,$cadenaSat,$url);        
+        file_put_contents(FCPATH.'img/'.$result[0]->FOLIO.'.png',base64_decode($result[0]->QR_CODE));
+        $qr = FCPATH.'img/'.$result[0]->FOLIO.'.png';      
+        $res = $this->xml2pdf->convierte($result[0]->CFDI,$result[0]->CADENA_SAT,$cliente,$empresa,$formapago,$uso_cfdi,$qr);        
         $dompdf = new DOMPDF();
         $dompdf->loadHtml($res);
         $dompdf->setPaper('A4', "portrait");
         $dompdf->render();
-        $filenamepdf = FCPATH.'pdfs/'.$result[0]->RFC.'.pdf';
-        $filenamexml = FCPATH.'pdfs/'.$result[0]->RFC.'.xml';
-        $filenamezip = FCPATH.'pdfs/'.$result[0]->FOLIO.'.zip'; 
+        $today = date("Ymd_His");
+        $filenamepdf = FCPATH.'pdfs/'.$result[0]->RFC.'_'.$today.'.pdf';
+        $filenamexml = FCPATH.'pdfs/'.$result[0]->RFC.'_'.$today.'.xml';
+        $filenamezip = FCPATH.'pdfs/'.$result[0]->FOLIO.'_'.$today.'.zip'; 
         $output = $dompdf->output();
         file_put_contents($filenamepdf, $output); //$dompdf->output()
         $xml_doc = new DOMDocument('1.0','utf-8');
@@ -209,8 +217,11 @@ class Creacfdixml extends CI_Controller
                 $email->SetFrom('no-reply@rts-soft.net', 'RTS'); //Name is optional
                 $email->Subject   = 'Factura: '.$result[0]->FOLIO;
                 $email->Body      = '<p>Adjunto se encuentra su factura en formato PDF y XML</p>';
-                $email->addAddress( 'omar.valdez.becerril@gmail.com','Omar Valdez' );
-                $email->addAddress( 'omar.valdez@protonmail.com','Omar Valdez' );                
+                $lstemails = explode('|',$emails);
+                for($i = 0; $i < sizeof($lstemails);$i++){
+                  $email->addAddress($lstemails[$i]);
+                }
+                //$email->addAddress( 'omar.valdez@protonmail.com','Omar Valdez' );                
                 $email->IsHTML(true); 
                 $file_to_attach = $filenamezip; 
                 $email->AddAttachment( $file_to_attach , basename($filenamezip));            
@@ -223,14 +234,15 @@ class Creacfdixml extends CI_Controller
                         ->set_content_type('application/json')
                         ->set_output(json_encode(array('value'=>'OK')));
                 }
-            }catch(\Exception $e){
+            }catch(Exception $e){
                 return $this->output
                         ->set_content_type('application/json')
-                        ->set_output(json_encode(array('value'=>$e)));
+                        ->set_output(json_encode(array('value'=>$e->getMessage() )));
             }finally{
                 unlink($filenamepdf);
                 unlink($filenamexml);        
                 unlink($filenamezip); 
+                unlink($qr);
             }
         }               
     }

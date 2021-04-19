@@ -101,6 +101,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$routeParams)
     RFC:''
   };
   $scope.fact = {
+    idfactura:'',
     idCliente:'',
     idventa:'',
     cliente:'',
@@ -108,10 +109,11 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$routeParams)
     serie:'',
     folio:'',
     usocfdi:'',
+    usocfdicodigo:'',
     moneda:'MXN',
     tipocambio:1,
     formapago:"1",
-    metodopago:'PUE',
+    metodopago:'1',
     tipopago:1,
     req_factura:false,
     idempresa:'',
@@ -688,12 +690,14 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$routeParams)
     {
       $scope.claveclte = $scope.lstCliente[indxRowClte].CLAVE;
       $scope.nombre_cliente = $scope.lstCliente[indxRowClte].NOMBRE;
-      $scope.rfc_cliente = $scope.lstCliente[indxRowClte].RFC;
-      $scope.fact.usocfdi = $scope.lstCliente[indxRowClte].USO_CFDI;
-      $scope.cliente.id_uso_cfdi = $scope.lstCliente[indxRowClte].ID_USO_CFDI;      
+      $scope.rfc_cliente = $scope.lstCliente[indxRowClte].RFC != null ? $scope.lstCliente[indxRowClte].RFC.trim() : '';
+      //$scope.fact.usocfdi = $scope.lstCliente[indxRowClte].USO_CFDI;
+      $scope.cliente.id_uso_cfdi = $scope.lstCliente[indxRowClte].ID_USO_CFDI;   
+      $scope.fact.usocfdi = $scope.lstCliente[indxRowClte].ID_USO_CFDI;     
       $scope.idcliente = $scope.lstCliente[indxRowClte].ID_CLIENTE;           
       $scope.fact.idCliente = $scope.lstCliente[indxRowClte].ID_CLIENTE;
       $scope.cliente.dcredito = $scope.lstCliente[indxRowClte].DIAS_CREDITO;
+      $scope.cliente.id_forma_pago = $scope.lstCliente[indxRowClte].ID_FORMA_PAGO;
       $scope.lstCliente = [];
       $scope.showLstClte = false;      
     }
@@ -705,12 +709,14 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$routeParams)
           if(res.data){
             $scope.claveclte = res.data[0].CLAVE.trim();
             $scope.nombre_cliente =res.data[0].NOMBRE;
-            $scope.rfc_cliente = res.data[0].RFC;
-            $scope.fact.usocfdi = res.data[0].USO_CFDI;
-            $scope.cliente.id_uso_cfdi = res.data[0].ID_USO_CFDI;      
+            $scope.rfc_cliente = res.data[0].RFC!= null ? res.data[0].RFC.trim() : '';
+            //$scope.fact.usocfdi = res.data[0].USO_CFDI;
+            $scope.cliente.id_uso_cfdi = res.data[0].ID_USO_CFDI;   
+            $scope.fact.usocfdi = $scope.lstCliente[indxRowClte].ID_USO_CFDI;      
             $scope.idcliente = res.data[0].ID_CLIENTE;           
             $scope.fact.idCliente = res.data[0].ID_CLIENTE;
             $scope.cliente.dcredito = res.data[0].DIAS_CREDITO;
+            $scope.cliente.id_forma_pago = res.data[0].ID_FORMA_PAGO;
           }else{
             swal('No existe el cliente con codigo '+$scope.claveclte+', puede hacer la búsqueda por nombre');
             $scope.nombre_cliente = '';
@@ -798,7 +804,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$routeParams)
       }
       $scope.getTipoPago();
 
-      if($scope.nombre_cliente != ''){
+      if($scope.rfc_cliente != ''){
         $scope.getMoneda();
         $scope.getMetPago();
         $scope.getFormPago();  
@@ -882,7 +888,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$routeParams)
         saldo:$scope.total,
         tipopago:$scope.fact.tipopago,
         frevision:formatDateInsert(new Date()),
-        fvencimiento:formatDateInsert(nextdate),
+        fvencimiento:$scope.cliente.dcredito>0?formatDateInsert(nextdate):null,
         idvendedor:$scope.idvendedor =='' ? null : $scope.idvendedor,
         idempresa:$scope.idempresa,
         aniofiscal:$scope.aniofiscal,
@@ -893,39 +899,41 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$routeParams)
         contacto:null
       };
 
-      if($scope.fact.tipopago==2){
+      if($scope.fact.req_factura){
         $http.post(pathFactura+'savefactura',dataFact)
-            .then(res=>{
-              dataVenta.idfactura = res.data[0].registra_factura;
-              $http.post(pathTpv+'registraventa',dataVenta).
-                  then(function(res)
-                  {
-                    $scope.idVenta = res.data[0].registra_venta;
-                    $scope.registraVentaProd();
-                    if($scope.fact.req_factura){
-                      $scope.registraFactura(); 
-                    }
-                    $scope.imprimeCompra();      
-                    $scope.limpiaCompra();
-                    swal('La venta se registro exitosamente','Felicidades!','success');
-                  })
-                  .catch(function(err)
-                  {
-                    console.log(err);
-                  });
-            })
-            .catch(err =>{
-              console.log(err);
-            });
+          .then(res=>{
+            dataVenta.idfactura = res.data[0].registra_factura;
+            $scope.fact.idfactura = dataVenta.idfactura;
+            $http.post(pathTpv+'registraventa',dataVenta).
+                then(function(res)
+                {
+                  $scope.idVenta = res.data[0].registra_venta;
+                  $scope.registraVentaProd();
+                  if($scope.fact.req_factura){
+                    $scope.registraFactura(); 
+                  }
+                  $scope.imprimeCompra();      
+                  $scope.limpiaCompra();
+                  swal('La venta se registro exitosamente','Felicidades!','success');
+                })
+                .catch(function(err)
+                {
+                  console.log(err);
+                });
+          })
+          .catch(err =>{
+            console.log(err);
+          });
       }else{
         $http.post(pathTpv+'registraventa',dataVenta).
         then(function(res)
         {
           $scope.idVenta = res.data[0].registra_venta;
           $scope.registraVentaProd();
-          if($scope.fact.req_factura){
+          
+          /*if($scope.fact.req_factura){
             $scope.registraFactura(); 
-          }
+          }*/
           $scope.imprimeCompra();
           swal('La venta se registro exitosamente','Felicidades!','success');    
           $scope.limpiaCompra();
@@ -955,6 +963,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$routeParams)
     $scope.pago_vales = 0.0;
     $scope.impuestos = 0.0;
     $scope.importeNeto = 0.0;
+    $scope.totalBruto = 0.0;
     $scope.rgstracompra = false;
     $scope.cliente.dcredito = 0;
     $scope.idbanco = '0';
@@ -1012,9 +1021,11 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$routeParams)
 
     $scope.registraFactura = ()=>{
       $scope.fact.cliente = $scope.nombre_cliente;
-      $scope.fact.rfc = $scope.rfc_cliente;
+      $scope.fact.rfc = $scope.rfc_cliente.trim();
       $scope.fact.idventa = $scope.idVenta;
       $scope.fact.folio = $scope.docto;
+      $scope.fact.metodopago = $scope.lstMetpago[$scope.fact.metodopago - 1].MET_PAGO;
+      $scope.fact.usocfdicodigo = $scope.lstUsocfdi[$scope.fact.usocfdi - 1].CLAVE;
       $http.post(pathCreaFact+'creacfdi',$scope.fact)
       .then(res =>{
         if(res.data.status=="success"){

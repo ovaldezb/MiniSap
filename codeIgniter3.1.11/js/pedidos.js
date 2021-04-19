@@ -1,5 +1,6 @@
 app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
 {
+  const rowNumFill = 16;
   $scope.fecha = formatDatePrint(new Date());
   $scope.fechaPantalla = formatDatePantalla(new Date());
   $scope.hora = DisplayCurrentTime();
@@ -18,6 +19,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
   $scope.lstVendedor = [];
   $scope.lstPrdSucExis = [];
   $scope.lstDomis = [];
+  $scope.lstComplemento = [];
   $scope.idDocumento = '';
   $scope.indexRowPedido = -1;
   $scope.idPedido = 0;
@@ -48,6 +50,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
   $scope.pregElimiPedi = false;
   $scope.doctoEliminar = '';
   $scope.fechaentrega = '';
+  $scope.fechapedido = '';
   $scope.idUsuario = '';
   $scope.listaVendedores = false;
   $scope.modalAddDscnt = false;
@@ -142,7 +145,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
       id: 'fechaentrega',
       dateFormat: 'dd/MM/yyyy'
       });
-
+      $scope.fechapedido = formatDatePrint(new Date());
       $scope.regpedido = true;
       $http.get(pathAcc+'getdata',{responseType:'json'}).
       then(function(res){
@@ -158,11 +161,20 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
           $scope.getTipoPago();
           $scope.permisos();
           $scope.getvendedores();
+          $scope.getEmpresa();
         }
       }).catch(function(err){
         console.log(err);
       });      
       $scope.getUsoCfdi();
+      $scope.lstComplemento = [];
+      for(var i=0;i<(rowNumFill-$scope.lstProdCompra.length);i++){
+        let p = {
+          val:0
+        };
+        p.val = i;
+        $scope.lstComplemento.push(p);
+      }
   }
 
   $scope.getpedidos = function(){
@@ -392,6 +404,20 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
     })
   }
 
+  $scope.getEmpresa = () =>{
+    $http.get(pathEmpr+'loadbyid/'+$scope.pedido.idempresa,{responseType:'json'})
+    .then(res => {
+      if(res.data.length > 0){
+        $scope.empresa.nombre = res.data[0].NOMBRE;
+        $scope.empresa.domicilio = res.data[0].DOMICILIO;
+        $scope.empresa.rfc = res.data[0].RFC;
+      }
+    })
+    .catch(err =>{
+      console.log(err);
+    });
+  }
+
   $scope.selectRowPedido = function(docuento, indexRowPedido)
   {
     $scope.idDocumento = docuento;
@@ -573,7 +599,15 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
         $('#updtTblComp').val('F')
       }else
       {
-          $scope.lstProdCompra.push(dataCompra);
+        $scope.lstProdCompra.push(dataCompra);
+        $scope.lstComplemento = [];
+        for(var i=0;i<(rowNumFill-$scope.lstProdCompra.length);i++){
+          let p = {
+            val:0
+          };
+          p.val = i;
+          $scope.lstComplemento.push(p);
+        }
       }
       $scope.calculaValoresMostrar();
       $scope.setSelected($scope.lstProdCompra[0].CODIGO,0);
@@ -624,7 +658,6 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
       $scope.producto.promocion = $scope.lstProdCompra[$scope.indexRowCompra].PRECIO_PROMO;
       $scope.producto.descuento = $scope.lstProdCompra[$scope.indexRowCompra].DESCUENTO;
       //$scope.tipo_ps = $scope.lstProdCompra[$scope.indexRowCompra].TIPO_PS;
-     
 
       if($scope.producto.imagePath!='')
       {
@@ -722,6 +755,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
     {
       $scope.claveclte = $scope.lstCliente[indxRowClte].CLAVE;
       $scope.nombre_cliente = $scope.lstCliente[indxRowClte].NOMBRE;
+      $scope.cliente.domicilio = $scope.lstCliente[indxRowClte].DOMICILIO;
       $scope.rfc_cliente = $scope.lstCliente[indxRowClte].RFC;
       $scope.cliente.id_uso_cfdi = $scope.lstCliente[indxRowClte].ID_USO_CFDI;      
       $scope.pedido.idcliente = $scope.lstCliente[indxRowClte].ID_CLIENTE;           
@@ -817,7 +851,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
       e.which = 13; // # Some key code value
       $("#fechaInicio").trigger(e);
       $scope.pedido.fechaentrega = formatFecQuery($('#fechaentrega').val(),'ini');
-      $scope.fechaentrega = $('#fechaInicio').val();
+      $scope.fechaentrega = formatFecPagodmy($('#fechaentrega').val());
     }
     
     $scope.registraPedido = function()
@@ -948,18 +982,6 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
           .catch(err=>{
             console.log(err);
           });
-
-      $http.get(pathEmpr+'loadbyid/'+$scope.pedido.idempresa,{responseType:'json'})
-          .then(res => {
-            if(res.data.length > 0){
-              $scope.empresa.nombre = res.data[0].NOMBRE;
-              $scope.empresa.domicilio = res.data[0].DOMICILIO;
-              $scope.empresa.rfc = res.data[0].RFC;
-            }
-          })
-          .catch(err =>{
-            console.log(err);
-          });
         
     }
 
@@ -1014,6 +1036,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
     }
 
     $scope.imprimePedido = function(printSectionId) {
+      
       var innerContents = document.getElementById(printSectionId).innerHTML;
       //var popupWinindow = window.open('', '_blank', 'width=600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
       var popupWinindow = window.open(' ', 'popimpr');

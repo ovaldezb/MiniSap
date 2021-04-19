@@ -12,7 +12,7 @@ class Facturamodel extends CI_model
     }
     
     function saveCFDI($arrayCFDI){
-        $query = 'INSERT INTO "DATOS_CFDI" VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)';
+        $query = 'INSERT INTO "DATOS_CFDI" VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)';
         pg_prepare($this->conn,"inserta_cfdi",$query);
         $res = pg_execute($this->conn,"inserta_cfdi",$arrayCFDI);
         return $res;
@@ -54,7 +54,7 @@ class Facturamodel extends CI_model
     }
 
     function saveCFDISAT($arrayCFDISAT){
-        $query = 'INSERT INTO "FACTURA_CFDI" ("CLIENTE","RFC","FECHA_TIMBRADO","QR_CODE","CFDI","FOLIO","IMPORTE","CADENA_SAT","ID_CLIENTE","ID_EMPRESA","CANCELADO") VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,false)';
+        $query = 'INSERT INTO "FACTURA_CFDI" ("CLIENTE","RFC","FECHA_TIMBRADO","QR_CODE","CFDI","FOLIO","IMPORTE","CADENA_SAT","ID_CLIENTE","ID_EMPRESA","CANCELADO","ID_FACTURA") VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,false,$11)';
         pg_prepare($this->conn,"inserta_cfdi",$query);
         $res = pg_execute($this->conn,"inserta_cfdi",$arrayCFDISAT);
         return $res;

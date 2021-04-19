@@ -1,7 +1,7 @@
 
 <div class="container" ng-controller="myCtrCargMasiva" data-ng-init="init()">
     <div class="notification">
-        <h1 class="title has-text-centered">Carga Masiva de Datos</h1>
+        <h1 class="title is-4 has-text-centered">Carga Masiva de Datos</h1>
     </div>
     <div class="box">
         <div class="columns">
