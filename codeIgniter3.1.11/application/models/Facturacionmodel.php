@@ -53,5 +53,32 @@ class Facturacionmodel extends CI_model
 		$result = pg_execute($this->conn,"elimina",array($idventa,$idsucursal));
 		return json_encode($result);
 	}
+
+  function get_prod_by_fact_validar($idfactura){
+    $query = 'SELECT VP."ID_PRODUCTO",P."DESCRIPCION",TRIM(P."COD_CFDI") as "COD_CFDI" ,P."UNIDAD_SAT"
+    FROM "VENTAS_PRODUCTO" as VP
+    INNER JOIN "PRODUCTO" as P ON P."ID_PRODUCTO" = VP."ID_PRODUCTO"
+    INNER JOIN "VENTAS" as V ON V."ID_VENTA" = VP."ID_VENTA"
+    WHERE V."ID_FACTURA" = $1';
+		pg_prepare($this->conn,"select_fact",$query);
+		$result = pg_fetch_all(pg_execute($this->conn,"select_fact",array($idfactura)));
+		return json_encode($result,JSON_NUMERIC_CHECK);
+  }
+
+  function get_datos_for_cfdi($idfactura){
+    $query = 'SELECT F."DOCUMENTO" as "FOLIO", V."ID_VENTA",F."ID_CLIENTE",TRIM(C."RFC") as "RFC",
+    TRIM(C."NOMBRE") as "CLIENTE" ,
+    U."CLAVE" as "USO_CFDI", TRIM(M."MET_PAGO") as "METODO_PAGO", FP."CLAVE" as "FORMA_PAGO"
+    FROM "FACTURA" as F
+    INNER JOIN "VENTAS" as V ON V."ID_FACTURA" = F."ID_FACTURA"
+    INNER JOIN "CLIENTE" as C ON C."ID_CLIENTE" = F."ID_CLIENTE"
+    INNER JOIN "USO_CFDI" as U ON U."ID_CFDI" = F."ID_USO_CFDI"  
+    INNER JOIN "METODO_PAGO" as M ON M."ID_MET_PAGO" = F."ID_METODO_PAGO"
+    INNER JOIN "FORMA_PAGO" as FP ON FP."ID_FORMA_PAGO" = F."ID_FORMA_PAGO"
+    WHERE F."ID_FACTURA" = $1';
+		pg_prepare($this->conn,"select_fact",$query);
+		$result = pg_fetch_all(pg_execute($this->conn,"select_fact",array($idfactura)));
+		return json_encode($result[0]);
+  }
 }
 ?>

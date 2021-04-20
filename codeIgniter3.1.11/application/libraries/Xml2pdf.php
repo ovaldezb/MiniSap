@@ -68,9 +68,9 @@
             <HEAD>
                 <style>
                 table {
-                border-collapse: collapse;
+                  border-collapse: collapse;
+                  border-spacing: 0;
                 }                            
-                
                 .header{
                     color:white;
                     background: DodgerBlue;
@@ -129,20 +129,33 @@
                     font-size: 10px;
                     text-align: left;
                     word-wrap: break-word;
+                    padding: 0px;
                 }
-                td {                                 
-                    word-wrap: break-word; 
-                } 
+                
+                #footer {
+                  background: #f7f7f7 !important;
+                  width: 100%;
+                  height: 480px;
+                  line-height: 30px;
+                  color: #444;
+                  left: 0px !important;
+                  bottom: 0px !important;
+                  margin: 0 auto !important;
+                  position: fixed;
+                }
+                .font12 {
+                  font-size:12px
+                }
                 </style>
             </HEAD>
             <BODY>
-            <table style='width: 600px;'>
+              <table style='width: 100%;'>
                 <tbody>
-                    <tr>
-                        <td style='width:100px'>
-                            <img src='./img/logo.png' alt='' width='123' height='123' />
-                        </td>
-                        <td style='width:180px;'>&nbsp;</td>
+                  <tr>
+                    <td>
+                      <img src='./img/logo.png' alt='' width='123' height='123' />
+                    </td>
+                    <td style='width:100%;'>&nbsp;</td>
                         <td style='width:350px;' align='right'>
                             <table style='width: 350px' cellspacing='0' cellpadding='0'>                                
                                 <tbody>
@@ -237,101 +250,93 @@
             </table>
             <br>
             <table style='width:100%'>
-                <tbody>
-                    <tr>
-                        <td class='t3c1' style='background: DodgerBlue;color:white;'>Cantidad</td>
-                        <td class='t3c2' style='background: DodgerBlue;color:white;'>Unidad</td>
-                        <td class='t3c3' style='background: DodgerBlue;color:white;'>Descripci&oacute;n</td>
-                        <td class='t3c4' style='background: DodgerBlue;color:white;'>P. Unitario</td>
-                        <td class='t3c4' style='background: DodgerBlue;color:white;'>Importe</td>
-                    </tr>
-                    {$arrayConcept}                    
-                    <tr>
-                    <td style='width: 80.55px; text-align: center;'>&nbsp;</td>
-                    <td style='width: 78.2833px; text-align: center;'>&nbsp;</td>
-                    <td style='width: 262.667px;'>&nbsp;</td>
-                    <td style='width: 105.833px; text-align: right;'>&nbsp;</td>
-                    <td style='width: 114.667px; text-align: right;'>&nbsp;</td>
-                    </tr>
-                    <tr>
-                    <td style='width: 80.55px; text-align: center;'>&nbsp;</td>
-                    <td style='width: 78.2833px; text-align: center;'>&nbsp;</td>
-                    <td style='width: 262.667px;'>&nbsp;</td>
-                    <td style='width: 105.833px; text-align: right;'>&nbsp;</td>
-                    <td style='width: 114.667px; text-align: right;'>&nbsp;</td>
-                    </tr>
-                    <tr>
-                    <td style='width: 80.55px; text-align: center;'>&nbsp;</td>
-                    <td style='width: 78.2833px; text-align: center;'>&nbsp;</td>
-                    <td style='width: 262.667px;'>&nbsp;</td>
-                    <td style='width: 105.833px; text-align: right;'>&nbsp;</td>
-                    <td style='width: 114.667px; text-align: right;'>                    
-                    </td>
-                    </tr>
-                </tbody>
+              <tbody>
+                <tr>
+                    <td class='t3c1' style='background: DodgerBlue;color:white;'>Cantidad</td>
+                    <td class='t3c2' style='background: DodgerBlue;color:white;'>Unidad</td>
+                    <td class='t3c3' style='background: DodgerBlue;color:white;'>Descripci&oacute;n</td>
+                    <td class='t3c4' style='background: DodgerBlue;color:white;'>P. Unitario</td>
+                    <td class='t3c4' style='background: DodgerBlue;color:white;'>Importe</td>
+                </tr>
+                {$arrayConcept}                    
+                <tr>
+                  <td style='width: 80.55px; text-align: center;'>&nbsp;</td>
+                  <td style='width: 78.2833px; text-align: center;'>&nbsp;</td>
+                  <td style='width: 262.667px;'>&nbsp;</td>
+                  <td style='width: 105.833px; text-align: right;'>&nbsp;</td>
+                  <td style='width: 114.667px; text-align: right;'>&nbsp;</td>
+                </tr>
+                <tr>
+                  <td style='width: 80.55px; text-align: center;'>&nbsp;</td>
+                  <td style='width: 78.2833px; text-align: center;'>&nbsp;</td>
+                  <td style='width: 262.667px;'>&nbsp;</td>
+                  <td style='width: 105.833px; text-align: right;'>&nbsp;</td>
+                  <td style='width: 114.667px; text-align: right;'>&nbsp;</td>
+                </tr>
+                <tr>
+                  <td style='width: 80.55px; text-align: center;'>&nbsp;</td>
+                  <td style='width: 78.2833px; text-align: center;'>&nbsp;</td>
+                  <td style='width: 262.667px;'>&nbsp;</td>
+                  <td style='width: 105.833px; text-align: right;'>&nbsp;</td>
+                  <td style='width: 114.667px; text-align: right;'>                    
+                </td>
+                </tr>
+              </tbody>
             </table>
-            <table style='width: 100%;' border='1'>
-                <tbody>
-                    <tr>
-                        <td style='width: 150px;'>
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td style='width: 52px;' rowspan='3'><img src='{$qr}' alt='' width='140' height='140' />&nbsp;&nbsp;</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                        <td style='width: 511px;'>
-                            <table style='width: 100%;'>
-                                <tbody>
-                                    <tr>
-                                        <td style='width: 135px;'>&nbsp;</td>
-                                        <td style='width: 102px;'>&nbsp;</td>
-                                        <td style='width: 130px; text-align: right;'><strong>Sub Total:</strong></td>
-                                        <td style='width: 112px; text-align: right;'>$ {$subtotal}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style='width: 135px; text-align: right;'>&nbsp;</td>
-                                        <td style='width: 102px;'>&nbsp;</td>
-                                        <td style='width: 130px; text-align: right;'><strong>IVA:</strong></td>
-                                        <td style='width: 112px; text-align: right;'>$ {$imptrans}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style='width: 135px;'>&nbsp;</td>
-                                        <td style='width: 102px; text-align: right;'>&nbsp;</td>
-                                        <td style='width: 130px; text-align: right;'><strong>Total:</strong></td>
-                                        <td style='width: 112px; text-align: right;'>$ {$total}</td>
-                                    </tr>                                                        
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <hr />
+
             <table style='width: 100%;'>
+              <tbody>
+                <tr>
+                  <td style='width: 102px;'>&nbsp;</td>
+                  <td style='width: 130px; text-align: right;'><strong>Sub Total:</strong></td>
+                  <td style='width: 112px; text-align: right;'>$ {$subtotal}</td>
+                </tr>
+                <tr>
+                  <td style='width: 102px;'>&nbsp;</td>
+                  <td style='width: 130px; text-align: right;'><strong>IVA:</strong></td>
+                  <td style='width: 112px; text-align: right;'>$ {$imptrans}</td>
+                </tr>
+                <tr>
+                  <td style='width: 102px; text-align: right;'>&nbsp;</td>
+                  <td style='width: 130px; text-align: right;'><strong>Total:</strong></td>
+                  <td style='width: 112px; text-align: right;'>$ {$total}</td>
+                </tr>                                                        
+              </tbody>
+            </table>
+          
+            <footer id='footer'>
+            <table style='width: 100%;' border='1'>
+                <colgroup>
+                  <col width='10%' />
+                  <col width='90%' />
+                </colgroup>
                 <tbody>
                     <tr>
-                        <td class='t4head'>CADENA ORIGINAL DEL COMPLEMENTO DE CERTIFICACION DIGITAL DEL SAT</td>
+                        <td rowspan='2' style='width:10%'>
+                          <img src='{$qr}' width='140' height='140' />
+                        </td>
+                        <td class='t4head' style='width:90%'>
+                          <p>CADENA ORIGINAL DEL COMPLEMENTO DE CERTIFICACION DIGITAL DEL SAT</p>
+                        </td>
                     </tr>
                     <tr>
-                        <td class='t4cell'>{$cadena_sat}</td>
+                        <td class='t4cell font12' colspan='2'>{$cadena_sat}</td>
                     </tr>
                     <tr>
-                        <td class='t4head'>SELLO DIGITAL DEL CFDI</td>
+                        <td class='t4head font12' colspan='2'>SELLO DIGITAL DEL CFDI</td>
                     </tr>
                     <tr>
-                        <td class='t4cell'>{$selloCFD}</td>
+                        <td class='t4cell font12' colspan='2'>{$selloCFD}</td>
                     </tr>
                     <tr>
-                        <td class='t4head'>SELLO DIGITAL DEL SAT<br/></td>
+                        <td class='t4head font12' colspan='2'>SELLO DIGITAL DEL SAT<br/></td>
                     </tr>
                     <tr>
-                        <td class='t4cell'>{$selloSAT}</td>
+                        <td class='t4cell font12' colspan='2'>{$selloSAT}</td>
                     </tr>
                 </tbody>
-            </table>            
+            </table>
+          </footer>         
         </BODY>        
     </HEAD>";            
         return $html1;

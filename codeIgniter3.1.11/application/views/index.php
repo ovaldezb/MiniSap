@@ -26,7 +26,7 @@
   <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <a class="navbar-item" href="./login#!/">
-        <img src="../img/logo.jpg" alt="Sistema de Gesti&oacute;n Empresarial" width="40" height="28">
+        <img src="../img/logo.png" alt="Sistema de Gesti&oacute;n Empresarial" width="40" height="28">
       </a>
     </div>
     <div class="navbar-end">
@@ -191,7 +191,7 @@
 <script src="../js/rventas.js"></script>
 <script src="../js/linea.js"></script>
 <script src="../js/datosfactura.js"></script>
-<script src="../js/facturar.js"></script>
+<script src="../js/facturas.js"></script>
 <script src="../js/vendedores.js"></script>
 <script src="../js/cargamasiva.js"></script>
 <script src="../js/controlinventario.js"></script>

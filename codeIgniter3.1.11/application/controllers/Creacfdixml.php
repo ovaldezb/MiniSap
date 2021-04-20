@@ -57,6 +57,8 @@ class Creacfdixml extends CI_Controller
         $metodopago =  $data['metodopago'];
         $idCliente = $data['idCliente'];     
         $idfactura = $data['idfactura'];
+        $formapago = $data['formapago'];
+        $aniofiscal = $data['aniofiscal'];
         $cfdi = $this->facturamodel->getDataCFDI($idEmpresa,$idSucursal);         
         $archivoCerPem = $cfdi[0]->RUTA_PEM;
         $archivoKeyPem = $cfdi[0]->RUTA_KEY;
@@ -96,7 +98,7 @@ class Creacfdixml extends CI_Controller
               'Serie'=>$serie,
               'Folio'=>$folio,
               'Fecha'=> str_replace(' ','T',$venta[0]->FECHA_VENTA), 
-              'FormaPago'=>'01', //De momento solo efectivo
+              'FormaPago'=>$formapago, //De momento solo efectivo
               'NoCertificado'=>$cfdi[0]->NOCERTIFICADO,
               'Certificado'=>$cfdi[0]->CERTIFICADO,
               'SubTotal'=>number_format($venta[0]->IMPORTE-$impuestoAcomulado,2,'.',''),
@@ -128,7 +130,7 @@ class Creacfdixml extends CI_Controller
             $stamp = StampService::Set($params);
             $result = json_decode(json_encode($stamp::StampV4($sellado)),false);            
             if($result->status == "success"){
-                $dataSAT = array($nombre,$rfc,$result->data->fechaTimbrado,$result->data->qrCode,$result->data->cfdi,$folio,number_format($importe,3,'.',''),$result->data->cadenaOriginalSAT,$idCliente,$idEmpresa,$idfactura);
+                $dataSAT = array($nombre,$rfc,$result->data->fechaTimbrado,$result->data->qrCode,$result->data->cfdi,$folio,number_format($importe,3,'.',''),$result->data->cadenaOriginalSAT,$idCliente,$idEmpresa,$idfactura,$aniofiscal);
                 $this->facturamodel->saveCFDISAT($dataSAT);
                 return $this->output
 		        ->set_content_type('application/json')

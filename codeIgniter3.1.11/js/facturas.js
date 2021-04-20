@@ -1,5 +1,7 @@
 app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams)
 {
+  const MONEDA = 'MXN';
+  const TIPO_CAMBIO = 1;
   $scope.fecha = formatDatePrint(new Date());
   $scope.fechaPantalla = formatDatePantalla(new Date());
   $scope.hora = DisplayCurrentTime();
@@ -19,6 +21,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
   $scope.lstVendedor = [];
   $scope.lstPrdSucExis = [];
   $scope.lstCorreos = [];
+  $scope.lstNoCodigoSAT = [];
   $scope.idDocumento = '';
   $scope.indexRowFactura = -1;
   $scope.indexRowPedido = -1;
@@ -391,7 +394,6 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
     $scope.cliente.pagos=$('#pagos').val();
     $scope.cliente.id_forma_pago=$('#id_forma_pago').val();
     $scope.cliente.id_vendedor=$scope.idVendedor;
-    //$scope.cliente.id_uso_cfdi=$('#id_uso_cfdi').val();
     $scope.cliente.idempresa = $scope.factura.idempresa;
 
     if($scope.btnVerifClte == 'Agregar')
@@ -1125,6 +1127,73 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
    .catch(err =>{
     console.log(err);
    }); 
+  }
+
+  $scope.timbrar = () =>{
+    $http.get(pathFactura+'validaprdfact/'+$scope.lstFacturas[$scope.indexRowFactura].ID_FACTURA)
+    .then(res=>{
+      $scope.lstNoCodigoSAT = res.data.filter(prod => {
+        return prod.COD_CFDI === null
+      });
+      if($scope.lstNoCodigoSAT.length > 0){
+        let lstprod = '';
+        $scope.lstNoCodigoSAT.forEach(prod =>{
+          lstprod += prod.DESCRIPCION +'\n';
+        });
+        swal('No es posible timbrar la factura '+$scope.lstFacturas[$scope.indexRowFactura].DOCUMENTO,'El/Los siguiente(s) producto(s) no cuentan con código CFDI '+lstprod,'error');
+        return;
+      }
+
+        swal({
+          title: "Se va a realizar el timbrado de la factura "+$scope.lstFacturas[$scope.indexRowFactura].DOCUMENTO,
+          text: "Continuar?",
+          icon: "warning",
+          buttons: [true,true],
+          dangerMode: true,
+        })
+        .then(yes=>{
+          if(yes){
+            $http.get(pathFactura+'datoscfdi/'+$scope.lstFacturas[$scope.indexRowFactura].ID_FACTURA)
+            .then(res =>{
+              $scope.factura.idventa = res.data.ID_VENTA  
+              $scope.factura.cliente = res.data.CLIENTE;
+              $scope.factura.rfc = res.data.RFC;
+              $scope.factura.usocfdicodigo = res.data.USO_CFDI;
+              //probablemente este dato se tiene que pedir
+              $scope.factura.serie = 'S00001';
+              $scope.factura.folio = res.data.FOLIO;
+              // De momento lo voy a dejar en MXN
+              $scope.factura.moneda = MONEDA;
+              $scope.factura.tipocambio = TIPO_CAMBIO;
+              $scope.factura.metodopago = res.data.METODO_PAGO;
+              $scope.factura.idCliente = res.data.ID_CLIENTE;
+              $scope.factura.idfactura = $scope.lstFacturas[$scope.indexRowFactura].ID_FACTURA;
+              $scope.factura.formapago = res.data.FORMA_PAGO; //ya
+              //console.log($scope.factura);
+              $http.post(pathCreaFact+'creacfdi',$scope.factura)
+              .then(res =>{
+                if(res.data.status=="success"){
+                  $scope.getfacturas();
+                  $scope.indexRowFactura = -1;
+                  swal('Se realizo el timbrado exitosamente', 'Se creó el CFDI','success');
+                }else{
+                  swal('Error al generar la factura:\n'+res.data.error,'No se pudo generar la factura','error');
+                }
+              })
+              .catch(function(err)
+              {
+                console.log(err);
+              });
+            })
+          }
+        })
+    })  
+    .catch(err => {
+        console.log(err);
+    })
+    .catch(err =>{
+      console.log(err);
+    });
   }
   
   $scope.cerrarEnviarEmail = ()=>{

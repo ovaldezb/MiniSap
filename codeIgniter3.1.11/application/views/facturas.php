@@ -18,6 +18,12 @@
 					</div>
 				</div>
 				<div class="level-right">
+          <p class="level-item" ng-show="!showEmail && indexRowFactura != -1">
+						<a ng-click="timbrar();"><span class="icon has-text-success"><i class="fas fa-bell" title="Timbrar Factura ante el SAT"></i></span></a>
+          </p>
+          <p class="level-item" ng-show="showEmail || indexRowFactura == -1">
+						<a ><span class="icon has-text-success"><i class="fas fa-bell" style="color:grey" title="Timbrar Factura ante el SAT"></i></span></a>
+          </p>
           <p class="level-item" ng-show="showEmail">
 						<a ng-click="mostrarEnviarEmail();"><span class="icon has-text-success"><i class="fas fa-envelope" title="Enviar Factura por correo electrónico"></i></span></a>
           </p>
@@ -65,7 +71,7 @@
 							<col width="10%">
 							<col width="10%">
 							<col width="5%">
-              <col width="5%">
+              <col width="5%">  
 							<col width="12%">
 							</colgroup>
 							<tr class="tbl-header">

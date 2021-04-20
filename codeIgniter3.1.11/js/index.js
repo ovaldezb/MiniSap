@@ -16,8 +16,8 @@ var pathLinea = pathCliente + 'api/linea/';
 var pathCreaFact = pathCliente + 'creacfdixml/';
 var pathCFDI = pathCliente + 'datosfactura/';
 var pathPedi = pathCliente + 'pedidos/';
-var pathFacturacion = pathCliente + 'facturacion/';
-var pathFactura = pathCliente + 'factura/';
+//var pathFacturacion = pathCliente + 'facturacion/';
+var pathFactura = pathCliente + 'facturas/';
 var pathCargaMasiva = pathCliente + 'cargamasiva/';
 var pathInv = pathCliente+'inventario/';
 var pathCob = pathCliente+'cobranza/';
@@ -75,7 +75,7 @@ app.config(function($routeProvider) {
       templateUrl : pathPedi
     })
     .when("/fact/:idproc",{
-      templateUrl : pathFacturacion
+      templateUrl : pathFactura
     })
     .when("/vend/:idproc",{
       templateUrl : pathVend

@@ -155,6 +155,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$routeParams)
           $scope.idsucursal = res.data.idsucursal;
           $scope.aniofiscal = res.data.aniofiscal;
           $scope.idUsuario = res.data.idusuario;
+          $scope.fact.aniofiscal = res.data.aniofiscal;
           $scope.fact.idempresa = res.data.idempresa;
           $scope.fact.idsucursal = res.data.idsucursal;
           $scope.getsucdisponible();
