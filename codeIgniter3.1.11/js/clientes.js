@@ -5,6 +5,8 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
   $scope.lstFactDtl = [];
   $scope.lstVendedor = [];
   $scope.lstDomicilios = [];
+  $scope.lstFormpago = [];
+  $scope.lstUsoCFDI = [];
   $scope.totalImporFact = 0;
   $scope.totalImporCobr = 0;
   $scope.totalSaldoFact = 0;
@@ -36,6 +38,10 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
   $scope.addDomEntrega = false;
   $scope.cltedsbl = true;
   $scope.idxRowDom = -1;
+  $scope.id_forma_pago = '1';
+  $scope.id_uso_cfdi = -1;
+  $scope.cfdi_style = {background:'pink'};
+  $scope.vendedor_style = {background:'pink'};
   let indexRow = -1;
   $scope.btnName = 'Guardar';
   $scope.permisos = {
@@ -70,6 +76,8 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
     }).catch(function(err){
       console.log(err);
     });
+    $scope.getFormPago();
+    $scope.getUsoCFDI();
   }
 
   $scope.getDataInit = function()
@@ -124,6 +132,15 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
     });
   }
 
+  $scope.getUsoCFDI = () =>{
+    $http.get(pathUtils+'getusocfdi')
+    .then(res=>{
+      $scope.lstUsoCFDI = res.data;
+    }).catch(err=>{
+      console.log(err);
+    });
+  }
+
   $scope.permisos = function(){
     $http.get(pathUsr+'permusrproc/'+$scope.idUsuario+'/'+$scope.idProceso)
     .then(res =>{
@@ -134,6 +151,17 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
     }).catch(err => {
       console.log(err);
     });
+  }
+
+  $scope.getFormPago = function(){
+    $http.get(pathUtils+'getformpag',{responseType:'json'}).
+    then(res => {
+      if(res.data.length > 0){
+        $scope.lstFormpago = res.data;
+      }
+    }).catch(err =>	{
+			console.log(err);
+		});
   }
 
   $scope.validaCP = function()
@@ -185,6 +213,21 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
   $scope.addCliente = function()
   {
     var  row, dataClte;
+    if($scope.id_forma_pago===''){
+      swal('Seleccione la forma de pago');
+      return;
+    }
+
+    if($scope.idVendedor === '-1'){
+      swal('Seleccione un Vendedor');
+      return;
+    }
+
+    if($scope.id_uso_cfdi === -1){
+      swal('Seleccione el uso del CFDI');
+      return;
+    }
+
     dataClte = {
       clave:$scope.clave,
       nombre:$scope.nombre,
@@ -197,9 +240,9 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
       id_tipo_cliente:$('#id_tipo_cliente').val(),
       revision:$('#revision').val(),
       pagos:$('#pagos').val(),
-      id_forma_pago:$('#id_forma_pago').val(),
+      id_forma_pago:$scope.id_forma_pago,
       id_vendedor:$scope.idVendedor,
-      id_uso_cfdi:$('#id_uso_cfdi').val(),
+      id_uso_cfdi:$scope.id_uso_cfdi, 
       email:$scope.email,
       notas:$scope.notas,
       dcredito:$scope.dcredito,
@@ -243,24 +286,25 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
       });
 
     }else{
-      if($scope.lstDomicilios.length > 0){
-        $http.delete(pathClte+'deletedomi/'+$scope.idCliente)
-        .then(res=>{
+      $http.delete(pathClte+'deletedomi/'+$scope.idCliente)
+      .then(res=>{
+        if($scope.lstDomicilios.length > 0){
           $scope.lstDomicilios.forEach(elem =>{
-            elem.ID_CLIENTE = $scope.idCliente;
-            $http.post(pathClte+'savedomi',elem)
-            .then(resp =>{
+          elem.ID_CLIENTE = $scope.idCliente;
+          $http.post(pathClte+'savedomi',elem)
+          .then(resp =>{
               
-            }).catch(err=>{
-              console.log(err);
+          }).catch(err=>{
+            console.log(err);
             });
           });
-          $scope.lstDomicilios = [];
-        })
-        .catch(err=>{
-          console.log(err);
-        });
-      }
+        }
+      $scope.lstDomicilios = [];
+      })
+      .catch(err=>{
+        console.log(err);
+      });
+      
       $http.put(pathClte+'updatecliente/'+$scope.idCliente, dataClte).
       then(function(res)
     	{
@@ -339,14 +383,15 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
         $("#id_tipo_cliente").val(res.data[0].ID_TIPO_CLIENTE);
         $("#revision").val(res.data[0].ID_REVISION);
         $("#pagos").val(res.data[0].ID_PAGOS);
-        $("#id_forma_pago").val(res.data[0].ID_FORMA_PAGO);
+        $scope.id_forma_pago = res.data[0].ID_FORMA_PAGO.toString();
         $scope.idVendedor = res.data[0].ID_VENDEDOR.toString();
-        $("#id_uso_cfdi").val(res.data[0].ID_USO_CFDI);
+        $scope.id_uso_cfdi = res.data[0].ID_USO_CFDI;
       }
     }).catch(function(err)
     {
       console.log(err);
     });
+    $scope.lstDomicilios = [];
     $scope.getDomicilios();
     $scope.isAddOpen = true;
     $scope.msjBoton = 'Actualizar';
@@ -367,6 +412,14 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
     .catch(err=>{
 
     });
+  }
+
+  $scope.selectCFDI = ()=>{
+    $scope.cfdi_style = {background:'lightgreen'};
+  }
+
+  $scope.selectVendedor = () =>{
+    $scope.vendedor_style = {background:'lightgreen'};
   }
 
   $scope.selectRowDom = (index) =>{
@@ -412,6 +465,9 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
 
   $scope.agregaDom = ()=>{
     $scope.limpiaDom();
+    $scope.domicilios.LATITUD = null;
+    $scope.domicilios.LONGITUD = null;
+    $scope.domicilios.CONTACTO = '';
     $scope.cltedsbl = false;
   }
 
@@ -420,6 +476,7 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
   }
 
   $scope.clseDomEntrega = () =>{
+    $scope.limpiaDom();
     $scope.addDomEntrega = false;
   }
 
@@ -444,12 +501,14 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
   	$('#id_tipo_cliente').val('1');
   	$('#revision').val('1');
   	$('#pagos').val('1');
-  	$('#id_forma_pago').val('1');
-  	$('#id_vendedor').val('1');
-  	$('#id_uso_cfdi').val('1');
+    $scope.id_forma_pago = '1';
+  	$scope.idVendedor = '-1';
+  	$scope.id_uso_cfdi = -1;
   	$scope.email = '';
   	$scope.notas = '';
     $scope.dcredito = 0;
+    $scope.cfdi_style = {background:'pink'};
+    $scope.vendedor_style = {background:'pink'};
   }
 
 });

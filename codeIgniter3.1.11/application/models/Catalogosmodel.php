@@ -25,16 +25,8 @@ class Catalogosmodel extends CI_model
 		return ($result);
 	}
 
-	function get_forma_pago() {
-		$query = 'SELECT * FROM "FORMA_PAGO"';
-		$result = pg_fetch_all(pg_query($this->conn, $query));
-		return ($result);
-	}
-
-	
-
 	function get_forma_pago_js() {
-		$query = 'SELECT * FROM "FORMA_PAGO"';
+		$query = 'SELECT * FROM "FORMA_PAGO" ORDER BY "CLAVE"' ;
 		$result = pg_fetch_all(pg_query($this->conn, $query));
 		return json_encode($result);
 	}
@@ -154,8 +146,9 @@ class Catalogosmodel extends CI_model
 
 	function get_sat_items_by_desc($desc)
 	{
-		$query = "SELECT * FROM \"CATALOGO_SAT\" WHERE \"DESC_MAYUS\" LIKE UPPER('$desc') ";
-		$result = pg_fetch_all(pg_query($this->conn, $query));
+		$query = 'SELECT * FROM "CATALOGO_SAT" WHERE "DESC_MAYUS" LIKE UPPER($1) ';
+    pg_prepare($this->conn,"get_item_sat",$query);
+		$result = pg_fetch_all(pg_execute($this->conn,"get_item_sat", array($desc)));
 		return json_encode($result);
 	}
 
@@ -168,8 +161,9 @@ class Catalogosmodel extends CI_model
 
 	function get_unidad_sat_by_desc($desc)
 	{
-		$query = 'SELECT * FROM "MEDIDAS_SAT" WHERE "DESC_MAYUS" LIKE UPPER(\'$desc\')' ;
-		$result = pg_fetch_all(pg_query($this->conn, $query));
+		$query = 'SELECT * FROM "MEDIDAS_SAT" WHERE "DESC_MAYUS" LIKE UPPER($1)' ;
+    pg_prepare($this->conn,"get_unidad_sat",$query);
+		$result = pg_fetch_all(pg_execute($this->conn,"get_unidad_sat",array($desc)));
 		return json_encode($result);
 	}
 

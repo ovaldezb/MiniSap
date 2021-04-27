@@ -1,5 +1,4 @@
-<br><br>
-<div class="container" ng-app="myProveedor" ng-controller="myCtrlProveedor" data-ng-init="init()">
+<div class="container" ng-controller="myCtrlProveedor" data-ng-init="init()">
 	<div class="notification" >
 	<h1 class="title has-text-centered">Administración de Proveedores</h1>
 	</div>

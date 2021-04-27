@@ -1,6 +1,6 @@
 app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
 {
-  const rowNumFill = 16;
+  const rowNumFill = 14;
   $scope.fecha = formatDatePrint(new Date());
   $scope.fechaPantalla = formatDatePantalla(new Date());
   $scope.hora = DisplayCurrentTime();
@@ -55,6 +55,8 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
   $scope.listaVendedores = false;
   $scope.modalAddDscnt = false;
   $scope.dispsearch = false;
+  $scope.showProgressBar = false;
+  $scope.mpago_style = {background:'pink'};
   $scope.idProceso = $routeParams.idproc;
   $scope.permisos = {
     alta: false,
@@ -79,7 +81,8 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
     fpago : 1,
     fechaentrega:'',
     domi:'',
-    bruto:''
+    bruto:'',
+    comentarios:''
   };
 
   $scope.domientrega = {
@@ -156,9 +159,6 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
           $scope.idUsuario = res.data.idusuario;
           $scope.getNextDocPedido();
           $scope.getpedidos();
-          $scope.getMoneda();
-          $scope.getFormPago();
-          $scope.getTipoPago();
           $scope.permisos();
           $scope.getvendedores();
           $scope.getEmpresa();
@@ -167,6 +167,10 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
         console.log(err);
       });      
       $scope.getUsoCfdi();
+      $scope.getMetPago();
+      $scope.getMoneda();
+      $scope.getFormPago();
+      $scope.getTipoPago();
       $scope.lstComplemento = [];
       for(var i=0;i<(rowNumFill-$scope.lstProdCompra.length);i++){
         let p = {
@@ -306,7 +310,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
             $('#id_tipo_cliente').val(res.data[0].ID_TIPO_CLIENTE);
             $('#revision').val(res.data[0].ID_REVISION);
             $('#pagos').val(res.data[0].ID_PAGOS);
-            $('#id_forma_pago').val(res.data[0].ID_FORMA_PAGO);
+            $scope.cliente.id_forma_pago = res.data[0].ID_FORMA_PAGO;
             $scope.cliente.id_vendedor = res.data[0].ID_VENDEDOR.toString();
             $scope.cliente.id_uso_cfdi = res.data[0].ID_USO_CFDI
             $scope.cliente.email = res.data[0].EMAIL;
@@ -360,9 +364,6 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
     $scope.cliente.id_tipo_cliente=$('#id_tipo_cliente').val();
     $scope.cliente.revision=$('#revision').val();
     $scope.cliente.pagos=$('#pagos').val();
-    $scope.cliente.id_forma_pago=$('#id_forma_pago').val();
-    //$scope.cliente.id_vendedor=$('#id_vendedor').val();
-    //$scope.cliente.id_uso_cfdi=$('#id_uso_cfdi').val();
     $scope.cliente.idempresa = $scope.pedido.idempresa;
 
     if($scope.btnVerifClte == 'Agregar')
@@ -723,7 +724,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
 
       for(var i=0;i<$scope.lstProdCompra.length;i++)
       {
-        $scope.pedido.bruto += Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) ;
+        $scope.pedido.bruto += Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA);
         $scope.dsctoValor += Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) * ($scope.lstProdCompra[i].ESDSCTO ? Number($scope.lstProdCompra[i].DESCUENTO/100) : 0);
         $scope.importeNeto += (Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA))  / (1+Number($scope.lstProdCompra[i].IVA/100));
         $scope.impuestos += (Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA))  / (1+Number($scope.lstProdCompra[i].IVA/100)) * Number($scope.lstProdCompra[i].IVA/100);
@@ -756,9 +757,13 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
       $scope.claveclte = $scope.lstCliente[indxRowClte].CLAVE;
       $scope.nombre_cliente = $scope.lstCliente[indxRowClte].NOMBRE;
       $scope.cliente.domicilio = $scope.lstCliente[indxRowClte].DOMICILIO;
+      $scope.cliente.telefono = $scope.lstCliente[indxRowClte].TELEFONO;
       $scope.rfc_cliente = $scope.lstCliente[indxRowClte].RFC;
       $scope.cliente.id_uso_cfdi = $scope.lstCliente[indxRowClte].ID_USO_CFDI;      
-      $scope.pedido.idcliente = $scope.lstCliente[indxRowClte].ID_CLIENTE;           
+      $scope.pedido.idcliente = $scope.lstCliente[indxRowClte].ID_CLIENTE; 
+      $scope.pedido.fpago = $scope.lstCliente[indxRowClte].ID_FORMA_PAGO;
+      $scope.pedido.tpago = $scope.lstCliente[indxRowClte].DIAS_CREDITO > 0 ? 2 : 1;
+      $scope.pedido.mpago = $scope.lstCliente[indxRowClte].DIAS_CREDITO === 0 ? 1 : -1;
       $scope.lstCliente = [];
       $scope.showLstClte = false;      
       $scope.getDomicilios();
@@ -773,7 +778,12 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
             $scope.nombre_cliente =res.data[0].NOMBRE;
             $scope.rfc_cliente = res.data[0].RFC;
             $scope.cliente.id_uso_cfdi = res.data[0].ID_USO_CFDI;      
+            $scope.cliente.telefono = res.data[0].TELEFONO;
+            $scope.cliente.domicilio = res.data[0].DOMICILIO;
             $scope.pedido.idcliente = res.data[0].ID_CLIENTE;  
+            $scope.pedido.fpago = res.data[0].ID_FORMA_PAGO;
+            $scope.pedido.tpago = res.data[0].DIAS_CREDITO > 0 ? 2 : 1;
+            $scope.pedido.mpago = res.data[0].DIAS_CREDITO === 0 ? 1 : -1;
             $scope.getDomicilios();         
           }else{
             swal('No existe el cliente con codigo '+$scope.claveclte+', puede hacer la búsqueda por nombre');
@@ -856,26 +866,44 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
     
     $scope.registraPedido = function()
     { 
+      if($scope.fechaentrega === ''){
+        swal('Seleccione una Fecha de Entrega');
+        return;
+      }
       $scope.pedido.fechapedido = formatDateInsert(new Date());
       $scope.pedido.dias = $scope.pedido.dias == '' ? null : $scope.pedido.dias;
       $scope.pedido.cuenta = $scope.pedido.cuenta == '' ? null : $scope.pedido.cuenta;
       $scope.pedido.fechaentrega = $scope.pedido.fechaentrega == '' ? null :$scope.pedido.fechaentrega;
       $scope.pedido.idvendedor = $scope.pedido.idvendedor == '' ? null : $scope.pedido.idvendedor;
-
-      $http.put(pathPedi+'registrapedido',$scope.pedido).
-      then(function(res)
-      {
-        $scope.idPedido = res.data[0].registra_pedido;
-        $scope.registraPedidoProd();
-        swal('El pedido se registro exitosamente');
-        $scope.isImprimir = true;
-        $scope.getpedidos();
-        //$scope.limpiar();
-      }).
-      catch(function(err)
-      {
-        console.log(err);
+      //Esto bloquea el boton de pedido
+      swal({
+        title: "Esta seguro que desea guardar el Pedido?",
+        text: $scope.pedido.docto,
+        icon: "warning",
+        buttons: [true,true],
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if(willDelete){
+          $scope.showProgressBar = true;
+          $scope.regpedido = true;
+          $http.put(pathPedi+'registrapedido',$scope.pedido).
+          then(function(res)
+          {
+            $scope.idPedido = res.data[0].registra_pedido;
+            $scope.registraPedidoProd();
+            swal('El pedido se registro exitosamente');
+            $scope.isImprimir = true;
+            $scope.getpedidos();
+            $scope.showProgressBar = false;
+          }).
+          catch(function(err)
+          {
+            swal('Ocurrio un error la guardar el pedido '+err.message);
+          });
+        }
       });
+      
     }
 
     $scope.registraPedidoProd = function()
@@ -922,6 +950,10 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
       });
     }
 
+    $scope.selectMPago = () =>{
+      $scope.mpago_style = {background:'lightgreen'};
+    }
+
     $scope.addDescuento = ()=>{
       $scope.modalAddDscnt = true;
     }
@@ -955,7 +987,10 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
               $scope.pedido.tpago = res.data[0].ID_TIPO_PAGO;
               $scope.pedido.fpago = res.data[0].ID_FORMA_PAGO.toString();
               $scope.fechaentrega = res.data[0].FECHA_ENTREGA;
+              $scope.rfc_cliente = res.data[0].RFC;
+              $scope.pedido.mpago = res.data[0].ID_METODO_PAGO;
               $scope.cliente.domicilio = res.data[0].CLI_DOMICILIO;
+              $scope.cliente.telefono = res.data[0].TELEFONO;
               $scope.pedido.domi = res.data[0].DOMICILIO;
               $scope.isCapturaPedido = true;
               $scope.isImprimir = true;
@@ -995,14 +1030,28 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
     }
 
     $scope.borraPedido = function(){
-      $http.delete(pathPedi+'elimpedidobyid/'+$scope.lstPedidos[$scope.indexRowPedido].ID_PEDIDO)
+      swal({
+        title: "Esta seguro que desea eliminar el pedido "+$scope.lstPedidos[$scope.indexRowPedido].DOCUMENTO,
+        text: "Una vez eliminado, no se podrá recuperar!",
+        icon: "warning",
+        buttons: [true,true],
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if(willDelete){
+          $http.delete(pathPedi+'elimpedidobyid/'+$scope.lstPedidos[$scope.indexRowPedido].ID_PEDIDO)
           .then(res => {
             $scope.pregElimiPedi = false;
+            $scope.indexRowPedido = -1;
+            swal('Se eliminó el pedido!');
             $scope.getpedidos();
           })
           .catch(err => {
             console.log(err);
           });
+        }
+      })
+      
     }
 
     $scope.orderByMe = function(valorOrden)
@@ -1012,6 +1061,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
     }
 
     $scope.agregaPEdido = function(){
+      $scope.mpago_style = {background:'pink'};
       $scope.isCapturaPedido = true;
       $scope.getNextDocPedido();
     }
@@ -1067,6 +1117,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
         $scope.pedido.cuenta = '';
         $scope.pedido.idmoneda = 1;
         $scope.pedido.total = '';
+        $scope.mpago_style = {background:'pink'};
     }
 
 });

@@ -48,6 +48,7 @@ class Crearcfdi {
             $concepto->setAttribute('Unidad',$conceptoElement['Unidad']);
             $concepto->setAttribute('Descripcion',$conceptoElement['Descripcion']);
             $concepto->setAttribute('ValorUnitario',$conceptoElement['ValorUnitario']);
+            $concepto->setAttribute('Descuento',$conceptoElement['Descuento']);        
             $concepto->setAttribute('Importe',$conceptoElement['Importe']);        
             $concepto_nodo = $conceptos->appendChild($concepto);
             $impuestos = $xml_doc->createElement('cfdi:Impuestos');
@@ -94,36 +95,8 @@ class Crearcfdi {
         $comprob_sello = $xml_doc_sellado->getElementsByTagNameNS('http://www.sat.gob.mx/cfd/3', 'Comprobante')->item(0);
         $comprob_sello->setAttribute('Sello',$sello->sello);
         unlink($path_file);
-        //$xml_doc_sellado->loadXML($xml_doc_sellado->saveXML());
-        //$xml_doc_sellado->save($path_file);
         return $xml_doc_sellado->saveXML(); 
     }
-
-
-
-    /*function cadenaOriginal($xml){
-        try{
-            $xml_doc = new DOMDocument();
-            $xml_doc->loadXML($xml);
-            // XSLT
-            $xsl_doc = new DOMDocument();        
-            $xsl_doc->load("./../cadenaoriginal/cadenaoriginal_3_3.xslt");
-            $proc = new XSLTProcessor();
-            $proc->importStylesheet($xsl_doc);
-            $newdom = $proc->transformToDoc($xml_doc);
-            $c = $newdom->saveXML();
-            $c = str_replace('<?xml version="1.0" encoding="UTF-8"?>','',$c);
-            $c = preg_replace("[\n\r]", '', $c);        
-            return $c;
-        }
-        catch(Exception $e){
-            header("HTTP/1.0 500");
-            die($e->getMessage());
-        }    
-    }*/
-
-    
-
 }
 
 ?>

@@ -13,29 +13,28 @@ class Facturas extends CI_Controller
         $this->load->library('session');
     }
 
-  function index()
-	{
-		if(isset($_SESSION['username']))
-    	{
-			$data['tipo_pagos'] = $this->catalogosmodel->get_tipo_pago();
-			$data['bancos'] = $this->catalogosmodel->get_bancos();
-			$data['tarjetas'] = $this->catalogosmodel->get_tarjetas();
-			$data['vales'] = $this->catalogosmodel->get_vales();
-			/*Datos para los vendedores */
-			$data['tipo_cliente'] = $this->catalogosmodel->get_tipo_cliente();
-			$data['revision'] = $this->catalogosmodel->get_dias_semana();
-			$data['forma_pago'] = $this->catalogosmodel->get_forma_pago();
-			//$data['vendedor'] = $this->catalogosmodel->get_vendedor();
-			$data['uso_cfdi'] = $this->catalogosmodel->get_uso_cfdi();
-			$this->load->view('facturas',$data);
-		}else {
-			$error['error'] = '';
-      		$this->load->view('login',$error);
-    	}
-	}
+    public function index()
+    {
+        if (isset($_SESSION['username'])) {
+            $data['tipo_pagos'] = $this->catalogosmodel->get_tipo_pago();
+            $data['bancos'] = $this->catalogosmodel->get_bancos();
+            $data['tarjetas'] = $this->catalogosmodel->get_tarjetas();
+            $data['vales'] = $this->catalogosmodel->get_vales();
+            /*Datos para los vendedores */
+            $data['tipo_cliente'] = $this->catalogosmodel->get_tipo_cliente();
+            $data['revision'] = $this->catalogosmodel->get_dias_semana();
+            $data['uso_cfdi'] = $this->catalogosmodel->get_uso_cfdi();
+            $this->load->view('facturas', $data);
+        } else {
+            $error['error'] = '';
+            $this->load->view('login', $error);
+        }
+    }
 
-    public function savefactura(){
-        $data = json_decode(file_get_contents("php://input"),true);
+    public function savefactura()
+    {
+      if (isset($_SESSION['username'])) {
+        $data = json_decode(file_get_contents("php://input"), true);
         $arraDatosFactura = array(
             $data['documento'],
             $data['ffactura'],
@@ -52,48 +51,66 @@ class Facturas extends CI_Controller
             $data['formapago'],
             $data['usocfdi'],
             $data['metodopago'],
-            $data['contacto']
+            $data['contacto'],
+            $data['idmoneda'],
+            $data['idpedido'],
         );
-       $result = $this->facturacionmodel->savefactura($arraDatosFactura);
-       return $this->output
+        $result = $this->facturacionmodel->savefactura($arraDatosFactura);
+        return $this->output
             ->set_content_type('application/json')
             ->set_output($result);
+      }
     }
 
     /* las ventas contienen los datos de una factura */
-	function getfacturas($idEmpresa,$idAnioFiscal){
-		$result = $this->facturacionmodel->getfacturas(array($idEmpresa,$idAnioFiscal));
-		return $this->output
-					 ->set_content_type('application/json')
-					 ->set_output($result);
+    public function getfacturas($idEmpresa, $idAnioFiscal)
+    {
+        if (isset($_SESSION['username'])) {
+            $result = $this->facturacionmodel->getfacturas(array($idEmpresa, $idAnioFiscal));
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_output($result);
+        }
     }
-    
-    function getfactdetbyid($idfactura){
-		$result = $this->tpvmodel->getventadetallebyid($idfactura);
-		return $this->output
-					 ->set_content_type('application/json')
-					 ->set_output(json_encode($result));
-	}
 
-	function eliminafact($idventa,$idsucursal){
-		$result = $this->facturacionmodel->eliminaFacturaById($idventa,$idsucursal);
-		return $this->output
-					->set_content_type('application/json')
-					->set_output($result);
-	}
+    public function getfactdetbyid($idfactura)
+    {
+        if (isset($_SESSION['username'])) {
+            $result = $this->tpvmodel->getventadetallebyid($idfactura);
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($result));
+        }
+    }
 
-  function validaprdfact($idfactura){
-    $result = $this->facturacionmodel->get_prod_by_fact_validar($idfactura);
-		return $this->output
-					->set_content_type('application/json')
-					->set_output($result);
-  }
+    public function eliminafact($idventa, $idsucursal)
+    {
+        if (isset($_SESSION['username'])) {
+            $result = $this->facturacionmodel->eliminaFacturaById($idventa, $idsucursal);
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_output($result);
+        }
+    }
 
-  function datoscfdi($idfactura){
-    $result = $this->facturacionmodel->get_datos_for_cfdi($idfactura);
-		return $this->output
-					->set_content_type('application/json')
-					->set_output($result);
-  }
+    public function validaprdfact($idfactura)
+    {
+        if (isset($_SESSION['username'])) {
+            $result = $this->facturacionmodel->get_prod_by_fact_validar($idfactura);
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_output($result);
+        }
+    }
+
+    public function datoscfdi($idfactura)
+    {
+        if (isset($_SESSION['username'])) {
+            $result = $this->facturacionmodel->get_datos_for_cfdi($idfactura);
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_output($result);
+        }
+    }
 
 }

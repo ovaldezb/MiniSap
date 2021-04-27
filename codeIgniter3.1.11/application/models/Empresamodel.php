@@ -29,9 +29,12 @@ class Empresamodel extends CI_model
 	function get_empresa_by_id($_id)
 	{
 		$query = 'SELECT TRIM(A."NOMBRE") as "NOMBRE", A."DOMICILIO", TRIM(A."RFC") as "RFC", A."CP",
-				A."ID_REGIMEN", A."DIGITO_X_CUENTA", A."CUENTA_RESULTADO", A."RESULTADO_ANTERIOR", B."EJER_FISC"
-				FROM "EMPRESA" A, "EMP_EJER_FISC" B
-				WHERE A."ID_EMPRESA" = $1 AND A."ID_EMPRESA" = B."ID_EMPRESA" ORDER BY A."ID_EMPRESA" LIMIT 1';
+				A."ID_REGIMEN", A."DIGITO_X_CUENTA", A."CUENTA_RESULTADO", A."RESULTADO_ANTERIOR", B."EJER_FISC",
+        TRIM(R."CLAVE") as "REGIMEN"
+				FROM "EMPRESA" A
+        INNER JOIN "EMP_EJER_FISC" as B ON A."ID_EMPRESA" = B."ID_EMPRESA"
+        INNER JOIN "REGIMEN" as R ON R."ID_REGIMEN" = A."ID_REGIMEN"
+				WHERE A."ID_EMPRESA" = $1 ORDER BY A."ID_EMPRESA" LIMIT 1';
 		pg_prepare($this->conn, "my_query1", $query);
 		$result =  pg_fetch_all(pg_execute($this->conn, "my_query1", array($_id)));
 		return json_encode($result,JSON_NUMERIC_CHECK);
@@ -51,8 +54,8 @@ class Empresamodel extends CI_model
 				WHERE "ID_EMPRESA" = $9');
 
 		$result = pg_execute($this->conn,"updatequery",array($nombre, $domicilio,$rfc,$cp,$id_regimen, $digxcuenta, $cta_res, $res_ant,$id_empresa));
-		pg_prepare($this->conn,"updateempejerfis",'UPDATE "EMP_EJER_FISC" SET "EJER_FISC" = $1 WHERE "ID_EMPRESA" = $2');
-		$result = pg_execute($this->conn,"updateempejerfis",array($ejercicio_fiscal,$id_empresa));
+		//pg_prepare($this->conn,"updateempejerfis",'UPDATE "EMP_EJER_FISC" SET "EJER_FISC" = $1 WHERE "ID_EMPRESA" = $2');
+		//$result = pg_execute($this->conn,"updateempejerfis",array($ejercicio_fiscal,$id_empresa));
 		return $result;
 	}
 
@@ -79,11 +82,20 @@ class Empresamodel extends CI_model
 	{
 		$query = 'SELECT "EJER_FISC"
 		  				FROM "EMP_EJER_FISC"
-							WHERE "ID_EMPRESA" = $1 ';
+							WHERE "ID_EMPRESA" = $1 ORDER BY "EJER_FISC" ';
 		pg_prepare($this->conn,"select_fy_emp",$query);
 		$result = pg_fetch_all(pg_execute($this->conn,"select_fy_emp",array($idempresa)));
 		return json_encode($result);
 	}
+
+  function get_regimen_by_emp(){
+    $query = 'SELECT "EJER_FISC"
+		  				FROM "EMP_EJER_FISC"
+							WHERE "ID_EMPRESA" = $1 ';
+		pg_prepare($this->conn,"select_fy_emp",$query);
+		$result = pg_fetch_all(pg_execute($this->conn,"select_fy_emp",array($idempresa)));
+		return json_encode($result);
+  }
 
 }
 

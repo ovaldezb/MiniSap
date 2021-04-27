@@ -147,6 +147,7 @@ class Tpvmodel extends CI_model
 
 	function getventadetallebyid($idFactura){
 		$query = 'SELECT VP."CANTIDAD",VP."PRECIO" as "PRECIO_LISTA",VP."IMPORTE", VP."DESCUENTO" as "DESCUENTO",
+              CASE WHEN VP."DESCUENTO" > 0 THEN \'t\' ELSE \'f\' END as "ESDSCTO",
               TRIM(P."DESCRIPCION") as "DESCRIPCION",TRIM(P."UNIDAD_MEDIDA") as "UNIDAD_MEDIDA", TRIM(P."COD_CFDI") as "COD_CFDI",
               P."IVA",TRIM(P."UNIDAD_SAT") as "UNIDAD_SAT",
               CASE WHEN P."IEPS" IS NULL THEN \'0\' ELSE P."IEPS" END as "IEPS",TRIM(I."NOMBRE") as "TIPOFACTOR",

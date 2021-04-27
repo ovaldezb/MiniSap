@@ -42,7 +42,7 @@
                 <div class="dropdown {{menushow ? 'is-active':''}}">
                   <div class="dropdown-trigger">
                     <button class="button is-small" aria-haspopup="true" aria-controls="dropdown-menu3" ng-click="showMenu()" style="width:170px">
-                      <span>Tipo de Reporte</span>
+                      <span>Por Producto</span>
                       <span class="icon is-small">
                         <i class="fas fa-angle-down" aria-hidden="true"></i>
                       </span>
@@ -100,16 +100,18 @@
       </tr>
     </table>
     <table class="table is-bordered" style="width:100%;margin-top:5px;margin-bottom:0px">
-      <col width="19%">
-      <col width="9%">
-      <col width="9%">
-      <col width="9%">
-      <col width="9%">
-      <col width="9%">
-      <col width="9%">
-      <col width="9%">
-      <col width="9%">
-      <col width="9%">
+      <colgroup>
+        <col width="19%">
+        <col width="9%">
+        <col width="9%">
+        <col width="9%">
+        <col width="9%">
+        <col width="9%">
+        <col width="9%">
+        <col width="9%">
+        <col width="9%">
+        <col width="9%">
+      </colgroup>
       <tr>
         <th rowspan="2" style="vertical-align:middle" ng-click="orderByMe('DESCRIPCION')"><a href="">Descripción</a></th>
         <th rowspan="2" align="center" style="vertical-align:middle" ng-click="orderByMe('CODIGO')"><a href="">Código</a></th>

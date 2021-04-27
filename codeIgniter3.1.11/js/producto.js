@@ -455,6 +455,8 @@ app.controller('myCtrlProducto', function($scope,$http,$routeParams)
   	$scope.cfdidesc = '';
   	$scope.unidaddesc = '';
     $scope.unidad_sat = '';
+    $scope.lstItemsSAT = [];
+    $scope.lstUndadSAT = [];
   	document.getElementById('imgsrc').src = '';
   	document.getElementById('img_name').value = '';
   }

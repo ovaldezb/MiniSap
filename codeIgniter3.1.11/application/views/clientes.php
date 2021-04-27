@@ -95,11 +95,13 @@
 				<label class="label">Cliente</label>
 			</div>
 			<div class="column is-narrow" style="width:205px">
+        <div class="select is-small">
 				<select name="id_tipo_cliente" id="id_tipo_cliente">
 <?php	foreach ($tipo_cliente as $tc) { ?>
 					<option value=<?php echo $tc['ID_TIPO_CLTE'] ?>><?php echo $tc['DESCRIPCION']?></option>
 <?php	} ?>
 				</select>
+        </div>
 			</div>
 			<div class="column is-narrow">
 				<label class="label">Días de Crédito</label>
@@ -113,21 +115,25 @@
 				<label class="label">Revisión</label>
 			</div>
 			<div class="column is-narrow" style="width:257px">
+      <div class="select is-small">
 				<select name="revision" id="revision">
 <?php 		foreach($revision as $rev) {?>
 					<option value='<?php echo $rev['ID_DIA']?>'><?php echo trim($rev['NOMBRE'])?></option>
 <?php 		}?>
 				</select>
+        </div>
 			</div>
 			<div class="column is-narrow">
 				<label class="label">Pagos</label>
 			</div>
 			<div class="column is-2">
+        <div class="select is-small">
 				<select id="pagos">
 <?php 		foreach($revision as $rev) {?>
 					<option value='<?php echo $rev['ID_DIA']?>'><?php echo trim($rev['NOMBRE'])?></option>
 <?php 		}?>
 				</select>
+        </div>
 			</div>
 		</div>
 		<div class="columns">
@@ -135,11 +141,9 @@
 				<label class="label">Forma de Pago</label>
 			</div>
 			<div class="column is-2">
-				<select name="id_forma_pago" id="id_forma_pago">
-<?php foreach($forma_pago as $fp) {?>
-					<option value="<?php echo $fp['ID_FORMA_PAGO']?>"><?php echo trim($fp['CLAVE'])?> <?php echo trim($fp['DESCRIPCION'])?></option>
-<?php }?>
-				</select>
+        <div class="select is-small">
+          <select ng-model="id_forma_pago" ng-options="x.ID_FORMA_PAGO as x.CLAVE+' '+x.DESCRIPCION for x in lstFormpago"></select>
+        </div>
 			</div>
 		</div>
 		<div class="columns">
@@ -157,20 +161,20 @@
 			<div class="column is-1">
 				<label class="label">Vendedor</label>
 			</div>
-			<div class="column is-2">
-        <select ng-model="idVendedor" ng-options="x.ID_VENDEDOR as x.NOMBRE for x in lstVendedor"></select>	
+			<div class="column is-4">
+        <div class="select is-small">
+        <select ng-model="idVendedor" ng-options="x.ID_VENDEDOR as x.NOMBRE for x in lstVendedor" ng-style="vendedor_style" ng-change="selectVendedor()"></select>	
+        </div>
 			</div>
 		</div>
 		<div class="columns">
 			<div class="column is-narrow">
 				<label class="label">Uso del CFDI</label>
 			</div>
-			<div class="column is-2">
-				<select name="id_uso_cfdi" id="id_uso_cfdi">
-<?php 		foreach($uso_cfdi as $ucfdi) {?>
-					<option value='<?php echo $ucfdi['ID_CFDI']?>'><?php echo trim($ucfdi['CLAVE'])?> <?php echo trim($ucfdi['DESCRIPCION'])?></option>
-<?php 		}?>
-				</select>
+			<div class="column is-4">
+        <div class="select is-small">
+        <select ng-model="id_uso_cfdi" ng-options="x.ID_CFDI as x.CLAVE +' '+x.DESCRIPCION for x in lstUsoCFDI" ng-style="cfdi_style" ng-change="selectCFDI()"></select>
+        </div>
 			</div>
 		</div>
 		<div class="columns">
@@ -355,7 +359,7 @@
           </tr>
           <tr>
             <td colspan="2">
-              <form name="myForm">
+              <form name="frmDomicilio">
               <table class="table" style="width:100%">
                 <colgroup>
                   <col width="25%" />
@@ -367,28 +371,30 @@
                   <tr>
                     <td>Lugar</td>
                     <td colspan="3">
-                      <input type="text" class="input is-small" ng-model="domicilios.LUGAR" ng-disabled="cltedsbl">
+                      <input type="text" class="input is-small" ng-model="domicilios.LUGAR" ng-disabled="cltedsbl" required>
                     </td>
                   </tr>
                   <tr>
                     <td>Calle</td>
                     <td colspan="3">
-                      <input type="text" class="input is-small" ng-model="domicilios.CALLE" ng-disabled="cltedsbl"></td>
+                      <input type="text" class="input is-small" ng-model="domicilios.CALLE" ng-disabled="cltedsbl" required></td>
                   </tr>
                   <tr>
                     <td>Colonia</td>
                     <td colspan="3">
-                      <input type="text" class="input is-small" ng-model="domicilios.COLONIA" ng-disabled="cltedsbl"></td>
+                      <input type="text" class="input is-small" ng-model="domicilios.COLONIA" ng-disabled="cltedsbl" required></td>
                   </tr>
                   <tr>
                     <td>CP</td>
-                    <td colspan="3">
-                      <input type="text" class="input is-small" ng-model="domicilios.CP" ng-disabled="cltedsbl"></td>
+                    <td>
+                      <input type="number" class="input is-small" ng-model="domicilios.CP" maxlength="5" minlength="5"  ng-disabled="cltedsbl" required>
+                    </td>
+                    <td colspan="2">&nbsp;</td>
                   </tr>
                   <tr>
                     <td>Ciudad</td>
                     <td colspan="3">
-                      <input type="text" class="input is-small" ng-model="domicilios.CIUDAD" ng-disabled="cltedsbl"></td>
+                      <input type="text" class="input is-small" ng-model="domicilios.CIUDAD" ng-disabled="cltedsbl" required></td>
                   </tr>
                   <tr>
                     <td>Latitud</td>
@@ -401,7 +407,7 @@
                     <td colspan="3"><input type="text" class="input is-small" ng-model="domicilios.CONTACTO" ng-disabled="cltedsbl"></td>
                   </tr>
                   <tr>
-                    <td colspan="2" style="text-align:right"><button class="button is-info" ng-disabled="cltedsbl" ng-click="guardaDom()">{{btnName}}</button></td>
+                    <td colspan="2" style="text-align:right"><button class="button is-info" ng-disabled="cltedsbl || frmDomicilio.$invalid" ng-click="guardaDom()">{{btnName}}</button></td>
                     <td colspan="2" style="text-align:right"><button class="button is-danger" ng-disabled="cltedsbl" ng-click="limpiaDom()">Limpiar</button></td>
                   </tr>
                 </tbody>

@@ -81,7 +81,6 @@ class Datosfactura extends CI_Controller
       }
       if(file_exists($keyOutFile) && filesize($keyOutFile) > 0 ){
           $dataCFDI = getDataCFDI($pemFile,$cerFile,$keyOutFile,$id_suc,$idEmp);
-          //var_dump('Va a subir archivos'.$dataCFDI);
           $this->facturamodel->saveCFDI(explode('|',$dataCFDI));
           $data['pass'] = $dataCFDI;
           $this->load->view('datosfacturasave',$data);

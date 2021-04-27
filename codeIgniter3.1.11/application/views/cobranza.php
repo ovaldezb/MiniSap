@@ -1,5 +1,5 @@
 
-<div ng-app="myApp" ng-controller="myCtrlCobros" data-ng-init="init()">
+<div ng-controller="myCtrlCobros" data-ng-init="init()">
     <div class="container">
       <div class="notification" >
       <h1 class="title is-2 has-text-centered">Cobranza</h1>

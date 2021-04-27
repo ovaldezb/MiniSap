@@ -16,7 +16,6 @@ var pathLinea = pathCliente + 'api/linea/';
 var pathCreaFact = pathCliente + 'creacfdixml/';
 var pathCFDI = pathCliente + 'datosfactura/';
 var pathPedi = pathCliente + 'pedidos/';
-//var pathFacturacion = pathCliente + 'facturacion/';
 var pathFactura = pathCliente + 'facturas/';
 var pathCargaMasiva = pathCliente + 'cargamasiva/';
 var pathInv = pathCliente+'inventario/';
@@ -24,15 +23,15 @@ var pathCob = pathCliente+'cobranza/';
 var pathPag = pathCliente+'pagos/';
 var pathCorte = pathCliente+'cortecaja/';
 var pathCreacfdi = pathCliente+'creacfdixml/';
+var pathRepcxc = pathCliente+'reportecxc/';
+var pathRepcxp = pathCliente+'reportecxp/';
 var app = angular.module("myApp", ["ngRoute","chart.js"]);
 app.config(function($routeProvider) {
     $routeProvider
     .when("/", {
-        //templateUrl : pathCliente+'access/inicio'
         templateUrl : pathAcc +'/inicio'
     })
     .when("/clss", {
-        //templateUrl : pathCliente+'access/logout'
         templateUrl : pathAcc +'/logout'
     })
     .when("/clte/:idproc", {
@@ -94,6 +93,12 @@ app.config(function($routeProvider) {
     })
     .when("/crdc/:idproc",{
       templateUrl : pathCorte
+    })
+    .when("/rcxc/:idproc",{
+      templateUrl : pathRepcxc
+    })
+    .when("/rcxp/:idproc",{
+      templateUrl : pathRepcxp
     });
 });
 

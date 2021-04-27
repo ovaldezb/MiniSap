@@ -22,14 +22,13 @@ class Upload extends CI_Controller
 
     public function startupload($name, $idempresa)
     {
-        $data['nombre'] = $name; //array('nombre' => $name);
+        $data['nombre'] = $name; 
         $data['idempresa'] = $idempresa;
         $this->load->view('upload_form', $data);
     }
 
     public function do_upload()
     {
-        //$url_split = explode("/",base_url());
         $dorename = 0;
         $config['upload_path'] = './uploads/' . $this->input->post('idempresa') . '/';
         $config['allowed_types'] = 'gif|jpg|png|jpeg';

@@ -38,7 +38,7 @@
                 <i class="far fa-trash-alt" title="Elimna Pedido" style="color:grey"></i>
               </span>
             </a>
-            <a ng-click="preguntaElimnaPedido()" ng-show="indexRowPedido != -1">
+            <a ng-click="borraPedido()" ng-show="indexRowPedido != -1">
               <span class="icon has-text-danger">
                 <i class="far fa-trash-alt" title="Elimna Pedido"></i>
               </span>
@@ -131,7 +131,7 @@
 							</div>
               <div class="columns">
                 <div class="column is-4">
-									<label for="entregar" class="label">Entregar</label>
+									<label for="entregar" class="label">F/Entrega</label>
 								</div>
 								<div class="column is-8">
 									<input type="text" class="input is-small" id="fechaentrega" ng-model="fechaentrega" ng-blur="fecEntrega()">
@@ -272,9 +272,9 @@
 							</div>
 							<div class="columns">
 								<div class="column is-2" >
-									<label for="fpago" class="label">F/Pago</label>
+									<label for="fpago" class="label">T/Pago</label>
 								</div>
-								<div class="column is-narrow" style="width:130px">
+								<div class="column is-3">
 									<div class="select is-small">
 										<select ng-model="pedido.tpago" ng-options="x.ID_TIPO_PAGO as x.DESCRIPCION for x in lstTipopago"></select>
 									</div>
@@ -283,7 +283,7 @@
 									<input type="number" class="input is-small" value="0" ng-model="pedido.dias" ng-disabled="pedido.tpago==1" title="dias de crédito">
 								</div>
                 <div class="column is-narrow" style="margin-left:-15px">
-									<label for="mpago" class="label">M/Pago</label>
+									<label for="mpago" class="label">F/Pago</label>
 								</div>
                 <div class="column is-narrow" style="margin-left:-20px">
                   <div class="select is-small">
@@ -291,13 +291,21 @@
                   </div>
 								</div>
 							</div>
+              <div class="columns">
+                <div class="column is-2"><label for="" class="label">M/Pago</label></div>
+                <div class="column is-8">
+                  <div class="select is-small">
+									  <select ng-model="pedido.mpago" ng-options="x.ID_MET_PAGO as x.MET_PAGO+' '+x.DESCRIPCION for x in lstMetpago" ng-style="mpago_style" ng-change="selectMPago()"></select>
+                  </div>
+                </div>
+              </div>
 							<div class="columns">
 								<div class="column is-narrow">
                   <label class="label">Entregar en:</label>
                 </div>
                 <div class="column is-narrow">
                   <div class="select is-small">
-                    <select ng-model="pedido.domi" id="domicilios" ng-options="x.LUGAR as x.LUGAR+' Clle:'+x.CALLE+' Col:'+x.COLONIA+' CP:'+x.CP+' Cd:'+x.CIUDAD for x in lstDomis" ng-change="cambiaDomicilio()"></select>
+                    <select ng-model="pedido.domi" id="domicilios" ng-options="x.LUGAR as x.LUGAR+' '+x.CIUDAD for x in lstDomis" ng-change="cambiaDomicilio()"></select>
                   </div>
                 </div>
 							</div>
@@ -306,12 +314,13 @@
 									<label class="label">Notas</label>
 								</div>
 								<div class="column is-narrow">
-									<input type="text" class="input is-small" ng-model="pedido.comentarios" required>
+									<input type="text" class="input is-small" ng-model="pedido.comentarios">
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
+        <progress class="progress is-small is-primary" max="100" ng-show="showProgressBar">15%</progress>
 				<div class="box" id="compras" style="border:1px grey solid;margin-top:-20px">
 					<nav class="level" id="barraProducto" ng-show="!isImprimir">
 						<div class="level-left">
@@ -699,11 +708,7 @@
 					<tr>
 						<td>Forma Pago:</td>
 						<td colspan="3">
-              <select name="id_forma_pago" id="id_forma_pago">
-      <?php foreach($forma_pago as $fp) {?>
-      					<option value='<?php echo $fp['ID_FORMA_PAGO']?>'><?php echo trim($fp['CLAVE'])?> <?php echo trim($fp['DESCRIPCION'])?></option>
-      <?php }?>
-      				</select>
+              <select ng-model="cliente.id_forma_pago" ng-options="x.ID_FORMA_PAGO as x.DESCRIPCION for x in lstFormpago"></select>
             </td>
 					</tr>
 					<tr>
@@ -827,23 +832,8 @@
 			</footer>
 		</div>
 	</div>
-	<div class="modal is-active" ng-show="pregElimiPedi">
-	  <div class="modal-background"></div>
-	  <div class="modal-card">
-	    <header class="modal-card-head">
-	      <p class="modal-card-title">Advertencia</p>
-	      <button class="delete" aria-label="close" ng-click="cerrarEliminaPedido()"></button>
-	    </header>
-	    <section class="modal-card-body">
-	      ¿Está seguro que desea eliminar el Pedido <b>{{doctoEliminar}}</b>?
-	    </section>
-	    <footer class="modal-card-foot">
-	      <button class="button is-success" ng-click="borraPedido()">Si</button>
-	      <button class="button" ng-click="cerrarEliminaPedido()">No</button>
-	    </footer>
-	  </div>
-	</div>
-  <div style="width: 100%; display:block" id="pedido">
+	
+  <div style="width: 100%; display:none" id="pedido">
 	<table  border="1" style="width:100%">
 		<tbody>
 			<tr>
@@ -856,7 +846,7 @@
             </colgroup>
 						<tr>
               <td rowspan="4">
-                <img src="../img/logo.png" style="width:110px;height:100px">
+                <img src="../img/logo.jpg" style="width:110px;height:100px">
               </td>
 							<td colspan="2" style="text-align:center">EMPRESA</td>
 						</tr>
@@ -876,9 +866,6 @@
 				</td>
 			</tr>
 			<tr>
-        <td colspa="2">&nbsp;</td>
-      </tr>
-			<tr>
 				<td>
           <table style="width:100%;border:2px solid black">
 						<tr>
@@ -892,6 +879,10 @@
 							<td>Domicilio:</td>
 							<td>{{cliente.domicilio}}</td>
 						</tr>
+            <tr>
+							<td>Teléfono:</td>
+							<td>{{cliente.telefono}}</td>
+						</tr>
 						<tr>
 							<td>RFC:</td>
 							<td>{{rfc_cliente}}</td>
@@ -899,7 +890,7 @@
 					</table>
 				</td>
         <td>
-          <table style="width:100%">
+          <table style="width:100%;border:2px solid black">
             <tr>
               <td>PEDIDO NO.</td>
               <td style="color:red">{{pedido.docto}}</td>
@@ -911,6 +902,12 @@
             <tr>
               <td>FECHA ENTREGA</td>
               <td>{{fechaentrega}}</td>
+            </tr>
+            <tr>
+              <td colspan='2'>&nbsp;</td>
+            </tr>
+            <tr>
+              <td colspan='2'>&nbsp;</td>
             </tr>
           </table>
         </td>
@@ -932,11 +929,11 @@
 						</tr>
           </tbody>
         </table>
-        <div style="height: 350px; width: 100%;">
-        <table style="border: 5px double black; width: 100%;">
+        <div style="height: 400px; width: 100%;">
+        <table style="border: 5px double black; width: 100%;border-collapse:collapse;border-spacing: 0px;">
           <tbody>
 						<tr ng-repeat="p in lstProdCompra">
-              <td style="width: 25px; text-align: center;border:2px solid black;">{{$index + 1}}</td>
+              <td class="font12" style="width: 25px; text-align: center;border-right:2px solid black;">{{$index + 1}}</td>
               <td class="font12" style="width: 80px; text-align: center;border-right:2px solid black;">{{p.CANTIDAD}}</td>
               <td class="font12" style="width: 80px; text-align: center;border-right:2px solid black;">{{p.CODIGO}}</td>
 							<td class="font12" style="width: 240px; text-align: center;border-right:2px solid black;">{{p.DESCRIPCION}}</td>
@@ -944,12 +941,12 @@
 							<td class="font12" style="width: 100px; text-align: right;border-right:2px solid black;">{{p.IMPORTE | currency}}</td>
 						</tr>
             <tr ng-repeat="p in lstComplemento">
-              <td style="width: 25px; border-right:2px solid black;">{{p.val}}</td>
-              <td style="width: 80px; border-right:2px solid black;"></td>
-              <td style="width: 80px; border-right:2px solid black;"></td>
-							<td style="width: 240px; border-right:2px solid black;"></td>
-							<td style="width: 100px; border-right:2px solid black;"></td>
-							<td style="width: 100px; border-right:2px solid black;"></td>
+              <td style="width: 25px; border-right:2px solid black;">&nbsp;</td>
+              <td style="width: 80px; border-right:2px solid black;">&nbsp;</td>
+              <td style="width: 80px; border-right:2px solid black;">&nbsp;</td>
+							<td style="width: 240px; border-right:2px solid black;">&nbsp;</td>
+							<td style="width: 100px; border-right:2px solid black;">&nbsp;</td>
+							<td style="width: 100px; border-right:2px solid black;">&nbsp;</td>
             </tr>
 					</tbody>
 				</table>
@@ -998,6 +995,11 @@
               <tr>
                 <td>Contacto:</td>
                 <td>{{domientrega.contacto}}</td>
+                <td colspan="3"></td>
+              </tr>
+              <tr>
+                <td>Nota:</td>
+                <td>{{pedido.comentarios}}</td>
                 <td colspan="3"></td>
               </tr>
             </tbody>

@@ -14,18 +14,22 @@ class Clientemodel extends CI_model
 	function get_clientes_by_empresa($idEmpresa,$anioFiscal)
 	{
 		$query = 'SELECT C."ID_CLIENTE", C."NOMBRE",
-    TRIM(C."CLAVE") as "CLAVE", C."RFC", C."DOMICILIO", C."ID_FORMA_PAGO",C."ID_USO_CFDI",
-    CASE WHEN F."SALDO" IS NULL THEN 0 ELSE F."SALDO" END as "SALDO"
+    TRIM(C."CLAVE") as "CLAVE", C."RFC", C."DOMICILIO",C."ID_FORMA_PAGO",C."ID_USO_CFDI",
+    CASE WHEN F."SALDO" IS NULL THEN 0 ELSE F."SALDO" END as "SALDO",
+    C."DIAS_CREDITO", FP."CLAVE" as "FORMA_PAGO", C."CONTACTO",C."ID_VENDEDOR",V."NOMBRE" as "VENDEDOR",
+    C."TELEFONO"
     FROM "CLIENTE" as C
     LEFT JOIN (SELECT F."ID_CLIENTE", SUM(F."SALDO") as "SALDO"  
               FROM "FACTURA" as F 
               WHERE F."ANIO_FISCAL" = $1 
               GROUP BY F."ID_CLIENTE") as F ON F."ID_CLIENTE" = C."ID_CLIENTE"
+    INNER JOIN "FORMA_PAGO" as FP ON FP."ID_FORMA_PAGO" = C."ID_FORMA_PAGO"
+    INNER JOIN "VENDEDOR" as V ON V."ID_VENDEDOR" = C."ID_VENDEDOR"
     WHERE C."ACTIVO" = true 
     AND C."ID_EMPRESA" = $2';
 		pg_prepare($this->conn, "my_query", $query);
 		$result =  pg_fetch_all(pg_execute($this->conn, "my_query", array($anioFiscal,$idEmpresa)));
-		return json_encode($result,JSON_NUMERIC_CHECK);
+		return json_encode($result);
 	}
 
 	function get_cliente_by_id($_idCliente)
@@ -53,7 +57,7 @@ class Clientemodel extends CI_model
 		C."ID_REVISION",C."ID_VENDEDOR",C."ID_TIPO_CLIENTE",
 		TRIM(DS2."NOMBRE") as "PAGOS",
 		C."ID_PAGOS",C."ID_FORMA_PAGO",C."ID_USO_CFDI", TRIM(UC."CLAVE") as "CLAVE_CFDI",
-		TRIM(FP."DESCRIPCION") as "FORMA_PAGO",
+		TRIM(FP."CLAVE") as "FORMA_PAGO",
 		V."NOMBRE" as "VENDEDOR",
 		UC."DESCRIPCION" as "CFDI",
 		TRIM(C."EMAIL") AS "EMAIL",C."NOTAS"
@@ -68,21 +72,24 @@ class Clientemodel extends CI_model
 		AND C."ACTIVO" = true';
 		$result = pg_prepare($this->conn, "my_query", $query);
 		$result =  pg_fetch_all(pg_execute($this->conn, "my_query", array($_idCliente)));
-		return json_encode($result,JSON_NUMERIC_CHECK);
+		return json_encode($result);
 	}
 
 	function get_clientes_by_nombre($idempresa,$nombre)
 	{
 		$query = 'SELECT C."ID_CLIENTE",C."NOMBRE",TRIM(C."CLAVE") as "CLAVE", 
-				C."ID_USO_CFDI",C."RFC", C."DIAS_CREDITO",C."DOMICILIO",C."ID_FORMA_PAGO"
+				C."ID_USO_CFDI",C."RFC", C."DIAS_CREDITO",C."DOMICILIO",C."ID_FORMA_PAGO",
+        C."DIAS_CREDITO", FP."CLAVE" as "FORMA_PAGO",C."CONTACTO",C."ID_VENDEDOR",V."NOMBRE" as "VENDEDOR",C."TELEFONO"
 				FROM "CLIENTE" as C
+        INNER JOIN "FORMA_PAGO" as FP ON FP."ID_FORMA_PAGO" = C."ID_FORMA_PAGO"
+        INNER JOIN "VENDEDOR" as V ON V."ID_VENDEDOR" = C."ID_VENDEDOR"
 				WHERE UPPER(C."NOMBRE")
 				LIKE UPPER($1)
 				AND C."ID_EMPRESA" = $2
 				AND C."ACTIVO" = true';
 		$result = pg_prepare($this->conn, "my_query", $query);
 		$result =  pg_fetch_all(pg_execute($this->conn, "my_query", array($nombre,$idempresa)));
-		return json_encode($result,JSON_NUMERIC_CHECK);
+		return json_encode($result);
 	}
 
 

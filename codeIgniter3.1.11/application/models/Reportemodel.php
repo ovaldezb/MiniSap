@@ -204,4 +204,26 @@ class Reportemodel extends CI_model
     return json_encode($result, JSON_NUMERIC_CHECK);
   }
 
+
+  function get_reporte_cxc($idEmpresa,$anioFiscal){
+    $query = 'SELECT F."ID_CLIENTE",C."NOMBRE",C."CLAVE", SUM(F."30_DIAS") as "TR_DIAS",SUM(F."60_DIAS") as "SE_DIAS",SUM(F."90_DIAS") as "NO_DIAS",SUM(F."MAYOR_90_DIAS") as "MAYOR_90_DIAS"
+    FROM (
+    SELECT "ID_CLIENTE",
+    CASE WHEN (current_date - 30)<= "FECHA_VENCIMIENTO"  THEN SUM("SALDO") ELSE 0 END as "30_DIAS",
+    CASE WHEN (current_date - 30) > "FECHA_VENCIMIENTO"  AND (current_date - 60) <= "FECHA_VENCIMIENTO" THEN SUM("SALDO") ELSE 0 END as "60_DIAS",
+    CASE WHEN (current_date - 60) > "FECHA_VENCIMIENTO"  AND (current_date - 90) <= "FECHA_VENCIMIENTO" THEN SUM("SALDO") ELSE 0 END as "90_DIAS",
+    CASE WHEN (current_date - 90) > "FECHA_VENCIMIENTO"  THEN SUM("SALDO") ELSE 0 END as "MAYOR_90_DIAS"
+    FROM "FACTURA"
+    WHERE "ID_EMPRESA" = $1
+    AND "ANIO_FISCAL" = $2
+    AND "ID_TIPO_PAGO" = 2
+    GROUP BY "ID_CLIENTE","FECHA_VENCIMIENTO") as F
+    INNER JOIN "CLIENTE" as C ON C."ID_CLIENTE" = F."ID_CLIENTE"
+    GROUP BY F."ID_CLIENTE",C."NOMBRE",C."CLAVE"';
+    pg_prepare($this->conn,"reportecxc",$query);
+    $result = pg_fetch_all(pg_execute($this->conn,"reportecxc",array($idEmpresa,$anioFiscal)));
+    return json_encode($result, JSON_NUMERIC_CHECK);
+  }
+
 }
+?>

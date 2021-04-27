@@ -59,6 +59,7 @@ class Creacfdixml extends CI_Controller
         $idfactura = $data['idfactura'];
         $formapago = $data['formapago'];
         $aniofiscal = $data['aniofiscal'];
+        $regineFiscal = $data['regimenfiscal'];
         $cfdi = $this->facturamodel->getDataCFDI($idEmpresa,$idSucursal);         
         $archivoCerPem = $cfdi[0]->RUTA_PEM;
         $archivoKeyPem = $cfdi[0]->RUTA_KEY;
@@ -74,7 +75,7 @@ class Creacfdixml extends CI_Controller
 
         foreach($venta_detalle as $vd){
             $iva = ($vd->IVA/100);
-            $valorUnitario = ($vd->PRECIO/(1+$iva));
+            $valorUnitario = (($vd->PRECIO)/(1+$iva));
             $importe = $valorUnitario * $vd->CANTIDAD;
             $importeIva = $importe * $iva;
             $item = array('ClaveProdServ'=>$vd->COD_CFDI,
@@ -84,6 +85,7 @@ class Creacfdixml extends CI_Controller
                         'Unidad'=>$vd->UNIDAD_MEDIDA,
                         'Descripcion'=>$vd->DESCRIPCION,
                         'ValorUnitario'=>number_format($valorUnitario,3,'.',''),
+                        'Descuento' =>Number_format( $vd->PRECIO * ($vd->DESCUENTO / 100)),
                         'Importe'=>number_format($importe,3,'.','')
                     );
             $traslado = array('Base'=>number_format($importe,3,'.',''),'Impuesto'=>'002','TipoFactor'=>$vd->TIPOFACTOR,'TasaOCuota'=>number_format($iva,6),'Importe'=>number_format($importeIva,3,'.','')); 
@@ -98,7 +100,7 @@ class Creacfdixml extends CI_Controller
               'Serie'=>$serie,
               'Folio'=>$folio,
               'Fecha'=> str_replace(' ','T',$venta[0]->FECHA_VENTA), 
-              'FormaPago'=>$formapago, //De momento solo efectivo
+              'FormaPago'=>$formapago, 
               'NoCertificado'=>$cfdi[0]->NOCERTIFICADO,
               'Certificado'=>$cfdi[0]->CERTIFICADO,
               'SubTotal'=>number_format($venta[0]->IMPORTE-$impuestoAcomulado,2,'.',''),
@@ -110,7 +112,7 @@ class Creacfdixml extends CI_Controller
               'LugarExpedicion'=>$empresa[0]->CP,
               'RfcEmisor'=>$cfdi[0]->RFC,
               'NombreEmisor'=>$cfdi[0]->NOMBRE,
-              'RegimenFiscal'=>'612', //$empresa->ID_REGIMEN //para las pruebas necesito poner 612 porque estoy usando mis datos
+              'RegimenFiscal'=>$regineFiscal,
               'RfcReceptor'=>$rfc,
               'NombreReceptor'=>$nombre,
               'UsoCFDI'=>$usocfdi,

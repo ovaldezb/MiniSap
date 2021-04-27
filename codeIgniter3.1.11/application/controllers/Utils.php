@@ -6,6 +6,7 @@ class Utils extends CI_Controller
   function __construct() {
 		parent::__construct();
 		$this->load->model('catalogosmodel');
+    $this->load->library('session');
 	}
 
   function incremento($nombre,$idempresa,$longitud)
@@ -23,9 +24,12 @@ class Utils extends CI_Controller
   }
 
   function getmoneda(){
+    if(isset($_SESSION['username']))
+    {
     return $this->output
             ->set_content_type('application/json')
             ->set_output($this->catalogosmodel->get_moneda_json());
+    }
   }
 
   function getmetpag(){

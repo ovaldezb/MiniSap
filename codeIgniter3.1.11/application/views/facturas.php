@@ -154,14 +154,6 @@
 									</div>
 								</div>
 							</div>
-              <div class="columns">
-                <div class="column is-2">Requiere CFDI</div>
-              </div>
-              <div class="columns">
-                <div class="column">
-                  <input type="checkbox" ng-model="requiere_fact" id="">
-                </div>
-              </div>
 						</div>
 						<div class="column is-8">
 							<div class="columns is-gapless is-multiline">
@@ -290,12 +282,18 @@
 									<label class="label">Contacto</label>
 								</div>
 								<div class="column is-narrow">
-									<input type="text" class="input is-small" ng-model="factura.contacto" required>
+									<input type="text" class="input is-small" ng-model="factura.contacto" placeholder="Contacto" required>
 								</div>
+                <div class="column">
+                  <label class="label">Requiere CFDI</label>
+                </div>
+                <div class="column">
+                  <input type="checkbox" ng-model="requiere_factura">
+                </div>
 							</div>
 							<div class="columns">
 								<div class="column is-2">
-									<label class="label">F/Pago</label>
+									<label class="label">T/Pago</label>
 								</div>
 								<div class="column is-narrow" style="width:130px">
                     <div class="select is-small">
@@ -309,11 +307,11 @@
 							</div>
 							<div class="columns">
 								<div class="column is-2">
-									<label for="mpago" class="label">M/Pago</label>
+									<label for="mpago" class="label">F/Pago</label>
 								</div>
-								<div class="column is-narrow" style="width:188px">	
+								<div class="column is-narrow">	
                   <div class="select is-small">								
-									  <select ng-model="factura.fpago" ng-options="x.CLAVE as x.DESCRIPCION for x in lstFormpago"></select>
+									  <select ng-model="factura.fpago" ng-options="x.CLAVE as x.CLAVE+' '+x.DESCRIPCION for x in lstFormpago"></select>
                   </div>
 								</div>
 								<div class="column is-2" style="margin-left:10px">
@@ -335,7 +333,7 @@
 							</div>
 							<div class="columns">
 								<div class="column is-narrow" style="width:80px">
-									<label class="label">M&eacute;todo</label>
+									<label class="label">M/Pago</label>
 								</div>
 								<div class="column is-narrow" style="width:280px">
                   <div class="select is-small">
@@ -811,7 +809,9 @@
           <table class="table is-bordered">                            
             <tr ng-repeat="x in lstCorreos">
               <td>{{x.EMAIL}}</td>
-              <td><button class="button is-danger is-small" ng-click="eliminarEmail($index)">Eliminar</button></td>
+              <td>
+                <button class="button is-danger is-small" ng-click="eliminarEmail($index)" ng-disabled="$index==0">Eliminar</button>
+              </td>
             </tr>
           </table>
         </div>
@@ -893,19 +893,13 @@
 					<tr>
 						<td>Forma Pago:</td>
 						<td colspan="3">
-              <select name="id_forma_pago" id="id_forma_pago">
-      <?php foreach($forma_pago as $fp) {?>
-      					<option value='<?php echo $fp['ID_FORMA_PAGO']?>'><?php echo trim($fp['CLAVE'])?> <?php echo trim($fp['DESCRIPCION'])?></option>
-      <?php }?>
-      				</select>
+              <select ng-model="cliente.id_forma_pago" ng-options="x.ID_FORMA_PAGO as x.CLAVE+' '+x.DESCRIPCION for x in lstFormpago"></select>
             </td>
 					</tr>
 					<tr>
 						<td>Vendedor:</td>
 						<td colspan="3">
-              <select ng-model="idVendedor" >
-                <option ng-repeat=" x in lstVendedorVer" value="{{x.ID_VENDEDOR}}">{{x.NOMBRE}}</option>
-              </select>	
+              <select ng-model="cliente.idvendedor" ng-options="x.ID_VENDEDOR as x.NOMBRE for x in lstVendedorVerif"></select>
             </td>
 					</tr>
 					<tr>

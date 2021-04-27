@@ -511,7 +511,7 @@
 					<div class="column is-narrow" style="width:131px"><label class="label">Serie:</label></div>
 					<div class="column"><input type="text" ng-model="fact.serie" class="input is-small"></div>
 					<div class="column is-narrow"><label class="label">Folio:</label></div>
-					<div class="column">{{docto}}</div>
+					<div class="column">{{fact.documento}}</div>
 				</div>
 				<div class="columns">
 					<div class="column is-narrow" style="width:131px"><label class="label">Cliente:</label></div>
@@ -830,11 +830,7 @@
 					<tr>
 						<td>Forma Pago:</td>
 						<td colspan="3">
-							<select name="id_forma_pago" id="id_forma_pago">
-<?php foreach($forma_pago as $fp) {?>
-								<option value='<?php echo $fp['ID_FORMA_PAGO']?>'><?php echo trim($fp['CLAVE'])?> <?php echo trim($fp['DESCRIPCION'])?></option>
-<?php }?>
-							</select>
+              <select ng-model="cliente.id_forma_pago" ng-options="x.ID_FORMA_PAGO as x.CLAVE+' '+x.DESCRIPCION for x in lstFormpago"></select>
 						</td>
 					</tr>
 					<tr>

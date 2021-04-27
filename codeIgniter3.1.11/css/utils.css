@@ -18,6 +18,7 @@ textarea.ng-invalid {
   background-color: pink;
 }
 
+
 .centro {
     position: relative;          /* where the next element will be automatically positioned */
     display: inline-block;       /* causes element width to shrink to fit content */

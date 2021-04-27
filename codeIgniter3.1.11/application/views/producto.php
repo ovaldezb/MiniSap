@@ -151,29 +151,40 @@
 			</div>
 		</div>
 	</div>
-	<div class="table-container" style="display:{{isCFDIBusqueda ? 'block':'none'}};">
-		<table  style="width:100%;">
+	<div class="table-container" ng-show="isCFDIBusqueda">
+		<table  style="width:80%;">
 			<tr>
 				<td align="center">
-					<table border="1" style="width:100%;" class="table is-striped" style="width:100%;">
-						<col width="20%">
-						<col width="30%">
-						<col width="50%">
-						<tr>
+					<table style="width:100%;" class="table">
+            <colgroup>
+						  <col width="20%">
+						  <col width="30%">
+						  <col width="50%">
+            </colgroup>
+						<tr style="background-color:Crimson; color:Ivory;">
 							<td ><label  class="label"># Item</label></td>
 							<td ><label  class="label">Clave</label></td>
 							<td ><label  class="label">Descripción</label></td>
 						</tr>
 					</table>
 				</td>
+        <td>
+					<a ng-click="cierraCFDI()">
+					<span class="icon has-text-danger">
+						<i class="fas fa-times-circle" title="Cerrar ventan de búsqueda"></i>
+					</span>
+					</a>
+				</td>
 			</tr>
 			<tr>
 				<td>
-					<div style="width:100%; height:180px; overflow:auto;">
-						<table border="1" class="table is-hoverable" style="width:100%;">
-							<col width="20%">
-							<col width="30%">
-							<col width="50%">
+					<div style="width:100%; height:180px; overflow:auto;border:2px solid red">
+						<table class="table is-hoverable" style="width:100%;">
+              <colgroup>
+							  <col width="20%">
+							  <col width="30%">
+							  <col width="50%">
+              </colgroup>
 							<tr ng-repeat="x in lstItemsSAT" ng-click="selectRowItemSAT($index)">
 								<td>{{$index+1}}</td>
 								<td>{{x.CLAVE}}</td>
@@ -181,13 +192,6 @@
 							</tr>
 						</table>
 					</div>
-				</td>
-				<td>
-					<a ng-click="cierraCFDI()">
-					<span class="icon has-text-danger">
-						<i class="fas fa-times-circle" title="Cerrar ventan de búsqueda"></i>
-					</span>
-					</a>
 				</td>
 			</tr>
 		</table>
@@ -214,18 +218,18 @@
 			</div>
 		</div>
 		</div>
-		<div style="display: {{isUndSATBusqda ? 'block' : 'none'}};">
-			<table border=0 style="width:80%;">
+		<div style="margin-left:80px; width:70%; margin-top:-20px" ng-show="isUndSATBusqda">
+			<table style="width:80%;">
 				<tr>
-					<td align="center">
+					<td>
 						<table style="width:100%;" class="table is-striped" border="1">
-							<col width="15%">
-							<col width="30%">
-							<col width="55%">
-							<tr>
-								<td>No Item</td>
-								<td>Clave</td>
-								<td align="center">Descripción</td>
+              <colgroup>
+							  <col width="30%">
+							  <col width="70%">
+              </colgroup>
+							<tr style="background-color:Crimson; color:Ivory;">
+								<td style="text-align:center">Clave</td>
+								<td style="text-align:center">Descripción</td>
 							</tr>
 						</table>
 					</td>
@@ -239,14 +243,14 @@
 				</tr>
 				<tr>
 					<td>
-						<div style="width:100%; height:180px; overflow:auto;">
-							<table class="table is-hoverable" style="width:100%;" border="1">
-								<col width="15%">
-								<col width="30%">
-								<col width="55%">
+						<div style="width:100%; height:180px; overflow:auto;border:2px solid red">
+							<table class="table is-hoverable" style="width:100%;">
+                <colgroup>
+								  <col width="30%">
+								  <col width="70%">
+                </colgroup>
 								<tr ng-repeat="x in lstUndadSAT" ng-click="selectUnidadSAT($index)">
-									<td>{{$index+1}}</td>
-									<td>{{x.CLAVE}}</td>
+									<td style="text-align:center">{{x.CLAVE}}</td>
 									<td>{{x.DESCRIPCION}}</td>
 								</tr>
 							</table>

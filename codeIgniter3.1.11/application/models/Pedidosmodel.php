@@ -14,7 +14,7 @@ class Pedidosmodel extends CI_model
 
 	function registra_pedido($pedido_data)
 	{
-		$pstmt = 'SELECT * FROM registra_pedido($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,false,$16)';
+		$pstmt = 'SELECT * FROM registra_pedido($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,false,$16,$17)';
 		pg_prepare($this->conn,"prstmt",$pstmt);
 		$result = pg_fetch_all(pg_execute($this->conn, "prstmt", $pedido_data));
 		return json_encode($result);
@@ -89,7 +89,11 @@ class Pedidosmodel extends CI_model
       D."CIUDAD",
       D."CP",
       D."CONTACTO",
-      C."DOMICILIO" as "CLI_DOMICILIO"
+      C."DOMICILIO" as "CLI_DOMICILIO",
+      C."TELEFONO",
+      C."RFC",
+      P."ID_METODO_PAGO",
+      C."ID_USO_CFDI"
 		FROM "PEDIDOS" AS P
 		INNER JOIN "CLIENTE" AS C ON C."ID_CLIENTE" = P."ID_CLIENTE"
 		INNER JOIN "VENDEDOR" AS V ON V."ID_VENDEDOR" = P."ID_VENDEDOR"
@@ -134,10 +138,10 @@ class Pedidosmodel extends CI_model
 		return json_encode($result);
 	}
 
-	function updatepedido($idPedido,$status){
-		$query = 'UPDATE "PEDIDOS" SET "VENDIDO"=$1 WHERE "ID_PEDIDO"=$2';
+	function updatepedido($idPedido,$status, $idfactura){
+		$query = 'UPDATE "PEDIDOS" SET "VENDIDO"=$1, "ID_FACTURA"=$2 WHERE "ID_PEDIDO"=$3';
 		pg_prepare($this->conn,"upd_ped",$query);
-		$result = pg_execute($this->conn,"upd_ped",array($status,$idPedido));
+		$result = pg_execute($this->conn,"upd_ped",array($status,$idfactura,$idPedido));
 		return json_encode($result);
 	}
 }

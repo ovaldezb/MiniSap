@@ -12,7 +12,7 @@ class Facturacionmodel extends CI_model
 	}
 
 	function savefactura($arrayDatFact){
-		$query = 'SELECT * FROM registra_factura($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16)';
+		$query = 'SELECT * FROM registra_factura($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18)';
 		pg_prepare($this->conn,"insert_fact",$query);
 		$result = pg_fetch_all(pg_execute($this->conn,"insert_fact",$arrayDatFact));
 		return json_encode($result);
@@ -68,13 +68,15 @@ class Facturacionmodel extends CI_model
   function get_datos_for_cfdi($idfactura){
     $query = 'SELECT F."DOCUMENTO" as "FOLIO", V."ID_VENTA",F."ID_CLIENTE",TRIM(C."RFC") as "RFC",
     TRIM(C."NOMBRE") as "CLIENTE" ,
-    U."CLAVE" as "USO_CFDI", TRIM(M."MET_PAGO") as "METODO_PAGO", FP."CLAVE" as "FORMA_PAGO"
+    U."CLAVE" as "USO_CFDI", TRIM(M."MET_PAGO") as "METODO_PAGO", FP."CLAVE" as "FORMA_PAGO",
+    MO."CODIGO" as "MONEDA"
     FROM "FACTURA" as F
     INNER JOIN "VENTAS" as V ON V."ID_FACTURA" = F."ID_FACTURA"
     INNER JOIN "CLIENTE" as C ON C."ID_CLIENTE" = F."ID_CLIENTE"
     INNER JOIN "USO_CFDI" as U ON U."ID_CFDI" = F."ID_USO_CFDI"  
     INNER JOIN "METODO_PAGO" as M ON M."ID_MET_PAGO" = F."ID_METODO_PAGO"
     INNER JOIN "FORMA_PAGO" as FP ON FP."ID_FORMA_PAGO" = F."ID_FORMA_PAGO"
+    INNER JOIN "MONEDA" as MO ON MO."ID_MONEDA" = F."ID_MONEDA"
     WHERE F."ID_FACTURA" = $1';
 		pg_prepare($this->conn,"select_fact",$query);
 		$result = pg_fetch_all(pg_execute($this->conn,"select_fact",array($idfactura)));

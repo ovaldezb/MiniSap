@@ -58,8 +58,9 @@ app.controller('repControlVentas',function($scope,$http)
     then((res)=>{
       if(res.data.length > 0){
         $scope.lstlinea = res.data;
-        $scope.linea = res.data[0].ID_LINEA;
       }
+      $scope.lstlinea.unshift({'ID_LINEA':0,'NOMBRE':'TODOS'});
+      $scope.linea = 0;
     }).catch((err)=>{
       console.log(err);
     });

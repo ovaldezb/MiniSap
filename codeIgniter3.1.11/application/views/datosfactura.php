@@ -27,7 +27,7 @@
     </tr>        
   </table>
     <div ng-show="formactive" style="transition-duration: 0.4s">
-        <form name="myForm" action='<?php echo base_url();?>datosfactura/save' enctype='multipart/form-data' method="post">
+        <form name="myForm" action='<?php echo base_url();?>datosfactura/ ' enctype='multipart/form-data' method="post">
             <input type ="hidden"  name="sucursal" value="{{factura.idsucursal}}">
             <input type ="hidden"  name="idempresa" value="{{idempresa}}">
             <div class="columns">

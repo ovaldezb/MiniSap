@@ -1,6 +1,5 @@
 app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams)
 {
-  const MONEDA = 'MXN';
   const TIPO_CAMBIO = 1;
   $scope.fecha = formatDatePrint(new Date());
   $scope.fechaPantalla = formatDatePantalla(new Date());
@@ -25,7 +24,6 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
   $scope.idDocumento = '';
   $scope.indexRowFactura = -1;
   $scope.indexRowPedido = -1;
-  $scope.idPedido = 0;
   $scope.importeNeto = 0;
   $scope.dsctoValor = 0;
   $scope.impuestos = 0;
@@ -42,7 +40,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
   $scope.showLstClte = false;
   $scope.isLstVendedor = false;
   $scope.dispsearch = false;
-  $scope.requiere_fact = false;
+  $scope.requiere_factura = false;
   $scope.btnVerifClte = 'Actualizar';
   $scope.tcaptura = 'D';
   $scope.lstMoneda = [];
@@ -51,6 +49,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
   $scope.lstTipopago = [];
   $scope.lstUsocfdi = [];
   $scope.lstFacturas = [];
+  $scope.lstVendedorVerif = [];
   $scope.isCapturaFactura = false;
   $scope.regfactura = true;
   $scope.isImprimir = true;
@@ -92,7 +91,9 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
     iva : '',
     descuento : 0,
     cfdi:1,
-    bruto:0
+    bruto:0,
+    regimenfiscal:'',
+    idpedido:null
   };
 
   $scope.producto = {
@@ -151,6 +152,8 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
         $scope.getTipoPago();
         $scope.getMetPago();
         $scope.permisos();
+        $scope.getEmpresa();
+        $scope.getvendedores();
       }
     }).catch(function(err){
       console.log(err);
@@ -243,6 +246,17 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
 		});
   }
 
+  $scope.getEmpresa = () =>{
+    $http.get(pathEmpr+'loadbyid/'+$scope.factura.idempresa, {responseType: 'json'}).
+    then(res =>
+  	{
+      $scope.factura.regimenfiscal = res.data[0].REGIMEN;
+    })
+    .catch(err=>{
+      console.log(err);
+    });
+  }
+
   $scope.getfacturas = function(){
     $http.get(pathFactura+'getfacturas/'+$scope.factura.idempresa+'/'+$scope.factura.aniofiscal,{responseType:'json'})
       .then(res => {
@@ -251,7 +265,6 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
             fact.ID_EMPRESA = $scope.factura.idempresa;
             return fact;
           });
-
         }
       })
       .catch(err => {
@@ -335,15 +348,17 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
             $scope.cliente.contacto = res.data[0].CONTACTO;
             $scope.cliente.rfc = res.data[0].RFC;
             $scope.cliente.curp = res.data[0].CURP;
+            $scope.cliente.dcredito = res.data[0].DIAS_CREDITO;
             $('#id_tipo_cliente').val(res.data[0].ID_TIPO_CLIENTE);
             $('#revision').val(res.data[0].ID_REVISION);
             $('#pagos').val(res.data[0].ID_PAGOS);
-            $('#id_forma_pago').val(res.data[0].ID_FORMA_PAGO);
             $scope.idVendedor =res.data[0].ID_VENDEDOR;
-            $('#id_uso_cfdi').val(res.data[0].ID_USO_CFDI);
+            $scope.cliente.id_uso_cfdi = Number(res.data[0].ID_USO_CFDI);
             $scope.cliente.email = res.data[0].EMAIL;
             $scope.cliente.num_proveedor = res.data[0].NUM_PROVEEDOR;
             $scope.cliente.notas = res.data[0].NOTAS;
+            $scope.cliente.id_forma_pago = res.data[0].ID_FORMA_PAGO;
+            $scope.cliente.idvendedor = res.data[0].ID_VENDEDOR;
             $scope.btnVerifClte = 'Actualizar';
           }
         }).
@@ -385,6 +400,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
     $scope.cliente.num_proveedor = '';
     $scope.cliente.notas = '';
     $scope.modalVerfClte = false;
+    $scope.lstVendedorVerif = [];
   }
 
   $scope.enviaDatosCliente = function()
@@ -392,7 +408,6 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
     $scope.cliente.id_tipo_cliente=$('#id_tipo_cliente').val();
     $scope.cliente.revision=$('#revision').val();
     $scope.cliente.pagos=$('#pagos').val();
-    $scope.cliente.id_forma_pago=$('#id_forma_pago').val();
     $scope.cliente.id_vendedor=$scope.idVendedor;
     $scope.cliente.idempresa = $scope.factura.idempresa;
 
@@ -416,7 +431,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
         console.log(err);
       });
      }else{
-       $http.put(pathClte+'update/'+$scope.factura.idcliente, $scope.cliente).
+       $http.put(pathClte+'updatecliente/'+$scope.factura.idcliente, $scope.cliente).
        then(function(res)
        {
          swal('Se actualizó correctamente el cliente');
@@ -440,7 +455,6 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
   $scope.seleccionarPedido = function(){
     $http.get(pathPedi+'getpedidobyid/'+$scope.lstPedidos[$scope.indexRowPedido].ID_PEDIDO)
         .then(res=>{
-          $scope.factura.docto = res.data[0].DOCUMENTO;
           $scope.claveclte = res.data[0].CLAVE;
           $scope.nombre_cliente = res.data[0].CLIENTE;
           $scope.factura.idcliente = res.data[0].ID_CLIENTE;
@@ -452,8 +466,8 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
           $scope.factura.cuenta = res.data[0].CUENTA == null ? '' : res.data[0].CUENTA.trim();
           $scope.factura.idmoneda = res.data[0].ID_MONEDA;
           $scope.factura.dias = res.data[0].DIAS;
-          //$scope.factura.tpago = res.data[0].ID_TIPO_PAGO > 10 ? '0'+res.data[0].ID_TIPO_PAGO : res.data[0].ID_TIPO_PAGO+'';
-          $scope.idPedido = $scope.lstPedidos[$scope.indexRowPedido].ID_PEDIDO;
+          $scope.factura.cfdi = res.data[0].ID_USO_CFDI;
+          $scope.factura.idpedido = $scope.lstPedidos[$scope.indexRowPedido].ID_PEDIDO;
         })
         .catch(err=>{
           console.log(err);
@@ -800,8 +814,15 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
       $scope.claveclte = $scope.lstCliente[indxRowClte].CLAVE;
       $scope.nombre_cliente = $scope.lstCliente[indxRowClte].NOMBRE;
       $scope.rfc_cliente = $scope.lstCliente[indxRowClte].RFC;
-      $scope.cliente.id_uso_cfdi = $scope.lstCliente[indxRowClte].ID_USO_CFDI;      
-      $scope.factura.idcliente = $scope.lstCliente[indxRowClte].ID_CLIENTE;           
+      $scope.cliente.id_uso_cfdi = Number($scope.lstCliente[indxRowClte].ID_USO_CFDI);      
+      $scope.factura.idcliente = Number($scope.lstCliente[indxRowClte].ID_CLIENTE);   
+      $scope.factura.fpago = $scope.lstCliente[indxRowClte].FORMA_PAGO;
+      $scope.factura.tpago = Number($scope.lstCliente[indxRowClte].DIAS_CREDITO) > 0 ? 2 : 1;
+      $scope.factura.mpago = Number($scope.lstCliente[indxRowClte].DIAS_CREDITO) === 0 ? 1 : -1;
+      $scope.factura.dias = Number($scope.lstCliente[indxRowClte].DIAS_CREDITO);
+      $scope.factura.contacto = $scope.lstCliente[indxRowClte].CONTACTO;
+      $scope.factura.idvendedor = Number($scope.lstCliente[indxRowClte].ID_VENDEDOR);
+      $scope.nombre_vendedor = $scope.lstCliente[indxRowClte].VENDEDOR
       $scope.lstCliente = [];
       $scope.showLstClte = false;      
     }
@@ -814,8 +835,15 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
             $scope.claveclte = res.data[0].CLAVE.trim();
             $scope.nombre_cliente =res.data[0].NOMBRE;
             $scope.rfc_cliente = res.data[0].RFC;
-            $scope.cliente.id_uso_cfdi = res.data[0].ID_USO_CFDI;              
-            $scope.factura.idcliente = res.data[0].ID_CLIENTE;
+            $scope.cliente.id_uso_cfdi = Number(res.data[0].ID_USO_CFDI);
+            $scope.factura.idcliente = Number(res.data[0].ID_CLIENTE);
+            $scope.factura.fpago = res.data[0].FORMA_PAGO;
+            $scope.factura.tpago = Number(res.data[0].DIAS_CREDITO) > 0 ? 2 : 1;
+            $scope.factura.mpago = Number(res.data[0].DIAS_CREDITO) === 0 ? 1 : -1;
+            $scope.factura.dias = Number(res.data[0].DIAS_CREDITO);
+            $scope.factura.contacto = res.data[0].CONTACTO;
+            $scope.factura.idvendedor = Number(res.data[0].ID_VENDEDOR);
+            $scope.nombre_vendedor = res.data[0].VENDEDOR;
           }else{
             swal('No existe el cliente con codigo '+$scope.claveclte+', puede hacer la búsqueda por nombre');
             $scope.nombre_cliente = '';
@@ -862,7 +890,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
       {
         if(res.data.length > 0)
         {
-          $scope.lstVendedorVer = res.data;
+          $scope.lstVendedorVerif = res.data;
         }else {
           $scope.lstVendedorVer = [];
         }
@@ -953,10 +981,25 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
         formapago:$scope.factura.fpago,
         usocfdi:$scope.factura.cfdi,
         metodopago:$scope.factura.mpago,
-        contacto:$scope.factura.contacto
+        contacto:$scope.factura.contacto,
+        idmoneda:$scope.factura.idmoneda,
+        idpedido:$scope.factura.idpedido
       };
-
-      $http.post(pathFactura+'savefactura',dataFact)
+      let msg = ''
+      if($scope.requiere_factura){
+        msg = 'y se va a generar el CFDI';
+      }
+      
+      swal({
+        title: "Se va a guardar la factura "+msg ,
+        text: "Continuar?",
+        icon: "warning",
+        buttons: [true,true],
+        dangerMode: true,
+      })
+      .then(yes=>{
+        if(yes){
+          $http.post(pathFactura+'savefactura',dataFact)
           .then( res => {
             dataVenta.idfactura = res.data[0].registra_factura;
             $http.put(pathTpv+'registraventa',dataVenta)
@@ -964,9 +1007,46 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
               {
                 $scope.idVenta = res.data[0].registra_venta;
                 $scope.registraVentaProd();
-                $scope.updatePedido();
+                $scope.updatePedido(dataVenta.idfactura);
                 $scope.getfacturas();
-                swal('La factura se registró exitosamente','Felicidades!','success');     
+                if($scope.requiere_factura){
+                  $http.get(pathFactura+'datoscfdi/'+dataVenta.idfactura)
+                  .then(res =>{
+                    $scope.factura.idventa = res.data.ID_VENTA  
+                    $scope.factura.cliente = res.data.CLIENTE;
+                    $scope.factura.rfc = res.data.RFC;
+                    $scope.factura.usocfdicodigo = res.data.USO_CFDI;
+                    $scope.factura.serie = 'S00001';
+                    $scope.factura.folio = res.data.FOLIO;
+                    $scope.factura.moneda = res.data.MONEDA;
+                    $scope.factura.tipocambio = TIPO_CAMBIO;
+                    $scope.factura.metodopago = res.data.METODO_PAGO;
+                    $scope.factura.idCliente = res.data.ID_CLIENTE;
+                    $scope.factura.idfactura = dataVenta.idfactura;
+                    $scope.factura.formapago = res.data.FORMA_PAGO; 
+                    $http.post(pathCreaFact+'creacfdi',$scope.factura)
+                    .then(res =>{
+                      if(res.data.status=="success"){
+                        $scope.getfacturas();
+                        $scope.indexRowFactura = -1;
+                        swal('Se generó la factura y se realizo el timbrado exitosamente', 'Se creó el CFDI','success');
+                      }else{
+                        if(res.data.error){
+                          swal('Error al generar la factura:\n'+res.data.error,'No se pudo generar la factura','error');
+                        }else{
+                          swal('Error al generar la factura:','verifique que el Regimen Fiscal sea el correcto','error');
+                        }
+                        
+                      }
+                    })
+                    .catch(function(err)
+                    {
+                      console.log(err);
+                    });
+                  })
+                }else{
+                  swal('La factura se registró exitosamente','Felicidades!','success');
+                }
                 $scope.limpiar();
                 $scope.getNextDocTpv(); 
               })
@@ -978,10 +1058,12 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
           .catch(err => {
             console.log(err);
           });
+        }
+      })
     }
 
-    $scope.updatePedido = function(){
-      $http.put(pathPedi+'updatepedido/'+$scope.idPedido+"/true")
+    $scope.updatePedido = function(idfactura){
+      $http.put(pathPedi+'updatepedido/'+$scope.factura.idpedido+"/true/"+idfactura)
         .then(res=>{
           //console.log("se actualizo el pedido")
         })
@@ -1112,6 +1194,10 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
     $scope.nvoEmail = '';
   }
 
+  $scope.eliminarEmail = (index) =>{
+    $scope.lstCorreos.splice(index,1);
+  }
+
   $scope.enviaCorreo = () =>{
     let correos = ''
     $scope.lstCorreos.forEach(email => {correos += email.EMAIL+'|'});
@@ -1159,17 +1245,14 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
               $scope.factura.cliente = res.data.CLIENTE;
               $scope.factura.rfc = res.data.RFC;
               $scope.factura.usocfdicodigo = res.data.USO_CFDI;
-              //probablemente este dato se tiene que pedir
               $scope.factura.serie = 'S00001';
               $scope.factura.folio = res.data.FOLIO;
-              // De momento lo voy a dejar en MXN
-              $scope.factura.moneda = MONEDA;
+              $scope.factura.moneda = res.data.MONEDA;
               $scope.factura.tipocambio = TIPO_CAMBIO;
               $scope.factura.metodopago = res.data.METODO_PAGO;
               $scope.factura.idCliente = res.data.ID_CLIENTE;
               $scope.factura.idfactura = $scope.lstFacturas[$scope.indexRowFactura].ID_FACTURA;
-              $scope.factura.formapago = res.data.FORMA_PAGO; //ya
-              //console.log($scope.factura);
+              $scope.factura.formapago = res.data.FORMA_PAGO; 
               $http.post(pathCreaFact+'creacfdi',$scope.factura)
               .then(res =>{
                 if(res.data.status=="success"){
@@ -1230,7 +1313,13 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
         $scope.factura.cuenta = '';
         $scope.factura.idmoneda = 1;
         $scope.factura.total = '';
+        $scope.factura.totalBruto = '';
         $scope.tcaptura = 'D';
+        $scope.factura.mpago = -1;
+        $scope.factura.cfdi = '';
+        $scope.factura.fpago = '';
+        $scope.factura.tpago = '';
+        $scope.requiere_factura = false;
         $scope.getNextDocTpv();
     }
 
