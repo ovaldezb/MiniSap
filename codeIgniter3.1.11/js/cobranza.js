@@ -9,6 +9,10 @@ app.controller('myCtrlCobros', function($scope,$http,$routeParams)
     $scope.importecobro = 0;
     $scope.isModalActive = false;
     $scope.fechacobro = '';
+    $scope.lstFormaPago = [];
+    $scope.lstBancos = [];
+    $scope.lstFacturas = [];
+    $scope.lstCobros = [];
     $scope.hoy = '';
     $scope.idCobro = -1;
     $scope.importeInicial= 0;
@@ -24,17 +28,21 @@ app.controller('myCtrlCobros', function($scope,$http,$routeParams)
         saldopendiente:0,
         fechacobro:'',
         importecobro:0,
-        movimiento:0,
-        banco:0,
+        movimiento:'1',
+        banco:-1,
         cheque:'',
         depositoen:0,
         poliza:'',
-        importebase:'',
+        importebase:0,
         idempresa:'',
         aniofiscal:''
     }
-    $scope.lstFacturas = [];
-    $scope.lstCobros = [];
+    var banco = {
+      'ID_BANCO':-1,
+      'CLAVE':'',
+      'DESCRIPCION':'Seleccione un Banco',
+      'SAT':''
+    };
     $scope.permisos = {
         alta: false,
         baja: false,
@@ -60,6 +68,8 @@ app.controller('myCtrlCobros', function($scope,$http,$routeParams)
         }).catch(function(err){
           console.log(err);
       });
+      $scope.getFormaPago();
+      $scope.getBancos();
     };
 
     $scope.getListaFacturas = () =>{
@@ -109,6 +119,29 @@ app.controller('myCtrlCobros', function($scope,$http,$routeParams)
     });
   }
 
+  $scope.getFormaPago = function(){
+    $http.get(pathUtils+'getformpag',{responseType:'json'}).
+    then(res => {
+      if(res.data.length > 0){
+        $scope.lstFormaPago = res.data;
+      }
+    }).catch(err =>	{
+			console.log(err);
+		});
+  }
+
+  $scope.getBancos = () =>{
+    
+    $http.get(pathUtils+'getbancos')
+    .then(res =>{
+      $scope.lstBancos = res.data;
+      $scope.lstBancos.unshift(banco);
+    })
+    .catch(err=>{
+      console.log(err);
+    });
+  }
+
   $scope.agregaCobranza = () =>{
     if($scope.idFactura === ''){
         swal('Debe elegir una factura para poder aplicar un cobro');
@@ -117,7 +150,6 @@ app.controller('myCtrlCobros', function($scope,$http,$routeParams)
     $scope.cobro.cliente = $scope.lstFacturas[$scope.idRowSel].CLIENTE;
     $scope.cobro.idcliente = $scope.lstFacturas[$scope.idRowSel].ID_CLIENTE;
     $scope.cobro.documento = $scope.lstFacturas[$scope.idRowSel].DOCUMENTO;    
-    //$scope.cobro.importecobro = $scope.lstFacturas[$scope.idRowSel].SALDO;
     $scope.cobro.importetotal = $scope.lstFacturas[$scope.idRowSel].IMPORTE;
     $scope.cobro.cobrado = 0;
     $scope.cobro.saldo = 0;
@@ -134,6 +166,7 @@ app.controller('myCtrlCobros', function($scope,$http,$routeParams)
           if(res.status===200){
               swal('Se guardó el cobro con éxito');
               $scope.closeMovimiento();
+              $scope.cleanPago();
               $scope.getcobros();
               $scope.getListaFacturas();
           }
@@ -235,6 +268,6 @@ app.controller('myCtrlCobros', function($scope,$http,$routeParams)
       $scope.fechacobro = '';
       $scope.cobro.cheque = '';
       $scope.cobro.poliza = '';
-      $scope.cobro.importebase = '';
+      $scope.cobro.importebase = 0;
     }
 });

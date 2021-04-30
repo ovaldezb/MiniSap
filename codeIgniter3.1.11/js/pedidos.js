@@ -23,7 +23,6 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
   $scope.idDocumento = '';
   $scope.indexRowPedido = -1;
   $scope.idPedido = 0;
-  $scope.importeNeto = 0;
   $scope.dsctoValor = 0;
   $scope.impuestos = 0;
   $scope.nombre_cliente = '';
@@ -82,7 +81,8 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
     fechaentrega:'',
     domi:'',
     bruto:'',
-    comentarios:''
+    comentarios:'',
+    subtotal:0
   };
 
   $scope.domientrega = {
@@ -302,8 +302,8 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
             $scope.cliente.clave = res.data[0].CLAVE;
             $scope.cliente.nombre = res.data[0].NOMBRE;
             $scope.cliente.domicilio = res.data[0].DOMICILIO;
-            $scope.cliente.telefono = res.data[0].TELEFONO;
-            $scope.cliente.cp = res.data[0].CP;
+            $scope.cliente.telefono = Number(res.data[0].TELEFONO);
+            $scope.cliente.cp = Number(res.data[0].CP);
             $scope.cliente.contacto = res.data[0].CONTACTO;
             $scope.cliente.rfc = res.data[0].RFC;
             $scope.cliente.curp = res.data[0].CURP;
@@ -312,7 +312,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
             $('#pagos').val(res.data[0].ID_PAGOS);
             $scope.cliente.id_forma_pago = res.data[0].ID_FORMA_PAGO;
             $scope.cliente.id_vendedor = res.data[0].ID_VENDEDOR.toString();
-            $scope.cliente.id_uso_cfdi = res.data[0].ID_USO_CFDI
+            $scope.cliente.id_uso_cfdi = Number(res.data[0].ID_USO_CFDI);
             $scope.cliente.email = res.data[0].EMAIL;
             $scope.cliente.num_proveedor = res.data[0].NUM_PROVEEDOR;
             $scope.cliente.notas = res.data[0].NOTAS;
@@ -712,11 +712,10 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
       
     }
 
-    $scope.calculaValoresMostrar = function()
+    $scope.calculaValoresMostrar = () =>
     {
-      $scope.pedido.bruto = 0;
+      $scope.pedido.subtotal = 0;
       $scope.pedido.total = 0;
-      $scope.importeNeto = 0;
       $scope.impuestos = 0;
       $scope.dsctoValor = 0;
       $scope.producto.esPromo = false;
@@ -724,12 +723,12 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
 
       for(var i=0;i<$scope.lstProdCompra.length;i++)
       {
-        $scope.pedido.bruto += Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA);
+        valUnit = Number ($scope.lstProdCompra[i].PRECIO_LISTA) / (1+Number($scope.lstProdCompra[i].IVA/100));
+        $scope.pedido.subtotal += Number($scope.lstProdCompra[i].CANTIDAD) * valUnit;
         $scope.dsctoValor += Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) * ($scope.lstProdCompra[i].ESDSCTO ? Number($scope.lstProdCompra[i].DESCUENTO/100) : 0);
-        $scope.importeNeto += (Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA))  / (1+Number($scope.lstProdCompra[i].IVA/100));
-        $scope.impuestos += (Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA))  / (1+Number($scope.lstProdCompra[i].IVA/100)) * Number($scope.lstProdCompra[i].IVA/100);
+        $scope.impuestos += Number($scope.lstProdCompra[i].CANTIDAD) * valUnit * Number($scope.lstProdCompra[i].IVA/100);
       }
-      $scope.pedido.total = $scope.pedido.bruto - $scope.dsctoValor;
+      $scope.pedido.total = $scope.pedido.subtotal - $scope.dsctoValor + $scope.impuestos;
     }
 
     $scope.buscacliente = function(event)
@@ -1108,7 +1107,6 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
         $scope.pedido.idvendedor = '';
         $scope.nombre_vendedor = '';
         $scope.impuestos = 0.0;
-        $scope.importeNeto = 0.0;
         $scope.regpedido = true;
         $scope.pedido.comentarios = '';
         $scope.pedido.fechaentrega = '';

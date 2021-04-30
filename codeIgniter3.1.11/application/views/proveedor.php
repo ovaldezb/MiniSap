@@ -1,6 +1,6 @@
 <div class="container" ng-controller="myCtrlProveedor" data-ng-init="init()">
 	<div class="notification" >
-	<h1 class="title has-text-centered">Administración de Proveedores</h1>
+	<h1 class="title has-text-centered is-4">Administración de Proveedores</h1>
 	</div>
 	<div class="box" ng-show="!isDivProvActivo">
 	<nav class="level">

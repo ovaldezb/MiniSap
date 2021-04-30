@@ -563,33 +563,25 @@
 
 					<div class="columns">
 						<div class="column">
-							<label>Importe Bruto:</label>
+							<label>Sub Total:</label>
 						</div>
-						<div class="column">
-							<label>{{factura.bruto | currency}}</label>
+						<div class="column" style="text-align:right">
+							<label>{{factura.subtotal | currency}}</label>
 						</div>
 					</div>
 					<div class="columns">
 						<div class="column">
 							<label>Descuento(-):</label>
 						</div>
-						<div class="column" style="border-bottom:2px solid black">
+						<div class="column" style="text-align:right">
 							<label>{{dsctoValor | currency}}</label>
-						</div>
-					</div>
-          <div class="columns">
-						<div class="column">
-							<label>Subtotal:</label>
-						</div>
-						<div class="column">
-							<label>{{importeNeto | currency}}</label>
 						</div>
 					</div>
 					<div class="columns">
 						<div class="column">
 							<label>Impuestos(+):</label>
 						</div>
-						<div class="column" style="border-bottom:2px solid black">
+						<div class="column" style="border-bottom:2px solid black; text-align:right">
 							<label>{{impuestos | currency}}</label>
 						</div>
 					</div>
@@ -597,7 +589,7 @@
 						<div class="column">
 							<label class="label">Total:</label>
 						</div>
-						<div class="column">
+						<div class="column" style="text-align:right">
 							<label>{{factura.total | currency}}</label>
 						</div>
 					</div>
@@ -863,11 +855,13 @@
 					<tr>
 						<td>Cliente:</td>
 						<td>
+              <div class="select is-small">
               <select name="id_tipo_cliente" id="id_tipo_cliente">
       <?php	foreach ($tipo_cliente as $tc) { ?>
       					<option value=<?php echo $tc['ID_TIPO_CLTE'] ?>><?php echo $tc['DESCRIPCION']?></option>
       <?php	} ?>
       				</select>
+              </div>
             </td>
 						<td>Crédito:</td>
 						<td><input type="number" class="input is-small" ng-model="cliente.dcredito" placeholder="DIAS DE CREDITO"></td>
@@ -875,31 +869,39 @@
 					<tr>
 						<td>Revisión:</td>
 						<td>
+              <div class="select is-small">
               <select name="revision" id="revision">
       <?php 		foreach($revision as $rev) {?>
       					<option value='<?php echo $rev['ID_DIA']?>'><?php echo trim($rev['NOMBRE'])?></option>
       <?php 		}?>
       				</select>
+              </div>
             </td>
 						<td>Pagos:</td>
 						<td>
+              <div class="select is-small">
               <select id="pagos">
       <?php 		foreach($revision as $rev) {?>
       					<option value='<?php echo $rev['ID_DIA']?>'><?php echo trim($rev['NOMBRE'])?></option>
       <?php 		}?>
       				</select>
+              </div>
             </td>
 					</tr>
 					<tr>
 						<td>Forma Pago:</td>
 						<td colspan="3">
-              <select ng-model="cliente.id_forma_pago" ng-options="x.ID_FORMA_PAGO as x.CLAVE+' '+x.DESCRIPCION for x in lstFormpago"></select>
+              <div class="select is-small">
+                <select ng-model="cliente.id_forma_pago" ng-options="x.ID_FORMA_PAGO as x.CLAVE+' '+x.DESCRIPCION for x in lstFormpago"></select>
+              </div>
             </td>
 					</tr>
 					<tr>
 						<td>Vendedor:</td>
 						<td colspan="3">
-              <select ng-model="cliente.idvendedor" ng-options="x.ID_VENDEDOR as x.NOMBRE for x in lstVendedorVerif"></select>
+              <div class="select is-small">
+                <select ng-model="cliente.idvendedor" ng-options="x.ID_VENDEDOR as x.NOMBRE for x in lstVendedorVerif"></select>
+              </div>
             </td>
 					</tr>
 					<tr>

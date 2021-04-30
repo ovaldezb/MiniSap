@@ -24,7 +24,6 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
   $scope.idDocumento = '';
   $scope.indexRowFactura = -1;
   $scope.indexRowPedido = -1;
-  $scope.importeNeto = 0;
   $scope.dsctoValor = 0;
   $scope.impuestos = 0;
   $scope.nombre_cliente = '';
@@ -93,7 +92,8 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
     cfdi:1,
     bruto:0,
     regimenfiscal:'',
-    idpedido:null
+    idpedido:null,
+    subtotal:0
   };
 
   $scope.producto = {
@@ -343,8 +343,8 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
             $scope.cliente.clave = res.data[0].CLAVE;
             $scope.cliente.nombre = res.data[0].NOMBRE;
             $scope.cliente.domicilio = res.data[0].DOMICILIO;
-            $scope.cliente.telefono = res.data[0].TELEFONO;
-            $scope.cliente.cp = res.data[0].CP;
+            $scope.cliente.telefono = Number(res.data[0].TELEFONO);
+            $scope.cliente.cp = Number(res.data[0].CP);
             $scope.cliente.contacto = res.data[0].CONTACTO;
             $scope.cliente.rfc = res.data[0].RFC;
             $scope.cliente.curp = res.data[0].CURP;
@@ -767,11 +767,10 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
       }
     }
 
-    $scope.calculaValoresMostrar = function()
+    $scope.calculaValoresMostrar = () =>
     {
-      $scope.factura.bruto = 0;
+      $scope.factura.subtotal = 0;
       $scope.factura.total = 0;
-      $scope.importeNeto = 0;
       $scope.impuestos = 0;
       $scope.dsctoValor = 0;
       $scope.producto.esPromo = false;
@@ -779,13 +778,12 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
       
       for(var i=0;i<$scope.lstProdCompra.length;i++)
       {
-        $scope.factura.bruto += Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) ;
-        //$scope.factura.total += Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) ;
+        valUnit = Number ($scope.lstProdCompra[i].PRECIO_LISTA) / (1+Number($scope.lstProdCompra[i].IVA/100));
+        $scope.factura.subtotal += Number($scope.lstProdCompra[i].CANTIDAD) * valUnit ;
         $scope.dsctoValor += Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) * ($scope.lstProdCompra[i].ESDSCTO ? Number($scope.lstProdCompra[i].DESCUENTO/100) : 0);
-        $scope.importeNeto += (Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) - (Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) * ($scope.lstProdCompra[i].ESDSCTO ? Number($scope.lstProdCompra[i].DESCUENTO/100) : 0)) )   / (1+Number($scope.lstProdCompra[i].IVA/100));
-        $scope.impuestos += (Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) - (Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) * ($scope.lstProdCompra[i].ESDSCTO ? Number($scope.lstProdCompra[i].DESCUENTO/100) : 0)) )/ (1+Number($scope.lstProdCompra[i].IVA/100)) * Number($scope.lstProdCompra[i].IVA/100);
+        $scope.impuestos += Number($scope.lstProdCompra[i].CANTIDAD) * valUnit * Number($scope.lstProdCompra[i].IVA/100);
       }
-      $scope.factura.total = $scope.factura.bruto - $scope.dsctoValor;
+      $scope.factura.total = $scope.factura.subtotal - $scope.dsctoValor + $scope.impuestos;
       $scope.regfactura = $scope.factura.total <= 0;
     }
 
@@ -892,7 +890,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
         {
           $scope.lstVendedorVerif = res.data;
         }else {
-          $scope.lstVendedorVer = [];
+          $scope.lstVendedorVerif = [];
         }
       }).catch(function(err)
       {
@@ -1007,6 +1005,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
               {
                 $scope.idVenta = res.data[0].registra_venta;
                 $scope.registraVentaProd();
+                /**Agregar validacion cuando no viene de pedido */
                 $scope.updatePedido(dataVenta.idfactura);
                 $scope.getfacturas();
                 if($scope.requiere_factura){
@@ -1306,7 +1305,6 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
         $scope.factura.idvendedor = '';
         $scope.nombre_vendedor = '';
         $scope.impuestos = 0.0;
-        $scope.importeNeto = 0.0;
         $scope.regfactura = true;
         $scope.factura.contacto = '';
         $scope.factura.dias = '';

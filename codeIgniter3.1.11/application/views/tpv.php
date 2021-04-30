@@ -28,12 +28,12 @@
 						<label class="label">Cliente</label>
 					</div>
 					<div class="column is-2">
-						<input type="text" ng-model="claveclte" ng-keyup="buscacodcliente($event)" class="input is-small">
+						<input type="text" ng-model="claveclte" ng-keyup="buscacodcliente($event)" onfocus="this.select();" class="input is-small">
 					</div>
 					<div class="column is-6">
 						<div class="field has-addons">
 							<p class="control is-expanded has-icons-left">
-								<input class="input is-small" ng-keyup="buscacliente($event)" ng-model="nombre_cliente" type="text" placeholder="Cliente">
+								<input class="input is-small" ng-keyup="buscacliente($event)" ng-model="nombre_cliente" type="text" onfocus="this.select();" placeholder="Cliente">
 								<span class="icon is-small is-left">
 									<i class="fas fa-user"></i>
 								</span>
@@ -371,33 +371,25 @@
 
 				<div class="columns">
 					<div class="column">
-						<label>Importe Bruto:</label>
+						<label>Sub Total:</label>
 					</div>
-					<div class="column">
-						<label>{{totalBruto | currency}}</label>
+					<div class="column" style="text-align:right">
+						<label>{{subtotal | currency}}</label>
 					</div>
 				</div>
 				<div class="columns">
 					<div class="column">
 						<label>Descuento(-):</label>
 					</div>
-					<div class="column" style="border-bottom:2px solid black">
+					<div class="column" style="text-align:right">
 						<label>{{dsctoValor | currency}}</label>
-					</div>
-				</div>
-        <div class="columns">
-					<div class="column">
-						<label>Importe Neto:</label>
-					</div>
-					<div class="column">
-						<label>{{importeNeto | currency}}</label>
 					</div>
 				</div>
 				<div class="columns">
 					<div class="column">
 						<label>Impuestos(+):</label>
 					</div>
-					<div class="column" style="border-bottom:2px solid black">
+					<div class="column" style="border-bottom:2px solid black; text-align:right">
 						<label>{{impuestos | currency}}</label>
 					</div>
 				</div>
@@ -405,7 +397,7 @@
 					<div class="column">
 						<label class="label">Total:</label>
 					</div>
-					<div class="column">
+					<div class="column" style="text-align:right">
 						<label>{{total | currency}}</label>
 					</div>
 				</div>
@@ -800,11 +792,13 @@
 					<tr>
 						<td>Cliente:</td>
 						<td>
+              <div class="select is-small">
               <select name="id_tipo_cliente" id="id_tipo_cliente">
       <?php	foreach ($tipo_cliente as $tc) { ?>
       					<option value=<?php echo $tc['ID_TIPO_CLTE'] ?>><?php echo $tc['DESCRIPCION']?></option>
       <?php	} ?>
       				</select>
+              </div>
             </td>
 						<td>Días Crédito:</td>
 						<td><input type="number" class="input is-small" ng-model="cliente.dcredito" placeholder="DIAS DE CREDITO"></td>
@@ -812,62 +806,70 @@
 					<tr>
 						<td>Revisión:</td>
 						<td>
+            <div class="select is-small">
               <select name="revision" id="revision">
       <?php 		foreach($revision as $rev) {?>
       					<option value='<?php echo $rev['ID_DIA']?>'><?php echo trim($rev['NOMBRE'])?></option>
       <?php 		}?>
       				</select>
+              </div>
             </td>
 						<td>Pagos:</td>
 						<td>
+            <div class="select is-small">
               <select id="pagos">
       <?php 		foreach($revision as $rev) {?>
       					<option value='<?php echo $rev['ID_DIA']?>'><?php echo trim($rev['NOMBRE'])?></option>
       <?php 		}?>
       				</select>
+              </div>
             </td>
 					</tr>
 					<tr>
 						<td>Forma Pago:</td>
 						<td colspan="3">
-              <select ng-model="cliente.id_forma_pago" ng-options="x.ID_FORMA_PAGO as x.CLAVE+' '+x.DESCRIPCION for x in lstFormpago"></select>
+              <div class="select is-small">
+                <select ng-model="cliente.id_forma_pago" ng-options="x.ID_FORMA_PAGO as x.CLAVE+' '+x.DESCRIPCION for x in lstFormpago"></select>
+              </div>
 						</td>
 					</tr>
 					<tr>
 						<td>Vendedor:</td>
 						<td colspan="3">
-              <select ng-model='cliente.id_vendedor' ng-options="x.ID_VENDEDOR as x.NOMBRE for x in lstVendedorVerif" ></select>
+              <div class="select is-small">
+                <select ng-model='cliente.id_vendedor' ng-options="x.ID_VENDEDOR as x.NOMBRE for x in lstVendedorVerif" ></select>
+              </div>
             </td>
 					</tr>
 					<tr>
 						<td>Uso CFDI:</td>
 						<td colspan="3">
-						<div class="select is-small">
-						<select class="select is-small" ng-model="cliente.id_uso_cfdi" ng-options="x.ID_CFDI as x.DESCRIPCION for x in lstUsocfdi"></select>
-						</div>
-            			</td>
+						  <div class="select is-small">
+						    <select class="select is-small" ng-model="cliente.id_uso_cfdi" ng-options="x.ID_CFDI as x.DESCRIPCION for x in lstUsocfdi"></select>
+						  </div>
+            </td>
 					</tr>
 					<tr>
 						<td>Email:</td>
 						<td colspan="2"><input type="text" class="input is-small" ng-model="cliente.email" placeholder="EMAIL"></td>
-            			<td></td>
+            <td></td>
 					</tr>
 					<tr>
 						<td>No Proveedor:</td>
 						<td><input type="text" class="input is-small" ng-model="cliente.num_proveedor" placeholder="PROVEEDOR"></td>
-            			<td colspan="2"></td>
+            <td colspan="2"></td>
 					</tr>
 					<tr>
 						<td>Observaciones:</td>
 						<td colspan="3">
-              				<textarea ng-model="cliente.notas" id="tacliente"></textarea>
-            			</td>
+      				<textarea ng-model="cliente.notas" id="tacliente"></textarea>
+            </td>
 					</tr>
 				</table>
 	    </section>
 	    <footer class="modal-card-foot">
 	      <button class="button" ng-click="enviaDatosCliente();">{{btnVerifClte}}</button>
-		  <button class="button" ng-click="closeVerifClte()">Cerrar</button>
+		    <button class="button" ng-click="closeVerifClte()">Cerrar</button>
 	    </footer>
 	  </div>
 	</div>

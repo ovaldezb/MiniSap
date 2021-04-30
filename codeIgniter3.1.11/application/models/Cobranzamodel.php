@@ -34,7 +34,7 @@ class Cobranzamodel extends CI_model
 	}
 
 	public function guardacobranza($datoscobro){
-		$query = 'SELECT * FROM registra_cobro($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)';
+		$query = 'SELECT * FROM registra_cobro($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)';
 		pg_prepare($this->conn,"inserta_cobro",$query);
 		$result = pg_execute($this->conn,"inserta_cobro",$datoscobro);
 		return json_encode($result);

@@ -225,5 +225,23 @@ class Reportemodel extends CI_model
     return json_encode($result, JSON_NUMERIC_CHECK);
   }
 
+  function get_reporte_cobranza($anioFiscal,$idEmpresa, $fecIni,$fecFin){
+    $query = 'SELECT LPAD(TRIM(TO_CHAR("ID_COBRO",\'999999\')),8,\'0\') as "DOCTO", TO_CHAR("FECHA_COBRO",\'DD-MM-YYYY\') as "FECHA_COBRO","IMPORTE_COBRO" as "ABONO",CL."NOMBRE",
+    TRIM(FP."CLAVE") as "FP",MP."MET_PAGO" as "MP", CO."ID_MOVIMIENTO" as "ID_FP"
+    FROM "COBROS" as CO
+    INNER JOIN "FORMA_PAGO" as FP ON FP."ID_FORMA_PAGO" = CO."ID_MOVIMIENTO"
+    INNER JOIN "FACTURA" as F ON F."ID_FACTURA" = CO."ID_FACTURA"
+    INNER JOIN "CLIENTE" as CL ON CL."ID_CLIENTE" = F."ID_CLIENTE"
+    INNER JOIN "METODO_PAGO" as MP ON MP."ID_MET_PAGO" = F."ID_METODO_PAGO"
+    AND CO."ANIO_FISCAL" = $1
+    AND CO."ID_EMPRESA" = $2
+    AND "FECHA_COBRO" >= $3
+    AND "FECHA_COBRO" <= $4
+    ORDER BY "FECHA_COBRO"';
+    pg_prepare($this->conn,"cobranzaa",$query);
+    $result = pg_fetch_all(pg_execute($this->conn,"cobranzaa",array($anioFiscal,$idEmpresa,$fecIni,$fecFin)));
+    return json_encode($result);
+  }
+
 }
 ?>

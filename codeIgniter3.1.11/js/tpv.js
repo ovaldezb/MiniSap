@@ -10,7 +10,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$routeParams)
   $scope.sortDir = true;
 	$scope.counter = 0;
 	$scope.total = 0.00;
-  $scope.totalBruto = 0.00;
+  $scope.subtotal = 0;
   $scope.cambio = 0.00;
 	$scope.cantidad = 0;
   $scope.cantProd = 0;
@@ -184,7 +184,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$routeParams)
       if(res.data){
         idventasmostrador = res.data[0].ID_CLIENTE;
         $scope.idcliente = res.data[0].ID_CLIENTE;
-        $scope.claveclte = res.data[0].CLAVE;
+        $scope.claveclte = res.data[0].CLAVE.trim();
         claveCliente = res.data[0].CLAVE;
         $scope.nombre_cliente = res.data[0].NOMBRE;
         nombreCliente = res.data[0].NOMBRE;
@@ -649,9 +649,9 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$routeParams)
       }
     }
 
-    $scope.calculaValoresMostrar = function()
+    $scope.calculaValoresMostrar = () =>
     {
-      $scope.totalBruto = 0;
+      $scope.subtotal = 0;
       $scope.total = 0;
       $scope.importeNeto = 0;
       $scope.impuestos = 0;
@@ -661,13 +661,12 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$routeParams)
 
       for(var i=0;i<$scope.lstProdCompra.length;i++)
       {
-        $scope.totalBruto += Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) ;
-        //$scope.total += Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) ;
+        valUnit = Number ($scope.lstProdCompra[i].PRECIO_LISTA) / (1+Number($scope.lstProdCompra[i].IVA/100));
+        $scope.subtotal += Number($scope.lstProdCompra[i].CANTIDAD) * valUnit;
         $scope.dsctoValor += Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) * ($scope.lstProdCompra[i].ESDSCTO ? Number($scope.lstProdCompra[i].DESCUENTO/100) : 0);
-        $scope.importeNeto += (Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) - Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) * ($scope.lstProdCompra[i].ESDSCTO ? Number($scope.lstProdCompra[i].DESCUENTO/100) : 0))  / (1+Number($scope.lstProdCompra[i].IVA/100));
-        $scope.impuestos += (Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) - Number($scope.lstProdCompra[i].CANTIDAD) * Number ($scope.lstProdCompra[i].PRECIO_LISTA) * ($scope.lstProdCompra[i].ESDSCTO ? Number($scope.lstProdCompra[i].DESCUENTO/100) : 0)) / (1+Number($scope.lstProdCompra[i].IVA/100)) * Number($scope.lstProdCompra[i].IVA/100);
+        $scope.impuestos += Number($scope.lstProdCompra[i].CANTIDAD) * valUnit * Number($scope.lstProdCompra[i].IVA/100);
       }
-      $scope.total = Number($scope.totalBruto - $scope.dsctoValor).toFixed(2);
+      $scope.total = Number($scope.subtotal - $scope.dsctoValor + $scope.impuestos).toFixed(2);
       
     }
 
@@ -907,7 +906,8 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$routeParams)
         usocfdi:$scope.fact.req_factura ? $scope.fact.usocfdi : null,
         metodopago:$scope.fact.req_factura ? $scope.fact.metodopago : null,
         contacto:null,
-        idmoneda:1
+        idmoneda:1,
+        idpedido:null
       };
 
       if($scope.fact.req_factura){
@@ -974,7 +974,7 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$routeParams)
     $scope.pago_vales = 0.0;
     $scope.impuestos = 0.0;
     $scope.importeNeto = 0.0;
-    $scope.totalBruto = 0.0;
+    $scope.subtotal = 0;
     $scope.rgstracompra = false;
     $scope.cliente.dcredito = 0;
     $scope.idbanco = '0';
@@ -1064,8 +1064,8 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$routeParams)
             $scope.cliente.clave = res.data[0].CLAVE;
             $scope.cliente.nombre = res.data[0].NOMBRE;
             $scope.cliente.domicilio = res.data[0].DOMICILIO;
-            $scope.cliente.telefono = res.data[0].TELEFONO;
-            $scope.cliente.cp = res.data[0].CP;
+            $scope.cliente.telefono = Number(res.data[0].TELEFONO);
+            $scope.cliente.cp = Number(res.data[0].CP);
             $scope.cliente.contacto = res.data[0].CONTACTO;
             $scope.cliente.rfc = res.data[0].RFC;
             $scope.cliente.curp = res.data[0].CURP;
@@ -1305,7 +1305,9 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$routeParams)
       formapago:null,
       usocfdi:null,
       metodopago:null,
-      contacto:null
+      contacto:null,
+      idmoneda:1,
+      idpedido:null
     };
     
     swal({

@@ -201,6 +201,7 @@
 <script src="../js/cortecaja.js"></script>
 <script src="../js/reportecxc.js"></script>
 <script src="../js/reportecxp.js"></script>
+<script src="../js/repcobranza.js"></script>
 <script>
   $(document).ready(function(){
     $('.menus li:has(ul)').click(function(e){

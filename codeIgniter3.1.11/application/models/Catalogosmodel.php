@@ -82,7 +82,7 @@ class Catalogosmodel extends CI_model
 
 	function get_bancos()
 	{
-		$query = 'SELECT * FROM "BANCO"';
+		$query = 'SELECT "ID_BANCO",TRIM("CLAVE") as "CLAVE", TRIM("DESCRIPCION") as "DESCRIPCION", "SAT"  FROM "BANCO"';
 		$result = pg_fetch_all(pg_query($this->conn, $query));
 		return json_encode($result,JSON_NUMERIC_CHECK);
 	}
@@ -120,18 +120,6 @@ class Catalogosmodel extends CI_model
 		$result = pg_fetch_all(pg_query($this->conn, $query));
 		return $result;
 	}
-
-
-	/*function inserta_item_catalogo($clave,$descripcion,$nivel,$tipo,$desc_mayus)
-	{
-		$nombre = pg_escape_string($descripcion);
-		$nombre_mayus = pg_escape_string($desc_mayus);
-
-		$query = 'INSERT INTO "CATALOGO_SAT" ("CLAVE", "DESCRIPCION", "NIVEL", "TIPO", "DESC_MAYUS")
-				  VALUES ('$clave','$nombre','$nivel','$tipo','$nombre_mayus')';
-		$result = pg_query($this->conn,$query);
-		return $result;
-	}*/
 
 	function inserta_item_medidas($clave,$descripcion,$desc_mayus)
 	{

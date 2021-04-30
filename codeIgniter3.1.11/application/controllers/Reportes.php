@@ -6,7 +6,7 @@ class Reportes extends CI_Controller {
     parent::__construct();
     $this->load->model('reportemodel');
     $this->load->model('catalogosmodel');
-    //$this->load->library('session');
+    $this->load->library('session');
   }
 
   function rmovalmc()
@@ -85,5 +85,5 @@ class Reportes extends CI_Controller {
     ->set_output($this->reportemodel->get_cuentas_x_pagar($idEmpresa,$anioFiscal));
   }
 
-
 }
+?>

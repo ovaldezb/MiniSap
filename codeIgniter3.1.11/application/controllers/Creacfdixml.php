@@ -51,7 +51,7 @@ class Creacfdixml extends CI_Controller
         $rfc = $data['rfc'];
         $usocfdi = $data['usocfdicodigo'];
         $serie = $data['serie'];
-        $folio = $data['folio'];
+        $folio = trim($data['folio']);
         $moneda = $data['moneda'];
         $tipoCambio = $data['tipocambio'];
         $metodopago =  $data['metodopago'];
@@ -66,17 +66,20 @@ class Creacfdixml extends CI_Controller
         $empresa = json_decode($this->empresamodel->get_empresa_by_id($idEmpresa),false);
         $venta = $this->tpvmodel->getventabyid($idVenta);
         $venta_detalle = $this->tpvmodel->getventadetallebyVentaId($idVenta);
-        $subtotal = 0;
+        $descuentoTotal = 0;
         $traslados = array();
         $conceptosArray = array();
-        
+        $subTotalAcc = 0;
+        $importeTotal = 0;
         $i = 0;
         $impuestoAcomulado = 0;
 
         foreach($venta_detalle as $vd){
             $iva = ($vd->IVA/100);
             $valorUnitario = (($vd->PRECIO)/(1+$iva));
+            $descuento = $vd->CANTIDAD * $vd->PRECIO * ($vd->DESCUENTO / 100); 
             $importe = $valorUnitario * $vd->CANTIDAD;
+            $importeTotal += $importe;
             $importeIva = $importe * $iva;
             $item = array('ClaveProdServ'=>$vd->COD_CFDI,
                         'NoIdentificacion'=>$vd->CODIGO,
@@ -85,11 +88,12 @@ class Creacfdixml extends CI_Controller
                         'Unidad'=>$vd->UNIDAD_MEDIDA,
                         'Descripcion'=>$vd->DESCRIPCION,
                         'ValorUnitario'=>number_format($valorUnitario,3,'.',''),
-                        'Descuento' =>Number_format( $vd->PRECIO * ($vd->DESCUENTO / 100)),
+                        'Descuento' =>Number_format($descuento,3,'.',''),
                         'Importe'=>number_format($importe,3,'.','')
                     );
+            $descuentoTotal += $descuento; 
             $traslado = array('Base'=>number_format($importe,3,'.',''),'Impuesto'=>'002','TipoFactor'=>$vd->TIPOFACTOR,'TasaOCuota'=>number_format($iva,6),'Importe'=>number_format($importeIva,3,'.','')); 
-            $impuestoAcomulado = $impuestoAcomulado + $importeIva;
+            $impuestoAcomulado +=  $importeIva;
             $item['Traslados'] = $traslado;
             $conceptosArray[$i] = $item;
             $i = $i + 1;            
@@ -103,7 +107,8 @@ class Creacfdixml extends CI_Controller
               'FormaPago'=>$formapago, 
               'NoCertificado'=>$cfdi[0]->NOCERTIFICADO,
               'Certificado'=>$cfdi[0]->CERTIFICADO,
-              'SubTotal'=>number_format($venta[0]->IMPORTE-$impuestoAcomulado,2,'.',''),
+              'SubTotal'=>number_format($importeTotal,2,'.',''),
+              'Descuento'=>number_format($descuentoTotal,2,'.',''),
               'Moneda'=>$moneda,
               'TipoCambio'=>$tipoCambio,
               'Total'=>number_format($venta[0]->IMPORTE,2,'.',''),
@@ -119,8 +124,7 @@ class Creacfdixml extends CI_Controller
               'TotalImpuestosTrasladados'=>round($impuestoAcomulado,2),
               'Traslados'=>array(array('Impuesto'=>"002", 'TipoFactor'=>"Tasa", 'TasaOCuota'=>number_format($iva,6), 'Importe'=>round($impuestoAcomulado,2)))
         );
-                                    
-        $sellado = $this->crearcfdi->generaXML($baseArray,$conceptosArray,$archivoCerPem,$archivoKeyPem);                     
+        $sellado = $this->crearcfdi->generaXML($baseArray,$conceptosArray,$archivoCerPem,$archivoKeyPem);   
         try{
             header('Content-type: application/json');        
             $params = array(

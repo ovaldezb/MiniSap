@@ -16,6 +16,7 @@
       $formaPago = $comprobante->getAttribute('FormaPago');
       $certificado = $comprobante->getAttribute('NoCertificado');
       $subtotal = $comprobante->getAttribute('SubTotal');
+      $descuento = $comprobante->getAttribute('Descuento');
       $total = $comprobante->getAttribute('Total');
       $metodoPago = $comprobante->getAttribute('MetodoPago');
       $formaPago = $comprobante->getAttribute('FormaPago');
@@ -58,7 +59,8 @@
               <td class='t3c2' style='border-right:2px solid black'>{$concep->getAttribute('Unidad')}</td>
               <td class='t3c3' style='border-right:2px solid black'>{$concep->getAttribute('Descripcion')}</td>
               <td class='t3c4' style='border-right:2px solid black'>$ {$concep->getAttribute('ValorUnitario')}</td>
-              <td class='t3c5' style='border-right:2px solid black'>$ {$concep->getAttribute('Importe')}</td>
+              <td class='t3c5' style='border-right:2px solid black'>$ {$concep->getAttribute('Descuento')}</td>
+              <td class='t3c6'>$ {$concep->getAttribute('Importe')}</td>
           </tr>";
       }
 
@@ -66,11 +68,12 @@
         $relleno .=
         "
         <tr> 
-          <td style='width: 80.55px;border-right:2px solid black'>&nbsp;</td>
-          <td style='width: 78.2833px;border-right:2px solid black'>&nbsp;</td>
-          <td style='width: 262.667px;border-right:2px solid black'>&nbsp;</td>
-          <td style='width: 105.833px;border-right:2px solid black'>&nbsp;</td>
-          <td style='width: 114.667px;'>&nbsp;</td>
+          <td style='border-right:2px solid black'>&nbsp;</td>
+          <td style='border-right:2px solid black'>&nbsp;</td>
+          <td style='border-right:2px solid black'>&nbsp;</td>
+          <td style='border-right:2px solid black'>&nbsp;</td>
+          <td style='border-right:2px solid black'>&nbsp;</td>
+          <td >&nbsp;</td>
         </tr>
         ";
       }
@@ -114,30 +117,35 @@
                 font-weight: bold;
             }
             .t3c1{
-                width: 80.55px; 
+                width: 60.55px; 
                 text-align: center;
                 font-size: 12px;
             }
             .t3c2{
-                width: 78.2833px; 
+                width: 72.2833px; 
                 text-align: center;
                 font-size: 12px;
             }
             .t3c3{
                 width: 262.667px;
-                font-size: 12px;
+                font-size: 10px;
                 text-align: center;
             }
             .t3c4{
-                width: 105.833px;
+                width: 80.0px;
                 font-size: 12px;
                 text-align: center;
             }
             .t3c5{
-                width: 114.667px;
+                width: 80.00px;
                 font-size: 12px;
                 text-align: center;
-            }.
+            }
+            .t3c6{
+              width: 80.0px;
+              font-size: 12px;
+              text-align: center;
+          }
             .t4head{
                 font-size: 12px;
                 text-align: left;
@@ -271,7 +279,8 @@
                   <td class='t3c2' style='background: DodgerBlue;color:white;'>Unidad</td>
                   <td class='t3c3' style='background: DodgerBlue;color:white;'>Descripci&oacute;n</td>
                   <td class='t3c4' style='background: DodgerBlue;color:white;'>P. Unitario</td>
-                  <td class='t3c4' style='background: DodgerBlue;color:white;'>Importe</td>
+                  <td class='t3c5' style='background: DodgerBlue;color:white;'>Descuento</td>
+                  <td class='t3c6' style='background: DodgerBlue;color:white;'>Importe</td>
               </tr>
               {$arrayConcept}
               {$relleno}
@@ -302,6 +311,10 @@
                   <tr>
                     <td style='text-align: right;'><strong>Sub Total:</strong></td>
                     <td style='text-align: right;'>$ {$subtotal}</td>
+                  </tr>
+                  <tr>
+                    <td style='text-align: right;'><strong>Descuento:</strong></td>
+                    <td style='text-align: right;'>$ {$descuento}</td>
                   </tr>
                   <tr>
                     <td style='text-align: right;'><strong>IVA:</strong></td>

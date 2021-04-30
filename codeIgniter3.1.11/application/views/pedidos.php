@@ -545,33 +545,25 @@
 					</div>
 					<div class="columns">
 						<div class="column">
-							<label>Importe Bruto:</label>
+							<label>Sub Total:</label>
 						</div>
-						<div class="column">
-							<label>{{pedido.bruto | currency}}</label>
+						<div class="column" style="text-align:right">
+							<label>{{pedido.subtotal | currency}}</label>
 						</div>
 					</div>
 					<div class="columns">
 						<div class="column">
 							<label>Descuento(-):</label>
 						</div>
-						<div class="column" style="border-bottom:2px solid black">
+						<div class="column" style="text-align:right">
 							<label>{{dsctoValor | currency}}</label>
-						</div>
-					</div>
-          <div class="columns">
-						<div class="column">
-							<label>Subtotal:</label>
-						</div>
-						<div class="column">
-							<label>{{importeNeto | currency}}</label>
 						</div>
 					</div>
 					<div class="columns">
 						<div class="column">
 							<label>Impuestos(+):</label>
 						</div>
-						<div class="column" style="border-bottom:2px solid black">
+						<div class="column" style="border-bottom:2px solid black; text-align:right;">
 							<label>{{impuestos | currency}}</label>
 						</div>
 					</div>
@@ -579,7 +571,7 @@
 						<div class="column">
 							<label class="label">Total:</label>
 						</div>
-						<div class="column">
+						<div class="column" style="text-align:right">
 							<label>{{pedido.total | currency}}</label>
 						</div>
 					</div>
@@ -678,11 +670,13 @@
 					<tr>
 						<td>Cliente:</td>
 						<td>
-              <select name="id_tipo_cliente" id="id_tipo_cliente">
+              <div class="select is-small">
+                <select name="id_tipo_cliente" id="id_tipo_cliente">
       <?php	foreach ($tipo_cliente as $tc) { ?>
-      					<option value=<?php echo $tc['ID_TIPO_CLTE'] ?>><?php echo $tc['DESCRIPCION']?></option>
+      					  <option value=<?php echo $tc['ID_TIPO_CLTE'] ?>><?php echo $tc['DESCRIPCION']?></option>
       <?php	} ?>
-      				</select>
+      				  </select>
+              </div>
             </td>
 						<td>Crédito:</td>
 						<td><input type="number" class="input is-small" ng-model="cliente.dcredito" placeholder="DIAS DE CREDITO"></td>
@@ -690,40 +684,48 @@
 					<tr>
 						<td>Revisión:</td>
 						<td>
+              <div class="select is-small">
               <select name="revision" id="revision">
       <?php 		foreach($revision as $rev) {?>
       					<option value='<?php echo $rev['ID_DIA']?>'><?php echo trim($rev['NOMBRE'])?></option>
       <?php 		}?>
       				</select>
+              </div>
             </td>
 						<td>Pagos:</td>
 						<td>
+              <div class="select is-small">
               <select id="pagos">
       <?php 		foreach($revision as $rev) {?>
       					<option value='<?php echo $rev['ID_DIA']?>'><?php echo trim($rev['NOMBRE'])?></option>
       <?php 		}?>
       				</select>
+              </div>
             </td>
 					</tr>
 					<tr>
 						<td>Forma Pago:</td>
 						<td colspan="3">
+              <div class="select is-small">
               <select ng-model="cliente.id_forma_pago" ng-options="x.ID_FORMA_PAGO as x.DESCRIPCION for x in lstFormpago"></select>
+              </div>
             </td>
 					</tr>
 					<tr>
 						<td>Vendedor:</td>
 						<td colspan="3">
-            <select ng-model='cliente.id_vendedor' ng-options="x.ID_VENDEDOR as x.NOMBRE for x in lstVendedorVerif" ></select>
+              <div class="select is-small">
+                <select ng-model='cliente.id_vendedor' ng-options="x.ID_VENDEDOR as x.NOMBRE for x in lstVendedorVerif" ></select>
+              </div>
             </td>
 					</tr>
 					<tr>
 						<td>Uso CFDI:</td>
 						<td colspan="3">
-						<div class="select is-small">
-						<select class="select is-small" ng-model="cliente.id_uso_cfdi" ng-options="x.ID_CFDI as x.DESCRIPCION for x in lstUsocfdi"></select>
-						</div>
-            			</td>
+						  <div class="select is-small">
+						    <select class="select is-small" ng-model="cliente.id_uso_cfdi" ng-options="x.ID_CFDI as x.DESCRIPCION for x in lstUsocfdi"></select>
+						  </div>
+            </td>
 					</tr>
 					<tr>
 						<td>Email:</td>
@@ -961,8 +963,8 @@
                 <td>Entregar en </td>
                 <td>{{pedido.domi}}</td>
                 <td></td>
-                <td style="text-align: right">Importe Bruto</td>
-							  <td style="text-align: right">{{pedido.bruto | currency}}</td>
+                <td style="text-align: right">Sub Total</td>
+							  <td style="text-align: right">{{pedido.subtotal | currency}}</td>
               </tr>
               <tr>
                 <td>Calle:</td>
@@ -975,22 +977,19 @@
                 <td>Colonia:</td>
                 <td>{{domientrega.colonia}}</td>
                 <td></td>
-                <td style="text-align: right">Subtotal</td>
-							  <td style="text-align: right">{{importeNeto | currency}}</td>
+                <td style="text-align: right">Impuestos</td>
+							  <td style="text-align: right; margin-bottom:2px solid black">{{impuestos | currency}}</td>
               </tr>
               <tr>
                 <td>CP:</td>
                 <td>{{domientrega.cp}}</td>
                 <td></td>
-                <td style="text-align: right">Impuestos</td>
-							  <td style="text-align: right">{{impuestos | currency}}</td>
+                <td style="text-align: right">Total</td>
+							  <td style="text-align: right">{{pedido.total | currency}}</td>
               </tr>
               <tr>
                 <td>Ciudad:</td>
-                <td>{{domientrega.ciudad}}</td>
-                <td></td>
-                <td style="text-align: right">Total</td>
-							  <td style="text-align: right">{{pedido.total | currency}}</td>
+                <td colspan="4">{{domientrega.ciudad}}</td>
               </tr>
               <tr>
                 <td>Contacto:</td>

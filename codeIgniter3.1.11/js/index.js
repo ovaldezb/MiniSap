@@ -25,6 +25,7 @@ var pathCorte = pathCliente+'cortecaja/';
 var pathCreacfdi = pathCliente+'creacfdixml/';
 var pathRepcxc = pathCliente+'reportecxc/';
 var pathRepcxp = pathCliente+'reportecxp/';
+var pathRepcobr = pathCliente+'repcobranza/';
 var app = angular.module("myApp", ["ngRoute","chart.js"]);
 app.config(function($routeProvider) {
     $routeProvider
@@ -99,6 +100,9 @@ app.config(function($routeProvider) {
     })
     .when("/rcxp/:idproc",{
       templateUrl : pathRepcxp
+    })
+    .when("/rpcb/:idproc",{
+      templateUrl : pathRepcobr
     });
 });
 

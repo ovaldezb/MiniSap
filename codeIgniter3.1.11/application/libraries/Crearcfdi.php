@@ -22,6 +22,7 @@ class Crearcfdi {
         $comprobante->setAttribute('SubTotal',$baseArray['SubTotal']);
         $comprobante->setAttribute('Moneda',$baseArray['Moneda']);
         $comprobante->setAttribute('TipoCambio',$baseArray['TipoCambio']);
+        $comprobante->setAttribute('Descuento',$baseArray['Descuento']);
         $comprobante->setAttribute('Total',$baseArray['Total']);
         $comprobante->setAttribute('TipoDeComprobante',$baseArray['TipoDeComprobante']);
         $comprobante->setAttribute('MetodoPago',$baseArray['MetodoPago']);
@@ -55,17 +56,14 @@ class Crearcfdi {
             $impuestos_nodo = $concepto_nodo->appendChild($impuestos); 
             $translados = $xml_doc->createElement('cfdi:Traslados');
             $translados_nodo = $impuestos_nodo->appendChild($translados);
-            $transladoArray = $conceptoElement['Traslados'];                 
-            //foreach($transladoArray as $transladoElement){
-                //var_dump($transladoElement);        
-                $translado = $xml_doc->createElement('cfdi:Traslado');        
-                $translado->setAttribute('Base',$transladoArray['Base']);
-                $translado->setAttribute('Impuesto',$transladoArray['Impuesto']);
-                $translado->setAttribute('TipoFactor',$transladoArray['TipoFactor']);
-                $translado->setAttribute('TasaOCuota',$transladoArray['TasaOCuota']);
-                $translado->setAttribute('Importe',$transladoArray['Importe']);
-                $translados_nodo->appendChild($translado);
-            //}
+            $transladoArray = $conceptoElement['Traslados'];
+            $translado = $xml_doc->createElement('cfdi:Traslado');
+            $translado->setAttribute('Base',$transladoArray['Base']);
+            $translado->setAttribute('Impuesto',$transladoArray['Impuesto']);
+            $translado->setAttribute('TipoFactor',$transladoArray['TipoFactor']);
+            $translado->setAttribute('TasaOCuota',$transladoArray['TasaOCuota']);
+            $translado->setAttribute('Importe',$transladoArray['Importe']);
+            $translados_nodo->appendChild($translado);
         }
 
         $impuestosTotal = $xml_doc->getElementsByTagName('Impuestos')[0];
