@@ -121,8 +121,8 @@ class Tpv extends CI_Controller
 					->set_output($result);
 	}
 
-	function updventa($idventa,$idfactura){
-		$result = $this->tpvmodel->updateventatrue($idfactura,$idventa);
+	function updventa($idventa){
+		$result = $this->tpvmodel->updateventatrue($idventa);
 		return $this->output
 					->set_content_type('application/json')
 					->set_output($result);
@@ -141,6 +141,16 @@ class Tpv extends CI_Controller
 					->set_content_type('application/json')
 					->set_output($result);
   }
+
+  public function corteventa($idcorte,$idventa){
+    if (isset($_SESSION['username'])) {
+      $result = $this->facturacionmodel->corte_venta($idcorte,$idventa);
+      return $this->output
+          ->set_content_type('application/json')
+          ->set_output($result);
+  }
+  }
+
 
 }
 ?>

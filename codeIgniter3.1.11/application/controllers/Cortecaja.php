@@ -60,4 +60,16 @@ class Cortecaja extends CI_Controller
         }
     }
 
+    public function getdocinifin($idempresa,$aniofiscal,$fecIni,$fecFin)
+    {
+      if (isset($_SESSION['username'])) {
+        $result = $this->cortecajamodel->get_docto_ini_fin(array($idempresa,$aniofiscal,str_replace("%20", " ", $fecIni), str_replace("%20", " ", $fecFin),$idempresa,$aniofiscal,str_replace("%20", " ", $fecIni), str_replace("%20", " ", $fecFin)));
+        
+        return $this->output
+            ->set_content_type('application/json')
+            ->set_output($result);
+        
+      }
+    }
+
 }

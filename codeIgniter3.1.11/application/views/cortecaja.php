@@ -73,14 +73,14 @@
               <tr>
                 <td>&nbsp;</td>
                 <td>Inicio</td>
-                <td>9:17:58</td>
-                <td style="text-align:right">101326</td>
+                <td>{{dataIniDay.horaIni}}</td>
+                <td style="text-align:right">{{dataIniDay.docIni}}</td>
               </tr>
               <tr>
                 <td>&nbsp;</td>
-                <td>Inicio</td>
-                <td>17:45:58</td>
-                <td style="text-align:right">101339</td>
+                <td>Fin</td>
+                <td>{{dataIniDay.horaFin}}</td>
+                <td style="text-align:right">{{dataIniDay.docFin}}</td>
               </tr>
               <tr>
                 <td colspan="4">&nbsp;</td>

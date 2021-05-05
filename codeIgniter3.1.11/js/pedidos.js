@@ -36,6 +36,8 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
   $scope.modalVerfClte = false;
   $scope.showLstClte = false;
   $scope.isImprimir = false;
+  $scope.isActualiza = false;
+  $scope.isRegistra = true;
   $scope.btnVerifClte = 'Actualizar';
   $scope.lstMoneda = [];
   $scope.lstMetpago = [];
@@ -55,6 +57,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
   $scope.modalAddDscnt = false;
   $scope.dispsearch = false;
   $scope.showProgressBar = false;
+  $scope.estatus = true;
   $scope.mpago_style = {background:'pink'};
   $scope.idProceso = $routeParams.idproc;
   $scope.permisos = {
@@ -148,8 +151,8 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
       id: 'fechaentrega',
       dateFormat: 'dd/MM/yyyy'
       });
+      $scope.isRegistra = true;
       $scope.fechapedido = formatDatePrint(new Date());
-      $scope.regpedido = true;
       $http.get(pathAcc+'getdata',{responseType:'json'}).
       then(function(res){
         if(res.data.value=='OK'){
@@ -423,6 +426,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
   {
     $scope.idDocumento = docuento;
     $scope.indexRowPedido = indexRowPedido;
+    $scope.estatus = $scope.indexRowPedido != -1 && $scope.lstPedidos[indexRowPedido].ESTATUS ==='ACTIVO' && $scope.lstPedidos[indexRowPedido].VENDIDO === 'f';
   }
 
   $scope.manualenter = function()
@@ -646,7 +650,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
 
     $scope.editaProducto = function()
     {
-      $scope.id_producto = $scope.lstProdCompra[$scope.indexRowCompra].ID_PRODUCTO;
+      $scope.producto.id_producto = $scope.lstProdCompra[$scope.indexRowCompra].ID_PRODUCTO;
       $scope.producto.codigo_prodto = $scope.lstProdCompra[$scope.indexRowCompra].CODIGO;
       $scope.producto.prod_desc = $scope.lstProdCompra[$scope.indexRowCompra].DESCRIPCION;
       $scope.producto.unidad = $scope.lstProdCompra[$scope.indexRowCompra].UNIDAD;
@@ -763,6 +767,8 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
       $scope.pedido.fpago = $scope.lstCliente[indxRowClte].ID_FORMA_PAGO;
       $scope.pedido.tpago = $scope.lstCliente[indxRowClte].DIAS_CREDITO > 0 ? 2 : 1;
       $scope.pedido.mpago = $scope.lstCliente[indxRowClte].DIAS_CREDITO === 0 ? 1 : -1;
+      $scope.nombre_vendedor = $scope.lstCliente[indxRowClte].VENDEDOR;
+      $scope.pedido.idvendedor = $scope.lstCliente[indxRowClte].ID_VENDEDOR;
       $scope.lstCliente = [];
       $scope.showLstClte = false;      
       $scope.getDomicilios();
@@ -777,12 +783,30 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
             $scope.nombre_cliente =res.data[0].NOMBRE;
             $scope.rfc_cliente = res.data[0].RFC;
             $scope.cliente.id_uso_cfdi = res.data[0].ID_USO_CFDI;      
-            $scope.cliente.telefono = res.data[0].TELEFONO;
+            $scope.cliente.telefono = Number(res.data[0].TELEFONO);
             $scope.cliente.domicilio = res.data[0].DOMICILIO;
             $scope.pedido.idcliente = res.data[0].ID_CLIENTE;  
-            $scope.pedido.fpago = res.data[0].ID_FORMA_PAGO;
+            $scope.pedido.fpago = res.data[0].ID_FORMA_PAGO.toString();
             $scope.pedido.tpago = res.data[0].DIAS_CREDITO > 0 ? 2 : 1;
             $scope.pedido.mpago = res.data[0].DIAS_CREDITO === 0 ? 1 : -1;
+            if(res.data[0].ID_VENDEDOR){
+              $http.get(pathVend+'findvendbyid/'+res.data[0].ID_VENDEDOR+'/'+$scope.pedido.idempresa)
+              .then(resp =>{
+                if(resp){
+                  $scope.pedido.idvendedor = resp.data[0].ID_VENDEDOR;
+                  $scope.nombre_vendedor = resp.data[0].NOMBRE;
+                }else{
+                  $scope.pedido.idvendedor = '';
+                  $scope.nombre_vendedor = '';
+                }
+              }).catch(err =>{
+                console.log(err);
+              });
+            }else{
+              $scope.pedido.idvendedor = '';
+              $scope.nombre_vendedor = '';
+            }
+            
             $scope.getDomicilios();         
           }else{
             swal('No existe el cliente con codigo '+$scope.claveclte+', puede hacer la búsqueda por nombre');
@@ -882,17 +906,19 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
         buttons: [true,true],
         dangerMode: true,
       })
-      .then((willDelete) => {
-        if(willDelete){
+      .then((willAdd) => {
+        if(willAdd){
           $scope.showProgressBar = true;
           $scope.regpedido = true;
-          $http.put(pathPedi+'registrapedido',$scope.pedido).
+          $http.post(pathPedi+'registrapedido',$scope.pedido).
           then(function(res)
           {
             $scope.idPedido = res.data[0].registra_pedido;
             $scope.registraPedidoProd();
             swal('El pedido se registro exitosamente');
             $scope.isImprimir = true;
+            $scope.isRegistra = false;
+            //$scope.limpiar();
             $scope.getpedidos();
             $scope.showProgressBar = false;
           }).
@@ -931,6 +957,45 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
       }
     }
 
+    $scope.actualizaPedido = () =>{
+      if($scope.fechaentrega === ''){
+        swal('Seleccione una Fecha de Entrega');
+        return;
+      }
+      $scope.pedido.fechaentrega = formatFecQuery($('#fechaentrega').val(),'ini');
+      $scope.pedido.idvendedor = $scope.pedido.idvendedor == '' ? null : $scope.pedido.idvendedor;
+      $scope.idPedido = $scope.lstPedidos[$scope.indexRowPedido].ID_PEDIDO;
+      swal({
+        title: "Esta seguro que desea actualizar el Pedido?",
+        text: $scope.pedido.docto.toString(),
+        icon: "warning",
+        buttons: [true,true],
+        dangerMode: true,
+      })
+      .then((willAdd) => {
+        if(willAdd){
+          $http.delete(pathPedi+'deletepedprodbyid/'+$scope.lstPedidos[$scope.indexRowPedido].ID_PEDIDO)
+          .then(res =>{
+            $http.put(pathPedi+'updatepedbyid/'+$scope.lstPedidos[$scope.indexRowPedido].ID_PEDIDO,$scope.pedido)
+            .then(resp=>{
+              $scope.idDocumento = '';
+              $scope.indexRowPedido = -1;
+              $scope.registraPedidoProd();
+              $scope.getpedidos();
+              $scope.isImprimir = true;
+              $scope.isActualiza = false;
+              swal('Se actualizó el pedido');
+            })
+            .catch(err=>{
+              console.log(err);
+            });
+          })
+          .catch(err=>{
+            console.log(err);
+          });
+        }
+      });
+    }
     
     $scope.verificaExistencia = function()
     {
@@ -986,20 +1051,30 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
               $scope.pedido.tpago = res.data[0].ID_TIPO_PAGO;
               $scope.pedido.fpago = res.data[0].ID_FORMA_PAGO.toString();
               $scope.fechaentrega = res.data[0].FECHA_ENTREGA;
+              $("#fechaentrega").val(res.data[0].FECHA_ENTREGA);
               $scope.rfc_cliente = res.data[0].RFC;
               $scope.pedido.mpago = res.data[0].ID_METODO_PAGO;
               $scope.cliente.domicilio = res.data[0].CLI_DOMICILIO;
-              $scope.cliente.telefono = res.data[0].TELEFONO;
+              $scope.cliente.telefono = Number(res.data[0].TELEFONO);
               $scope.pedido.domi = res.data[0].DOMICILIO;
               $scope.isCapturaPedido = true;
-              $scope.isImprimir = true;
               $scope.pedido.idcliente = res.data[0].ID_CLIENTE;
               $scope.domientrega.calle =res.data[0].CALLE;
               $scope.domientrega.colonia =res.data[0].COLONIA;
               $scope.domientrega.cp =res.data[0].CP;
               $scope.domientrega.ciudad =res.data[0].CIUDAD;
               $scope.domientrega.contacto =res.data[0].CONTACTO;
+              $scope.isRegistra = false;
               $scope.getDomicilios();
+              if(res.data[0].ESTATUS === 'ACTIVO' && res.data[0].VENDIDO === 'f'){
+                $scope.regpedido = false;
+                $scope.isImprimir = false;
+                $scope.isActualiza = true;
+              }else{
+                $scope.isImprimir = true;
+                $scope.isActualiza = false;
+                
+              }
             }
           })
           .catch(err=>{
@@ -1030,8 +1105,8 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
 
     $scope.borraPedido = function(){
       swal({
-        title: "Esta seguro que desea eliminar el pedido "+$scope.lstPedidos[$scope.indexRowPedido].DOCUMENTO,
-        text: "Una vez eliminado, no se podrá recuperar!",
+        title: "Esta seguro que desea cancelar el pedido "+$scope.lstPedidos[$scope.indexRowPedido].DOCUMENTO,
+        text: "Una vez cancelado, no se podrá recuperar!",
         icon: "warning",
         buttons: [true,true],
         dangerMode: true,
@@ -1108,6 +1183,9 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
         $scope.nombre_vendedor = '';
         $scope.impuestos = 0.0;
         $scope.regpedido = true;
+        $scope.isRegistra = true;
+        $scope.isImprimir = false;
+        $scope.isActualiza = false;
         $scope.pedido.comentarios = '';
         $scope.pedido.fechaentrega = '';
         $scope.fechaentrega = '';

@@ -137,17 +137,44 @@ class Cargamasiva extends CI_Controller
             $count = 0;
             foreach ($result as $item) {
                 $unidad = "";
+                $unidadSAT = "";
                 switch(trim($item['MEDIDA'])){
-                    case 'PZAS.':
+                    case 'PZA':
                         $unidad = 'Pieza';
+                        $unidadSAT = "H87";
                         break;
-                    case "LTS.":
+                    case "LTS":
                         $unidad = "Litro";
+                        $unidadSAT = "LTR";
                         break;
                     case "KG":
                         $unidad = "Kilogramo";
+                        $unidadSAT = "KGM";
                         break;
-                    
+                    case "MTS":
+                        $unidad = "Metro";
+                        $unidadSAT = "MTR";
+                        break;    
+                    case "PR":
+                        $unidad = "PAR";
+                        $unidadSAT = "PR";
+                        break;
+                    case "PAR":
+                        $unidad = "PAR";
+                        $unidadSAT = "PR";
+                        break;    
+                    case "CEN":
+                        $unidad = "Centenar";
+                        $unidadSAT = "CEN";
+                        break;
+                    case "CAJA":
+                        $unidad = "Caja";
+                        $unidadSAT = "XBX";
+                        break;
+                    case "PKT":
+                        $unidad = "Paquete";
+                        $unidadSAT = "XPK";
+                        break;    
                 }
                 
                 $this->productomodel->inserta_producto(
@@ -163,7 +190,9 @@ class Cargamasiva extends CI_Controller
                     16, //Iva
                     $_SESSION['idempresa'],
                     $_SESSION['idsucursal'],
-                    date('Y-m-d H:i:s')
+                    date('Y-m-d H:i:s'),
+                    trim($item['CODIGOSAT']),
+                    $unidadSAT
                 ));
                 $count++;
             }

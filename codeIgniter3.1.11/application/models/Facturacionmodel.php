@@ -18,6 +18,20 @@ class Facturacionmodel extends CI_model
 		return json_encode($result);
 	}
 
+  function save_corte_caja($arrayCorteCaja){
+    $query = 'SELECT * FROM registra_corte($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)';
+    pg_prepare($this->conn,"insert_corte",$query);
+		$result = pg_fetch_all(pg_execute($this->conn,"insert_corte",$arrayDatFact));
+		return json_encode($result);
+  }
+
+  function corte_venta($idcorte,$idventa){
+    $query = 'INSERT INTO "CORTE_VENTA" ("ID_CORTE","ID_VENTA") 
+      VALUES($1,$2)';
+    $result = pg_query($this->conn,$query);
+    return $result;
+  }
+
 	function getfacturas($arrayData){
 		$query = 'SELECT F."ID_FACTURA", F."DOCUMENTO",
 		TO_CHAR(F."FECHA_FACTURA",\'dd-MM-yyyy\') as "FECHA_FACTURA",
@@ -29,15 +43,14 @@ class Facturacionmodel extends CI_model
 		CASE WHEN C."DIAS_CREDITO" IS NULL THEN 0 ELSE C."DIAS_CREDITO" END as "DIAS_CREDITO",
 		TO_CHAR(F."FECHA_REVISION",\'dd-MM-yyyy\') as "FECHA_REVISION",
 		TO_CHAR(F."FECHA_VENCIMIENTO",\'dd-MM-yyyy\') as "FECHA_VENCIMIENTO",
-    V."ID_VENTA",
     CASE WHEN FC."RFC" IS NULL THEN false ELSE true END as "FACTURADO",
     FC."FOLIO",
     TRIM(C."EMAIL") as "EMAIL",
-    C."ID_CLIENTE"
+    C."ID_CLIENTE",
+    TRIM(F."ESTATUS") as "ESTATUS"
 		FROM "FACTURA" as F
 		LEFT JOIN "CLIENTE" as C ON C."ID_CLIENTE" = F."ID_CLIENTE"
 		lEFT JOIN "VENDEDOR" as E ON E."ID_VENDEDOR" = F."ID_VENDEDOR"
-    LEFT JOIN "VENTAS" as V ON V."ID_FACTURA" = F."ID_FACTURA"
     LEFT OUTER JOIN "FACTURA_CFDI" as FC ON FC."ID_FACTURA" = F."ID_FACTURA"
 		WHERE F."ID_EMPRESA" = $1 
 		AND F."ANIO_FISCAL" = $2
@@ -47,10 +60,10 @@ class Facturacionmodel extends CI_model
 		return json_encode($result,JSON_NUMERIC_CHECK);
 	}
 
-	function eliminaFacturaById($idventa,$idsucursal){
+	function eliminaFacturaById($idfactura,$idsucursal){
 		$query = 'SELECT * FROM eliminar_factura($1,$2)';
 		pg_prepare($this->conn,"elimina",$query);
-		$result = pg_execute($this->conn,"elimina",array($idventa,$idsucursal));
+		$result = pg_execute($this->conn,"elimina",array($idfactura,$idsucursal));
 		return json_encode($result);
 	}
 

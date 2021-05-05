@@ -287,10 +287,12 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
   }
 
   $scope.eliminarFactura = function(){
-    $http.delete(pathFactura+'eliminafact/'+$scope.lstFacturas[$scope.indexRowFactura].ID_VENTA+'/'+$scope.factura.idsucursal)
+    $http.delete(pathFactura+'eliminafact/'+$scope.lstFacturas[$scope.indexRowFactura].ID_FACTURA+'/'+$scope.factura.idsucursal)
     .then(res=>{
       $scope.lstFacturas.splice($scope.indexRowFactura,1);
       $scope.showEliminaFactura = false;
+      $scope.getfacturas();
+      swal('La factura se eliminó!');
     })
     .catch(err =>{
       console.log(err);
@@ -959,7 +961,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
         cambio:0,
         idsucursal:$scope.factura.idsucursal,
         facturado:'true',
-        idfactura:null
+        idfactura:null,
       }
       var nextdate = new Date(new Date().getTime()+ $scope.factura.dias*1000*60*60*24);
       var dataFact = 
@@ -1011,7 +1013,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
                 if($scope.requiere_factura){
                   $http.get(pathFactura+'datoscfdi/'+dataVenta.idfactura)
                   .then(res =>{
-                    $scope.factura.idventa = res.data.ID_VENTA  
+                    //$scope.factura.idventa = res.data.ID_VENTA  
                     $scope.factura.cliente = res.data.CLIENTE;
                     $scope.factura.rfc = res.data.RFC;
                     $scope.factura.usocfdicodigo = res.data.USO_CFDI;

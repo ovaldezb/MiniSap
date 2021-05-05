@@ -57,7 +57,8 @@ class Pedidosmodel extends CI_model
 			C."CLAVE", V."NOMBRE" AS "VENDEDOR", 
 			TO_CHAR(P."FECHA_PEDIDO",\'DD-Mon-YYYY HH24:MM\') as "FECHA_PEDIDO", 
 			P."IMPORTE", 
-			P."VENDIDO"
+			P."VENDIDO",
+      TRIM(P."ESTATUS") as "ESTATUS"
 		FROM "PEDIDOS" AS P
 		INNER JOIN "CLIENTE" AS C ON C."ID_CLIENTE" = P."ID_CLIENTE"
 		INNER JOIN "VENDEDOR" AS V ON V."ID_VENDEDOR" = P."ID_VENDEDOR"
@@ -93,7 +94,8 @@ class Pedidosmodel extends CI_model
       C."TELEFONO",
       C."RFC",
       P."ID_METODO_PAGO",
-      C."ID_USO_CFDI"
+      C."ID_USO_CFDI",
+      TRIM(P."ESTATUS") as "ESTATUS"
 		FROM "PEDIDOS" AS P
 		INNER JOIN "CLIENTE" AS C ON C."ID_CLIENTE" = P."ID_CLIENTE"
 		INNER JOIN "VENDEDOR" AS V ON V."ID_VENDEDOR" = P."ID_VENDEDOR"
@@ -115,7 +117,7 @@ class Pedidosmodel extends CI_model
 				P."IVA",TRIM(P."UNIDAD_SAT") as "UNIDAD_SAT",
 				CASE WHEN P."IEPS" IS NULL THEN \'0\' ELSE P."IEPS" END as "IEPS",TRIM(I."NOMBRE") as "TIPOFACTOR",
 				TRIM(P."CODIGO") as "CODIGO",
-				P."ID_PRODUCTO" as "ID_PRODUCTO",
+				VP."ID_PRODUCTO" as "ID_PRODUCTO",
 				P."TIPO_PS"
 				FROM "PEDIDO_PRODUCTO" as VP
 				INNER JOIN "PRODUCTO" as P ON VP."ID_PRODUCTO" = P."ID_PRODUCTO"
@@ -127,16 +129,18 @@ class Pedidosmodel extends CI_model
 	}
 
 	function eliminapedido($idPedido){
-		$query ='DELETE FROM "PEDIDOS" WHERE "ID_PEDIDO"=$1';
+		$query ='UPDATE "PEDIDOS" SET "ESTATUS" = \'CANCELADO\' WHERE "ID_PEDIDO"=$1';
 		pg_prepare($this->conn,"del_pedido",$query);
 		$result = pg_execute($this->conn,"del_pedido",array($idPedido));
-		
-		$query ='DELETE FROM "PEDIDO_PRODUCTO" WHERE "ID_PEDIDO"=$1';
-		pg_prepare($this->conn,"del_pedido_det",$query);
-		$result = pg_execute($this->conn,"del_pedido_det",array($idPedido));
-		
 		return json_encode($result);
 	}
+
+  function borrapedidoproducto($idPedido){
+    $query ='DELETE FROM "PEDIDO_PRODUCTO" WHERE "ID_PEDIDO"=$1';
+		pg_prepare($this->conn,"del_pedido_det",$query);
+		$result = pg_execute($this->conn,"del_pedido_det",array($idPedido));
+		return json_encode($result);
+  }
 
 	function updatepedido($idPedido,$status, $idfactura){
 		$query = 'UPDATE "PEDIDOS" SET "VENDIDO"=$1, "ID_FACTURA"=$2 WHERE "ID_PEDIDO"=$3';
@@ -144,5 +148,24 @@ class Pedidosmodel extends CI_model
 		$result = pg_execute($this->conn,"upd_ped",array($status,$idfactura,$idPedido));
 		return json_encode($result);
 	}
+
+  //actualiza todo el pedido
+  function update_pedido_by_id($dataPedido){
+    $query = 'UPDATE "PEDIDOS" SET 
+    "ID_CLIENTE" =$1, 
+    "ID_VENDEDOR"=$2, 
+    "IMPORTE"=$3, 
+    "ID_MONEDA" = $4,
+    "ID_TIPO_PAGO"=$5, 
+    "ID_FORMA_PAGO"=$6, 
+    "ID_METODO_PAGO"=$7,
+    "FECHA_ENTREGA" = $8,
+    "DOMICILIO" = $9,
+    "COMENTARIOS" = $10
+    WHERE "ID_PEDIDO" = $11';
+    pg_prepare($this->conn,"upd_ped",$query);
+		$result = pg_execute($this->conn,"upd_ped",$dataPedido);
+		return json_encode($result);
+  }
 }
 ?>

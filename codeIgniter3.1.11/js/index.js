@@ -66,7 +66,7 @@ app.config(function($routeProvider) {
       templateUrl : pathRepo+'rventas'
     })
     .when("/line/:idproc",{
-      templateUrl : pathLinea
+      templateUrl : pathCliente +'linea/'
     })
     .when("/crfc/:idproc",{
       templateUrl : pathCFDI

@@ -1289,25 +1289,21 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$routeParams)
       swal('No hay movimientos para hacer el corte de caja');
       return;
     }
-    var dataFactura = {
+    var corteCaja = {
       documento: $scope.fact.documento,
-      ffactura: formatDateInsert(new Date()),
-      idcliente: idventasmostrador, 
+      fcorte: formatDateInsert(new Date()),
+      cliente: 'Corte Caja '+formatDatePrint(new Date()), 
+      producto: 'VENTAS DESDE TPV DEL DIA',
       importe: 0,
-      saldo: 0,
+      vendedor:'GENERAL',
       tipopago:1,
-      frevision:null,
-      fvencimiento:null,
-      idvendedor:0,
+      formapago:'01',
+      metodopago:'PUE',
       idempresa:$scope.idempresa,
       aniofiscal:$scope.aniofiscal,
       idsucursal:$scope.idsucursal,
-      formapago:null,
-      usocfdi:null,
-      metodopago:null,
-      contacto:null,
-      idmoneda:1,
-      idpedido:null
+      usocfdi:'G03',
+      moneda:1
     };
     
     swal({
@@ -1321,18 +1317,25 @@ app.controller('myCtrlTpv', function($scope,$http,$interval,$routeParams)
       if(yes){
         for(var i = 0; i< $scope.lstVentas.length ; i++){
           if($scope.lstVentas[i].ID_FACTURA == 0){
-            dataFactura.importe += $scope.lstVentas[i].IMPORTE;
+            corteCaja.importe += $scope.lstVentas[i].IMPORTE;
           }
         }
         if(dataFactura.importe > 0){
-          $http.post(pathFactura+'savefactura',dataFactura)
+          $http.post(pathFactura+'savecortecaja',corteCaja)
             .then(res=>{
-              var facturaCreada = res.data[0].registra_factura;              
+              var corteCreado = res.data[0].registra_corte;              
               for(var i = 0; i< $scope.lstVentas.length ; i++){
-                
-                $http.put(pathTpv+'updventa/'+$scope.lstVentas[i].ID_VENTA+'/'+facturaCreada)
+                $http.put(pathTpv+'updventa/'+$scope.lstVentas[i].ID_VENTA)
                 .then(res => {
                   //se actualizo la venta
+                })
+                .catch(err => {
+                  console.log(err);
+                });
+
+                $http.put(pathTpv+'corteventa/'+corteCreado+'/'+$scope.lstVentas[i].ID_VENTA)
+                .then(res => {
+                  //se actualizo corte-venta
                 })
                 .catch(err => {
                   console.log(err);

@@ -33,14 +33,14 @@
             </a>
 					</p>
 					<p class="level-item" ng-show="permisos.baja">
-						<a ng-show="indexRowPedido == -1">
+						<a ng-show="!estatus">
               <span class="icon has-text-danger">
-                <i class="far fa-trash-alt" title="Elimna Pedido" style="color:grey"></i>
+                <i class="far fa-trash-alt" title="Cancela Pedido" style="color:grey"></i>
               </span>
             </a>
-            <a ng-click="borraPedido()" ng-show="indexRowPedido != -1">
+            <a ng-click="borraPedido()" ng-show="estatus">
               <span class="icon has-text-danger">
-                <i class="far fa-trash-alt" title="Elimna Pedido"></i>
+                <i class="far fa-trash-alt" title="Cancela Pedido"></i>
               </span>
             </a>
 					</p>
@@ -57,8 +57,9 @@
 							  <col width="23%">
 							  <col width="15%">
 							  <col width="15%">
-							  <col width="25%">
+							  <col width="15%">
 							  <col width="10%">
+                <col width="10%">
               </colgroup>
 							<thead>
 								<tr class="tbl-header">
@@ -68,6 +69,7 @@
 									<td style="color:white; text-align:center;">IMPORTE</td>
 									<td style="color:white; text-align:center;">VENDEDOR</td>
 									<td style="color:white; text-align:center;">VENDIDO</td>
+                  <td style="color:white; text-align:center;">ESTATUS</td>
 								</tr>
 							</thead>
 						</table>
@@ -82,8 +84,9 @@
 								  <col width="23%">
 								  <col width="15%">
 								  <col width="15%">
-								  <col width="25%">
+								  <col width="15%">
 								  <col width="10%">
+                  <col width="10%">
                 </colgroup>
 								<tr ng-repeat="x in lstPedidos" ng-click="selectRowPedido(x.DOCUMENTO,$index)" ng-class="{selected: x.DOCUMENTO === idDocumento}">
 									<td class="font12" style="text-align:left;">{{x.DOCUMENTO}}</td>
@@ -92,6 +95,7 @@
 									<td class="font12" style="text-align:center;">{{x.IMPORTE | currency}}</td>
 									<td class="font12" style="text-align:center;">{{x.VENDEDOR}}</td>
 									<td class="font12" style="text-align:center;">{{x.VENDIDO=='f' ? 'No' : 'Si'}}</td>
+                  <td class="font12" style="text-align:center;">{{x.ESTATUS}}</td>
 								</tr>
 							</table>
 						</div>
@@ -322,7 +326,7 @@
 				</div>
         <progress class="progress is-small is-primary" max="100" ng-show="showProgressBar">15%</progress>
 				<div class="box" id="compras" style="border:1px grey solid;margin-top:-20px">
-					<nav class="level" id="barraProducto" ng-show="!isImprimir">
+					<nav class="level" id="barraProducto" ng-show="isActualiza || isRegistra">
 						<div class="level-left">
 							<div class="level-item">
 								<a ng-click="editaProducto()">
@@ -348,7 +352,7 @@
 							</div>
 						</div>
 					</nav>
-					<div class="columns" ng-show="!isImprimir" style="margin-top:-30px">
+					<div class="columns" ng-show="isActualiza || isRegistra" style="margin-top:-30px">
 						<div class="column is-2">
 							<input type="text"  ng-model="producto.codigo_prodto"  ng-keyup="buscaprodbycodigo($event)" class="input is-small" >
 						</div>
@@ -487,7 +491,8 @@
             </div>
 						</div>
 					</div>
-					<button class="button is-info is-rounded" ng-click="registraPedido()" ng-disabled="regpedido" ng-show="!isImprimir">Registrar Pedido</button>
+					<button class="button is-info is-rounded" ng-click="registraPedido()" ng-disabled="regpedido" ng-show="isRegistra">Registrar Pedido</button>
+          <button class="button is-info is-rounded" ng-click="actualizaPedido()" ng-disabled="actpedido" ng-show="isActualiza">Actualiza Pedido</button>
 					<button class="button is-info is-rounded" ng-click="imprimePedido('pedido')" ng-disabled="" ng-show="isImprimir">Imprimir</button>
 					<button class="button is-dark is-rounded" ng-click="cancelaPedido()">Cerrar</button>
 				</div>

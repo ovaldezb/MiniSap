@@ -17,13 +17,13 @@ app.controller('myCtrlLinea', function ($scope, $http, $routeParams) {
     };
     $scope.init = function () {                
         $http.get(pathAcc + 'getdata', { responseType: 'json' })
-            .then(function (res) {
-				if (res.data.value == 'OK') {
-                    $scope.idempresa = res.data.idempresa;
-                    $scope.idUsuario = res.data.idusuario;
-                    $scope.getListaLinea();	
-                    $scope.permisos();
-				}
+        .then(function (res) {
+				  if (res.data.value == 'OK') {
+            $scope.idempresa = res.data.idempresa;
+            $scope.idUsuario = res.data.idusuario;
+            $scope.getListaLinea();	
+            $scope.permisos();
+				  }
 			}).catch(function (err) {
 				console.log(err);
 			});        

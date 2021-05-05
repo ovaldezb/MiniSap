@@ -62,6 +62,32 @@ class Facturas extends CI_Controller
       }
     }
 
+    public function savecortecaja(){
+      if (isset($_SESSION['username'])) {
+        $data = json_decode(file_get_contents("php://input"), true);
+        $arraDatosFactura = array(
+            $data['documento'],
+            $data['fcorte'],
+            $data['cliente'],
+            $data['producto'],
+            $data['importe'],
+            $data['vendedor'],
+            $data['tipopago'],
+            $data['formapago'],
+            $data['metodopago'],
+            $data['idempresa'],
+            $data['aniofiscal'],
+            $data['idsucursal'],
+            $data['usocfdi'],
+            $data['moneda']
+        );
+        $result = $this->facturacionmodel->save_corte_caja($arraDatosFactura);
+        return $this->output
+            ->set_content_type('application/json')
+            ->set_output($result);
+      }
+    }
+
     /* las ventas contienen los datos de una factura */
     public function getfacturas($idEmpresa, $idAnioFiscal)
     {
@@ -83,10 +109,10 @@ class Facturas extends CI_Controller
         }
     }
 
-    public function eliminafact($idventa, $idsucursal)
+    public function eliminafact($idfactura, $idsucursal)
     {
         if (isset($_SESSION['username'])) {
-            $result = $this->facturacionmodel->eliminaFacturaById($idventa, $idsucursal);
+            $result = $this->facturacionmodel->eliminaFacturaById($idfactura, $idsucursal);
             return $this->output
                 ->set_content_type('application/json')
                 ->set_output($result);

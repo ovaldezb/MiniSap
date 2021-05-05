@@ -5,6 +5,12 @@ app.controller('myCtrlCortecaja',  function($scope, $http){
   $scope.indexRowCC = -1
   $scope.idxDetalleVenta = -1;
   $scope.fechaOperacion = '';
+  $scope.dataIniDay = {
+    docIni:'',
+    docFin:'',
+    horaIni:'',
+    horaFin:''
+  };
   $scope.pagos = {
     efectivo:'',
     tarjeta:'',
@@ -95,6 +101,7 @@ app.controller('myCtrlCortecaja',  function($scope, $http){
     $scope.venta = {};
     $scope.getOperByDate(formatFecQuery(fecha,'ini'),formatFecQuery(fecha,'fin'));
     $scope.abreOperaciones(formatFecQuery(fecha,'ini'),formatFecQuery(fecha,'fin'));
+    $scope.getDocIniFinByDate(formatFecQuery(fecha,'ini'),formatFecQuery(fecha,'fin'));
   }
 
   $scope.getOperByDate = (fecIni,fecFin) =>{
@@ -106,6 +113,20 @@ app.controller('myCtrlCortecaja',  function($scope, $http){
       $scope.pagos.vales = res.data.pagos.VALES;
       $scope.tipopago.contado = res.data.tipopago[0].SUMA;
       $scope.tipopago.credito = res.data.tipopago[1].SUMA;
+    })
+    .catch(err=>{
+      console.log(err);
+    });
+  }
+
+  $scope.getDocIniFinByDate = (fecIni,fecFin) =>{
+    $http.get(pathCorte+'getdocinifin/'+$scope.idempresa+'/'+$scope.aniofiscal+'/'+fecIni+'/'+fecFin)
+    .then(res =>{
+      $scope.dataIniDay.docIni=res.data[0].DOCUMENTO;
+      $scope.dataIniDay.docFin=res.data[1].DOCUMENTO;
+      $scope.dataIniDay.horaIni=res.data[0].FECHA_VENTA
+      $scope.dataIniDay.horaFin=res.data[1].FECHA_VENTA
+      
     })
     .catch(err=>{
       console.log(err);

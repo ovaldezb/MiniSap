@@ -129,10 +129,43 @@ class Pedidos extends CI_Controller
         }
     }
 
+    public function deletepedprodbyid($idpedido)
+    {
+        if (isset($_SESSION['username'])) {
+            $result = $this->pedidosmodel->borrapedidoproducto($idpedido);
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_output($result);
+        }
+    }
+
     public function updatepedido($idpedido, $status, $idfactura)
     {
         if (isset($_SESSION['username'])) {
             $result = $this->pedidosmodel->updatepedido($idpedido, $status, $idfactura);
+        }
+    }
+
+    public function updatepedbyid($idpedido)
+    {
+        if (isset($_SESSION['username'])) {
+            $data = json_decode(file_get_contents("php://input"), true);
+            $result = $this->pedidosmodel->update_pedido_by_id(array(
+                $data['idcliente'],
+                $data['idvendedor'],
+                $data['total'],
+                $data['idmoneda'],
+                $data['tpago'],
+                $data['fpago'],
+                $data['mpago'],
+                $data['fechaentrega'],
+                $data['domi'],
+                $data['comentarios'],
+                $idpedido,
+            ));
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_output($result);
         }
     }
 

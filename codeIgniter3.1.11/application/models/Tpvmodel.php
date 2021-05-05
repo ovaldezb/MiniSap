@@ -190,7 +190,7 @@ class Tpvmodel extends CI_model
 					AND V."FECHA_VENTA" >= $2 
 					AND V."FECHA_VENTA" <= $3
 					AND V."ID_EMPRESA" = $4
-					AND V."FACTURADO" = \'false\'
+					AND V."CORTECAJA" = \'false\'
           AND V."CANCELADO" = \'false\'
 					ORDER BY V."ID_VENTA"';
 		pg_prepare($this->conn,"qry1",$query1);
@@ -251,18 +251,18 @@ class Tpvmodel extends CI_model
 		return json_encode(array("ventas"=>$result1,"pagos"=>$result2,"tipopago"=>$result4,"cancelados"=>$result5[0]),JSON_NUMERIC_CHECK);
 	}
 
-	function updateventatrue($idfactura,$idventa){
-		$query = 'UPDATE "VENTAS" SET "FACTURADO" = true, "ID_FACTURA" = $1 
-		WHERE "ID_VENTA" = $2';
+	function updateventatrue($idventa){
+		$query = 'UPDATE "VENTAS" SET "CORTECAJA" = true
+		WHERE "ID_VENTA" = $1';
 		pg_prepare($this->conn,"updtventatrue",$query);
-		$result = pg_execute($this->conn,"updtventatrue",array($idfactura,$idventa));
+		$result = pg_execute($this->conn,"updtventatrue",array($idventa));
 		return json_encode(array("res"=>$result));
 	}
 
   function delete_venta_by_id($idventa){
-    $query = 'UPDATE "VENTAS" SET "CANCELADO" = true WHERE "ID_VENTA" = $1';
-		pg_prepare($this->conn,"update_venta",$query);
-		$result = pg_execute($this->conn,"update_venta",array($idventa));
+    $query = 'SELECT * FROM cancela_venta($1)';
+		pg_prepare($this->conn,"cancela_venta",$query);
+		$result = pg_execute($this->conn,"cancela_venta",array($idventa));
 		return json_encode($result);
   }
 }

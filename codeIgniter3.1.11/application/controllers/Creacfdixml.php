@@ -125,12 +125,13 @@ class Creacfdixml extends CI_Controller
               'Traslados'=>array(array('Impuesto'=>"002", 'TipoFactor'=>"Tasa", 'TasaOCuota'=>number_format($iva,6), 'Importe'=>round($impuestoAcomulado,2)))
         );
         $sellado = $this->crearcfdi->generaXML($baseArray,$conceptosArray,$archivoCerPem,$archivoKeyPem);   
+        //var_dump($sellado);
         try{
             header('Content-type: application/json');        
             $params = array(
-                "url"=>"http://services.test.sw.com.mx",
+                "url"=>"http://services.sw.com.mx",
                 "user"=>"omar.valdez.becerril@gmail.com",
-                "password"=> "omar.sw"
+                "password"=> ""
                 );
                 
             $stamp = StampService::Set($params);

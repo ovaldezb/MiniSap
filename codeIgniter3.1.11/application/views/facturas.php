@@ -114,7 +114,8 @@
 									<td class="font12" style="text-align:center;">{{x.ID_TIPO_PAGO == 1 ? 'Contado':'Crédito'}}</td>
 									<td class="font12" style="text-align:center;">{{x.FECHA_REVISION}}</td>
 									<td class="font12" style="text-align:center;">{{x.FECHA_VENCIMIENTO}}</td>
-									<td class="font12" style="text-align:center;" ng-show="x.FACTURADO == 't'"><i class="fas fa-check"></i></td>
+
+									<td class="font12" style="text-align:center;" ng-show="x.FACTURADO == 't'"><i ng-show="x.ESTATUS !== 'CANCELADA'" class="fas fa-check"></i> <i ng-show="x.ESTATUS === 'CANCELADA'" class="fas fa-ban"></i></td>
                   <td class="font12" style="text-align:center;" ng-show="x.FACTURADO == 'f'">&nbsp;</td>
                   <td class="font12" style="text-align:center;" ng-show="x.FACTURADO == 't'"><a href="../creacfdixml/sendfacturaby/1/{{x.ID_FACTURA}}/{{x.ID_CLIENTE}}/{{x.ID_EMPRESA}}" style="color:green" ><i class="fas fa-download"></i></a></td>
                   <td class="font12" style="text-align:center;" ng-show="x.FACTURADO == 'f'">&nbsp;</td>

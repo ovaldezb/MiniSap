@@ -167,5 +167,29 @@ class Cortecajamodel extends CI_model
     return json_encode(array("venta"=>$result1[0],"detalle"=>$result2), JSON_NUMERIC_CHECK);
   }
 
+
+  function get_docto_ini_fin($data){
+    $query = '(SELECT TRIM("DOCUMENTO") as "DOCUMENTO", TO_CHAR("FECHA_VENTA",\'HH24:mm:ss\') as"FECHA_VENTA"
+    FROM "VENTAS"
+    WHERE "ID_EMPRESA" = $1
+    AND "ANIO_FISCAL" = $2
+    AND "FECHA_VENTA" >= $3
+    AND "FECHA_VENTA" <= $4
+    ORDER BY "FECHA_VENTA"
+    LIMIT 1)
+    UNION
+    (SELECT TRIM("DOCUMENTO") as "DOCUMENTO",TO_CHAR("FECHA_VENTA",\'HH24:mm:ss\') as "FECHA_VENTA"
+    FROM "VENTAS"
+    WHERE "ID_EMPRESA" = $5
+    AND "ANIO_FISCAL" = $6
+    AND "FECHA_VENTA" >= $7
+    AND "FECHA_VENTA" <= $8
+    ORDER BY "FECHA_VENTA" DESC
+    LIMIT 1)';
+		pg_prepare($this->conn,"qry1",$query);
+		$result = pg_fetch_all(pg_execute($this->conn,"qry1",$data));
+    return json_encode($result);
+  }
+
 }
 ?>
