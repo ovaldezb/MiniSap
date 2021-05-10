@@ -134,10 +134,15 @@ app.controller('CtrlCobranza', ($scope,$http,$routeParams) =>
           $scope.lstFormpago.push(elem);
         }
       });
-      console.log($scope.lstFormpago);
     })
     .catch(err =>{
       console.log(err);
     });
+  }
+
+  $scope.cerrarReporte = () =>{
+    $scope.isRepShow = false;
+    $scope.lstRepCobr = [];
+    $scope.lstFormpago = [];
   }
 });

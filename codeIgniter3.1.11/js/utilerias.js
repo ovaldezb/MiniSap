@@ -8,6 +8,18 @@ function formatDatePrint(hoy)
 	return fecha
 }
 
+function formatDatePrintHHMM(hoy)
+{
+	var dia, mes, year;
+	var fecha;
+	dia = hoy.getDate() <10 ? '0'+hoy.getDate() : hoy.getDate();
+	mes = hoy.getMonth() < 9 ? '0'+(hoy.getMonth()+1) : (hoy.getMonth()+1);
+  hrs = hoy.getHours() <10 ? '0'+hoy.getHours() : hoy.getHours();;
+	min = hoy.getMinutes() <10 ? '0'+hoy.getMinutes() : hoy.getMinutes();;
+	fecha = dia+'/'+mes+'/'+hoy.getFullYear() + ' '+hrs+':'+min;
+	return fecha
+}
+
 function formatDatePantalla(hoy)
 {
 	var dia, mes, year;
@@ -28,6 +40,16 @@ function formatDateReporte(fechaRep)
 	var mes = Number(fechaRep.substr(3,2))-1;
 	var year = fechaRep.substr(6,4);
 	fecha = dia+' de '+mesNombre[mes]+' de '+year;
+	return fecha
+}
+
+function formatReporte(fechaRep)
+{
+	var mesNombre = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+	var fecha;
+	var dia = fechaRep.getDate() <10 ? '0'+fechaRep.getDate() : fechaRep.getDate();
+	var year = fechaRep.getFullYear();
+	fecha = dia+' de '+mesNombre[fechaRep.getMonth()]+' de '+year;
 	return fecha
 }
 

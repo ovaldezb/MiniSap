@@ -12,25 +12,11 @@ class Facturacionmodel extends CI_model
 	}
 
 	function savefactura($arrayDatFact){
-		$query = 'SELECT * FROM registra_factura($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18)';
+		$query = 'SELECT * FROM registra_factura($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19)';
 		pg_prepare($this->conn,"insert_fact",$query);
 		$result = pg_fetch_all(pg_execute($this->conn,"insert_fact",$arrayDatFact));
 		return json_encode($result);
 	}
-
-  function save_corte_caja($arrayCorteCaja){
-    $query = 'SELECT * FROM registra_corte($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)';
-    pg_prepare($this->conn,"insert_corte",$query);
-		$result = pg_fetch_all(pg_execute($this->conn,"insert_corte",$arrayDatFact));
-		return json_encode($result);
-  }
-
-  function corte_venta($idcorte,$idventa){
-    $query = 'INSERT INTO "CORTE_VENTA" ("ID_CORTE","ID_VENTA") 
-      VALUES($1,$2)';
-    $result = pg_query($this->conn,$query);
-    return $result;
-  }
 
 	function getfacturas($arrayData){
 		$query = 'SELECT F."ID_FACTURA", F."DOCUMENTO",
@@ -38,7 +24,7 @@ class Facturacionmodel extends CI_model
 		F."IMPORTE",F."SALDO", 
     C."CLAVE",
     E."ID_VENDEDOR",
-		CASE WHEN C."NOMBRE" IS NULL THEN \'Ventas Mostrador\' ELSE C."NOMBRE" END  as "CLIENTE", 
+		CASE WHEN F."ID_CLIENTE" = 0 THEN F."CLIENTE" ELSE C."NOMBRE" END  as "CLIENTE", 
 		CASE WHEN E."NOMBRE" IS NULL THEN \'Ventas Mostrador\' ELSE E."NOMBRE"END as "VENDEDOR", F."ID_TIPO_PAGO",
 		CASE WHEN C."DIAS_CREDITO" IS NULL THEN 0 ELSE C."DIAS_CREDITO" END as "DIAS_CREDITO",
 		TO_CHAR(F."FECHA_REVISION",\'dd-MM-yyyy\') as "FECHA_REVISION",
@@ -54,7 +40,7 @@ class Facturacionmodel extends CI_model
     LEFT OUTER JOIN "FACTURA_CFDI" as FC ON FC."ID_FACTURA" = F."ID_FACTURA"
 		WHERE F."ID_EMPRESA" = $1 
 		AND F."ANIO_FISCAL" = $2
-		ORDER BY F."FECHA_FACTURA" DESC';
+		ORDER BY F."ID_FACTURA" DESC';
 		pg_prepare($this->conn,"select_fact",$query);
 		$result = pg_fetch_all(pg_execute($this->conn,"select_fact",$arrayData));
 		return json_encode($result,JSON_NUMERIC_CHECK);
@@ -82,7 +68,7 @@ class Facturacionmodel extends CI_model
     $query = 'SELECT F."DOCUMENTO" as "FOLIO", V."ID_VENTA",F."ID_CLIENTE",TRIM(C."RFC") as "RFC",
     TRIM(C."NOMBRE") as "CLIENTE" ,
     U."CLAVE" as "USO_CFDI", TRIM(M."MET_PAGO") as "METODO_PAGO", FP."CLAVE" as "FORMA_PAGO",
-    MO."CODIGO" as "MONEDA"
+    MO."CODIGO" as "MONEDA", V."ID_VENTA"
     FROM "FACTURA" as F
     INNER JOIN "VENTAS" as V ON V."ID_FACTURA" = F."ID_FACTURA"
     INNER JOIN "CLIENTE" as C ON C."ID_CLIENTE" = F."ID_CLIENTE"

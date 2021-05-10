@@ -229,10 +229,9 @@ app.controller("myCtrlControlinvent", function ($scope, $http,$routeParams) {
       $scope.regmov.idusuario=$scope.clave;
     }
 
-    $http.post(pathInv+'save',$scope.regmov)
+    $http.post(pathInv+'saveinventario',$scope.regmov)
     .then(res=>{
-      console.log(res);
-      if(res.status === '200'){
+      if(res.status === 200){
         swal('El movimiento se guardó con éxito');
         $scope.closeAddMov()
       }

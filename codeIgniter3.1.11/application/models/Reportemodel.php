@@ -226,7 +226,7 @@ class Reportemodel extends CI_model
   }
 
   function get_reporte_cobranza($anioFiscal,$idEmpresa, $fecIni,$fecFin){
-    $query = 'SELECT LPAD(TRIM(TO_CHAR("ID_COBRO",\'999999\')),8,\'0\') as "DOCTO", TO_CHAR("FECHA_COBRO",\'DD-MM-YYYY\') as "FECHA_COBRO","IMPORTE_COBRO" as "ABONO",CL."NOMBRE",
+    $query = 'SELECT F."DOCUMENTO" as "DOCTO", TO_CHAR("FECHA_COBRO",\'DD-MM-YYYY\') as "FECHA_COBRO","IMPORTE_COBRO" as "ABONO",CL."NOMBRE",
     TRIM(FP."CLAVE") as "FP",MP."MET_PAGO" as "MP", CO."ID_MOVIMIENTO" as "ID_FP"
     FROM "COBROS" as CO
     INNER JOIN "FORMA_PAGO" as FP ON FP."ID_FORMA_PAGO" = CO."ID_MOVIMIENTO"

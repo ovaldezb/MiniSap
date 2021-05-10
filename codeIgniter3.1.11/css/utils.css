@@ -1,6 +1,11 @@
 .selected {
   background-color: #fd9 !important;
 }
+
+.canceled {
+  background-color: rgb(211, 7, 7) !important;
+}
+
 .table tr{
   cursor: pointer !important;
 }

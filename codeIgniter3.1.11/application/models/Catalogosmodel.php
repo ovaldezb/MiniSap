@@ -185,11 +185,21 @@ class Catalogosmodel extends CI_model
 
 	function get_incremento_by_name($nombre,$idempresa,$longitud)
 	{
-		$query = 'SELECT TRIM("PREFIJO")||LPAD(trim(to_char("VALOR",\'9999999999\')),$1,\'0\') as "VALOR"
-							FROM "INCREMENTOS" WHERE "NOMBRE_INC" = $2 AND "ID_EMPRESA" = $3';
-		pg_prepare($this->conn,"myincrement",$query);
-		$result = pg_fetch_all(pg_execute($this->conn,"myincrement", array($longitud,$nombre,$idempresa)));
-		return json_encode($result);
+    if($longitud == 0){
+      $query = 'SELECT TRIM("PREFIJO")||"VALOR" as "VALOR"
+							FROM "INCREMENTOS" WHERE "NOMBRE_INC" = $1 AND "ID_EMPRESA" = $2';
+      pg_prepare($this->conn,"myincrement",$query);
+      $result = pg_fetch_all(pg_execute($this->conn,"myincrement", array($nombre,$idempresa)));
+      return json_encode($result);        
+    }else{
+      $query = 'SELECT TRIM("PREFIJO")||LPAD(trim(to_char("VALOR",\'9999999999\')),$1,\'0\') as "VALOR"
+      FROM "INCREMENTOS" WHERE "NOMBRE_INC" = $2 AND "ID_EMPRESA" = $3';
+      pg_prepare($this->conn,"myincrement",$query);
+      $result = pg_fetch_all(pg_execute($this->conn,"myincrement", array($longitud,$nombre,$idempresa)));
+      return json_encode($result);
+    }
+		
+		
 	}
 
 	function get_linea_by_empresa($idEmpresa)

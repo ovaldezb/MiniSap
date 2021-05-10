@@ -128,12 +128,16 @@ class Creacfdixml extends CI_Controller
         //var_dump($sellado);
         try{
             header('Content-type: application/json');        
-            $params = array(
+            /*$params = array(
                 "url"=>"http://services.sw.com.mx",
                 "user"=>"omar.valdez.becerril@gmail.com",
-                "password"=> ""
-                );
-                
+                "password"=> "Ov/d4*035"
+                );*/
+            $params = array(
+              "url"=>"http://services.test.sw.com.mx",
+              "user"=>"omar.valdez.becerril@gmail.com",
+              "password"=> "omar.sw"
+              );    
             $stamp = StampService::Set($params);
             $result = json_decode(json_encode($stamp::StampV4($sellado)),false);            
             if($result->status == "success"){
@@ -230,7 +234,7 @@ class Creacfdixml extends CI_Controller
                 for($i = 0; $i < sizeof($lstemails);$i++){
                   $email->addAddress($lstemails[$i]);
                 }
-                //$email->addAddress( 'omar.valdez@protonmail.com','Omar Valdez' );                
+             
                 $email->IsHTML(true); 
                 $file_to_attach = $filenamezip; 
                 $email->AddAttachment( $file_to_attach , basename($filenamezip));            

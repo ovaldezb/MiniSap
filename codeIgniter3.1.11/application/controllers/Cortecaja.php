@@ -30,20 +30,10 @@ class Cortecaja extends CI_Controller
         }
     }
 
-    public function getoperdate($idempresa, $aniofiscal, $fecIni, $fecFin)
+    public function getdataopercc($idcortecaja)
     {
         if (isset($_SESSION['username'])) {
-            $result = $this->cortecajamodel->getOperMonthByDate(array($aniofiscal, str_replace("%20", " ", $fecIni), str_replace("%20", " ", $fecFin), $idempresa));
-            return $this->output
-                ->set_content_type('application/json')
-                ->set_output($result);
-        }
-    }
-
-    public function getdataopercc($idempresa, $aniofiscal, $fecIni, $fecFin)
-    {
-        if (isset($_SESSION['username'])) {
-            $result = $this->cortecajamodel->dataOperByDateCC(array($aniofiscal, str_replace("%20", " ", $fecIni), str_replace("%20", " ", $fecFin), $idempresa));
+            $result = $this->cortecajamodel->dataOperByIDCC(array($idcortecaja));
             return $this->output
                 ->set_content_type('application/json')
                 ->set_output($result);
@@ -60,10 +50,10 @@ class Cortecaja extends CI_Controller
         }
     }
 
-    public function getdocinifin($idempresa,$aniofiscal,$fecIni,$fecFin)
+    public function getdocinifin($idcortecaja)
     {
       if (isset($_SESSION['username'])) {
-        $result = $this->cortecajamodel->get_docto_ini_fin(array($idempresa,$aniofiscal,str_replace("%20", " ", $fecIni), str_replace("%20", " ", $fecFin),$idempresa,$aniofiscal,str_replace("%20", " ", $fecIni), str_replace("%20", " ", $fecFin)));
+        $result = $this->cortecajamodel->get_docto_ini_fin(array($idcortecaja,$idcortecaja));
         
         return $this->output
             ->set_content_type('application/json')

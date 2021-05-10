@@ -161,7 +161,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
   }
   
   $scope.getNextDocTpv = function(){
-		$http.get(pathUtils+'incremento/TPVS/'+$scope.factura.idempresa+'/7').
+		$http.get(pathUtils+'incremento/FACT/'+$scope.factura.idempresa+'/0').
 		then(function(res)
 		{
 			if(res.data.length > 0)
@@ -286,6 +286,20 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
         });
   }
 
+  $scope.getFacturaProductoDetalleyId = function(idFactura){
+    $http.get(pathFactura+'getfactprodbyid/'+idFactura,{responseType:'json'})
+        .then(res => {
+          if(res.data.length > 0){
+            $scope.lstProdCompra = res.data;
+            $scope.calculaValoresMostrar();
+            $scope.regfactura = true;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+  }
+
   $scope.eliminarFactura = function(){
     $http.delete(pathFactura+'eliminafact/'+$scope.lstFacturas[$scope.indexRowFactura].ID_FACTURA+'/'+$scope.factura.idsucursal)
     .then(res=>{
@@ -319,7 +333,13 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
     $scope.factura.idvendedor = $scope.lstFacturas[$scope.indexRowFactura].ID_VENDEDOR;
     $scope.nombre_vendedor = $scope.lstFacturas[$scope.indexRowFactura].VENDEDOR;
     $scope.claveclte = $scope.lstFacturas[$scope.indexRowFactura].CLAVE;
-    $scope.getFacturaDetalleyId($scope.lstFacturas[$scope.indexRowFactura].ID_FACTURA);
+    //aqui depende de si la fact es de un CC o no, va ir a buscar de una forma u otra
+    if($scope.lstFacturas[$scope.indexRowFactura].ID_CLIENTE === null){
+      $scope.getFacturaProductoDetalleyId($scope.lstFacturas[$scope.indexRowFactura].ID_FACTURA);
+    }else{
+      $scope.getFacturaDetalleyId($scope.lstFacturas[$scope.indexRowFactura].ID_FACTURA);
+    }
+    
   }
 
   $scope.agregaFactura = function(){
@@ -816,7 +836,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
       $scope.rfc_cliente = $scope.lstCliente[indxRowClte].RFC;
       $scope.cliente.id_uso_cfdi = Number($scope.lstCliente[indxRowClte].ID_USO_CFDI);      
       $scope.factura.idcliente = Number($scope.lstCliente[indxRowClte].ID_CLIENTE);   
-      $scope.factura.fpago = $scope.lstCliente[indxRowClte].FORMA_PAGO;
+      $scope.factura.fpago = $scope.lstCliente[indxRowClte].ID_FORMA_PAGO;
       $scope.factura.tpago = Number($scope.lstCliente[indxRowClte].DIAS_CREDITO) > 0 ? 2 : 1;
       $scope.factura.mpago = Number($scope.lstCliente[indxRowClte].DIAS_CREDITO) === 0 ? 1 : -1;
       $scope.factura.dias = Number($scope.lstCliente[indxRowClte].DIAS_CREDITO);
@@ -962,6 +982,8 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
         idsucursal:$scope.factura.idsucursal,
         facturado:'true',
         idfactura:null,
+        origen:'F',
+        iva:0
       }
       var nextdate = new Date(new Date().getTime()+ $scope.factura.dias*1000*60*60*24);
       var dataFact = 
@@ -983,7 +1005,8 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
         metodopago:$scope.factura.mpago,
         contacto:$scope.factura.contacto,
         idmoneda:$scope.factura.idmoneda,
-        idpedido:$scope.factura.idpedido
+        idpedido:$scope.factura.idpedido,
+        cliente:null
       };
       let msg = ''
       if($scope.requiere_factura){
@@ -1002,6 +1025,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
           $http.post(pathFactura+'savefactura',dataFact)
           .then( res => {
             dataVenta.idfactura = res.data[0].registra_factura;
+            dataVenta.iva = $scope.impuestos;
             $http.put(pathTpv+'registraventa',dataVenta)
               .then(function(res)
               {

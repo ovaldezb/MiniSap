@@ -99,51 +99,46 @@ app.controller('myCtrlCortecaja',  function($scope, $http){
     $scope.impuestos = 0;
     $scope.lstDetalleVta =[];
     $scope.venta = {};
-    $scope.getOperByDate(formatFecQuery(fecha,'ini'),formatFecQuery(fecha,'fin'));
     $scope.abreOperaciones(formatFecQuery(fecha,'ini'),formatFecQuery(fecha,'fin'));
     $scope.getDocIniFinByDate(formatFecQuery(fecha,'ini'),formatFecQuery(fecha,'fin'));
   }
 
-  $scope.getOperByDate = (fecIni,fecFin) =>{
-    $http.get(pathCorte+'getoperdate/'+$scope.idempresa+'/'+$scope.aniofiscal+'/'+fecIni+'/'+fecFin)
-    .then(res =>{
+  $scope.abreOperaciones = (fecIni,fecFin)=>{
+    $http.get(pathCorte+'getdataopercc/'+$scope.lstCortesCaja[$scope.indexRowCC].ID_CORTE)
+    .then(res=>{
+      $scope.lstVentas = res.data.ventas ? res.data.ventas : [];
+      $scope.pagosco = res.data.pagos;
       $scope.pagos.efectivo = res.data.pagos.EFECTIVO;
       $scope.pagos.tarjeta = res.data.pagos.TARJETA;
       $scope.pagos.cheque = res.data.pagos.CHEQUE;
       $scope.pagos.vales = res.data.pagos.VALES;
       $scope.tipopago.contado = res.data.tipopago[0].SUMA;
       $scope.tipopago.credito = res.data.tipopago[1].SUMA;
+      $scope.cancelados = res.data.cancelados.TOTAL;
     })
-    .catch(err=>{
+    .catch(err => {
       console.log(err);
     });
   }
 
   $scope.getDocIniFinByDate = (fecIni,fecFin) =>{
-    $http.get(pathCorte+'getdocinifin/'+$scope.idempresa+'/'+$scope.aniofiscal+'/'+fecIni+'/'+fecFin)
+    $http.get(pathCorte+'getdocinifin/'+$scope.lstCortesCaja[$scope.indexRowCC].ID_CORTE)
     .then(res =>{
-      $scope.dataIniDay.docIni=res.data[0].DOCUMENTO;
-      $scope.dataIniDay.docFin=res.data[1].DOCUMENTO;
-      $scope.dataIniDay.horaIni=res.data[0].FECHA_VENTA
-      $scope.dataIniDay.horaFin=res.data[1].FECHA_VENTA
-      
+      if(res.data.length === 1){
+        $scope.dataIniDay.docIni=res.data[0].DOCUMENTO;
+        $scope.dataIniDay.docFin=res.data[0].DOCUMENTO;
+        $scope.dataIniDay.horaIni=res.data[0].FECHA_VENTA
+        $scope.dataIniDay.horaFin=res.data[0].FECHA_VENTA
+      }else{
+        $scope.dataIniDay.docIni=res.data[0].DOCUMENTO;
+        $scope.dataIniDay.docFin=res.data[1].DOCUMENTO;
+        $scope.dataIniDay.horaIni=res.data[0].FECHA_VENTA
+        $scope.dataIniDay.horaFin=res.data[1].FECHA_VENTA
+      }
     })
     .catch(err=>{
       console.log(err);
     });
-  }
-
-  $scope.abreOperaciones = (fecIni,fecFin)=>{
-    $http.get(pathCorte+'getdataopercc/'+$scope.idempresa+'/'+$scope.aniofiscal+'/'+fecIni+'/'+fecFin)
-        .then(res=>{
-              $scope.lstVentas = res.data.ventas ? res.data.ventas : [];
-              $scope.pagosco = res.data.pagos;
-              $scope.tipopagoco = res.data.tipopago;
-              $scope.cancelados = res.data.cancelados.TOTAL;
-        })
-        .catch(err => {
-          console.log(err);
-        });
   }
 
   $scope.selOperacion = (idOperacion, index)=>{

@@ -25,6 +25,7 @@
     </form>
   </div>
   <div class="table-container" ng-show="isRepShow" style="border:1px solid black;width:99%" id="exportable">
+    <button class="button is-info is-small" ng-click="cerrarReporte()">Cerrar</button>
     <table class="table" style="width:100%">
       <colgroup>
         <col width="20%" >

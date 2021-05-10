@@ -327,6 +327,9 @@
 					</div>
 				</div>
 				<div class="columns">
+          <div class="column" ng-show="isAdmin">
+            <input type="date" ng-model="fechaCorteTmp" id="fechaCorteTmp" ng-change="cambiaFecha()">
+          </div>
 					<div class="column" style="display:flex;justify-content: flex-end">
 						<button class="button is-info" ng-click="abreOperaciones()">Operaciones</button>
 					</div>
@@ -498,49 +501,9 @@
 					</tr>					
 				</table>				
 			</div>
-			<div style="display:{{fact.req_factura ? 'block':'none'}}; width:100%; border: 2px solid red">
-				<div class="columns" style="margin-top:5px">	
-					<div class="column is-narrow" style="width:131px"><label class="label">Serie:</label></div>
-					<div class="column"><input type="text" ng-model="fact.serie" class="input is-small"></div>
-					<div class="column is-narrow"><label class="label">Folio:</label></div>
-					<div class="column">{{fact.documento}}</div>
-				</div>
-				<div class="columns">
-					<div class="column is-narrow" style="width:131px"><label class="label">Cliente:</label></div>
-					<div class="column">{{nombre_cliente}}</div>
-					<div class="column is-narrow"><label class="label">RFC:</label></div>
-					<div class="column">{{rfc_cliente}}</div>
-				</div>
-				<div class="columns">
-					<div class="column is-narrow" style="width:131px"><label class="label">Uso CFDI:</label></div>
-					<div class="column" >
-						<div class="select is-small">
-						  <select ng-model="fact.usocfdi" ng-options="x.ID_CFDI as x.DESCRIPCION for x in lstUsocfdi"></select>
-						</div>
-					</div>
-				</div>
-				<div class="columns">
-					<div class="column is-narrow" style="width:131px"><label class="label">Moneda:</label></div>
-					<div class="column is-narrow">
-						<div class="select is-small">
-						<select class="select is-small" ng-model="fact.moneda" ng-options="x.CODIGO as x.NOMBRE for x in lstMoneda"></select>
-						</div>
-					</div>
-					<div class="column is-narrow"><label class="label">Tipo de Cambio:</label></div>
-					<div class="column is-narrow" style="width:100px"><input type="number" class="input is-small" ng-model="fact.tipocambio" required ></div>
-				</div>
-				<div class="columns">
-					<div class="column is-narrow" style="width:131px"><label class="label">Metodo Pago:</label></div>
-					<div class="column">
-						<div class="select is-small">
-							<select class="select is-small" ng-model="fact.metodopago" ng-options="x.ID_MET_PAGO as x.DESCRIPCION for x in lstMetpago"></select>
-						</div>
-					</div>
-				</div>
-			</div>
 	   	</section>
 	   	<footer class="modal-card-foot">
-	     	<button class="button is-success" ng-click="registraCompra()">Registrar</button>
+	     	<button class="button is-success" ng-click="registraCompra()" ng-disabled="disableRegistra">Registrar</button>
 	     	<button class="button is-danger" ng-click="cancelVenta()">Cancelar</button>
 	   	</footer>
 	  </div>
@@ -572,7 +535,7 @@
                   </colgroup>
                   <thead>
                     <tr class="tbl-header">
-                      <th style="text-align:center">Documento</th>
+                      <th style="text-align:center">Dcto</th>
                       <th style="text-align:center">Part</th>
                       <th style="text-align:center">FP</th>
                       <th style="text-align:center">Importe</th>
@@ -587,11 +550,11 @@
 										  <col width="20%">
 										  <col width="30%">
                     </colgroup>
-										<tr ng-repeat="x in lstVentas" ng-click="selOperacion(x.ID_VENTA,$index)"  ng-class="{selected: x.ID_VENTA === idOpSel}">
-											<td>{{x.DOCUMENTO.trim()}}</td>
-											<td style="text-align:center">{{x.COUNT}}</td>
-											<td style="text-align:center">{{x.ID_TIPO_PAGO == '1' ? 'EF':'CR'}}</td>
-											<td style="text-align:right;">{{x.IMPORTE | currency}}</td>
+										<tr ng-repeat="x in lstVentas" ng-click="selOperacion(x.ID_VENTA,$index)"  ng-class="{selected: x.ID_VENTA === idOpSel}" >
+											<td ng-class="{canceled: x.CANCELADO === 't'}">{{x.DOCUMENTO.trim()}}</td>
+											<td ng-class="{canceled: x.CANCELADO === 't'}" style="text-align:center">{{x.COUNT}}</td>
+											<td ng-class="{canceled: x.CANCELADO === 't'}" style="text-align:center">{{x.ID_TIPO_PAGO == '1' ? x.TIPO_PAGO :'CR'}}</td>
+											<td ng-class="{canceled: x.CANCELADO === 't'}" style="text-align:right;">{{x.IMPORTE | currency}}</td>
 										</tr>
 									</table>
 								</div>
@@ -609,12 +572,12 @@
 											</span>
 										</a>
 									</p>
-									<p class="level-item" ng-show="idxOperacion == -1">
+									<p class="level-item" ng-show="!isCancel">
                     <span class="icon has-text-danger">
                       <i title="Cancela partida" class="fas fa-times" style="color:grey"></i>
                     </span>
 									</p>
-                  <p class="level-item" ng-show="idxOperacion != -1">
+                  <p class="level-item" ng-show="isCancel">
 										<a ng-click="eliminaOperacion()">
 											<span class="icon has-text-danger">
 												<i title="Cancela partida" class="fas fa-times"></i>
@@ -636,12 +599,14 @@
 								</div>
 							</nav>
 						</div>
-						<div class="columns">
+						<div class="columns" id="resumenoperaciones">
 							<div class="column totales">
 								<table style="width:100%">
-									<col with="40%">
-									<col with="20%">
-									<col with="40%">
+                  <colgroup>
+									  <col with="40%">
+									  <col with="20%">
+									  <col with="40%">
+                  </colgroup>
 									<tr>
 										<td>Operaciones</td>
 										<td>&nbsp;</td>

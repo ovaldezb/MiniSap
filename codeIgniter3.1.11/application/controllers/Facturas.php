@@ -54,34 +54,9 @@ class Facturas extends CI_Controller
             $data['contacto'],
             $data['idmoneda'],
             $data['idpedido'],
+            $data['cliente'],
         );
         $result = $this->facturacionmodel->savefactura($arraDatosFactura);
-        return $this->output
-            ->set_content_type('application/json')
-            ->set_output($result);
-      }
-    }
-
-    public function savecortecaja(){
-      if (isset($_SESSION['username'])) {
-        $data = json_decode(file_get_contents("php://input"), true);
-        $arraDatosFactura = array(
-            $data['documento'],
-            $data['fcorte'],
-            $data['cliente'],
-            $data['producto'],
-            $data['importe'],
-            $data['vendedor'],
-            $data['tipopago'],
-            $data['formapago'],
-            $data['metodopago'],
-            $data['idempresa'],
-            $data['aniofiscal'],
-            $data['idsucursal'],
-            $data['usocfdi'],
-            $data['moneda']
-        );
-        $result = $this->facturacionmodel->save_corte_caja($arraDatosFactura);
         return $this->output
             ->set_content_type('application/json')
             ->set_output($result);
@@ -103,6 +78,16 @@ class Facturas extends CI_Controller
     {
         if (isset($_SESSION['username'])) {
             $result = $this->tpvmodel->getventadetallebyid($idfactura);
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($result));
+        }
+    }
+
+    public function getfactprodbyid($idfactura)
+    {
+        if (isset($_SESSION['username'])) {
+            $result = $this->tpvmodel->getfact_prod_id($idfactura);
             return $this->output
                 ->set_content_type('application/json')
                 ->set_output(json_encode($result));

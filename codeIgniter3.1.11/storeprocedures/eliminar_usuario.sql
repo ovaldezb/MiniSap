@@ -1,0 +1,22 @@
+CREATE FUNCTION "eliminar_usuario" ("idusuario" integer) RETURNS int4 LANGUAGE plpgsql AS '
+DECLARE
+
+x int :=0;
+
+BEGIN
+
+DELETE FROM "USUARIO_PROCESO" WHERE "ID_USUARIO" = idusuario;
+
+DELETE FROM "USUARIO_MODULO" WHERE "ID_USUARIO" = idusuario;
+
+DELETE FROM "USUARIO_EMPRESA" WHERE "ID_USUARIO" = idusuario;
+
+WITH CP as 
+
+(DELETE FROM "USUARIO" WHERE "ID_USUARIO" = idusuario RETURNING *)
+
+SELECT COUNT(*) FROM CP INTO x;
+
+return x;
+
+END';

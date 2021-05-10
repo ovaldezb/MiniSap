@@ -40,6 +40,8 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
   $scope.idxRowDom = -1;
   $scope.id_forma_pago = '1';
   $scope.id_uso_cfdi = -1;
+  $scope.isGuardado = false;
+  $scope.btnClose = 'Cancelar';
   $scope.cfdi_style = {background:'pink'};
   $scope.vendedor_style = {background:'pink'};
   let indexRow = -1;
@@ -432,6 +434,7 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
   $scope.guardaDom =()=>{
     if($scope.btnName === 'Guardar'){
       $scope.lstDomicilios.push($scope.domicilios);
+      $scope.btnClose = 'Cerrar';
     }else{
       var dom = $scope.domicilios;
       $scope.lstDomicilios[$scope.idxRowDom] = dom;
@@ -451,6 +454,9 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
     .then((willDelete) => {
       if(willDelete){
         $scope.lstDomicilios.splice($scope.idxRowDom,1);
+        if($scope.lstDomicilios.length === 0){
+          $scope.btnClose = 'Cancelar';
+        }
         $scope.limpiaDom();
       }
     });
@@ -473,11 +479,35 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
 
   $scope.agregaDomEntrega = () =>{
     $scope.addDomEntrega = true;
+    if($scope.lstDomicilios.length > 0){
+      $scope.btnClose = 'Cerrar';
+    }
   }
 
   $scope.clseDomEntrega = () =>{
-    $scope.limpiaDom();
-    $scope.addDomEntrega = false;
+    if($scope.btnClose === 'Cancelar'){
+      swal({
+        title: "No ha almacenado ningún domicilio",
+        text: "Desea salir?",
+        icon: "warning",
+        buttons: [true,true],
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if(willDelete){
+          swal('Se van a guardar '+$scope.lstDomicilios.length+' Domicilios!');
+          $scope.limpiaDom();
+          $scope.addDomEntrega = false;
+        }else{
+          return;
+        }
+      })
+    }else{
+      swal('Se van a guardar '+$scope.lstDomicilios.length+' Domicilios!');
+      $scope.limpiaDom();
+      $scope.addDomEntrega = false;
+    }
+    
   }
 
   $scope.cerrarBorraCliente = function()

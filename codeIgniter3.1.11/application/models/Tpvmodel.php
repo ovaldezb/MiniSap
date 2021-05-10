@@ -83,7 +83,7 @@ class Tpvmodel extends CI_model
 
 	function registra_venta($arrayVenta)
 	{
-		$pstmt = 'SELECT * FROM registra_venta($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19)';
+		$pstmt = 'SELECT * FROM registra_venta($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21)';
 		pg_prepare($this->conn,"prstmt",$pstmt);
 		$result = pg_fetch_all(pg_execute($this->conn, "prstmt", $arrayVenta));
 		return json_encode($result);
@@ -162,6 +162,13 @@ class Tpvmodel extends CI_model
 		return json_decode(json_encode($result,JSON_NUMERIC_CHECK),false);
 	}
 
+  function getfact_prod_id($idFactura){
+    $query = 'SELECT "NOMBRE"||\'-\'||"CLAVE" as "DESCRIPCION", 1 as "CANTIDAD", \'CC\' as "UNIDAD_MEDIDA", \'f\' as "ESDSCTO", "IMPORTE" as "PRECIO_LISTA", 0 as "DESCUENTO", "IMPORTE", 0 as "IVA"  
+    FROM "FACTURA_PRODUCTO" WHERE "ID_FACTURA" = $1 ORDER BY "CLAVE"';				
+    pg_prepare($this->conn,"select_factura_prod",$query);
+    $result = pg_fetch_all(pg_execute($this->conn,"select_factura_prod",array($idFactura)));		
+    return json_decode(json_encode($result,JSON_NUMERIC_CHECK),false);
+  }
 
   function getventadetallebyVentaId($idFactura){
     $query = 'SELECT VP."CANTIDAD",VP."PRECIO" as "PRECIO",VP."IMPORTE", VP."DESCUENTO" as "DESCUENTO",
@@ -182,7 +189,14 @@ class Tpvmodel extends CI_model
 	public function dataOperByDate($arrayDates){
 		$query1 = 'SELECT V."DOCUMENTO", VP."COUNT",V."ID_TIPO_PAGO", V."IMPORTE",
 					CASE WHEN V."ID_FACTURA" IS NULL THEN 0 ELSE V."ID_FACTURA" END as "ID_FACTURA",
-					V."ID_VENTA"
+					V."ID_VENTA",V."CANCELADO",V."CORTECAJA", V."FACTURADO",V."ID_FACTURA",V."IVA",
+          CASE WHEN V."PAG_EFECTIVO" > 0 THEN \'EF\' ELSE
+            (CASE WHEN V."PAG_TARJETA" > 0 THEN \'TA\' ELSE
+              (CASE WHEN V."PAG_CHEQUE" > 0 THEN \'CH\' ELSE 
+                (CASE WHEN V."PAG_VALES" > 0 THEN \'VA\' END)
+              END)
+             END)
+          END as "TIPO_PAGO"
 					FROM "VENTAS" as V
 					INNER JOIN (SELECT "ID_VENTA", COUNT(*) AS "COUNT" FROM "VENTAS_PRODUCTO" GROUP BY "ID_VENTA")
 					AS VP ON VP."ID_VENTA" = V."ID_VENTA"
@@ -191,7 +205,7 @@ class Tpvmodel extends CI_model
 					AND V."FECHA_VENTA" <= $3
 					AND V."ID_EMPRESA" = $4
 					AND V."CORTECAJA" = \'false\'
-          AND V."CANCELADO" = \'false\'
+          AND V."ID_VALES" IS NOT NULL
 					ORDER BY V."ID_VENTA"';
 		pg_prepare($this->conn,"qry1",$query1);
 		$result1 = pg_fetch_all(pg_execute($this->conn,"qry1",$arrayDates));
@@ -204,8 +218,9 @@ class Tpvmodel extends CI_model
 					AND "FECHA_VENTA" <= $3
 					AND "ID_EMPRESA" = $4
 					AND "ID_TIPO_PAGO" = 1
-          AND "FACTURADO" = \'false\'
+          AND "CORTECAJA" = \'false\'
           AND "CANCELADO" = \'false\'
+          AND "ID_VALES" IS NOT NULL
 					GROUP BY "ID_TIPO_PAGO"';
 		pg_prepare($this->conn,"qry2",$query2);
 		$result2 = pg_fetch_all(pg_execute($this->conn,"qry2",$arrayDates));
@@ -219,8 +234,9 @@ class Tpvmodel extends CI_model
 					AND "FECHA_VENTA" >= $2 
 					AND "FECHA_VENTA" <= $3
 					AND "ID_EMPRESA" = $4
-          AND "FACTURADO" = \'false\'
+          AND "CORTECAJA" = \'false\'
           AND "CANCELADO" = \'false\'
+          AND "ID_VALES" IS NOT NULL
 					GROUP BY "ID_TIPO_PAGO"';
 		pg_prepare($this->conn,"qry3",$query3);
     
@@ -244,6 +260,8 @@ class Tpvmodel extends CI_model
 					AND "FECHA_VENTA" >= $2 
 					AND "FECHA_VENTA" <= $3
 					AND "ID_EMPRESA" = $4
+          AND "ID_VALES" IS NOT NULL
+          AND "CORTECAJA" = \'false\'
           AND "CANCELADO" = \'true\'';
     pg_prepare($this->conn,"qry4",$query4);
     $result5 = pg_fetch_all(pg_execute($this->conn,"qry4",$arrayDates));
@@ -264,6 +282,28 @@ class Tpvmodel extends CI_model
 		pg_prepare($this->conn,"cancela_venta",$query);
 		$result = pg_execute($this->conn,"cancela_venta",array($idventa));
 		return json_encode($result);
+  }
+
+  function save_corte_caja($arrayCorteCaja){
+    $query = 'SELECT * FROM registra_corte($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16)';
+    pg_prepare($this->conn,"insert_corte",$query);
+		$result = pg_fetch_all(pg_execute($this->conn,"insert_corte",$arrayCorteCaja));
+		return json_encode($result);
+  }
+
+  function corte_venta($idcorte,$idventa){
+    $query = 'INSERT INTO "CORTE_VENTA" ("ID_CORTE","ID_VENTA") 
+      VALUES($1,$2)';
+    pg_prepare($this->conn,"insert_corte_venta",$query);
+    $result = pg_execute($this->conn,"insert_corte_venta",array($idcorte,$idventa));
+		return json_encode(array("res"=>$result));
+  }
+
+  function save_producto_factura($arrayDataFact){
+    $query = 'INSERT INTO "FACTURA_PRODUCTO" ("ID_FACTURA","CLAVE","NOMBRE","IMPORTE","IVA") VALUES($1,$2,$3,$4,$5)';
+    pg_prepare($this->conn,"insert_producto_fact",$query);
+    $result = pg_execute($this->conn,"insert_producto_fact",$arrayDataFact);
+    return json_encode(array("res"=>"Ok"));
   }
 }
 ?>

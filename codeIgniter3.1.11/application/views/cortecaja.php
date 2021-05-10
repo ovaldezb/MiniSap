@@ -9,9 +9,11 @@
       <div class="column">
         <div class="box">
         <div class="columns">
-          <div class="column is-1">Mes:</div>
+          <div class="column is-1"><label class="label">Mes:</label> </div>
           <div class="column is-narrow" style="width:170px">
-            <select ng-model="mes" ng-options="x.valor as x.mes for x in meses" ng-change="seleccionaMes()"></select>
+            <div class="select is-small">
+              <select ng-model="mes" ng-options="x.valor as x.mes for x in meses" ng-change="seleccionaMes()"></select>
+            </div>
           </div>
           <div class="column is-1">Caja:</div>
           <div class="column is-1">01</div>
@@ -20,8 +22,8 @@
           <div class="column">
             <table class="table is-bordered" style="width:100%">
               <colgroup>
-                <col width="25%"/>
-                <col width="25%"/>
+                <col width="30%"/>
+                <col width="20%"/>
                 <col width="25%"/>
                 <col width="25%"/>
               </colgroup>
@@ -37,8 +39,8 @@
             <div style="width:100%; height:175px; overflow:auto;border:solid black 2px;margin-top:-25px">
               <table class="table is-bordered is-hoverable" style="width:100%">
                 <colgroup>
-                  <col width="25%"/>
-                  <col width="25%"/>
+                  <col width="30%"/>
+                  <col width="20%"/>
                   <col width="25%"/>
                   <col width="25%"/>
                 </colgroup>
@@ -115,7 +117,7 @@
               <tr>
                 <td>&nbsp;</td>
                 <td>Vales</td>
-                <td style="text-align:right">{{agos.vales | currency}}</td>
+                <td style="text-align:right">{{pagos.vales | currency}}</td>
               </tr>
               <tr>
                 <td colspan="3">&nbsp;</td>
@@ -160,7 +162,7 @@
             </colgroup>
             <tbody>
               <tr>
-                <td class="font12" colspan="4">Operaciones por dia: {{fechaOperacion}}</td>
+                <td class="font12" colspan="4">Operaciones por día: {{fechaOperacion}}</td>
               </tr>
               <tr class="tbl-header">
                 <td class="font12" style="text-align:center">Documento</td>
@@ -177,10 +179,10 @@
               <col width="20%">
               <col width="30%">
               <tr ng-repeat="x in lstVentas" ng-click="selOperacion(x.ID_VENTA,$index)"  ng-class="{selected: x.ID_VENTA === idOpSel}">
-                <td class="font12">{{x.DOCUMENTO.trim()}}</td>
-                <td class="font12" style="text-align:center">{{x.COUNT}}</td>
-                <td class="font12" style="text-align:center">{{x.ID_TIPO_PAGO == '1' ? 'EF':'CR'}}</td>
-                <td class="font12" style="text-align:right;">{{x.IMPORTE | currency}}</td>
+                <td class="font12" ng-class="{canceled: x.CANCELADO === 't'}">{{x.DOCUMENTO.trim()}}</td>
+                <td class="font12" ng-class="{canceled: x.CANCELADO === 't'}" style="text-align:center">{{x.COUNT}}</td>
+                <td class="font12" ng-class="{canceled: x.CANCELADO === 't'}" style="text-align:center">{{x.ID_TIPO_PAGO == '1' ? 'EF':'CR'}}</td>
+                <td class="font12" ng-class="{canceled: x.CANCELADO === 't'}" style="text-align:right;">{{x.IMPORTE | currency}}</td>
               </tr>
             </table>
           </div>

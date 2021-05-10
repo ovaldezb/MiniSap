@@ -23,16 +23,20 @@
                         <label for="">Tipo</label>
                     </div>
                     <div class="column is-narrow">
+                      <div class="select is-small">
                         <select ng-model="ctrlInv.tipoES" >
                             <option value="t">Todos</option>
                             <option ng-repeat=" x in entsal" value="{{x.value}}">{{x.label}}</option>
                         </select>	
+                      </div>
                     </div>
                     <div class="column is-narrow">
+                      <div class="select is-small">
                         <select ng-model="ctrlInv.tipoMov" >
                             <option value="tod">Todos</option>
                             <option ng-repeat="x in tipoMov" value="{{x.value}}">{{x.label}}</option>
                         </select>
+                      </div>
                     </div>
                 </div>
                 <div class="columns">
@@ -156,10 +160,14 @@
                         <label>Tipo de Movimiento</label>
                     </div>
                     <div class="column is-3">
+                      <div class="select is-small">
                         <select ng-model="tipoES" ng-options="x.value as x.label for x in entsal" ng-change="cambiarTipo()"></select>	
+                      </div>
                     </div>
                     <div class="column is-2">
+                      <div class="select is-small">
                         <select ng-model='regmov.tipoMov' ng-options="x.value as x.label for x in tipoMMos" ></select>
+                      </div>    
                     </div>
                 </div>
                 <div class="columns">
@@ -167,7 +175,9 @@
                         <label>Cliente o Proveedor</label>
                     </div>
                     <div class="column is-3">
+                      <div class="select is-small">
                         <select ng-model='cliPro' ng-options="x.value as x.label for x in cliprorm" ></select>
+                      </div>
                     </div>
                     <div class="column is-2">
                         <label>Clave</label>
@@ -193,7 +203,9 @@
                         <label for="">Tipo de moneda</label>
                     </div>
                     <div class="column is-3">
-                        <select name="" id="" ng-model="regmov.idmoneda" ng-options="x.value as x.label for x in lstMoneda">  </select>
+                      <div class="select is-small">
+                        <select name="" id="" ng-model="regmov.idmoneda" ng-options="x.value as x.label for x in lstMoneda"></select>
+                      </div>
                     </div>
                     <div class="column is-1" ng-show="false">
                         <label for="">Desc.</label>
@@ -224,7 +236,7 @@
                         <input type="text" ng-model="regmov.preciounit" class="input is-small" required>
                     </div>
                 </div>
-                <div style="width:60%; height:100px; overflow:auto;border:2px solid black;margin-top:-15px" ng-show="lstProducto.length > 0 ">
+                <div style="width:100%; height:100px; overflow:auto;border:2px solid black;margin-top:-15px" ng-show="lstProducto.length > 0 ">
                     <table class="table is-hoverable">
                         <col width="30%"/>
                         <col width="70%"/>

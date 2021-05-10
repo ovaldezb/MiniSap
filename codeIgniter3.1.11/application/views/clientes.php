@@ -419,7 +419,7 @@
         
 	    </section>
 	    <footer class="modal-card-foot">
-	      <button class="button is-warning" ng-click="clseDomEntrega()">Cerrar</button>
+	      <button class="button is-warning" ng-click="clseDomEntrega()">{{btnClose}}</button>
 	    </footer>
 	  </div>
 	</div>

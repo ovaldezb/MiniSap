@@ -40,7 +40,7 @@ class Inventario extends CI_Controller
         }
     }
 
-    public function save()
+    public function saveinventario()
     {
         if (isset($_SESSION['username'])) {
             $data = json_decode(file_get_contents("php://input"), true);

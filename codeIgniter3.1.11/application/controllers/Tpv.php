@@ -64,7 +64,9 @@ class Tpv extends CI_Controller
 			$data['cambio'],
 			$data['idsucursal'],
 			$data['facturado'],
-			$data['idfactura'])
+			$data['idfactura'],
+      $data['origen'],
+      $data['iva'])
 		);
 		return $this->output
 					 ->set_content_type('application/json')
@@ -142,15 +144,60 @@ class Tpv extends CI_Controller
 					->set_output($result);
   }
 
+  public function savecortecaja(){
+    if (isset($_SESSION['username'])) {
+      $data = json_decode(file_get_contents("php://input"), true);
+      $arraDatosFactura = array(
+          $data['documento'],
+          $data['fcorte'],
+          $data['cliente'],
+          $data['producto'],
+          $data['importe'],
+          $data['vendedor'],
+          $data['tipopago'],
+          $data['formapago'],
+          $data['metodopago'],
+          $data['idempresa'],
+          $data['aniofiscal'],
+          $data['idsucursal'],
+          $data['usocfdi'],
+          $data['moneda'],
+          $data['operaciones'],
+          $data['canceladas'],
+      );
+      $result = $this->tpvmodel->save_corte_caja($arraDatosFactura);
+      return $this->output
+          ->set_content_type('application/json')
+          ->set_output($result);
+    }
+  }
+
   public function corteventa($idcorte,$idventa){
     if (isset($_SESSION['username'])) {
-      $result = $this->facturacionmodel->corte_venta($idcorte,$idventa);
+      $result = $this->tpvmodel->corte_venta($idcorte,$idventa);
       return $this->output
           ->set_content_type('application/json')
           ->set_output($result);
   }
   }
 
+
+  public function saveproductofact(){
+    if (isset($_SESSION['username'])) {
+      $data = json_decode(file_get_contents("php://input"), true);
+      $arraDatosFactura = array(
+          $data['idfactura'],
+          $data['clave'],
+          $data['nombre'],
+          $data['importe'],
+          $data['iva']
+      );
+      $result = $this->tpvmodel->save_producto_factura($arraDatosFactura);
+      return $this->output
+          ->set_content_type('application/json')
+          ->set_output($result);
+    }
+  }
 
 }
 ?>

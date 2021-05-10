@@ -75,7 +75,7 @@
 							<col width="12%">
 							</colgroup>
 							<tr class="tbl-header">
-								<td style="text-align:center;font-size:12px">DCTO</td>									
+								<td style="text-align:center;font-size:12px">DOCTO</td>									
 								<td style="text-align:center;font-size:12px">FECHA</td>
 								<td style="text-align:center;font-size:12px">CLIENTE</td>
 								<td style="text-align:center;font-size:12px">IMPORTE</td>
@@ -116,7 +116,7 @@
 									<td class="font12" style="text-align:center;">{{x.FECHA_VENCIMIENTO}}</td>
 
 									<td class="font12" style="text-align:center;" ng-show="x.FACTURADO == 't'"><i ng-show="x.ESTATUS !== 'CANCELADA'" class="fas fa-check"></i> <i ng-show="x.ESTATUS === 'CANCELADA'" class="fas fa-ban"></i></td>
-                  <td class="font12" style="text-align:center;" ng-show="x.FACTURADO == 'f'">&nbsp;</td>
+                  <td class="font12" style="text-align:center;" ng-show="x.FACTURADO == 'f'"><i ng-show="x.ESTATUS === 'CANCELADA'" class="fas fa-ban"></i></td>
                   <td class="font12" style="text-align:center;" ng-show="x.FACTURADO == 't'"><a href="../creacfdixml/sendfacturaby/1/{{x.ID_FACTURA}}/{{x.ID_CLIENTE}}/{{x.ID_EMPRESA}}" style="color:green" ><i class="fas fa-download"></i></a></td>
                   <td class="font12" style="text-align:center;" ng-show="x.FACTURADO == 'f'">&nbsp;</td>
 									<td class="font12" style="text-align:center;">{{x.VENDEDOR}}</td>
@@ -312,7 +312,7 @@
 								</div>
 								<div class="column is-narrow">	
                   <div class="select is-small">								
-									  <select ng-model="factura.fpago" ng-options="x.CLAVE as x.CLAVE+' '+x.DESCRIPCION for x in lstFormpago"></select>
+									  <select ng-model="factura.fpago" ng-options="x.ID_FORMA_PAGO as x.CLAVE+' '+x.DESCRIPCION for x in lstFormpago"></select>
                   </div>
 								</div>
 								<div class="column is-2" style="margin-left:10px">
