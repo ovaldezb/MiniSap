@@ -1,4 +1,4 @@
-CREATE FUNCTION "registra_pedido" ("docto" character, "id_clte" integer, "id_vend" integer, "fec_pedido" timestamp without time zone, "anio_fisc" integer, "id_empresa" integer, "importe" double precision, "idsucursal" integer, "fpago" integer, "tpago" integer, "comentarios" character, "cuenta" character, "dias" numeric, "id_moneda" integer, "fecha_entrega" timestamp without time zone, "vendido" boolean, "domicilio" text, "idmetpago" integer) RETURNS int4 LANGUAGE plpgsql AS '
+CREATE FUNCTION "registra_pedido" ("docto" character, "id_clte" integer, "id_vend" integer, "fec_pedido" timestamp without time zone, "anio_fisc" integer, "id_empresa" integer, "importe" double precision, "idsucursal" integer, "fpago" integer, "tpago" integer, "comentarios" character, "cuenta" character, "dias" numeric, "id_moneda" integer, "fecha_entrega" timestamp without time zone, "vendido" boolean, "domicilio" text, "idmetpago" integer, "idusuario" integer) RETURNS int4 LANGUAGE plpgsql AS '
 DECLARE
 
 ult_val int :=0;
@@ -16,9 +16,9 @@ END IF;
 
 INSERT INTO "PEDIDOS" ("DOCUMENTO","ID_CLIENTE","ID_VENDEDOR","FECHA_PEDIDO",
 "ANIO_FISCAL","ID_EMPRESA","IMPORTE","ID_SUC_PIDIO","VENDIDO","ID_MONEDA","ID_TIPO_PAGO","DIAS","FECHA_ENTREGA",
-"ID_FORMA_PAGO","CUENTA","COMENTARIOS","DOMICILIO","ID_METODO_PAGO","ESTATUS") 
+"ID_FORMA_PAGO","CUENTA","COMENTARIOS","DOMICILIO","ID_METODO_PAGO","ESTATUS","ID_USUARIO") 
 VALUES(doctoinsert,id_clte,id_vend,fec_pedido,anio_fisc,id_empresa,importe,idsucursal,vendido,
-id_moneda,tpago,dias,fecha_entrega,fpago,cuenta,comentarios,domicilio,idmetpago,''ACTIVO'');
+id_moneda,tpago,dias,fecha_entrega,fpago,cuenta,comentarios,domicilio,idmetpago,''ACTIVO'',idusuario);
 
 
 UPDATE "INCREMENTOS" SET "VALOR" = "VALOR" + 1 

@@ -58,6 +58,8 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
   $scope.idUsuario = '';
   $scope.showInputData = false;
   $scope.showEmail = false;
+  $scope.showUsuario = false;
+  $scope.usuario = '';
   $scope.idProceso = $routeParams.idproc;
   $scope.proddscnt ={
     producto:undefined,
@@ -333,6 +335,8 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
     $scope.factura.idvendedor = $scope.lstFacturas[$scope.indexRowFactura].ID_VENDEDOR;
     $scope.nombre_vendedor = $scope.lstFacturas[$scope.indexRowFactura].VENDEDOR;
     $scope.claveclte = $scope.lstFacturas[$scope.indexRowFactura].CLAVE;
+    $scope.usuario = $scope.lstFacturas[$scope.indexRowFactura].CLAVE_USR === null ? 'ND' : $scope.lstFacturas[$scope.indexRowFactura].CLAVE_USR;
+    $scope.showUsuario = true;
     //aqui depende de si la fact es de un CC o no, va ir a buscar de una forma u otra
     if($scope.lstFacturas[$scope.indexRowFactura].ID_CLIENTE === null){
       $scope.getFacturaProductoDetalleyId($scope.lstFacturas[$scope.indexRowFactura].ID_FACTURA);
@@ -983,7 +987,8 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
         facturado:'true',
         idfactura:null,
         origen:'F',
-        iva:0
+        iva:0,
+        idusuario:$scope.idUsuario
       }
       var nextdate = new Date(new Date().getTime()+ $scope.factura.dias*1000*60*60*24);
       var dataFact = 
@@ -1006,7 +1011,8 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
         contacto:$scope.factura.contacto,
         idmoneda:$scope.factura.idmoneda,
         idpedido:$scope.factura.idpedido,
-        cliente:null
+        cliente:null,
+        idusuario:$scope.idUsuario
       };
       let msg = ''
       if($scope.requiere_factura){
@@ -1344,6 +1350,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
         $scope.factura.fpago = '';
         $scope.factura.tpago = '';
         $scope.requiere_factura = false;
+        $scope.showUsuario = false;
         $scope.getNextDocTpv();
     }
 

@@ -155,6 +155,10 @@
 									</div>
 								</div>
 							</div>
+              <div class="columns" ng-show="showUsuario">
+                <div class="column"><label class="label">Usuario:</label></div>
+                <div class="column">{{usuario}}</div>
+              </div>
 						</div>
 						<div class="column is-8">
 							<div class="columns is-gapless is-multiline">

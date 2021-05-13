@@ -52,6 +52,7 @@ class Pedidos extends CI_Controller
                 $data['fechaentrega'],
                 $data['domi'],
                 $data['mpago'],
+                $data['idusuario'],
             )
             );
             return $this->output

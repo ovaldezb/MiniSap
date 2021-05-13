@@ -66,7 +66,8 @@ class Tpv extends CI_Controller
 			$data['facturado'],
 			$data['idfactura'],
       $data['origen'],
-      $data['iva'])
+      $data['iva'],
+      $data['idusuario'])
 		);
 		return $this->output
 					 ->set_content_type('application/json')
@@ -164,6 +165,7 @@ class Tpv extends CI_Controller
           $data['moneda'],
           $data['operaciones'],
           $data['canceladas'],
+          $data['idusuario'],
       );
       $result = $this->tpvmodel->save_corte_caja($arraDatosFactura);
       return $this->output
@@ -193,6 +195,17 @@ class Tpv extends CI_Controller
           $data['iva']
       );
       $result = $this->tpvmodel->save_producto_factura($arraDatosFactura);
+      return $this->output
+          ->set_content_type('application/json')
+          ->set_output($result);
+    }
+  }
+
+  public function updtfaccte($idfactura,$idcorte){
+    if (isset($_SESSION['username'])) {
+      $data = json_decode(file_get_contents("php://input"), true);
+      $arraDatosFactura = array($idfactura,$idcorte);
+      $result = $this->tpvmodel->update_factura_producto($arraDatosFactura);
       return $this->output
           ->set_content_type('application/json')
           ->set_output($result);

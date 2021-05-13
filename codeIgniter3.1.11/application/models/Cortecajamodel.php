@@ -12,71 +12,40 @@ class Cortecajamodel extends CI_model
 	}
 
   function reporte_by_month($idempresa,$aniofiscal,$fecini,$fecfin){
-    $query = 'SELECT TO_CHAR("FECHA_CORTE",\'DD-mon-YYYY HH24:MI\') as "FECHA", "OPERACIONES", "CANCELADAS" as "CANCELADOS", "IMPORTE", "ID_CORTE" 
-      FROM "CORTE_CAJA"
-      WHERE "ID_EMPRESA" = $1
-      AND "ANIO_FISCAL" = $2
-      AND "FECHA_CORTE" >= $3
-      AND "FECHA_CORTE"<= $4 
+    $query = 'SELECT TO_CHAR(C."FECHA_CORTE",\'DD-mon-YYYY HH24:MI\') as "FECHA", 
+      C."OPERACIONES", C."CANCELADAS" as "CANCELADOS", C."IMPORTE", C."ID_CORTE",
+      F."DOCUMENTO",
+      TRIM(U."CLAVE_USR") as "CLAVE_USR", U."NOMBRE" 
+      FROM "CORTE_CAJA" as C
+      LEFT JOIN "FACTURA" as F ON F."ID_FACTURA" = C."ID_FACTURA"
+      LEFT JOIN "USUARIO" as U ON U."ID_USUARIO" = C."ID_USUARIO"
+      WHERE C."ID_EMPRESA" = $1
+      AND C."ANIO_FISCAL" = $2
+      AND C."FECHA_CORTE" >= $3
+      AND C."FECHA_CORTE"<= $4 
       ORDER BY "FECHA"';
 		pg_prepare($this->conn, "sel_month", $query);
 		$result =  pg_fetch_all(pg_execute($this->conn, "sel_month", array($idempresa,$aniofiscal,$fecini,$fecfin)));
 		return json_encode($result,JSON_NUMERIC_CHECK);
   }
 
-  /*function getOperMonthByDate($arrayDates){
-    $query2 = 'SELECT SUM("PAG_EFECTIVO") - SUM("CAMBIO") as "EFECTIVO",SUM("PAG_TARJETA") as "TARJETA",
-              SUM("PAG_CHEQUE") as "CHEQUE",SUM("PAG_VALES") as "VALES" 
-              FROM "VENTAS"
-              WHERE "ANIO_FISCAL"=$1
-              AND "FECHA_VENTA" >= $2 
-              AND "FECHA_VENTA" <= $3
-              AND "ID_EMPRESA" = $4
-              AND "ID_TIPO_PAGO" = 1
-              AND "CANCELADO" = \'false\'
-              GROUP BY "ID_TIPO_PAGO"';
-    pg_prepare($this->conn,"qry2",$query2);
-    $result2 = pg_fetch_all(pg_execute($this->conn,"qry2",$arrayDates));
-    if($result2 == false){
-    $result2 = array(array("EFECTIVO"=>0,"TARJETA"=>0,"CHEQUE"=>0,"VALES"=>0));
-    }
-
-    $query3 = 'SELECT SUM("IMPORTE") as "SUMA", "ID_TIPO_PAGO" 
-        FROM "VENTAS"
-        WHERE "ANIO_FISCAL"=$1					
-        AND "FECHA_VENTA" >= $2 
-        AND "FECHA_VENTA" <= $3
-        AND "ID_EMPRESA" = $4
-        AND "CANCELADO" = \'false\'
-        GROUP BY "ID_TIPO_PAGO"';
-    pg_prepare($this->conn,"qry3",$query3);
-
-    $result3 = pg_fetch_all(pg_execute($this->conn,"qry3",$arrayDates));
-    if($result3){
-      if(sizeof($result3) == 1){
-        if($result3[0]["ID_TIPO_PAGO"] == "1"){
-          $result4 = array($result3[0], array("SUMA"=>"0","ID_TIPO_PAGO"=>"2"));
-        }else{
-          $result4 = array(array("SUMA"=>"0","ID_TIPO_PAGO"=>"1"),$result3[0]);
-        }
-      }else{
-        $result4 = $result3;
-      }
-    }else{
-      $result4 = array(array("SUMA"=>"0","ID_TIPO_PAGO"=>"1"),array("SUMA"=>"0","ID_TIPO_PAGO"=>"2"));
-    }
-    return json_encode(array("pagos"=>$result2[0],"tipopago"=>$result4),JSON_NUMERIC_CHECK);
-  }*/
-
   public function dataOperByIDCC($arrayIdCC){
 		
     $query1 = 'SELECT CV."ID_VENTA",V."DOCUMENTO",VP."COUNT",V."ID_TIPO_PAGO", 
     CASE WHEN V."CANCELADO" = \'t\' THEN 0 ELSE V."IMPORTE" END AS "IMPORTE",
-    V."CANCELADO"
+    V."CANCELADO",
+    CASE WHEN V."PAG_EFECTIVO" > 0 THEN \'EF\' ELSE
+      (CASE WHEN V."PAG_TARJETA" > 0 THEN \'TA\' ELSE
+        (CASE WHEN V."PAG_CHEQUE" > 0 THEN \'CH\' ELSE 
+          (CASE WHEN V."PAG_VALES" > 0 THEN \'VA\' ELSE \'CR\'END)
+           END)
+        END)
+    END as "TIPO_PAGO",
+    U."CLAVE_USR"
     FROM "CORTE_VENTA" as CV 
     INNER JOIN "VENTAS" as V ON V."ID_VENTA" = CV."ID_VENTA"
-    INNER JOIN (SELECT "ID_VENTA", COUNT(*) AS "COUNT" FROM "VENTAS_PRODUCTO" GROUP BY "ID_VENTA")
-    AS VP ON VP."ID_VENTA" = V."ID_VENTA"
+    INNER JOIN (SELECT "ID_VENTA", COUNT(*) AS "COUNT" FROM "VENTAS_PRODUCTO" GROUP BY "ID_VENTA")  AS VP ON VP."ID_VENTA" = V."ID_VENTA"
+    LEFT OUTER JOIN "USUARIO" as U ON U."ID_USUARIO" = V."ID_USUARIO"
     WHERE "ID_CORTE" = $1
     ORDER BY CV."ID_VENTA"';
 		pg_prepare($this->conn,"qry1",$query1);

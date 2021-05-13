@@ -55,6 +55,7 @@ class Facturas extends CI_Controller
             $data['idmoneda'],
             $data['idpedido'],
             $data['cliente'],
+            $data['idusuario']
         );
         $result = $this->facturacionmodel->savefactura($arraDatosFactura);
         return $this->output

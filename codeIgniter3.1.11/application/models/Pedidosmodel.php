@@ -14,7 +14,7 @@ class Pedidosmodel extends CI_model
 
 	function registra_pedido($pedido_data)
 	{
-		$pstmt = 'SELECT * FROM registra_pedido($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,false,$16,$17)';
+		$pstmt = 'SELECT * FROM registra_pedido($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,false,$16,$17,$18)';
 		pg_prepare($this->conn,"prstmt",$pstmt);
 		$result = pg_fetch_all(pg_execute($this->conn, "prstmt", $pedido_data));
 		return json_encode($result);
@@ -58,10 +58,12 @@ class Pedidosmodel extends CI_model
 			TO_CHAR(P."FECHA_PEDIDO",\'DD-Mon-YYYY HH24:MM\') as "FECHA_PEDIDO", 
 			P."IMPORTE", 
 			P."VENDIDO",
-      TRIM(P."ESTATUS") as "ESTATUS"
+      TRIM(P."ESTATUS") as "ESTATUS",
+      TRIM(U."CLAVE_USR") as "CLAVE_USR"
 		FROM "PEDIDOS" AS P
 		INNER JOIN "CLIENTE" AS C ON C."ID_CLIENTE" = P."ID_CLIENTE"
 		INNER JOIN "VENDEDOR" AS V ON V."ID_VENDEDOR" = P."ID_VENDEDOR"
+    LEFT JOIN "USUARIO" as U ON U."ID_USUARIO" = P."ID_USUARIO"
 		WHERE P."ID_EMPRESA" = $1
 		AND P."ANIO_FISCAL" = $2
 		ORDER BY P."FECHA_PEDIDO" DESC';

@@ -12,7 +12,7 @@ class Facturacionmodel extends CI_model
 	}
 
 	function savefactura($arrayDatFact){
-		$query = 'SELECT * FROM registra_factura($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19)';
+		$query = 'SELECT * FROM registra_factura($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20)';
 		pg_prepare($this->conn,"insert_fact",$query);
 		$result = pg_fetch_all(pg_execute($this->conn,"insert_fact",$arrayDatFact));
 		return json_encode($result);
@@ -33,11 +33,13 @@ class Facturacionmodel extends CI_model
     FC."FOLIO",
     TRIM(C."EMAIL") as "EMAIL",
     C."ID_CLIENTE",
-    TRIM(F."ESTATUS") as "ESTATUS"
+    TRIM(F."ESTATUS") as "ESTATUS",
+    TRIM(U."CLAVE_USR") as "CLAVE_USR"
 		FROM "FACTURA" as F
 		LEFT JOIN "CLIENTE" as C ON C."ID_CLIENTE" = F."ID_CLIENTE"
 		lEFT JOIN "VENDEDOR" as E ON E."ID_VENDEDOR" = F."ID_VENDEDOR"
     LEFT OUTER JOIN "FACTURA_CFDI" as FC ON FC."ID_FACTURA" = F."ID_FACTURA"
+    LEFT JOIN "USUARIO" as U ON U."ID_USUARIO" = F."ID_USUARIO"
 		WHERE F."ID_EMPRESA" = $1 
 		AND F."ANIO_FISCAL" = $2
 		ORDER BY F."ID_FACTURA" DESC';

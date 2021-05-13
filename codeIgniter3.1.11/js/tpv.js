@@ -970,7 +970,8 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
       facturado: "false",
       idfactura: null,
       origen: "V",
-      iva:0
+      iva:0,
+      idusuario:$scope.idUsuario
     };
     var nextdate = new Date(
       new Date().getTime() + $scope.cliente.dcredito * 1000 * 60 * 60 * 24
@@ -995,6 +996,7 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
       idmoneda: 1,
       idpedido: null,
       cliente: null,
+      idusuario:$scope.idUsuario
     };
 
     if($scope.fact.tipopago === 1){
@@ -1409,7 +1411,7 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
 
     var corteCaja = {
       documento: $scope.fact.documento,
-      fcorte: formatDateInsert($scope.fechaCorteTmp), //formatDateInsert(new Date()),
+      fcorte: formatDateInsert($scope.fechaCorteTmp),
       cliente: "Corte Caja " + formatDatePrintHHMM(new Date()),
       producto: "VENTAS DESDE TPV DEL DIA",
       importe: 0,
@@ -1424,6 +1426,7 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
       moneda: 1,
       operaciones: 0,
       canceladas: $scope.cancelados,
+      idusuario:$scope.idUsuario
     };
 
     swal({
@@ -1491,6 +1494,7 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
                 idmoneda: 1,
                 idpedido: null,
                 cliente: "Corte de Caja " + formatDatePrintHHMM(new Date()),
+                idusuario:$scope.idUsuario
               };
               var importeFactura = 0
               for (var i = 0; i < $scope.lstVentas.length; i++) {
@@ -1534,6 +1538,7 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
                         });
                     }
                   }
+                  $scope.updateCorte(fact.data[0].registra_factura,corteCreado);
                   swal("Se ha hecho el corte de caja", "Ok", "success");
                   $scope.closeOperaciones();
                 })
@@ -1548,6 +1553,16 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
       }
     });
   };
+
+  $scope.updateCorte = (idfactura,idcorte)=>{
+    $http.put(pathTpv+'updtfaccte/'+idfactura+'/'+idcorte)
+    .then(res =>{
+      console.log(res.dat);
+    })
+    .catch(err =>{
+      console.log(err);
+    });
+  }
 
   $scope.selOperacion = (idOperacion, index) => {
     $scope.idOpSel = idOperacion;
@@ -1574,6 +1589,25 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
         console.log(err);
       });
   };
+
+  $scope.cambiaTIpoPago = ()=>{
+    if(!$scope.fact.isfacturable && $scope.fact.tipopago===2){
+      swal('No es posible vender a crédito cuando el cliente es Ventas Mostrador');
+      $scope.fact.tipopago =1;
+      /*swal({
+        title:
+          "Esta seguro que desea pagar a crédito, no cuenta con un Cliente, no es recomendable cobra a crédito una venta de mostrador",
+        text: "Continuar?",
+        icon: "warning",
+        buttons: [true, true],
+        dangerMode: true,
+      }).then((answer) => {
+        if (answer) {
+          $scope.fact.tipopago
+        }
+      });*/
+    }
+  }
 
   $scope.eliminaOperacion = () => {
     swal({

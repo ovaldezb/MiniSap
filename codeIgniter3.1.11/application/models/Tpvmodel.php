@@ -83,7 +83,7 @@ class Tpvmodel extends CI_model
 
 	function registra_venta($arrayVenta)
 	{
-		$pstmt = 'SELECT * FROM registra_venta($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21)';
+		$pstmt = 'SELECT * FROM registra_venta($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22)';
 		pg_prepare($this->conn,"prstmt",$pstmt);
 		$result = pg_fetch_all(pg_execute($this->conn, "prstmt", $arrayVenta));
 		return json_encode($result);
@@ -285,7 +285,7 @@ class Tpvmodel extends CI_model
   }
 
   function save_corte_caja($arrayCorteCaja){
-    $query = 'SELECT * FROM registra_corte($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16)';
+    $query = 'SELECT * FROM registra_corte($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17)';
     pg_prepare($this->conn,"insert_corte",$query);
 		$result = pg_fetch_all(pg_execute($this->conn,"insert_corte",$arrayCorteCaja));
 		return json_encode($result);
@@ -301,6 +301,14 @@ class Tpvmodel extends CI_model
 
   function save_producto_factura($arrayDataFact){
     $query = 'INSERT INTO "FACTURA_PRODUCTO" ("ID_FACTURA","CLAVE","NOMBRE","IMPORTE","IVA") VALUES($1,$2,$3,$4,$5)';
+    pg_prepare($this->conn,"insert_producto_fact",$query);
+    $result = pg_execute($this->conn,"insert_producto_fact",$arrayDataFact);
+    return json_encode(array("res"=>"Ok"));
+  }
+
+  
+  function update_factura_producto($arrayDataFact){
+    $query = 'UPDATE "CORTE_CAJA" SET "ID_FACTURA"=$1 WHERE "ID_CORTE" = $2';
     pg_prepare($this->conn,"insert_producto_fact",$query);
     $result = pg_execute($this->conn,"insert_producto_fact",$arrayDataFact);
     return json_encode(array("res"=>"Ok"));

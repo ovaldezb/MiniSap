@@ -29,7 +29,7 @@
               </colgroup>
               <tbody>
                 <tr class="tbl-header">
-                  <td class="font12" style="text-align:center">Dia</td>
+                  <td class="font12" style="text-align:center">Día</td>
                   <td class="font12" style="text-align:center">Operaciones</td>
                   <td class="font12" style="text-align:center">Canceladas</td>
                   <td class="font12" style="text-align:center">Importe</td>
@@ -60,92 +60,114 @@
       </div>
       <div class="column">
         <div class="box">
-          <table style="width:55%;margin-top:-20px">
-            <colgroup>
-              <col width="25%"/>
-              <col width="25%"/>
-              <col width="25%"/>
-              <col width="25%"/>
-            </colgroup>
-            <tbody>
-              <tr>
-                <td style="text-align:right">Cajero</td>
-                <td colspan="3"></td>
-              </tr>
-              <tr>
-                <td>&nbsp;</td>
-                <td>Inicio</td>
-                <td>{{dataIniDay.horaIni}}</td>
-                <td style="text-align:right">{{dataIniDay.docIni}}</td>
-              </tr>
-              <tr>
-                <td>&nbsp;</td>
-                <td>Fin</td>
-                <td>{{dataIniDay.horaFin}}</td>
-                <td style="text-align:right">{{dataIniDay.docFin}}</td>
-              </tr>
-              <tr>
-                <td colspan="4">&nbsp;</td>
-              </tr>
-            </tbody>
-          </table>
-          <table style="width:55%">
-            <colgroup>
-              <col width="25%"/>
-              <col width="40%"/>
-              <col width="35%"/>
-            </colgroup>
-            <tbody>
-              <tr>
-                <td colspan="3" style="text-align:left">Pagado en:</td>
-              </tr>
-              <tr>
-                <td>&nbsp;</td>
-                <td>Efectivo</td>
-                <td style="text-align:right">{{pagos.efectivo | currency}}</td>
-              </tr>
-              <tr>
-                <td>&nbsp;</td>
-                <td>Tarjeta</td>
-                <td style="text-align:right">{{pagos.tarjeta | currency}}</td>
-              </tr>
-              <tr>
-                <td>&nbsp;</td>
-                <td>Cheque</td>
-                <td style="text-align:right">{{pagos.cheque | currency}}</td>
-              </tr>
-              <tr>
-                <td>&nbsp;</td>
-                <td>Vales</td>
-                <td style="text-align:right">{{pagos.vales | currency}}</td>
-              </tr>
-              <tr>
-                <td colspan="3">&nbsp;</td>
-              </tr>
-              <tr>
-                <td>&nbsp;</td>
-                <td>Contado-></td>
-                <td style="text-align:right">{{tipopago.contado | currency}}</td>
-              </tr>
-              <tr>
-                <td>&nbsp;</td>
-                <td>Crédito-></td>
-                <td style="text-align:right">{{tipopago.credito | currency}}</td>
-              </tr>
-              <tr>
-                <td colspan="2"></td>
-                <td style="border-bottom:2px solid black">&nbsp;</td>
-              </tr>
-              <tr>
-                <td>&nbsp;</td>
-                <td>
-                  <legend style="font-weight: bold;">
-                  Total
-                  </legend>
-                </td>
-                <td style="text-align:right;font-weight: bold;">{{tipopago.contado + tipopago.credito | currency}}</td>
-              </tr>
-            </tbody>
+          <table style="width:100%">
+            <tr>
+              <td>
+                <table style="width:60%;">
+                  <colgroup>
+                    <col width="25%"/>
+                    <col width="25%"/>
+                    <col width="25%"/>
+                    <col width="25%"/>
+                  </colgroup>
+                  <tbody>
+                    <tr>
+                      <td style="text-align:right">Cajero</td>
+                      <td colspan="3" style="text-align:right">{{usuarioCorte}}</td>
+                    </tr>
+                    <tr>
+                      <td>&nbsp;</td>
+                      <td>Inicio</td>
+                      <td>{{dataIniDay.horaIni}}</td>
+                      <td style="text-align:right">{{dataIniDay.docIni}}</td>
+                    </tr>
+                    <tr>
+                      <td>&nbsp;</td>
+                      <td>Fin</td>
+                      <td>{{dataIniDay.horaFin}}</td>
+                      <td style="text-align:right">{{dataIniDay.docFin}}</td>
+                    </tr>
+                    <tr>
+                      <td colspan="4">&nbsp;</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <table style="width:60%">
+                  <colgroup>
+                    <col width="25%"/>
+                    <col width="40%"/>
+                    <col width="35%"/>
+                  </colgroup>
+                  <tbody>
+                    <tr>
+                      <td colspan="3" style="text-align:left">Pagado en:</td>
+                    </tr>
+                    <tr>
+                      <td>&nbsp;</td>
+                      <td>Efectivo</td>
+                      <td style="text-align:right">{{pagos.efectivo | currency}}</td>
+                    </tr>
+                    <tr>
+                      <td>&nbsp;</td>
+                      <td>Tarjeta</td>
+                      <td style="text-align:right">{{pagos.tarjeta | currency}}</td>
+                    </tr>
+                    <tr>
+                      <td>&nbsp;</td>
+                      <td>Cheque</td>
+                      <td style="text-align:right">{{pagos.cheque | currency}}</td>
+                    </tr>
+                    <tr>
+                      <td>&nbsp;</td>
+                      <td>Vales</td>
+                      <td style="text-align:right">{{pagos.vales | currency}}</td>
+                    </tr>
+                    <tr>
+                      <td colspan="3">&nbsp;</td>
+                    </tr>
+                    <tr>
+                      <td>&nbsp;</td>
+                      <td>Contado-></td>
+                      <td style="text-align:right">{{tipopago.contado | currency}}</td>
+                    </tr>
+                    <tr>
+                      <td>&nbsp;</td>
+                      <td>Crédito-></td>
+                      <td style="text-align:right">{{tipopago.credito | currency}}</td>
+                    </tr>
+                    <tr>
+                      <td colspan="2"></td>
+                      <td style="border-bottom:2px solid black">&nbsp;</td>
+                    </tr>
+                    <tr>
+                      <td>&nbsp;</td>
+                      <td>
+                        <legend style="font-weight: bold;">
+                        Total
+                        </legend>
+                      </td>
+                      <td style="text-align:right;font-weight: bold;">{{tipopago.contado + tipopago.credito | currency}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+              <td>
+                <p class="level-item" ng-show="indexRowCC === -1">
+                  <a>
+                    <span class="icon has-text-info">
+                      <i title="Imprime Corte de Caja" class="fas fa-print" style="color:grey"></i>
+                    </span>
+                  </a>
+                </p>
+                <p class="level-item" ng-show="indexRowCC !== -1">
+                  <a ng-click="imprimeCorteCaja()">
+                    <span class="icon has-text-info">
+                      <i title="Imprime Corte de Caja" class="fas fa-print"></i>
+                    </span>
+                  </a>
+                </p>
+              </td>
+            </tr>
           </table>
         </div>
       </div>
@@ -181,7 +203,7 @@
               <tr ng-repeat="x in lstVentas" ng-click="selOperacion(x.ID_VENTA,$index)"  ng-class="{selected: x.ID_VENTA === idOpSel}">
                 <td class="font12" ng-class="{canceled: x.CANCELADO === 't'}">{{x.DOCUMENTO.trim()}}</td>
                 <td class="font12" ng-class="{canceled: x.CANCELADO === 't'}" style="text-align:center">{{x.COUNT}}</td>
-                <td class="font12" ng-class="{canceled: x.CANCELADO === 't'}" style="text-align:center">{{x.ID_TIPO_PAGO == '1' ? 'EF':'CR'}}</td>
+                <td class="font12" ng-class="{canceled: x.CANCELADO === 't'}" style="text-align:center">{{x.TIPO_PAGO}}</td>
                 <td class="font12" ng-class="{canceled: x.CANCELADO === 't'}" style="text-align:right;">{{x.IMPORTE | currency}}</td>
               </tr>
             </table>
@@ -197,6 +219,20 @@
             </colgroup>
             <tr>
               <td>
+                <table style="width:100%;margin-bottom:-1px" class="table">
+                  <tbody>
+                    <colgroup>
+                      <col width="40%"/> 
+                      <col width="30%"/> 
+                      <col width="30%"/> 
+                    </colgroup>
+                    <tr>
+                      <td class="font12" style="text-align:left">Detalle de Ventas</td>
+                      <td class="font12" style="text-align:center">{{usuarioVenta}}</td>
+                      <td class="font12" style="text-align:right">Forma de Pago</td>
+                    </tr>
+                  </tbody>
+                </table>
                 <table style="width:100%" class="table">
                   <tbody>
                     <colgroup>
@@ -204,10 +240,6 @@
                       <col width="20%"/> 
                       <col width="20%"/> 
                     </colgroup>
-                    <tr>
-                      <td class="font12">Detalle de Ventas</td>
-                      <td colspan="2" class="font12" style="text-align:right">Forma de Pago</td>
-                    </tr>
                     <tr class="tbl-header">
                       <td class="font12">Desc</td>
                       <td class="font12">Cant</td>                      
@@ -283,7 +315,104 @@
           </table>
         </div>
       </div>
+      <div id="resumenoper" style="display:none">
+        <h1 class="title is-4 has-text-centered">Corte de Caja del {{fechaOperacion}}</h1> 
+        <table style="width:70%;">
+          <colgroup>
+            <col width="25%"/>
+            <col width="25%"/>
+            <col width="25%"/>
+            <col width="25%"/>
+          </colgroup>
+          <tbody>
+            <tr>
+              <td style="text-align:right">Cajero</td>
+              <td colspan="3" style="text-align:right">{{usuarioCorte}}</td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+              <td>Inicio</td>
+              <td>{{dataIniDay.horaIni}}</td>
+              <td style="text-align:right">{{dataIniDay.docIni}}</td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+              <td>Fin</td>
+              <td>{{dataIniDay.horaFin}}</td>
+              <td style="text-align:right">{{dataIniDay.docFin}}</td>
+            </tr>
+            <tr>
+              <td colspan="4">&nbsp;</td>
+            </tr>
+          </tbody>
+        </table>
+        <table style="width:70%">
+          <colgroup>
+            <col width="25%"/>
+            <col width="40%"/>
+            <col width="35%"/>
+          </colgroup>
+          <tbody>
+            <tr>
+              <td colspan="3" style="text-align:left">Pagado en:</td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+              <td>Efectivo</td>
+              <td style="text-align:right">{{pagos.efectivo | currency}}</td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+              <td>Tarjeta</td>
+              <td style="text-align:right">{{pagos.tarjeta | currency}}</td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+              <td>Cheque</td>
+              <td style="text-align:right">{{pagos.cheque | currency}}</td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+              <td>Vales</td>
+              <td style="text-align:right">{{pagos.vales | currency}}</td>
+            </tr>
+            <tr>
+              <td colspan="3">&nbsp;</td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+              <td>Contado-></td>
+              <td style="text-align:right">{{tipopago.contado | currency}}</td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+              <td>Crédito-></td>
+              <td style="text-align:right">{{tipopago.credito | currency}}</td>
+            </tr>
+            <tr>
+              <td colspan="2"></td>
+              <td style="border-bottom:2px solid black">&nbsp;</td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+              <td>
+                <legend style="font-weight: bold;">
+                Total
+                </legend>
+              </td>
+              <td style="text-align:right;font-weight: bold;">{{tipopago.contado + tipopago.credito | currency}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <table>
+          <thead>
+            <th>
+              <td>Factura generada en CXC número: {{noFactura}}</td>
+            </th>
+          </thead>
+        </table>
+      </div>
     </div>
   </div>
-
 </div>

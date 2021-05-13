@@ -58,6 +58,8 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
   $scope.dispsearch = false;
   $scope.showProgressBar = false;
   $scope.estatus = true;
+  $scope.shoUsuario = false;
+  $scope.usuario = '';
   $scope.mpago_style = {background:'pink'};
   $scope.idProceso = $routeParams.idproc;
   $scope.permisos = {
@@ -85,7 +87,8 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
     domi:'',
     bruto:'',
     comentarios:'',
-    subtotal:0
+    subtotal:0,
+    idusuario:''
   };
 
   $scope.domientrega = {
@@ -898,6 +901,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
       $scope.pedido.cuenta = $scope.pedido.cuenta == '' ? null : $scope.pedido.cuenta;
       $scope.pedido.fechaentrega = $scope.pedido.fechaentrega == '' ? null :$scope.pedido.fechaentrega;
       $scope.pedido.idvendedor = $scope.pedido.idvendedor == '' ? null : $scope.pedido.idvendedor;
+      $scope.pedido.idusuario = $scope.idUsuario;
       //Esto bloquea el boton de pedido
       swal({
         title: "Esta seguro que desea guardar el Pedido?",
@@ -1064,6 +1068,8 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
               $scope.domientrega.cp =res.data[0].CP;
               $scope.domientrega.ciudad =res.data[0].CIUDAD;
               $scope.domientrega.contacto =res.data[0].CONTACTO;
+              $scope.usuario = $scope.lstPedidos[$scope.indexRowPedido].CLAVE_USR === null ? 'ND' : $scope.lstPedidos[$scope.indexRowPedido].CLAVE_USR;
+              $scope.showUsuario = true;
               $scope.isRegistra = false;
               $scope.getDomicilios();
               if(res.data[0].ESTATUS === 'ACTIVO' && res.data[0].VENDIDO === 'f'){
@@ -1136,6 +1142,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
 
     $scope.agregaPEdido = function(){
       $scope.mpago_style = {background:'pink'};
+      $scope.showProgressBar = false;
       $scope.isCapturaPedido = true;
       $scope.getNextDocPedido();
     }
@@ -1193,6 +1200,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
         $scope.pedido.cuenta = '';
         $scope.pedido.idmoneda = 1;
         $scope.pedido.total = '';
+        $scope.showUsuario = false;
         $scope.mpago_style = {background:'pink'};
     }
 

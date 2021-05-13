@@ -435,7 +435,7 @@
 						</td>
 						<td style="vertical-align:middle">
 							<div class="select is-small">
-								<select ng-model="fact.tipopago" ng-options="x.ID_TIPO_PAGO as x.DESCRIPCION for x in lstTipopago"></select>
+								<select ng-model="fact.tipopago" ng-options="x.ID_TIPO_PAGO as x.DESCRIPCION for x in lstTipopago" ng-change="cambiaTIpoPago()"></select>
 							</div>
 						</td>
 						<td>&nbsp;</td>
@@ -535,7 +535,7 @@
                   </colgroup>
                   <thead>
                     <tr class="tbl-header">
-                      <th style="text-align:center">Dcto</th>
+                      <th style="text-align:center">Docto</th>
                       <th style="text-align:center">Part</th>
                       <th style="text-align:center">FP</th>
                       <th style="text-align:center">Importe</th>
@@ -923,6 +923,7 @@
 
 	<div id="ticket" style="display:none">
 		<div class="ticket ffont">
+      <div style="display: flex;justify-content: center">
 			<table>
 				<tr>
 					<td colspan="2" style="text-align:center">
@@ -959,6 +960,7 @@
 					<td colspan="2">&nbsp;</td>
 				</tr>
 			</table>
+      </div>
 			<table style="width:100%">
 				<tr style="border-top: 1px solid black;border-collapse: collapse;">
 					<th class="cantidad">CANTIDAD</th>
@@ -976,8 +978,8 @@
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
-					<td colspan="2" class="cantidad" style="width:80px">Importe Neto:</td>
-					<td style="text-align:right;width:40px">{{importeNeto | currency}}</td>
+					<td colspan="2" class="cantidad" style="width:80px">Sub Total:</td>
+					<td style="text-align:right;width:40px">{{subtotal | currency}}</td>
 				</tr>
 				<tr>
 					<td colspan="2" class="cantidad">Descuento:</td>
@@ -1005,13 +1007,13 @@
 			</table>
 			<table style="width:100%">
 				<tr>
-					<td style="text-align:center" colspan="3">Gracias por su compra, nos puede contactar en:</td>
+					<td style="text-align:center" colspan="3">Visitanos en Facebook @madereriaelpinabete</td>
 				</tr>
 				<tr>
-					<td style="text-align:center">72 34 23 56 23</td>
+					<td style="text-align:center">246 458 2374</td>
 				</tr>
 				<tr>
-					<td style="text-align:center">servicio@rts.com.mx</td>
+					<td style="text-align:center">madereriaelpinabete@hotmail.com</td>
 				</tr>
 			</table>
 		</div>

@@ -5,6 +5,9 @@ app.controller('myCtrlCortecaja',  function($scope, $http){
   $scope.indexRowCC = -1
   $scope.idxDetalleVenta = -1;
   $scope.fechaOperacion = '';
+  $scope.usuarioVenta = '';
+  $scope.usuarioCorte
+  $scope.noFactura = '';
   $scope.dataIniDay = {
     docIni:'',
     docFin:'',
@@ -88,6 +91,7 @@ app.controller('myCtrlCortecaja',  function($scope, $http){
     $scope.tipopago.contado = 0;
     $scope.tipopago.credito = 0;
     $scope.indexRowCC = -1;
+    $scope.usuarioVenta = '';
     $scope.getreportebymes(formatFecQuery(formatDatePrint(cmfd),'ini'),formatFecQuery(formatDatePrint(cmld),'fin'));
   }
 
@@ -97,6 +101,8 @@ app.controller('myCtrlCortecaja',  function($scope, $http){
     $scope.fechaOperacion = fecha;
     $scope.descuento = 0;
     $scope.impuestos = 0;
+    $scope.noFactura = $scope.lstCortesCaja[$scope.indexRowCC].DOCUMENTO == null ? 'ND' : $scope.lstCortesCaja[$scope.indexRowCC].DOCUMENTO;
+    $scope.usuarioCorte = $scope.lstCortesCaja[$scope.indexRowCC].CLAVE_USR == null ? 'ND' : $scope.lstCortesCaja[$scope.indexRowCC].CLAVE_USR;
     $scope.lstDetalleVta =[];
     $scope.venta = {};
     $scope.abreOperaciones(formatFecQuery(fecha,'ini'),formatFecQuery(fecha,'fin'));
@@ -145,6 +151,7 @@ app.controller('myCtrlCortecaja',  function($scope, $http){
     $scope.idOpSel = idOperacion;
     $scope.idxOperacion = index;
     $scope.idxDetalleVenta = -1;
+    $scope.usuarioVenta = $scope.lstVentas[index].CLAVE_USR === null ? 'ND' : $scope.lstVentas[index].CLAVE_USR;
     $scope.descuento = 0;
     $scope.impuestos = 0;
     $scope.getventabyid();
@@ -165,6 +172,15 @@ app.controller('myCtrlCortecaja',  function($scope, $http){
     $scope.idxDetalleVenta = index;
     $scope.descuento = $scope.lstDetalleVta[index].CANTIDAD * $scope.lstDetalleVta[index].PRECIO * $scope.lstDetalleVta[index].DESCUENTO / 100;
     $scope.impuestos = $scope.lstDetalleVta[index].CANTIDAD * $scope.lstDetalleVta[index].PRECIO * $scope.lstDetalleVta[index].IVA / 100;
+  }
+
+  $scope.imprimeCorteCaja = () =>{
+    var resumem = document.getElementById("resumenoper");
+    var ventimp = window.open(" ", "popimpr");
+    ventimp.document.write(resumem.innerHTML);
+    ventimp.document.close();
+    ventimp.print();
+    ventimp.close();
   }
 
 });

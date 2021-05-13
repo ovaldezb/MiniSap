@@ -149,6 +149,12 @@
 									<input type="text" class="input is-small" ng-model="pedido.cuenta" >
 								</div>
               </div>
+              <div class="columns" ng-show="showUsuario">
+                <div class="column">
+                  <label class="label">Usuario:</label>
+                </div>
+                <div class="column">{{usuario}}</div>
+              </div>
 						</div>
 						<div class="column">
 							<div class="columns is-gapless is-multiline">
