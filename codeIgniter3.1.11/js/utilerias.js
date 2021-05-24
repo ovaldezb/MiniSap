@@ -20,6 +20,17 @@ function formatDatePrintHHMM(hoy)
 	return fecha
 }
 
+function formatDateExcel(hoy){
+  var dia, mes, year;
+	var fecha;
+	dia = hoy.getDate() <10 ? '0'+hoy.getDate() : hoy.getDate();
+	mes = hoy.getMonth() < 9 ? '0'+(hoy.getMonth()+1) : (hoy.getMonth()+1);
+  hrs = hoy.getHours() <10 ? '0'+hoy.getHours() : hoy.getHours();;
+	min = hoy.getMinutes() <10 ? '0'+hoy.getMinutes() : hoy.getMinutes();;
+	fecha = dia+'_'+mes+'_'+hoy.getFullYear() + '_'+hrs+'_'+min;
+	return fecha
+}
+
 function formatDatePantalla(hoy)
 {
 	var dia, mes, year;
@@ -165,17 +176,6 @@ function habilitarEdicion(activar)
   $('#cantidad').prop('disabled',activar);
   $('#mascant').prop('disabled',activar);
   $('#mencant').prop('disabled',activar);
-}
-
-
-function agregarcompra()
-{
-  $('#divdisplay').show();
-}
-
-function closeDivSearchProv()
-{
-	$('#buscaprov').hide();
 }
 
 function habilitarBox1(ishabilitado)

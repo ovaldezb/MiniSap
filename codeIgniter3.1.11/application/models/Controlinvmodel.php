@@ -12,7 +12,7 @@ class Controlinvmodel extends CI_model
 	}
 
 
-    function get_inventario($idEmpresa,$anio_fiscal,$tipoMov,$tipoES,$fechaIni,$fechaFin,$caja,$codigoProducto){
+    function get_inventario($idEmpresa,$anio_fiscal,$tipoMov,$tipoES,$fechaIni,$fechaFin,$caja,$codigoProducto,$idsucursal){
         $tipoMovT = $tipoMov=='tod' ? ' ' : 'AND "MOV"=\''.$tipoMov.'\' ';
         if($tipoES=='t'){
             $tipoEST = ' ';
@@ -30,15 +30,16 @@ class Controlinvmodel extends CI_model
                 WHERE "ID_EMPRESA" = $1 
                 AND "ANIO_FISCAL" = $2
                 AND "FECHA" >= $3 
-                AND "FECHA" <= $4 '
+                AND "FECHA" <= $4
+                AND "ID_SUCURSAL" = $5 '
                 .$tipoMovT
                 .$tipoEST
                 .$cajaT
                 .$codigoProductoT
-                .' ORDER BY "FECHA" DESC';
+                .' ORDER BY "ID" DESC';
         
         $result = pg_prepare($this->conn, "selectquery", $query);
-		$result =  pg_fetch_all(pg_execute($this->conn, "selectquery", array($idEmpresa,$anio_fiscal,$fechaIni,$fechaFin)));
+		$result =  pg_fetch_all(pg_execute($this->conn, "selectquery", array($idEmpresa,$anio_fiscal,$fechaIni,$fechaFin, $idsucursal)));
 		return json_encode($result,JSON_NUMERIC_CHECK);
     }
 
@@ -50,10 +51,11 @@ class Controlinvmodel extends CI_model
 		return json_encode($result);
     }
 
+    //este se tiene que mejorar, para regresar lo que se movio
     function del_movinv($idMov){
         $query = 'DELETE FROM "INVENTARIO" WHERE "ID"=$1';
         pg_prepare($this->conn, "borramov", $query);
-		$result =  pg_fetch_all(pg_execute($this->conn, "borramov", $idMov));
+		$result =  pg_fetch_all(pg_execute($this->conn, "borramov", array($idMov)));
 		return json_encode($result);
     }
 

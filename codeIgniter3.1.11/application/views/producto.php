@@ -462,7 +462,7 @@
             </colgroup>
             <tr ng-repeat="x in lstDetailProd">
               <td style="text-align:center">{{x.DOCUMENTO}}</td>
-              <td style="text-align:center">{{x.FECHA}}</td>
+              <td style="text-align:center">{{x.FECHA | date}}</td>
               <td style="text-align:center">{{x.TIPO}}</td>
               <td style="text-align:right">{{x.CANTIDAD }}</td>
             </tr>

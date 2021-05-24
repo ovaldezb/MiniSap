@@ -30,7 +30,7 @@ class Pedidosmodel extends CI_model
 		return json_encode($result);
 	}
 
-	function get_pedidos($idempresa,$aniofiscal){
+	function get_pedidos($idempresa,$aniofiscal,$idsucrsal){
 		$query = 'SELECT P."ID_PEDIDO", 
 			P."DOCUMENTO", 
 			C."NOMBRE" AS "CLIENTE", 
@@ -43,14 +43,15 @@ class Pedidosmodel extends CI_model
 		INNER JOIN "VENDEDOR" AS V ON V."ID_VENDEDOR" = P."ID_VENDEDOR"
 		WHERE P."ID_EMPRESA" = $1
 		AND P."ANIO_FISCAL" = $2
+    AND P."ID_SUC_PIDIO" = $3
     AND P."VENDIDO" = false
 		ORDER BY P."DOCUMENTO"';
 		pg_prepare($this->conn,"select_venta",$query);
-		$result = pg_fetch_all(pg_execute($this->conn,"select_venta",array($idempresa,$aniofiscal)));
+		$result = pg_fetch_all(pg_execute($this->conn,"select_venta",array($idempresa,$aniofiscal,$idsucrsal)));
 		return json_encode($result,JSON_NUMERIC_CHECK);
 	}
 
-  function get_pedidos_activos($idempresa,$aniofiscal){
+  function get_pedidos_activos($idempresa,$aniofiscal, $idsucrsal){
 		$query = 'SELECT P."ID_PEDIDO", 
 			P."DOCUMENTO", 
 			C."NOMBRE" AS "CLIENTE", 
@@ -66,9 +67,10 @@ class Pedidosmodel extends CI_model
     LEFT JOIN "USUARIO" as U ON U."ID_USUARIO" = P."ID_USUARIO"
 		WHERE P."ID_EMPRESA" = $1
 		AND P."ANIO_FISCAL" = $2
+    AND P."ID_SUC_PIDIO" = $3
 		ORDER BY P."FECHA_PEDIDO" DESC';
 		pg_prepare($this->conn,"select_venta",$query);
-		$result = pg_fetch_all(pg_execute($this->conn,"select_venta",array($idempresa,$aniofiscal)));
+		$result = pg_fetch_all(pg_execute($this->conn,"select_venta",array($idempresa,$aniofiscal, $idsucrsal)));
 		return json_encode($result,JSON_NUMERIC_CHECK);
 	}
 
@@ -87,11 +89,6 @@ class Pedidosmodel extends CI_model
 			P."ID_FORMA_PAGO", 
 			P."DOMICILIO",
 			P."ID_CLIENTE",
-      D."CALLE",
-      D."COLONIA",
-      D."CIUDAD",
-      D."CP",
-      D."CONTACTO",
       C."DOMICILIO" as "CLI_DOMICILIO",
       C."TELEFONO",
       C."RFC",
@@ -101,14 +98,13 @@ class Pedidosmodel extends CI_model
 		FROM "PEDIDOS" AS P
 		INNER JOIN "CLIENTE" AS C ON C."ID_CLIENTE" = P."ID_CLIENTE"
 		INNER JOIN "VENDEDOR" AS V ON V."ID_VENDEDOR" = P."ID_VENDEDOR"
-    LEFT JOIN "DOMICILIOS" as D ON D."LUGAR" = P."DOMICILIO"
-		WHERE P."ID_PEDIDO" = $1';
+		WHERE P."ID_PEDIDO" = $1 ';
 		pg_prepare($this->conn,"select_venta",$query);
 		$result = pg_fetch_all(pg_execute($this->conn,"select_venta",array($idPedido)));
 		return json_encode($result,JSON_NUMERIC_CHECK);
 	}
 
-	function getpedidodetallebyid($idPedido){
+  function getpedidodetallebyid($idPedido){
 		$query = 'SELECT VP."CANTIDAD",VP."PRECIO" as "PRECIO_LISTA",
 				VP."IMPORTE",
         VP."DESCUENTO",
@@ -124,9 +120,34 @@ class Pedidosmodel extends CI_model
 				FROM "PEDIDO_PRODUCTO" as VP
 				INNER JOIN "PRODUCTO" as P ON VP."ID_PRODUCTO" = P."ID_PRODUCTO"
 				INNER JOIN "IEPS" as I on P."ID_IEPS" = I."ID_IEPS"
-				WHERE VP."ID_PEDIDO" = $1';				
+				WHERE VP."ID_PEDIDO" = $1 ';				
 		pg_prepare($this->conn,"select_venta_prod",$query);
 		$result = pg_fetch_all(pg_execute($this->conn,"select_venta_prod",array($idPedido)));		
+		return json_encode($result,JSON_NUMERIC_CHECK);
+	}
+
+	function pedido_detallebyid_existencia($idPedido,$idsucrsal){
+		$query = 'SELECT VP."CANTIDAD",VP."PRECIO" as "PRECIO_LISTA",
+				VP."IMPORTE",
+        VP."DESCUENTO",
+        \'true\' as "ESDSCTO",
+				TRIM(P."DESCRIPCION") as "DESCRIPCION",
+				TRIM(P."UNIDAD_MEDIDA") as "UNIDAD_MEDIDA", 
+				TRIM(P."COD_CFDI") as "COD_CFDI",
+				P."IVA",TRIM(P."UNIDAD_SAT") as "UNIDAD_SAT",
+				CASE WHEN P."IEPS" IS NULL THEN \'0\' ELSE P."IEPS" END as "IEPS",TRIM(I."NOMBRE") as "TIPOFACTOR",
+				TRIM(P."CODIGO") as "CODIGO",
+				VP."ID_PRODUCTO" as "ID_PRODUCTO",
+				P."TIPO_PS",
+        PS."STOCK"
+				FROM "PEDIDO_PRODUCTO" as VP
+				INNER JOIN "PRODUCTO" as P ON VP."ID_PRODUCTO" = P."ID_PRODUCTO"
+        INNER JOIN "PRODUCTO_SUCURSAL" as PS ON PS."ID_PRODUCTO" = VP."ID_PRODUCTO"
+				INNER JOIN "IEPS" as I on P."ID_IEPS" = I."ID_IEPS"
+				WHERE VP."ID_PEDIDO" = $1 
+        AND PS."ID_SUCURSAL" = $2';				
+		pg_prepare($this->conn,"select_venta_prod",$query);
+		$result = pg_fetch_all(pg_execute($this->conn,"select_venta_prod",array($idPedido,$idsucrsal)));		
 		return json_encode($result,JSON_NUMERIC_CHECK);
 	}
 

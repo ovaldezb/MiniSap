@@ -47,6 +47,7 @@ class Cobranza extends CI_Controller
                 $data['idempresa'],
                 $data['aniofiscal'],
                 $data['idfactura'],
+                $data['idcliente'],
             )
             );
             return $this->output

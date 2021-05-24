@@ -156,7 +156,6 @@
   <nav class="pagination is-centered" role="navigation" ng-show="isRepShow" aria-label="pagination" style="width:100%">
     <a class="pagination-next" ng-click="cerrarReporte()">Cerrar</a>
     <a class="pagination-next" ng-click="exportExcel()">Excel</a>
-    <a class="pagination-next" ng-click="exportCSV()">csv</a>
     <a class="pagination-next" ng-click="exportPDF()">PDF</a>
   </nav>
 </div>

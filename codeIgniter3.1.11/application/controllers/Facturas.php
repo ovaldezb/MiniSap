@@ -65,10 +65,10 @@ class Facturas extends CI_Controller
     }
 
     /* las ventas contienen los datos de una factura */
-    public function getfacturas($idEmpresa, $idAnioFiscal)
+    public function getfacturas($idEmpresa, $idAnioFiscal, $idSucursal)
     {
         if (isset($_SESSION['username'])) {
-            $result = $this->facturacionmodel->getfacturas(array($idEmpresa, $idAnioFiscal));
+            $result = $this->facturacionmodel->getfacturas(array($idEmpresa, $idAnioFiscal, $idSucursal));
             return $this->output
                 ->set_content_type('application/json')
                 ->set_output($result);

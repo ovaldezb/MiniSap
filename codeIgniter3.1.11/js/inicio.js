@@ -45,8 +45,8 @@ app.controller('myInicio', function($scope,$http,$interval){
   }
 
   $scope.getInventario = ()=>{
-    $http.get(pathRepo+'valinvent/'+$scope.idempresa).
-    then(res =>{
+    $http.get(pathRepo+'valinvent/'+$scope.idempresa+'/'+$scope.idsucursal)
+    .then(res =>{
       if(res.data.length > 0){
         $scope.qtyinvent = res.data;
         res.data.forEach(element => {

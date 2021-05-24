@@ -44,6 +44,7 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 	$scope.aniofiscal = '';
 	$scope.notas = '';
 	$scope.btnCompHide = true;
+  $scope.buscaprov = false;
 	$scope.idProceso = $routeParams.idproc;
 	$scope.permisos = {
 		alta: false,
@@ -81,7 +82,7 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 	}
 
 	$scope.getDataInit = function () {
-		$http.get(pathCmpr + 'getcompras/' + $scope.idempresa + '/' + $scope.aniofiscal)
+		$http.get(pathCmpr + 'getcompras/' + $scope.idempresa + '/' + $scope.aniofiscal+'/'+$scope.idsucursal)
 			.then(function (res) {
 				if (res.data.length > 0) {
 					$scope.listaCompras = res.data;
@@ -127,7 +128,7 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 	$scope.buscaprovbyclave = function (event) {
 		event.stopPropagation();
 		if (event.keyCode == 13) {
-			$http.get(pathPrve + 'getprvdorclave/' + $scope.claveprov, {
+			$http.get(pathPrve + 'getprvdorclave/' + $scope.claveprov +'/'+$scope.idempresa, {
 				responseType: 'json'
 			})
 			.then(function (res) {
@@ -151,9 +152,9 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 	}
 
 	$scope.buscaprovbynombre = function (event) {
-		var tabla, row, searchword, cell;
+		var searchword;
 		if (event.keyCode == 13) {
-			$('#buscaprov').show();
+			$scope.buscaprov = true;
 			searchword = $scope.proveedor != '' ? $scope.proveedor : 'vacio';
 			$http.get(pathPrve + 'getproveedores/' + $scope.idempresa + '/' + $scope.aniofiscal+'/'+ searchword, {
 				responseType: 'json'
@@ -173,7 +174,7 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 		$scope.idproveedor = $scope.lstaprovee[indexRow].ID_PROVEEDOR;
 		$scope.proveedor = $scope.lstaprovee[indexRow].NOMBRE.trim();
 		$scope.lstaprovee = [];
-		closeDivSearchProv();
+		$scope.buscaprov = false;
 	}
 
 	$scope.lanzaBusquedaProducto = function (event) {

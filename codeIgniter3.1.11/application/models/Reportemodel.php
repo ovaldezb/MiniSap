@@ -137,7 +137,7 @@ class Reportemodel extends CI_model
 			return json_encode($result,JSON_NUMERIC_CHECK);
 	}
 
-  function get_valor_inventario($idEmpresa){
+  function get_valor_inventario($idEmpresa,$idsucursal){
     $query = 'SELECT X."LINEA", X."SUMA", \'$\'||TRIM(TO_CHAR(X."SUMA",\'999,999,999.99\')) as "SUMACURR", X."SUMA"/R."TOTAL" * 100 as "PORCENTAJE"
               FROM
               (SELECT TRIM(L."NOMBRE") as "LINEA", SUM( P."PRECIO_COMPRA" * S."STOCK" ) as "SUMA" 
@@ -145,13 +145,15 @@ class Reportemodel extends CI_model
               INNER JOIN "PRODUCTO_SUCURSAL" as S ON P."ID_PRODUCTO" = S."ID_PRODUCTO"
               INNER JOIN "LINEA" as L ON P."ID_LINEA" = L."ID_LINEA"
               WHERE P."ID_EMPRESA" = $1
+              AND S."ID_SUCURSAL" = $2
               GROUP BY L."NOMBRE" ) as X,
               (SELECT SUM( P."PRECIO_COMPRA" * S."STOCK" ) as "TOTAL"
               FROM "PRODUCTO" as P
               INNER JOIN "PRODUCTO_SUCURSAL" as S ON P."ID_PRODUCTO" = S."ID_PRODUCTO"
-              WHERE P."ID_EMPRESA" = $2) as R';
+              WHERE P."ID_EMPRESA" = $3
+              AND S."ID_SUCURSAL" = $4) as R';
     pg_prepare($this->conn,"valor_inventario",$query);
-    $result = pg_fetch_all(pg_execute($this->conn,"valor_inventario",array($idEmpresa,$idEmpresa)));
+    $result = pg_fetch_all(pg_execute($this->conn,"valor_inventario",array($idEmpresa,$idsucursal,$idEmpresa,$idsucursal)));
     return $result;
   }
 

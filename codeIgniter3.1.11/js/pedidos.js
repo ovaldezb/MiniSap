@@ -1,6 +1,7 @@
 app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
 {
   const rowNumFill = 14;
+  var idsucursal = 0;
   $scope.fecha = formatDatePrint(new Date());
   $scope.fechaPantalla = formatDatePantalla(new Date());
   $scope.hora = DisplayCurrentTime();
@@ -188,7 +189,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
   }
 
   $scope.getpedidos = function(){
-    $http.get(pathPedi+'getpedidostotales/'+$scope.pedido.idempresa+'/'+$scope.pedido.aniofiscal,{responseType:'json'})
+    $http.get(pathPedi+'getpedidostotales/'+$scope.pedido.idempresa+'/'+$scope.pedido.aniofiscal+'/'+$scope.pedido.idsucursal,{responseType:'json'})
         .then(res => {
           if(res.data.length > 0){
             $scope.lstPedidos = res.data;
@@ -407,7 +408,14 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
   $scope.getDomicilios = () =>{
     $http.get(pathClte+'getdomis/'+$scope.pedido.idcliente)
     .then(res=>{
+      if(res.data.length > 0){
       $scope.lstDomis = res.data;
+      $scope.domientrega.calle =res.data[0].CALLE;
+      $scope.domientrega.colonia =res.data[0].COLONIA;
+      $scope.domientrega.cp =res.data[0].CP;
+      $scope.domientrega.ciudad =res.data[0].CIUDAD;
+      $scope.domientrega.contacto =res.data[0].CONTACTO;
+      }
     })
   }
 
@@ -1063,11 +1071,6 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
               $scope.pedido.domi = res.data[0].DOMICILIO;
               $scope.isCapturaPedido = true;
               $scope.pedido.idcliente = res.data[0].ID_CLIENTE;
-              $scope.domientrega.calle =res.data[0].CALLE;
-              $scope.domientrega.colonia =res.data[0].COLONIA;
-              $scope.domientrega.cp =res.data[0].CP;
-              $scope.domientrega.ciudad =res.data[0].CIUDAD;
-              $scope.domientrega.contacto =res.data[0].CONTACTO;
               $scope.usuario = $scope.lstPedidos[$scope.indexRowPedido].CLAVE_USR === null ? 'ND' : $scope.lstPedidos[$scope.indexRowPedido].CLAVE_USR;
               $scope.showUsuario = true;
               $scope.isRegistra = false;

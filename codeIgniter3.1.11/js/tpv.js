@@ -721,20 +721,12 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
     $scope.total = Number( $scope.subtotal - $scope.dsctoValor + $scope.impuestos).toFixed(2);
   };
 
-  $scope.buscacliente = function (event) {
+  $scope.buscacliente =  (event) => {
     var searchword;
     searchword = $scope.nombre_cliente != "" ? $scope.nombre_cliente : "vacio";
     $http
-      .get(
-        pathClte +
-          "loadbynombre/" +
-          $scope.idempresa +
-          "/" +
-          $scope.aniofiscal +
-          "/" +
-          searchword
-      )
-      .then(function (res) {
+      .get(pathClte +"loadbynombre/" +$scope.idempresa + "/" + $scope.aniofiscal +"/" + searchword )
+      .then( res => {
         if (res.data.length > 0) {
           $scope.lstCliente = res.data;
           $scope.showLstClte = true;
@@ -742,7 +734,7 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
           $scope.showLstClte = false;
         }
       })
-      .catch(function (err) {
+      .catch(err => {
         console.log(err);
       });
   };

@@ -42,6 +42,7 @@ class Facturacionmodel extends CI_model
     LEFT JOIN "USUARIO" as U ON U."ID_USUARIO" = F."ID_USUARIO"
 		WHERE F."ID_EMPRESA" = $1 
 		AND F."ANIO_FISCAL" = $2
+    AND F."ID_SUCURSAL" = $3
 		ORDER BY F."ID_FACTURA" DESC';
 		pg_prepare($this->conn,"select_fact",$query);
 		$result = pg_fetch_all(pg_execute($this->conn,"select_fact",$arrayData));

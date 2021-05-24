@@ -1,6 +1,5 @@
 <?php
-defined('BASEPATH') or exit('No direct script access allowed');
-
+  
 class Repcobranza extends CI_Controller
 {
     public function __construct()
@@ -26,4 +25,5 @@ class Repcobranza extends CI_Controller
       ->set_content_type('application/json')
       ->set_output($this->reportemodel->get_reporte_cobranza($anioFiscal,$idEmpresa,str_replace("%20"," ",$fecIni),str_replace("%20"," ",$fecFin)));
     }
+
 }

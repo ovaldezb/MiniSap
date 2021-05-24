@@ -82,13 +82,13 @@ app.controller('myCtrlProducto', function($scope,$http,$routeParams)
   }
 
   $scope.getDataInit = function(){
-    $http.get(pathProd+'load/'+$scope.idempresa,{responseType: 'json'}).
+    $http.get(pathProd+'loadbysuc/'+$scope.idempresa+'/'+$scope.idsucursal,{responseType: 'json'}).
     then(function(res)
   	{
   		if(res.data.length > 0)
   		{
   			$scope.lstPrdcts = res.data;
-        $scope.selectRowProducto($scope.lstPrdcts[0].CODIGO,0,$scope.lstPrdcts[0].ID_PRODUCTO);
+        //$scope.selectRowProducto($scope.lstPrdcts[0].CODIGO,0,$scope.lstPrdcts[0].ID_PRODUCTO);
   		}else
   		{
   			$scope.lstPrdcts = [];
@@ -476,7 +476,7 @@ app.controller('myCtrlProducto', function($scope,$http,$routeParams)
 
   $scope.verdetalle = () =>{
     $scope.modalDetalleProd = true;
-    $http.get(pathProd+'proddetailid/'+$scope.idProducto)
+    $http.get(pathProd+'proddetailid/'+$scope.idProducto+'/'+$scope.idsucursal)
     .then(res =>{
       if(res.data){
         $scope.lstDetailProd = res.data;

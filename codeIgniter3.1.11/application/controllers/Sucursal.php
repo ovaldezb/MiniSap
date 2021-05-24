@@ -100,6 +100,9 @@ class Sucursal extends CI_Controller
 	function updtscursaluser($idempresa,$idSucursal)
 	{
 		$result = $this->sucursalmodel->update_sucursal_by_user_emp($idSucursal,$idempresa,$_SESSION['idusuario']);
+    unset($_SESSION['idsucursal']);
+    $data = array('idsucursal' => $idSucursal);
+    $this->session->set_userdata($data);
     if($result){
 			return $this->output
 			->set_content_type('application/json')

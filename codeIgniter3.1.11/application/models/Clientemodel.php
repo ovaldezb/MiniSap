@@ -148,16 +148,18 @@ class Clientemodel extends CI_model
 
   function get_fact_by_idcliente($idcliente,$anioFiscal){
     $query = 
-    'SELECT \'A\' as "TIPO",TRIM("DOCUMENTO") as "DOCUMENTO",TO_CHAR("FECHA_FACTURA",\'DD/Mon/YYYY\') as "FECHA_FACTURA" ,TO_CHAR("IMPORTE",\'999999999.99\') as "IMPORTE", \'\' as "COBRO",TO_CHAR("SALDO",\'999999999.99\') as "SALDO"
+    'SELECT \'A\' as "TIPO",TRIM("DOCUMENTO") as "DOCUMENTO",TO_CHAR("FECHA_FACTURA",\'DD/Mon/YYYY\') as "FECHA_FACTURA" ,TO_CHAR("IMPORTE",\'999999999.99\') as "IMPORTE", \'\' as "COBRO",TO_CHAR("IMPORTE",\'999999999.99\') as "SALDO"
     FROM "FACTURA" as F
     WHERE F."ID_CLIENTE" = $1
     AND F."ANIO_FISCAL" = $2
+    AND C."ESTATUS" IS NULL 
     UNION
-    SELECT \'B\' as "TIPO", TRIM(F."DOCUMENTO") as "DOCUMENTO",TO_CHAR("FECHA_COBRO",\'DD/Mon/YYYY\') as "FECHA_FACTURA",\'\' as "IMPORTE",TO_CHAR("IMPORTE_COBRO",\'999999999.99\') as "COBRO", \'\' as "SALDO"
+    SELECT \'B\' as "TIPO", TRIM(F."DOCUMENTO") as "DOCUMENTO",TO_CHAR("FECHA_COBRO",\'DD/Mon/YYYY\') as "FECHA_FACTURA",\'\' as "IMPORTE",TO_CHAR(C."IMPORTE_COBRO",\'999999999.99\') as "COBRO", \'\' as "SALDO"
     FROM "COBROS" as C
     INNER JOIN "FACTURA" as F ON F."ID_FACTURA" = C."ID_FACTURA"
-    WHERE C."ID_CLIENTE" = $3
+    WHERE F."ID_CLIENTE" = $3
     AND C."ANIO_FISCAL" = $4
+    AND C."ESTATUS" IS NULL 
     ORDER BY "DOCUMENTO","TIPO", "FECHA_FACTURA" ';
 		pg_prepare($this->conn,"selqry",$query);
 		$result = pg_fetch_all(pg_execute($this->conn,"selqry",array($idcliente,$anioFiscal,$idcliente,$anioFiscal)));

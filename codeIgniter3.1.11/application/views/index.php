@@ -7,7 +7,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
   <script src="../js/sweetalert.min.js"></script>
-  <!--script- src="https://www.chartjs.org/dist/2.9.4/Chart.min.js"></!script-->
+  <script src="../js/FileSaver.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-chart.js/0.10.2/angular-chart.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
@@ -15,7 +15,6 @@
 	<script src="../js/utilerias.js"></script>
   <script src="../js/foopicker.js"></script>
   <script src="../js/jquery-3.5.1.min.js"></script>
-  <!--script src="../js/angular-chart.min.js"></!script-->
   <link rel="stylesheet" href="../css/utils.css">
   <link rel="stylesheet" href="../css/foopicker.css">
   <title>RTS</title>
@@ -26,7 +25,7 @@
   <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <a class="navbar-item" href="./login#!/">
-        <img src="../img/logo.png" alt="Sistema de Gesti&oacute;n Empresarial" width="40" height="28">
+        <img src="../img/logo.jpg" alt="Sistema de Gesti&oacute;n Empresarial" width="40" height="28">
       </a>
     </div>
     <div class="navbar-end">
@@ -202,6 +201,7 @@
 <script src="../js/reportecxc.js"></script>
 <script src="../js/reportecxp.js"></script>
 <script src="../js/repcobranza.js"></script>
+<script src="../js/transferencia.js"></script>
 <script>
   $(document).ready(function(){
     $('.menus li:has(ul)').click(function(e){

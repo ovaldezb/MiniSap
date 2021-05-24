@@ -16,6 +16,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
   $scope.qtyProdSuc = -1;
   $scope.lstProdBusqueda = [];
   $scope.lstProdCompra = [];
+  $scope.lstFailProd = [];
   $scope.lstCliente = [];
   $scope.lstVendedor = [];
   $scope.lstPrdSucExis = [];
@@ -59,6 +60,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
   $scope.showInputData = false;
   $scope.showEmail = false;
   $scope.showUsuario = false;
+  $scope.cancelStyle = {background:'red'};
   $scope.usuario = '';
   $scope.idProceso = $routeParams.idproc;
   $scope.proddscnt ={
@@ -260,7 +262,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
   }
 
   $scope.getfacturas = function(){
-    $http.get(pathFactura+'getfacturas/'+$scope.factura.idempresa+'/'+$scope.factura.aniofiscal,{responseType:'json'})
+    $http.get(pathFactura+'getfacturas/'+$scope.factura.idempresa+'/'+$scope.factura.aniofiscal+'/'+$scope.factura.idsucursal,{responseType:'json'})
       .then(res => {
         if(res.data.length > 0){
           $scope.lstFacturas = res.data.map(fact => {
@@ -308,7 +310,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
       $scope.lstFacturas.splice($scope.indexRowFactura,1);
       $scope.showEliminaFactura = false;
       $scope.getfacturas();
-      swal('La factura se eliminó!');
+      swal('La factura se canceló!');
     })
     .catch(err =>{
       console.log(err);
@@ -470,7 +472,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
   }
 
   $scope.getpedidos = function(){
-    $http.get(pathPedi+'getpedidos/'+$scope.factura.idempresa+'/'+$scope.factura.aniofiscal)
+    $http.get(pathPedi+'getpedidos/'+$scope.factura.idempresa+'/'+$scope.factura.aniofiscal+'/'+$scope.factura.idsucursal)
       .then(res =>{
         if(res.data.length > 0 ){
           $scope.lstPedidos = res.data;
@@ -499,9 +501,22 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
           console.log(err);
         });
     
-    $http.get(pathPedi+'getpedidetallebyid/'+$scope.lstPedidos[$scope.indexRowPedido].ID_PEDIDO)
+    $http.get(pathPedi+'getpedidetallebyidexistencia/'+$scope.lstPedidos[$scope.indexRowPedido].ID_PEDIDO+'/'+$scope.factura.idsucursal)
         .then(res=>{
-          $scope.lstProdCompra = res.data;
+          $scope.lstProdCompra = res.data.filter(elem =>{
+            return (elem.STOCK > 0 && elem.STOCK >= elem.CANTIDAD );
+          });
+          $scope.lstFailProd = res.data.filter(elem =>{
+            return (elem.STOCK === 0 || elem.CANTIDAD > elem.STOCK );
+          });
+
+          if($scope.lstFailProd.length > 0){
+            let prdNe = '';
+            $scope.lstFailProd.forEach(elem =>{
+              prdNe += elem.DESCRIPCION +' Existencia['+elem.STOCK+'] Cantidad['+elem.CANTIDAD+']\n';
+            });
+            swal("Se han elimnado los siguientes productos del pedido ",prdNe,'error');
+          }
           $scope.calculaValoresMostrar();
         })
         .catch(err=>{
@@ -1314,6 +1329,15 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
     $scope.lstCorreos = [];
       $scope.enviaremail = false;     
   }
+
+  $scope.printFacturas = () =>{
+    var blob = new Blob([document.getElementById('exportable').innerHTML],
+    {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+    });
+    saveAs(blob, "ListaFacturas_"+formatDateExcel(new Date())+".xls");
+  }
+
 
   $scope.downloadcfdi = () =>{
     $http.post(pathCreacfdi+'sendfacturaby/1/'+$scope.lstFacturas[$scope.indexRowFactura].ID_FACTURA+'/'+$scope.lstFacturas[$scope.indexRowFactura].ID_CLIENTE+'/'+$scope.factura.idempresa,{'correos':''})

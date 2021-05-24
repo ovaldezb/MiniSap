@@ -143,10 +143,10 @@ class Proveedor extends CI_Controller
         }
     }
 
-    public function getprvdorclave($_clave)
+    public function getprvdorclave($_clave,$idEmpresa)
     {
         if (isset($_SESSION['username'])) {
-            $data = $this->proveedormodel->get_proveedor_by_clave($_clave);
+            $data = $this->proveedormodel->get_proveedor_by_clave($_clave,$idEmpresa);
             return $this->output
                 ->set_content_type('application/json')
                 ->set_output($data);

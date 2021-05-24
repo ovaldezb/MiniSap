@@ -18,6 +18,11 @@
 					</div>
 				</div>
 				<div class="level-right">
+          <p class="level-item" ng-show="permisos.consulta">
+            <a ng-click="printFacturas()">
+              <span class="icon has-text-success"><i class="fas fa-print" title="Genera la lista de todas las Facturas en Excel"></i></span>
+            </a>
+          </p>
           <p class="level-item" ng-show="!showEmail && indexRowFactura != -1">
 						<a ng-click="timbrar();"><span class="icon has-text-success"><i class="fas fa-bell" title="Timbrar Factura ante el SAT"></i></span></a>
           </p>
@@ -44,19 +49,19 @@
 					<p class="level-item" ng-show="permisos.baja">
 						<a ng-show="indexRowFactura == -1">
               <span class="icon has-text-danger">
-                <i class="far fa-trash-alt" title="Elimina Factura" style="color:grey"></i>
+                <i class="far fa-trash-alt" title="Cancela Factura" style="color:grey"></i>
               </span>
             </a>
             <a ng-click="preguntaElimnaFactura()" ng-show="indexRowFactura != -1">
               <span class="icon has-text-danger">
-                <i class="far fa-trash-alt" title="Elimina Factura"></i>
+                <i class="far fa-trash-alt" title="Cancela Factura"></i>
               </span>
             </a>
           </p>
 				</div>
 			</nav>
 		</div>
-		<div class="table-container is-centered" style="margin-top:-20px" id="lstclientes" ng-show="!isCapturaFactura">
+		<div class="table-container is-centered" style="margin-top:-20px" ng-show="!isCapturaFactura">
 			<table style="width:99.5%">
 				<tr>
 					<td>
@@ -84,7 +89,7 @@
 								<td style="text-align:center;font-size:12px">REVISION</td>
 								<td style="text-align:center;font-size:12px">VENCE</td>
 								<td style="text-align:center;font-size:12px">F</td>
-                <td style="text-align:center;font-size:12px">&nbsp;</td>
+                <td style="text-align:center;font-size:12px">DESCGR</td>
 								<td style="text-align:center;font-size:12px">VENDEDOR</td>
 							</tr>							
 						</table>
@@ -106,25 +111,67 @@
                 <col width="5%">
 								<col width="12%">
 								<tr ng-repeat="x in lstFacturas" ng-click="selectRowFactura(x.DOCUMENTO,$index)" ng-class="{selected: x.DOCUMENTO === idDocumento}">
-									<td class="font12" style="text-align:center;">{{x.DOCUMENTO}}</td>									
-									<td class="font12" style="text-align:center;">{{x.FECHA_FACTURA}}</td>
-									<td class="font12" style="text-align:center;">{{x.CLIENTE}}</td>
-									<td class="font12" style="text-align:right;">{{x.IMPORTE | currency}}</td>
-									<td class="font12" style="text-align:right;">{{x.SALDO | currency}}</td>
-									<td class="font12" style="text-align:center;">{{x.ID_TIPO_PAGO == 1 ? 'Contado':'Crédito'}}</td>
-									<td class="font12" style="text-align:center;">{{x.FECHA_REVISION}}</td>
-									<td class="font12" style="text-align:center;">{{x.FECHA_VENCIMIENTO}}</td>
+									<td class="font12" ng-class="{canceled: x.ESTATUS === 'CANCELADA'}" style="text-align:center;">{{x.DOCUMENTO}}</td>									
+									<td class="font12" ng-class="{canceled: x.ESTATUS === 'CANCELADA'}" style="text-align:center;">{{x.FECHA_FACTURA}}</td>
+									<td class="font12" ng-class="{canceled: x.ESTATUS === 'CANCELADA'}" style="text-align:center;">{{x.CLIENTE}}</td>
+									<td class="font12" ng-class="{canceled: x.ESTATUS === 'CANCELADA'}" style="text-align:right;">{{x.IMPORTE | currency}}</td>
+									<td class="font12" ng-class="{canceled: x.ESTATUS === 'CANCELADA'}" style="text-align:right;">{{x.SALDO | currency}}</td>
+									<td class="font12" ng-class="{canceled: x.ESTATUS === 'CANCELADA'}" style="text-align:center;">{{x.ID_TIPO_PAGO == 1 ? 'Contado':'Crédito'}}</td>
+									<td class="font12" ng-class="{canceled: x.ESTATUS === 'CANCELADA'}" style="text-align:center;">{{x.FECHA_REVISION}}</td>
+									<td class="font12" ng-class="{canceled: x.ESTATUS === 'CANCELADA'}" style="text-align:center;">{{x.FECHA_VENCIMIENTO}}</td>
 
 									<td class="font12" style="text-align:center;" ng-show="x.FACTURADO == 't'"><i ng-show="x.ESTATUS !== 'CANCELADA'" class="fas fa-check"></i> <i ng-show="x.ESTATUS === 'CANCELADA'" class="fas fa-ban"></i></td>
-                  <td class="font12" style="text-align:center;" ng-show="x.FACTURADO == 'f'"><i ng-show="x.ESTATUS === 'CANCELADA'" class="fas fa-ban"></i></td>
-                  <td class="font12" style="text-align:center;" ng-show="x.FACTURADO == 't'"><a href="../creacfdixml/sendfacturaby/1/{{x.ID_FACTURA}}/{{x.ID_CLIENTE}}/{{x.ID_EMPRESA}}" style="color:green" ><i class="fas fa-download"></i></a></td>
-                  <td class="font12" style="text-align:center;" ng-show="x.FACTURADO == 'f'">&nbsp;</td>
-									<td class="font12" style="text-align:center;">{{x.VENDEDOR}}</td>
+                  <td class="font12" ng-class="{canceled: x.ESTATUS === 'CANCELADA'}" style="text-align:center;" ng-show="x.FACTURADO == 'f'"><i ng-show="x.ESTATUS === 'CANCELADA'" class="fas fa-ban"></i></td>
+                  <td class="font12" ng-class="{canceled: x.ESTATUS === 'CANCELADA'}" style="text-align:center;" ng-show="x.FACTURADO == 't'"><a href="../creacfdixml/sendfacturaby/1/{{x.ID_FACTURA}}/{{x.ID_CLIENTE}}/{{x.ID_EMPRESA}}" style="color:green" ><i class="fas fa-download"></i></a></td>
+                  <td class="font12" ng-class="{canceled: x.ESTATUS === 'CANCELADA'}" style="text-align:center;" ng-show="x.FACTURADO == 'f'">&nbsp;</td>
+									<td class="font12" ng-class="{canceled: x.ESTATUS === 'CANCELADA'}" style="text-align:center;">{{x.VENDEDOR}}</td>
 								</tr>
 							</table>
 						</div>
 					</td>
-			</tr>
+			  </tr>
+			</table>
+		</div>
+    <div id="exportable" ng-show="false">
+			<table>
+				<tr>
+					<td>
+						<table class="table is-bordered">
+							<tr class="tbl-header">
+								<td style="text-align:center;font-size:12px">DOCUMENTO</td>									
+								<td style="text-align:center;font-size:12px">FECHA</td>
+								<td style="text-align:center;font-size:12px">CLIENTE</td>
+								<td style="text-align:center;font-size:12px">IMPORTE</td>
+								<td style="text-align:center;font-size:12px">SALDO</td>
+								<td style="text-align:center;font-size:12px">FORMA PAGO</td>
+								<td style="text-align:center;font-size:12px">REVISION</td>
+								<td style="text-align:center;font-size:12px">VENCE</td>
+								<td style="text-align:center;font-size:12px">CFDI</td>
+                <td style="text-align:center;font-size:12px">ESTATUS</td>
+								<td style="text-align:center;font-size:12px">VENDEDOR</td>
+							</tr>							
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td>			
+            <table class="table is-bordered is-hoverable" style="width:100%" id="tblClientes">
+              <tr ng-repeat="x in lstFacturas" ng-click="selectRowFactura(x.DOCUMENTO,$index)" ng-class="{selected: x.DOCUMENTO === idDocumento}">
+                <td class="font12"  style="text-align:center;">{{x.DOCUMENTO}}</td>									
+                <td class="font12"  style="text-align:center;">{{x.FECHA_FACTURA}}</td>
+                <td class="font12"  style="text-align:center;">{{x.CLIENTE}}</td>
+                <td class="font12"  style="text-align:right;">{{x.IMPORTE | currency}}</td>
+                <td class="font12"  style="text-align:right;">{{x.SALDO | currency}}</td>
+                <td class="font12"  style="text-align:center;">{{x.ID_TIPO_PAGO == 1 ? 'Contado':'Crédito'}}</td>
+                <td class="font12"  style="text-align:center;">{{x.FECHA_REVISION}}</td>
+                <td class="font12"  style="text-align:center;">{{x.FECHA_VENCIMIENTO}}</td>
+                <td class="font12"  style="text-align:center;">{{x.FACTURADO === 't' ? 'Si':'No'}}</td>
+                <td class="font12"  style="text-align:center;">{{x.ESTATUS}}</td>
+                <td class="font12"  style="text-align:center;">{{x.VENDEDOR}}</td>
+              </tr>
+            </table>
+					</td>
+			  </tr>
 			</table>
 		</div>
 	</div>
@@ -984,11 +1031,11 @@
 		<div class="modal-background"></div>
 		<div class="modal-card">
 			<header class="modal-card-head">
-				<p class="modal-card-title">Eliminar Factura</p>
+				<p class="modal-card-title">Cancelar Factura</p>
 				<button class="delete" aria-label="close" ng-click="closeEliminaFactura()"></button>
 			</header>
 			<section class="modal-card-body">
-				<p>Está seguro que desea eliminar la factura <strong>{{factura.docto}}</strong>?</p>
+				<p>Está seguro que desea cancelar la factura <strong>{{factura.docto}}</strong>?</p>
 			</section>
 			<footer class="modal-card-foot">
 				<button class="button is-success" ng-click="eliminarFactura()">Si</button>

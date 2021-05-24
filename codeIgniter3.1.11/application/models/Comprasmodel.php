@@ -11,7 +11,7 @@ class Comprasmodel extends CI_model
 		$this->conn = $this->postgresdb->getConn();
 	}
 
-	function get_compras($id_empresa,$anio_fiscal)
+	function get_compras($id_empresa,$anio_fiscal, $idsucursal)
 	{
 		$query = 'SELECT C."ID_COMPRA",to_char(C."FECHA_COMPRA",\'DD/MM/YYYY\') as "FECHA_COMPRA",
 					    TRIM(C."DOCUMENTO") AS "DOCUMENTO",
@@ -40,10 +40,11 @@ class Comprasmodel extends CI_model
 							INNER JOIN "TIPO_PAGO" as T 	ON C."ID_TIPO_PAGO" = T."ID_TIPO_PAGO"
 							WHERE C."ID_EMPRESA" = $1
 							AND C."ANIO_FISCAL" = $2
+              AND C."ID_SUC_COMPRO" = $3
 							AND P."ID_EMPRESA" = C."ID_EMPRESA"
 							ORDER BY 	C."FECHA_COMPRA" DESC';
 		$result = pg_prepare($this->conn, "selectquery", $query);
-		$result =  pg_fetch_all(pg_execute($this->conn, "selectquery", array($id_empresa,$anio_fiscal)));
+		$result =  pg_fetch_all(pg_execute($this->conn, "selectquery", array($id_empresa,$anio_fiscal, $idsucursal)));
 		return json_encode($result);
 	}
 

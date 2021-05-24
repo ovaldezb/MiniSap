@@ -6,24 +6,28 @@ app.controller("myCtrlControlinvent", function ($scope, $http,$routeParams) {
   $scope.fechaIni = '';
   $scope.fechaFin = '';
   $scope.fechaMov = '';
-  $scope.tipoES='e';
   $scope.cantidad='';
   $scope.medida='';
   $scope.cliPro='cli';
   $scope.prddesc = '';
   $scope.clave='';
+  $scope.claveDisabled = false;
   $scope.idSelInv = -1;
-  $scope.idusuario = '';
+  $scope.idUsuario = '';
+  $scope.isShowCli = false;
+  $scope.isShowPro = false;
+  $scope.idGenerico = '';
   $scope.idProceso = $routeParams.idproc;
   $scope.ctrlInv = {
     fechaIni:'',
     fechaFin:'',
-    tipoES:'t',
     tipoMov:'tod',
     caja:'',
     codigoProducto:'',
     idempresa:'',
-    aniofiscal:''  
+    idsucursal:'',
+    aniofiscal:'',
+    tipoES:'t',
   }
   $scope.regmov = {
     in:0,
@@ -34,15 +38,16 @@ app.controller("myCtrlControlinvent", function ($scope, $http,$routeParams) {
     fecha:'',
     caja:1,
     codigo:'',
-    idproducto:'',
+    idproducto:0,
     aniofiscal:0,
     preciounit:'',
     importe:0,
     idsucursal:'',
     idempresa:'',
-    idcliente:'',
+    idcliente:0,
     idproveedor:'',
-    idusuario:''
+    idusuario:'',
+    tipoES:'e',
   };
 
   $scope.permisos = {
@@ -109,6 +114,7 @@ app.controller("myCtrlControlinvent", function ($scope, $http,$routeParams) {
           $scope.ctrlInv.idempresa = res.data.idempresa;
           $scope.regmov.idempresa = res.data.idempresa;
           $scope.regmov.idsucursal = res.data.idsucursal;
+          $scope.ctrlInv.idsucursal = res.data.idsucursal;
           $scope.ctrlInv.aniofiscal = res.data.aniofiscal;
           $scope.regmov.aniofiscal = res.data.aniofiscal;
           $scope.idUsuario = res.data.idusuario;
@@ -129,14 +135,14 @@ app.controller("myCtrlControlinvent", function ($scope, $http,$routeParams) {
       dateFormat: "dd/MM/yyyy",
     });
 
-    var foopicker = new FooPicker({
+    var foopicker2 = new FooPicker({
       id: "fechaMovimiento",
       dateFormat: "dd/MM/yyyy",
     });
   };
 
   $scope.cambiarTipo = () =>{
-    if($scope.regmov.tipoES=='e'){
+    if($scope.ctrlInv.tipoES=='e'){
       $scope.tipoMMos = $scope.tipoMEnt;
       $scope.regmov.tipoMov = 'COM';
     }else{
@@ -189,7 +195,6 @@ app.controller("myCtrlControlinvent", function ($scope, $http,$routeParams) {
   }
 
   $scope.selectRowInv = (idInv) =>{
-    console.log(idInv);
     $scope.idSelInv =  idInv;
   }
 
@@ -207,31 +212,38 @@ app.controller("myCtrlControlinvent", function ($scope, $http,$routeParams) {
   }
 
   $scope.enviaMovimiento = () =>{
-    if($scope.tipoES =='e'){
+    if($scope.regmov.idproducto === 0){
+      swal('Es necesario que elija algun producto para poder continuar');
+      return;
+    }
+
+    if($scope.regmov.tipoES =='e'){
       $scope.regmov.in = $scope.cantidad;
       $scope.regmov.out = 0;
-    }else{
+    }else if($scope.regmov.tipoES =='s'){
       $scope.regmov.in = 0;
       $scope.regmov.out = $scope.cantidad;
     }
     $scope.regmov.importe = $scope.cantidad * $scope.regmov.preciounit;
+    //Aqui se va a modificar, para que lea las claves preveniente de la busqueda
     if($scope.cliPro=='cli'){
-      $scope.regmov.idcliente=$scope.clave;
+      $scope.regmov.idcliente=$scope.idGenerico;
       $scope.regmov.idproveedor=null;
       $scope.regmov.idusuario=null;
     }else if($scope.cliPro=='pro'){
       $scope.regmov.idcliente=null;
-      $scope.regmov.idproveedor=$scope.clave;
+      $scope.regmov.idproveedor=$scope.idGenerico;
       $scope.regmov.idusuario=null;
     }else{
       $scope.regmov.idcliente=null;
       $scope.regmov.idproveedor=null;
-      $scope.regmov.idusuario=$scope.clave;
+      $scope.regmov.idusuario=$scope.idGenerico;
     }
 
     $http.post(pathInv+'saveinventario',$scope.regmov)
     .then(res=>{
       if(res.status === 200){
+        $scope.creaReporte();
         swal('El movimiento se guardó con éxito');
         $scope.closeAddMov()
       }
@@ -241,6 +253,79 @@ app.controller("myCtrlControlinvent", function ($scope, $http,$routeParams) {
     });
   }
 
+  $scope.cambioCliPro = ()=>{
+    $scope.clave = '';
+    $scope.idGenerico = '';
+    $scope.claveDisabled = false;
+    if($scope.cliPro === 'int'){
+      $scope.claveDisabled = true;
+      $scope.clave = $scope.idUsuario;
+      $scope.idGenerico = $scope.idUsuario
+    }
+  }
+
+  $scope.buscaClave = (event) =>{
+    event.stopPropagation();
+    if (event.keyCode == 13) {
+      $scope.isShowCli = false;
+      $scope.isShowPro = false;
+      if($scope.cliPro === 'cli'){
+        $scope.buscacliente();
+      }else if($scope.cliPro === 'pro'){
+        $scope.buscaprov();
+      }else{
+        $scope.idGenerico = $scope.idUsuario;
+      }
+    }
+  }
+
+  $scope.buscacliente =  () => {
+    var searchword;
+    searchword = $scope.clave != '' ? $scope.clave : "vacio";
+    $http.get(pathClte +"loadbynombre/" +$scope.ctrlInv.idempresa + "/" + $scope.ctrlInv.aniofiscal +"/" + searchword )
+      .then( res => {
+        if (res.data.length > 0) {
+          $scope.lstCliente = res.data; 
+          $scope.isShowCli = true;
+          $scope.isShowPro = false;
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  $scope.buscaprov = function () {
+		var searchword;	
+    searchword = $scope.clave != '' ? $scope.clave : 'vacio';
+    $http.get(pathPrve + 'getproveedores/' + $scope.ctrlInv.idempresa + '/' + $scope.ctrlInv.aniofiscal+'/'+ searchword, {responseType: 'json'}).
+      then(function (res) {
+        if (res.data.length > 0) {
+          $scope.lstaprovee = res.data;
+          $scope.isShowCli = false;
+          $scope.isShowPro = true;
+        }
+      }).catch(function (err) {
+        console.log(err);
+      });
+	}
+
+  $scope.selectClte = (index) =>{
+    $scope.idGenerico = $scope.lstCliente[index].ID_CLIENTE;
+    $scope.clave = $scope.lstCliente[index].NOMBRE;
+    $scope.isShowCli = false;
+  }
+
+  $scope.selectProv = (index)=>{
+    $scope.idGenerico = $scope.lstaprovee[index].ID_PROVEEDOR;
+    $scope.clave = $scope.lstaprovee[index].NOMBRE;
+    $scope.isShowPro = false;
+  }
+
+  $scope.cierraBusqueda = () =>{
+    $scope.isShowCli = false;
+    $scope.isShowPro = false;
+  }
 
   $scope.elliminaMovimiento = ()=>{
     swal({
@@ -254,15 +339,7 @@ app.controller("myCtrlControlinvent", function ($scope, $http,$routeParams) {
       if (willDelete) {
         $http.delete(pathInv+'delmov/'+$scope.idSelInv)
         .then(res =>{
-          $http.post(pathInv+'getinventario',$scope.ctrlInv)
-          .then(res =>{
-            if(res.data.length > 0){
-              $scope.lstInvent = res.data;
-            }
-          })
-          .catch(err =>{
-            console.log(err);
-          });
+          $scope.creaReporte();
         })
         .catch(err=>{
           console.log(err);
@@ -318,6 +395,14 @@ app.controller("myCtrlControlinvent", function ($scope, $http,$routeParams) {
     }
   }
 
+  $scope.descargaExcel = () =>{
+    var blob = new Blob([document.getElementById('exportable').innerHTML],
+    {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+    });
+    saveAs(blob, "CtrlInventario_"+formatDateExcel(new Date())+".xls");
+  }
+
   $scope.selectRowPrd = (index, idproducto) =>{
     $scope.regmov.codigo = $scope.lstProducto[index].CODIGO;
     $scope.prddesc = $scope.lstProducto[index].DESCRIPCION;
@@ -336,6 +421,12 @@ app.controller("myCtrlControlinvent", function ($scope, $http,$routeParams) {
     $scope.medida = '';
     $scope.cantidad = '';
     $scope.fechaMov = '';
+    $scope.claveDisabled = false;
+    $scope.cliPro='cli';
+    $scope.regmov.tipoES = 'e';
+    $scope.regmov.tipoMov='COM';
+    $scope.clave = '';
+    $scope.regmov.idproducto = 0;
   }
   
 });

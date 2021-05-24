@@ -26,7 +26,7 @@
 			</div>
 		</nav>
 	</div>
-	<div id="divdisplay" class="box" ng-show="isAgrgaCompra">
+	<div class="box" ng-show="isAgrgaCompra">
 	<form name="myForm">
 	<div class="columns">
 		<div class="column">
@@ -45,7 +45,7 @@
 						<input type="text" class="input is-small"  ng-model="proveedor" ng-keyup="buscaprovbynombre($event)" placeholder="Nombre del Proveedor">
 					</div>
 				</div>
-				<div class="container" style="display:none; width:47.5%;margin-left:210px;margin-top:-25px;margin-bottom:10px" id="buscaprov">
+				<div class="container" style="width:47.5%;margin-left:210px;margin-top:-25px;margin-bottom:10px" ng-show="buscaprov">
 					<table style="width:100%">
 						<tr>
 							<td>

@@ -33,7 +33,8 @@ class Inventario extends CI_Controller
                 $data['fechaIni'],
                 $data['fechaFin'],
                 $data['caja'],
-                $data['codigoProducto']);
+                $data['codigoProducto'],
+                $data['idsucursal']);
             return $this->output
                 ->set_content_type('application/json')
                 ->set_output($result);

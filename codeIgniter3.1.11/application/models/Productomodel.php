@@ -27,6 +27,24 @@ class Productomodel extends CI_model
 		return json_encode($result,JSON_NUMERIC_CHECK);
 	}
 
+  function get_productos_by_sucursal($idempresa,$idsucursal)
+	{
+		$query = 'SELECT P."ID_PRODUCTO", P."DESCRIPCION",
+				TRIM(P."CODIGO") AS "CODIGO",
+				P."PRECIO_LISTA", SUM(S."STOCK") as "STOCK"
+				FROM "PRODUCTO" as P
+				INNER JOIN "PRODUCTO_SUCURSAL" as S
+				ON P."ID_PRODUCTO" = S."ID_PRODUCTO"
+				WHERE P."ID_EMPRESA" = $1 
+        AND P."ACTIVO" = true
+        AND S."ID_SUCURSAL" = $2
+				GROUP BY P."DESCRIPCION",P."ID_PRODUCTO", P."CODIGO",P."PRECIO_LISTA"
+				ORDER BY P."DESCRIPCION"';
+		pg_prepare($this->conn, "selproducto",$query);
+		$result = pg_fetch_all(pg_execute($this->conn, "selproducto",array($idempresa,$idsucursal)));
+		return json_encode($result,JSON_NUMERIC_CHECK);
+	}
+
 	function create_producto($codigo,$nombre,$linea,$unidadmedida,$esequiv,$equivalencia,$codigocfdi,$unidad,$preciolista,$ultact,$moneda,$iva,$id_ieps,$ieps,$enpromo,$preciopromo,$esdescnt,$preciodescnt,$maxstock,$minstock,$estasaexenta,$notas,$img,$idempresa,$idsucursal,$tipops)
 	{
 		$query = 'SELECT * FROM crea_producto($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26)';
@@ -57,20 +75,26 @@ class Productomodel extends CI_model
 		return json_encode($result,JSON_NUMERIC_CHECK);
 	}
 
-  function get_producto_detalle_by_codigo($idproducto){
+  function get_producto_detalle_by_codigo($idproducto, $idsucursal){
     $query = 
-    'SELECT \'COMPRA\' as "TIPO", C."DOCUMENTO", CP."CANTIDAD", CP."CANTIDAD" as "MOV", TO_CHAR("FECHA_COMPRA",\'DD/Mon/YYYY\') as "FECHA"
+    /*'SELECT \'COM\' as "TIPO", C."DOCUMENTO", CP."CANTIDAD", CP."CANTIDAD" as "MOV", TO_CHAR("FECHA_COMPRA",\'DD/Mon/YYYY\') as "FECHA", "FECHA_COMPRA" as "FECHA1"
     FROM "COMPRAS" as C
     INNER JOIN "COMPRA_PRODUCTO" as CP ON CP."ID_COMPRA" = C."ID_COMPRA"
     WHERE "ID_PRODUCTO" = $1
     UNION
-    SELECT \'VENTA\' as "TIPO", V."DOCUMENTO",VP."CANTIDAD",VP."CANTIDAD" * -1 as "MOV", TO_CHAR(V."FECHA_VENTA",\'DD/Mon/YYYY\') as "FECHA"
+    SELECT \'VENTA\' as "TIPO", V."DOCUMENTO",VP."CANTIDAD",VP."CANTIDAD" * -1 as "MOV", TO_CHAR(V."FECHA_VENTA",\'DD/Mon/YYYY\') as "FECHA", V."FECHA_VENTA" as "FECHA1"
     FROM "VENTAS" as V
     INNER JOIN "VENTAS_PRODUCTO" as VP ON VP."ID_VENTA" = V."ID_VENTA"
     WHERE VP."ID_PRODUCTO" = $2 
-    ORDER BY "FECHA"';
-		$result = pg_prepare($this->conn, "selectquery", $query);
-		$result =  pg_fetch_all(pg_execute($this->conn, "selectquery", array($idproducto,$idproducto)));
+    UNION*/
+    'SELECT "MOV" as "TIPO", I."DOCUMENTO", (I."IN" - I."OUT") as "CANTIDAD" ,(I."IN" - I."OUT") as "MOV", TO_CHAR(I."FECHA",\'DD/Mon/YYYY\') as "FECHA", I."FECHA" as "FECHA1"
+    FROM "INVENTARIO" as I
+    INNER JOIN "PRODUCTO" as P ON P."CODIGO" = I."CODIGO"
+    WHERE P."ID_PRODUCTO" = $1
+    AND I."ID_SUCURSAL" = $2
+    ORDER BY "FECHA1" DESC';
+		pg_prepare($this->conn, "selectquery", $query);
+		$result =  pg_fetch_all(pg_execute($this->conn, "selectquery", array($idproducto, $idsucursal)));
 		return json_encode($result,JSON_NUMERIC_CHECK);
   }
 
@@ -161,5 +185,12 @@ class Productomodel extends CI_model
 		$result = pg_execute($this->conn,"inserta_prov",$proveedor);
 		return $result;
 	}
+
+  public function valida_existencia_producto($idproducto,$idsucursal){
+    $query = 'SELECT "STOCK" FROM "PRODUCTO_SUCURSAL" WHERE "ID_PRODUCTO" = $1 AND "ID_SUCURSAL" = $2';
+    pg_prepare($this->conn, "selectquery", $query);
+		$result =  pg_fetch_all(pg_execute($this->conn, "selectquery", array($idproducto,$idsucursal)));
+		return json_encode($result,JSON_NUMERIC_CHECK);
+  }
 }
 ?>

@@ -98,6 +98,7 @@ app.controller('myCtrlCobros', function($scope,$http,$routeParams)
           $scope.cobro.saldo = $scope.cobro.importetotal - $scope.cobro.cobrado;
           $scope.cobro.importecobro = $scope.cobro.saldo ;
         }else{
+          $scope.lstCobros = [];
           $scope.cobro.importecobro = $scope.cobro.importetotal;
           $scope.cobro.saldo = $scope.cobro.importetotal;
         }
@@ -215,7 +216,7 @@ app.controller('myCtrlCobros', function($scope,$http,$routeParams)
           })
           .then((willDelete) => {
             if(willDelete){
-                $http.delete(pathCob+'deletecobro/'+$scope.idCobro+'/'+$scope.cobro.idfactura+'/'+$scope.importecobro)
+                $http.delete(pathCob+'deletecobro/'+$scope.idCobro+'/'+$scope.cobro.idfactura+'/'+$scope.importetotal)
                 .then(res=>{
                     if(res.status === 200){
                         $scope.getcobros();

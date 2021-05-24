@@ -177,9 +177,6 @@ app.controller('myCtrlSucursal', function($scope,$http,$routeParams)
       if(res.data.value=='OK')
       {
         $scope.getDataInit();
-          //$scope.lstSucursal.splice($scope.idxRowSuc,1);
-          //$scope.selectRowSucursal($scope.lstSucursal[0].CLAVE,0,$scope.lstSucursal[0].ID_SUCURSAL);
-        
         swal('Se ha eliminado correctamente la sucursal');
         $scope.closeAvisoBorrar();
       }
@@ -224,5 +221,6 @@ app.controller('myCtrlSucursal', function($scope,$http,$routeParams)
     $scope.suc.cp = '';
     $scope.suc.alias = '';
     $scope.suc.notas = '';
+    $scope.btnAccion = 'Agregar';
   }
 });

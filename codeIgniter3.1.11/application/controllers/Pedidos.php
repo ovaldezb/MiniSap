@@ -90,10 +90,10 @@ class Pedidos extends CI_Controller
         }
     }
 
-    public function getpedidostotales($idempresa, $anioFiscal)
+    public function getpedidostotales($idempresa, $anioFiscal, $idsucursal)
     {
         if (isset($_SESSION['username'])) {
-            $result = $this->pedidosmodel->get_pedidos_activos($idempresa, $anioFiscal);
+            $result = $this->pedidosmodel->get_pedidos_activos($idempresa, $anioFiscal, $idsucursal);
             return $this->output
                 ->set_content_type('application/json')
                 ->set_output($result);
@@ -114,6 +114,16 @@ class Pedidos extends CI_Controller
     {
         if (isset($_SESSION['username'])) {
             $result = $this->pedidosmodel->getpedidodetallebyid($idpedido);
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_output($result);
+        }
+    }
+
+    public function getpedidetallebyidexistencia($idpedido,$idsucursal)
+    {
+        if (isset($_SESSION['username'])) {
+            $result = $this->pedidosmodel->pedido_detallebyid_existencia($idpedido,$idsucursal);
             return $this->output
                 ->set_content_type('application/json')
                 ->set_output($result);

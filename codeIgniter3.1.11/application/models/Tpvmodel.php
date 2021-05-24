@@ -187,7 +187,9 @@ class Tpvmodel extends CI_model
   }
 
 	public function dataOperByDate($arrayDates){
-		$query1 = 'SELECT V."DOCUMENTO", VP."COUNT",V."ID_TIPO_PAGO", V."IMPORTE",
+		$query1 = 'SELECT V."DOCUMENTO", 
+          CASE WHEN VP."COUNT" IS NULL THEN 0 ELSE VP."COUNT" END,
+          V."ID_TIPO_PAGO", V."IMPORTE",
 					CASE WHEN V."ID_FACTURA" IS NULL THEN 0 ELSE V."ID_FACTURA" END as "ID_FACTURA",
 					V."ID_VENTA",V."CANCELADO",V."CORTECAJA", V."FACTURADO",V."ID_FACTURA",V."IVA",
           CASE WHEN V."PAG_EFECTIVO" > 0 THEN \'EF\' ELSE
@@ -198,7 +200,7 @@ class Tpvmodel extends CI_model
              END)
           END as "TIPO_PAGO"
 					FROM "VENTAS" as V
-					INNER JOIN (SELECT "ID_VENTA", COUNT(*) AS "COUNT" FROM "VENTAS_PRODUCTO" GROUP BY "ID_VENTA")
+					LEFT JOIN (SELECT "ID_VENTA", COUNT(*) AS "COUNT" FROM "VENTAS_PRODUCTO" GROUP BY "ID_VENTA")
 					AS VP ON VP."ID_VENTA" = V."ID_VENTA"
 					WHERE V."ANIO_FISCAL" = $1
 					AND V."FECHA_VENTA" >= $2 

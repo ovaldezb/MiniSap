@@ -44,11 +44,11 @@ class Proveedormodel extends CI_model
 		return json_encode($result);
 	}
 
-	function get_proveedor_by_clave($_clave)
+	function get_proveedor_by_clave($_clave,$idEmpresa)
 	{
-		$query = 'SELECT "ID_PROVEEDOR","NOMBRE","CLAVE" FROM "PROVEEDORES" WHERE "CLAVE" = $1 AND "ACTIVO" = true';
+		$query = 'SELECT "ID_PROVEEDOR","NOMBRE","CLAVE" FROM "PROVEEDORES" WHERE "CLAVE" = $1 AND "ID_EMPRESA" = $2 AND "ACTIVO" = true';
 		$result = pg_prepare($this->conn, "selectquery", $query);
-		$result =  pg_fetch_all(pg_execute($this->conn, "selectquery", array($_clave)));
+		$result =  pg_fetch_all(pg_execute($this->conn, "selectquery", array($_clave,$idEmpresa)));
 		return json_encode($result);
 	}
 

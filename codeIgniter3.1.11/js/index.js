@@ -26,6 +26,7 @@ var pathCreacfdi = pathCliente+'creacfdixml/';
 var pathRepcxc = pathCliente+'reportecxc/';
 var pathRepcxp = pathCliente+'reportecxp/';
 var pathRepcobr = pathCliente+'repcobranza/';
+var pathTransfer = pathCliente+'transferencia/';
 var app = angular.module("myApp", ["ngRoute","chart.js"]);
 app.config(function($routeProvider) {
     $routeProvider
@@ -103,7 +104,11 @@ app.config(function($routeProvider) {
     })
     .when("/rpcb/:idproc",{
       templateUrl : pathRepcobr
+    })
+    .when("/trsc/:idproc",{
+      templateUrl : pathTransfer
     });
+
 });
 
 app.controller('myCtrlIndex', function($scope,$http,$location,$window)

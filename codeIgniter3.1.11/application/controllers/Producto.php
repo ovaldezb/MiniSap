@@ -38,6 +38,16 @@ class Producto extends CI_Controller
         }
     }
 
+    public function loadbysuc($idempresa,$idsucursal)
+    {
+        if (isset($_SESSION['username'])) {
+            $data = $this->productomodel->get_productos_by_sucursal($idempresa,$idsucursal);
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_output($data);
+        }
+    }
+
     public function save()
     {
         if (isset($_SESSION['username'])) {
@@ -200,10 +210,20 @@ class Producto extends CI_Controller
         }
     }
 
-    public function proddetailid($idproducto)
+    public function proddetailid($idproducto,$idsucursal)
     {
         if (isset($_SESSION['username'])) {
-            $result = $this->productomodel->get_producto_detalle_by_codigo($idproducto);
+            $result = $this->productomodel->get_producto_detalle_by_codigo($idproducto,$idsucursal);
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_output($result);
+        }
+    }
+
+    public function validaproducto($idproducto,$idsucursal)
+    {
+        if (isset($_SESSION['username'])) {
+            $result = $this->productomodel->valida_existencia_producto($idproducto,$idsucursal);
             return $this->output
                 ->set_content_type('application/json')
                 ->set_output($result);

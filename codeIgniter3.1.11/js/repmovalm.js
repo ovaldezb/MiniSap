@@ -114,12 +114,11 @@ app.controller('repControlMovAlm',function($scope,$http)
 
   $scope.exportExcel = function()
   {
-    console.log('Reporte Excel');
     var blob = new Blob([document.getElementById('exportable').innerHTML],
     {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
     });
-    saveAs(blob, "Report_Example.xlsx");
+    saveAs(blob, "MovAlmacen_"+formatDateExcel(new Date())+".xls");
   }
 
   $scope.exportCSV = function()

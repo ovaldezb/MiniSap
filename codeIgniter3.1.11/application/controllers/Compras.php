@@ -90,10 +90,10 @@ class Compras extends CI_Controller
         }
     }
 
-    public function getcompras($id_empresa, $anio_fiscal)
+    public function getcompras($id_empresa, $anio_fiscal, $idsucursal)
     {
         if (isset($_SESSION['username'])) {
-            $result = $this->comprasmodel->get_compras($id_empresa, $anio_fiscal);
+            $result = $this->comprasmodel->get_compras($id_empresa, $anio_fiscal, $idsucursal);
             return $this->output
                 ->set_content_type('application/json')
                 ->set_output($result);

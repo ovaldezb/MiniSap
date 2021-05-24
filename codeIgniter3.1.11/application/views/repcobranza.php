@@ -24,9 +24,10 @@
       </div>
     </form>
   </div>
+  <button class="button is-info is-small" ng-click="cerrarReporte()" ng-show="isRepShow">Cerrar</button>
+  <button class="button is-info is-small" ng-click="exportAction('excel')" ng-show="isRepShow">Excel</button>
   <div class="table-container" ng-show="isRepShow" style="border:1px solid black;width:99%" id="exportable">
-    <button class="button is-info is-small" ng-click="cerrarReporte()">Cerrar</button>
-    <table class="table" style="width:100%">
+    <table class="table export-table" style="width:100%" id="tblRepCobranza">
       <colgroup>
         <col width="20%" >
         <col width="35%" >
