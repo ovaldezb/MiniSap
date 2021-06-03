@@ -24,10 +24,14 @@
       </div>
     </form>
   </div>
-  <button class="button is-info is-small" ng-click="cerrarReporte()" ng-show="isRepShow">Cerrar</button>
-  <button class="button is-info is-small" ng-click="exportAction('excel')" ng-show="isRepShow">Excel</button>
+  <nav>
+    <button class="button is-info is-small" ng-click="cerrarReporte()" ng-show="isRepShow">Cerrar</button>
+    <button class="button is-info is-small" ng-click="exportAction()" ng-show="isRepShow">Excel</button>
+    <button class="button is-info is-small" ng-click="exportPDF()" ng-show="isRepShow">PDF</button>
+  </nav>
+  
   <div class="table-container" ng-show="isRepShow" style="border:1px solid black;width:99%" id="exportable">
-    <table class="table export-table" style="width:100%" id="tblRepCobranza">
+    <table class="table" style="width:100%" id="tblRepCobranza">
       <colgroup>
         <col width="20%" >
         <col width="35%" >
@@ -46,7 +50,7 @@
       </thead>
     </table>
     <div style="margin-top:-25px;height:560px;overflow:auto">
-      <table class="table is-bordered is-hoverable" style="width:100%">
+      <table class="table is-bordered is-hoverable" style="width:100%" id="tblRepCobranzaDetail">
         <colgroup>
           <col width="20%" >
           <col width="35%" >
@@ -62,14 +66,20 @@
             <td ng-if="x.TITLE === 1" style="text-align:center">{{x.FP}}</td>
             <td ng-if="x.TITLE === 1" style="text-align:center">{{x.MP}}</td>
             <td ng-if="x.TITLE === 1" style="text-align:right">{{x.ABONO | currency}}</td>
-            <td ng-if="x.TITLE === 2" style="text-align:center" colspan="4"><label class="label">{{x.DOCTO}} Mov(s)</label></td>
-            <td ng-if="x.TITLE === 2" style="text-align:right" ><label class="label">{{x.ABONO | currency}}</label></td>
-            <td ng-if="x.TITLE === 3" style="text-align:center;border-top:2px solid black;border-bottom:2px solid black" colspan="4"><label class="label">{{x.DOCTO}} Mov(s)</label></td>
+            <td ng-if="x.TITLE === 2" style="text-align:center"></td>
+            <td ng-if="x.TITLE === 2" style="text-align:center"></td>
+            <td ng-if="x.TITLE === 2" style="text-align:center"><label class="label">{{x.DOCTO}} Mov(s)</label></td>
+            <td ng-if="x.TITLE === 2" style="text-align:center"></td>
+            <td ng-if="x.TITLE === 2" style="text-align:right"><label class="label">{{x.ABONO | currency}}</label></td>
+            <td ng-if="x.TITLE === 3" style="text-align:center;border-top:2px solid black;border-bottom:2px solid black" >&nbsp</td>
+            <td ng-if="x.TITLE === 3" style="text-align:center;border-top:2px solid black;border-bottom:2px solid black" >&nbsp</td>
+            <td ng-if="x.TITLE === 3" style="text-align:center;border-top:2px solid black;border-bottom:2px solid black" ><label class="label">{{x.DOCTO}} Mov(s)</label></td>
+            <td ng-if="x.TITLE === 3" style="text-align:center;border-top:2px solid black;border-bottom:2px solid black" >&nbsp</td>
             <td ng-if="x.TITLE === 3" style="text-align:right;border-top:2px solid black;border-bottom:2px solid black" ><label class="label">{{x.ABONO | currency}}</label></td>
           </tr>
         </tbody>
       </table>
-      <table class="table" style="width:100%;margin-top:-25px">
+      <table class="table" style="width:100%;margin-top:-25px" id="tblCobranzaResumen">
         <colgroup>
           <col width="25%"/>
           <col width="25%"/>

@@ -206,10 +206,31 @@ class Cliente extends CI_Controller
         }
     }
 
-    public function deletedomi($idcliente)
+    public function updatedomi($idDomicilio){
+      if (isset($_SESSION['username'])) {
+        $data = json_decode(file_get_contents("php://input"), true);
+            $result = $this->clientemodel->update_domicilio(array(
+              $data['LUGAR'],
+              $data['CALLE'],
+              $data['COLONIA'],
+              $data['CIUDAD'],
+              $data['LATITUD'],
+              $data['LONGITUD'],
+              $data['CONTACTO'],
+              $data['CP'],
+              $idDomicilio
+            ));
+        //$result = $this->clientemodel->update_domicilio($data);
+        return $this->output
+            ->set_content_type('application/json')
+            ->set_output($result);
+    }
+    }
+
+    public function deletedomi($idDomicilio)
     {
         if (isset($_SESSION['username'])) {
-            $result = $this->clientemodel->delete_domicilios($idcliente);
+            $result = $this->clientemodel->delete_domicilio($idDomicilio);
             return $this->output
                 ->set_content_type('application/json')
                 ->set_output($result);

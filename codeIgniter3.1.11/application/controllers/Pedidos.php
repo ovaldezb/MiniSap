@@ -80,10 +80,10 @@ class Pedidos extends CI_Controller
         }
     }
 
-    public function getpedidos($idempresa, $anioFiscal)
+    public function getpedidos($idempresa, $anioFiscal, $idsucursal)
     {
         if (isset($_SESSION['username'])) {
-            $result = $this->pedidosmodel->get_pedidos($idempresa, $anioFiscal);
+            $result = $this->pedidosmodel->get_pedidos($idempresa, $anioFiscal, $idsucursal);
             return $this->output
                 ->set_content_type('application/json')
                 ->set_output($result);

@@ -117,12 +117,22 @@ class Facturas extends CI_Controller
 
     public function datoscfdi($idfactura)
     {
-        if (isset($_SESSION['username'])) {
-            $result = $this->facturacionmodel->get_datos_for_cfdi($idfactura);
-            return $this->output
-                ->set_content_type('application/json')
-                ->set_output($result);
-        }
+      if (isset($_SESSION['username'])) {
+        $result = $this->facturacionmodel->get_datos_for_cfdi($idfactura);
+        return $this->output
+            ->set_content_type('application/json')
+            ->set_output($result);
+      }
+    }
+
+    public function getccfact(){
+      if (isset($_SESSION['username'])) {
+        $data = json_decode(file_get_contents("php://input"), true);
+        $result = $this->facturacionmodel->get_cortecaja_by_factura($data['facturas']);
+        return $this->output
+            ->set_content_type('application/json')
+            ->set_output($result);
+      }
     }
 
 }

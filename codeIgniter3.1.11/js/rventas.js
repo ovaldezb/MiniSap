@@ -11,10 +11,20 @@ app.controller('repControlVentas',function($scope,$http)
   $scope.bycodigo = false;
   $scope.byname = false;
   $scope.menushow =false;
+  $scope.total = {};
   $scope.tipoReporte = '';
   $scope.idTipoReporte = 0;
   $scope.codigo = '';
   $scope.nombre = '';
+  $scope.filRep = -1;
+
+  $scope.filtroReporte =[
+    {value:1,label:'Todos'},
+    {value:2,label:'Los 10 mas vendidos'},
+    {value:3,label:'Por Código'},
+    {value:4,label:'Por Nombre'}
+  ];
+
   $scope.init = function()
   {
     var foopicker = new FooPicker({
@@ -68,6 +78,10 @@ app.controller('repControlVentas',function($scope,$http)
 
   $scope.creaReporte = function()
   {
+    if($scope.filRep === 0){
+      swal('Seleccione un tipo de reporte');
+      return;
+    }
     var urlVentas = '';
     switch($scope.idTipoReporte){
       case 1:
@@ -80,7 +94,7 @@ app.controller('repControlVentas',function($scope,$http)
         urlVentas = '/'+$scope.codigo+'/3';
         break;
       case 4:
-        urlVentas = '/nada/4';
+        urlVentas = '/'+$scope.nombre+'/4';
         break;
     }
     $http.get(pathRepo+'ventas/'+$scope.idempresa+'/'+$scope.fiscalYear+'/'+$scope.fechaInicio+'/'+$scope.fechaFin+'/'+$scope.linea+urlVentas,{responseType:'json'}).
@@ -100,16 +114,17 @@ app.controller('repControlVentas',function($scope,$http)
           BRUTA:  bruta,
           CANTIDAD:'',
           CODIGO: '',
-          COSTO: '',
-          DESCRIPCION: 'Total',
+          COSTO: 0,
+          DESCRIPCION: 'TOTAL',
           ID_PRODUCTO: '',
           NETA: neta,
           PORCENTAJE: porcen,
-          PRECIO_PROM: '',
-          UTILIDAD: ''
+          PRECIO_PROM: 0,
+          UTILIDAD: 0
         }
 
-        $scope.lstRepmalmcn.push(totalRowIns);
+        //$scope.lstRepmalmcn.push(totalRowIns);
+        $scope.total = totalRowIns;
         $scope.isRepShow = true;
         $scope.fechaImpresion = formatHoraReporte(new Date());
       }else{
@@ -122,7 +137,8 @@ app.controller('repControlVentas',function($scope,$http)
     });
   }
 
-  $scope.selTipoRepo = function(i){
+  $scope.selTipoRepo = function(){
+    var i = $scope.filRep;
     $scope.idTipoReporte = i;
     $scope.bycodigo = false;
     $scope.byname = false;
@@ -177,9 +193,10 @@ app.controller('repControlVentas',function($scope,$http)
 
   $scope.exportExcel = function()
   {
-    var blob = new Blob([document.getElementById('exportable').innerHTML],
+    var blob = new Blob([s2ab(document.getElementById('exportable').innerHTML)],
     {
-      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+      type:'application/vnd.ms-excel'
+      
     });
     saveAs(blob, "Ventas_"+formatDateExcel(new Date())+".xls");
   }
@@ -200,18 +217,327 @@ app.controller('repControlVentas',function($scope,$http)
 
   $scope.exportPDF = function()
   {
-    console.log('Reporte PDF');
-    /*var blob = new Blob([document.getElementById('exportable').innerHTML],
-    {
-      type: "application/pdf;base64"
-    });*/
-    window.html2canvas = html2canvas;
-    var doc = new jsPDF()
-    doc.html(document.getElementById('exportable').innerHTML, {
-     callback: function (doc) {
-       doc.save();
-     }
-   });
+    var offset = 20;
+    var fontSizeHeader = 8;
+    var doc = new jsPDF('p', 'pt', 'letter'); 
+    var y = 20;  
+    doc.setLineWidth(2);  
+    doc.text(200, y = y + 30, "REPORTE DE VENTAS");
+    doc.autoTable({  
+      html: '#rvempresa',  
+      startY: 70,  
+      theme: 'striped',  
+      columnStyles: {  
+          0: {cellWidth: 550,}  
+      },  
+      styles: {  
+          minCellHeight: 20 ,
+          halign: 'center'
+      }  
+    });
+    doc.autoTable({  
+      html: '#rvheader',  
+      startY: 180,  
+      theme: 'grid',  
+      columnStyles: {  
+          0: {cellWidth: 95,fontSize: fontSizeHeader},
+          1: {cellWidth: 55,fontSize: fontSizeHeader},
+          2: {  
+            cellWidth: 55,  
+            fontSize: fontSizeHeader
+          },
+          3: {  
+            cellWidth: 45,  
+            fontSize: fontSizeHeader
+          },
+          4: {  
+            cellWidth: 45,  
+            fontSize: fontSizeHeader
+          },
+          5: {  
+            cellWidth: 65,  
+            fontSize: fontSizeHeader
+          },
+          6: {  
+            cellWidth: 45,  
+            fontSize: fontSizeHeader
+          },
+          7: {  
+            cellWidth: 50,  
+            fontSize: fontSizeHeader
+          },
+          8: {  
+            cellWidth: 45,  
+            fontSize: fontSizeHeader
+          },
+          9: {  
+            cellWidth: 50,  
+            fontSize: fontSizeHeader
+          }  
+      },  
+      styles: {  
+          minCellHeight: 20 ,
+          halign: 'center',
+          fontStyle:'bold',
+          fontSize: 8
+      }  
+    });
+    let bodyRepVen = [];
+    
+    $scope.lstRepmalmcn.forEach(elem =>{
+      let row = {
+        DESCRIPCION:elem.DESCRIPCION,
+        CODIGO:elem.CODIGO ,
+        CANTIDAD:elem.CANTIDAD ,
+        BRUTA:'$'+Number(elem.BRUTA).toFixed(2) ,
+        NETA:'$'+Number(elem.NETA).toFixed(2) ,
+        PRECIO_PROM:'$'+Number(elem.PRECIO_PROM).toFixed(2) ,
+        VENTAS:Number(elem.PORCENTAJE).toFixed(2),
+        COSTO: '$'+Number(elem.COSTO).toFixed(2),
+        UTILIDAD:'$'+Number(elem.UTILIDAD).toFixed(2) ,
+        MARGEN: Number(elem.UTILIDAD / elem.NETA * 100).toFixed(2)
+      };
+      bodyRepVen.push(row);
+    });
+    if(bodyRepVen.length <= 16){
+      doc.autoTable({
+        body:bodyRepVen,
+        startY: 220,  
+        theme: 'grid',
+        columnStyles: {  
+          0: {  
+            cellWidth: 95,  
+            fontSize: 6
+          },
+          1: {  
+            cellWidth: 55, 
+            fontSize: 6 
+          },
+          2: {  
+            cellWidth: 55,  
+            fontSize: 6,
+            halign: 'center',
+          },
+          3: {  
+            cellWidth: 45,  
+            fontSize: 6,
+          },
+          4: {  
+            cellWidth: 45,  
+            fontSize: 6,
+          },
+          5: {  
+            cellWidth: 65,  
+            fontSize: 6,
+            halign: 'center',
+          },
+          6: {  
+            cellWidth: 45,  
+            fontSize: 6,
+            halign: 'center',
+          },
+          7: {  
+            cellWidth: 50,  
+            fontSize: 6,
+            halign: 'right',
+          },
+          8: {  
+            cellWidth: 45,  
+            fontSize: 6,
+            halign: 'right',
+          },
+          9: {  
+            cellWidth: 50,  
+            fontSize: 6,
+            halign: 'right',
+          }  
+        },
+        style:{
+          fontSize: 6
+        }
+      });
+    }else{
+      let fontSize = 7;
+      let ini=0,fin=18;
+      let subArray = bodyRepVen.slice(ini,fin);
+      doc.autoTable({
+        body:subArray,
+        startY: 220,  
+        theme: 'grid',
+        columnStyles: {  
+          0: {  
+            cellWidth: 95,  
+            fontSize: fontSize
+          },
+          1: {  
+            cellWidth: 55, 
+            fontSize: fontSize 
+          },
+          2: {  
+            cellWidth: 55,  
+            fontSize: fontSize,
+            halign: 'center',
+          },
+          3: {  
+            cellWidth: 45,  
+            fontSize: fontSize,
+          },
+          4: {  
+            cellWidth: 45,  
+            fontSize: fontSize,
+          },
+          5: {  
+            cellWidth: 65,  
+            fontSize: fontSize,
+            halign: 'center',
+          },
+          6: {  
+            cellWidth: 45,  
+            fontSize: fontSize,
+            halign: 'center',
+          },
+          7: {  
+            cellWidth: 50,  
+            fontSize: fontSize,
+            halign: 'right',
+          },
+          8: {  
+            cellWidth: 45,  
+            fontSize: fontSize,
+            halign: 'right',
+          },
+          9: {  
+            cellWidth: 50,  
+            fontSize: fontSize,
+            halign: 'right',
+          }  
+        },
+        style:{
+          fontSize: fontSize
+        }
+      });
+      ini = fin; 
+      fin = ini + offset;
+      
+      while(fin<=bodyRepVen.length){
+        doc.addPage();
+        subArray = bodyRepVen.slice(ini,fin);
+        doc.autoTable({  
+          html: '#rvheader',  
+          startY:40,
+          theme: 'grid',  
+          columnStyles: {  
+              0: {  
+                cellWidth: 95,  
+                fontSize: fontSizeHeader
+              },
+              1: {  
+                cellWidth: 55,  
+                fontSize: fontSizeHeader
+              },
+              2: {  
+                cellWidth: 55,  
+                fontSize: fontSizeHeader
+              },
+              3: {  
+                cellWidth: 45,  
+                fontSize: fontSizeHeader
+              },
+              4: {  
+                cellWidth: 45,  
+                fontSize: fontSizeHeader
+              },
+              5: {  
+                cellWidth: 65,  
+                fontSize: fontSizeHeader
+              },
+              6: {  
+                cellWidth: 45,  
+                fontSize: fontSizeHeader
+              },
+              7: {  
+                cellWidth: 50,  
+                fontSize: fontSizeHeader
+              },
+              8: {  
+                cellWidth: 45,  
+                fontSize: fontSizeHeader
+              },
+              9: {  
+                cellWidth: 50,  
+                fontSize: fontSizeHeader
+              }  
+          },  
+          styles: {  
+              minCellHeight: 20 ,
+              halign: 'center',
+              fontStyle:'bold',
+              fontSize: 8
+          }  
+        });
+
+        doc.autoTable({
+          body:subArray,
+          startY:80,
+          theme: 'grid',
+          columnStyles: {  
+            0: {  
+              cellWidth: 95,  
+              fontSize: fontSize
+            },
+            1: {  
+              cellWidth: 55, 
+              fontSize: fontSize
+            },
+            2: {  
+              cellWidth: 55,  
+              fontSize: fontSize,
+              halign: 'center',
+            },
+            3: {  
+              cellWidth: 45,  
+              fontSize: fontSize,
+            },
+            4: {  
+              cellWidth: 45,  
+              fontSize: fontSize,
+            },
+            5: {  
+              cellWidth: 65,  
+              fontSize: fontSize,
+              halign: 'center',
+            },
+            6: {  
+              cellWidth: 45,  
+              fontSize: fontSize,
+              halign: 'center',
+            },
+            7: {  
+              cellWidth: 50,  
+              fontSize: fontSize,
+              halign: 'right',
+            },
+            8: {  
+              cellWidth: 45,  
+              fontSize: fontSize,
+              halign: 'right',
+            },
+            9: {  
+              cellWidth: 50,  
+              fontSize: fontSize,
+              halign: 'right',
+            }  
+          },
+          style:{
+            fontSize: fontSize
+          }
+        });
+        ini = fin; 
+        fin = ini + offset;
+      }
+    }
+    doc.save(`ReporteVentas_${new Date().toISOString()}.pdf`);   
+    
   }
 
   $scope.orderByMe = function(x)

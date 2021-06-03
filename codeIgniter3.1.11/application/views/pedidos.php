@@ -315,7 +315,7 @@
                 </div>
                 <div class="column is-narrow">
                   <div class="select is-small">
-                    <select ng-model="pedido.domi" id="domicilios" ng-options="x.LUGAR as x.LUGAR+' '+x.CIUDAD for x in lstDomis" ng-change="cambiaDomicilio()"></select>
+                    <select ng-model="pedido.domi" id="domicilios" ng-options="x.ID_DOMICILIO as x.LUGAR+' '+x.CIUDAD for x in lstDomis" ng-change="cambiaDomicilio()"></select>
                   </div>
                 </div>
 							</div>
@@ -972,7 +972,7 @@
             <tbody>
               <tr>
                 <td>Entregar en </td>
-                <td>{{pedido.domi}}</td>
+                <td>{{domientrega.lugar}}</td>
                 <td></td>
                 <td style="text-align: right">Sub Total</td>
 							  <td style="text-align: right">{{pedido.subtotal | currency}}</td>

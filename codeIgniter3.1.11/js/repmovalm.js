@@ -3,9 +3,11 @@ app.controller('repControlMovAlm',function($scope,$http)
   $scope.isRepShow = false;
   $scope.idempresa = '';
   $scope.lstRepmalmcn = [];
+  $scope.lstlinea = [];
   $scope.nombreEmpresa = '';
   $scope.direccionEmpresa = '';
   $scope.rfcEmpresa = '';
+  $scope.linea = 0;
   $scope.sortDir = false;
   $scope.init = function()
   {
@@ -51,8 +53,14 @@ app.controller('repControlMovAlm',function($scope,$http)
     $http.get(pathUtils+'lineaempr/'+$scope.idempresa,{responseType:'json'}).
     then((res)=>{
       if(res.data.length > 0){
-        $scope.lstlinea = res.data;
-        $scope.linea = res.data[0].ID_LINEA;
+        let row = {
+          ID_LINEA:0,
+          NOMBRE:"TODOS"
+        };
+        $scope.lstlinea.push(row);
+        res.data.forEach(elem=>{
+          $scope.lstlinea.push(elem);
+        });
       }
     }).catch((err)=>{
       console.log(err);
@@ -137,18 +145,422 @@ app.controller('repControlMovAlm',function($scope,$http)
 
   $scope.exportPDF = function()
   {
-    console.log('Reporte PDF');
-    /*var blob = new Blob([document.getElementById('exportable').innerHTML],
-    {
-      type: "application/pdf;base64"
-    });*/
-    //window.html2canvas = html2canvas;
-    var doc = new jsPDF()
-    doc.html(document.getElementById('exportable').innerHTML, {
-     callback: function (doc) {
-       doc.save();
-     }
-   });
+    let fontSizeHeader = 9;
+    let fontSizeBody = 7;
+    let maxSize1Page = 30;
+    let offset = 20;
+    var doc = new jsPDF('p', 'pt', 'letter'); 
+    var y = 20;  
+    doc.setLineWidth(2);  
+    doc.text(200, y = y + 30, "REPORTE DE MOVIMIENTO DE ALMACEN");
+    doc.autoTable({
+      html:'#rmaempresa',
+      startY:60,
+      fontStyle:'bold',
+      columnStyles:{
+        0:{
+          cellWidth: 550,
+          fontSize: fontSizeHeader,
+          halign: 'center',
+        }
+      },
+      styles: {  
+        minCellHeight: 20 ,
+        halign: 'center'
+      }
+    });
+    doc.autoTable({
+      html:'#rmaheader',
+      startY:165, 
+      theme:'grid',
+      columnStyles:{
+        0:{
+          cellWidth: 120,
+          fontSize: fontSizeHeader,
+          halign: 'center',
+          valign: 'middle',
+          fontStyle:'bold'
+        },
+        1:{
+          cellWidth: 90,
+          fontSize: fontSizeHeader,
+          halign: 'center',
+          valign: 'middle',
+          fontStyle:'bold'
+        },
+        2:{
+          cellWidth: 50,
+          fontSize: fontSizeHeader,
+          halign: 'center',
+          fontStyle:'bold'
+        },
+        3:{
+          cellWidth: 50,
+          fontSize: fontSizeHeader,
+          halign: 'center',
+          fontStyle:'bold'
+        },
+        4:{
+          cellWidth: 50,
+          fontSize: fontSizeHeader,
+          halign: 'center',
+          fontStyle:'bold'
+        },
+        5:{
+          cellWidth: 50,
+          fontSize: fontSizeHeader,
+          halign: 'center',
+          fontStyle:'bold'
+        },
+        6:{
+          cellWidth: 50,
+          fontSize: fontSizeHeader,
+          halign: 'center',
+          fontStyle:'bold'
+        },
+        7:{
+          cellWidth: 50,
+          fontSize: fontSizeHeader,
+          halign: 'center',
+          fontStyle:'bold'
+        },
+        8:{
+          cellWidth: 50,
+          fontSize: fontSizeHeader,
+          halign: 'center',
+          fontStyle:'bold'
+        },
+      }
+    });
+    let bodyRepMovAlm = [];
+    let subArray = [];
+    let ini = 0, fin=maxSize1Page;
+    let i = 0;
+    $scope.lstRepmalmcn.forEach(elem=>{
+      let row = {
+        DESCRIPCION:elem.DESCRIPCION+'-'+(i++),
+        CODIGO:elem.CODIGO,
+        CANT_COMP:elem.CANT_COMP,
+        IMP_TOT_COMP:Number(elem.IMP_TOT_COMP).toFixed(2),
+        CANT_VENTA:elem.CANT_VENTA,
+        IMPO_TOT_VTA:Number(elem.IMPO_TOT_VTA).toFixed(2),
+        CANT_EXIST:elem.CANT_EXIST,
+        PRECIO_LISTA:'$'+Number(elem.PRECIO_LISTA).toFixed(2),
+        IMPO_EXIST:'$'+Number(elem.IMPO_EXIST).toFixed(2)
+      };
+      bodyRepMovAlm.push(row);
+    });
+    if(bodyRepMovAlm.length <= maxSize1Page){
+      subArray = bodyRepMovAlm.slice(0,bodyRepMovAlm.length);
+    }else{
+      subArray = bodyRepMovAlm.slice(ini,fin);
+    }
+    doc.autoTable({
+      body:subArray,
+      startY:205,
+      theme:'grid',
+      columnStyles:{
+        0:{
+          cellWidth: 120,
+          fontSize: fontSizeBody,
+          halign: 'center',
+          valign: 'middle'
+        },
+        1:{
+          cellWidth: 90,
+          fontSize: fontSizeBody,
+          halign: 'center',
+          valign: 'middle'
+        },
+        2:{
+          cellWidth: 50,
+          fontSize: fontSizeBody,
+          halign: 'center',
+        },
+        3:{
+          cellWidth: 50,
+          fontSize: fontSizeBody,
+          halign: 'center',
+        },
+        4:{
+          cellWidth: 50,
+          fontSize: fontSizeBody,
+          halign: 'center',
+        },
+        5:{
+          cellWidth: 50,
+          fontSize: fontSizeBody,
+          halign: 'center',
+        },
+        6:{
+          cellWidth: 50,
+          fontSize: fontSizeBody,
+          halign: 'center',
+        },
+        7:{
+          cellWidth: 50,
+          fontSize: fontSizeBody,
+          halign: 'center',
+        },
+        8:{
+          cellWidth: 50,
+          fontSize: fontSizeBody,
+          halign: 'center',
+        },
+      }
+    });
+    if(bodyRepMovAlm.length > maxSize1Page){
+      ini = fin; 
+      fin = ini + offset;
+      while(fin <= bodyRepMovAlm.length){
+        doc.addPage();
+        subArray = bodyRepMovAlm.slice(ini,fin);
+        doc.autoTable({
+          html:'#rmaheader',
+          startY:20, 
+          theme:'grid',
+          columnStyles:{
+            0:{
+              cellWidth: 120,
+              fontSize: fontSizeHeader,
+              halign: 'center',
+              valign: 'middle',
+              fontStyle:'bold'
+            },
+            1:{
+              cellWidth: 90,
+              fontSize: fontSizeHeader,
+              halign: 'center',
+              valign: 'middle',
+              fontStyle:'bold'
+            },
+            2:{
+              cellWidth: 50,
+              fontSize: fontSizeHeader,
+              halign: 'center',
+              fontStyle:'bold'
+            },
+            3:{
+              cellWidth: 50,
+              fontSize: fontSizeHeader,
+              halign: 'center',
+              fontStyle:'bold'
+            },
+            4:{
+              cellWidth: 50,
+              fontSize: fontSizeHeader,
+              halign: 'center',
+              fontStyle:'bold'
+            },
+            5:{
+              cellWidth: 50,
+              fontSize: fontSizeHeader,
+              halign: 'center',
+              fontStyle:'bold'
+            },
+            6:{
+              cellWidth: 50,
+              fontSize: fontSizeHeader,
+              halign: 'center',
+              fontStyle:'bold'
+            },
+            7:{
+              cellWidth: 50,
+              fontSize: fontSizeHeader,
+              halign: 'center',
+              fontStyle:'bold'
+            },
+            8:{
+              cellWidth: 50,
+              fontSize: fontSizeHeader,
+              halign: 'center',
+              fontStyle:'bold'
+            },
+          }
+        });
+
+        doc.autoTable({
+          body:subArray,
+          startY:40,
+          theme:'grid',
+          columnStyles:{
+            0:{
+              cellWidth: 120,
+              fontSize: fontSizeBody,
+              halign: 'center',
+              valign: 'middle'
+            },
+            1:{
+              cellWidth: 90,
+              fontSize: fontSizeBody,
+              halign: 'center',
+              valign: 'middle'
+            },
+            2:{
+              cellWidth: 50,
+              fontSize: fontSizeBody,
+              halign: 'center',
+            },
+            3:{
+              cellWidth: 50,
+              fontSize: fontSizeBody,
+              halign: 'center',
+            },
+            4:{
+              cellWidth: 50,
+              fontSize: fontSizeBody,
+              halign: 'center',
+            },
+            5:{
+              cellWidth: 50,
+              fontSize: fontSizeBody,
+              halign: 'center',
+            },
+            6:{
+              cellWidth: 50,
+              fontSize: fontSizeBody,
+              halign: 'center',
+            },
+            7:{
+              cellWidth: 50,
+              fontSize: fontSizeBody,
+              halign: 'center',
+            },
+            8:{
+              cellWidth: 50,
+              fontSize: fontSizeBody,
+              halign: 'center',
+            },
+          }
+        });
+        ini = fin; 
+        fin = ini + offset;
+      }
+      
+      if(fin > bodyRepMovAlm){
+        doc.addPage();
+        subArray = bodyRepMovAlm.slice(ini,bodyRepMovAlm.length);
+        doc.autoTable({
+          html:'#rmaheader',
+          startY:20, 
+          theme:'grid',
+          columnStyles:{
+            0:{
+              cellWidth: 120,
+              fontSize: fontSizeHeader,
+              halign: 'center',
+              valign: 'middle',
+              fontStyle:'bold'
+            },
+            1:{
+              cellWidth: 90,
+              fontSize: fontSizeHeader,
+              halign: 'center',
+              valign: 'middle',
+              fontStyle:'bold'
+            },
+            2:{
+              cellWidth: 50,
+              fontSize: fontSizeHeader,
+              halign: 'center',
+              fontStyle:'bold'
+            },
+            3:{
+              cellWidth: 50,
+              fontSize: fontSizeHeader,
+              halign: 'center',
+              fontStyle:'bold'
+            },
+            4:{
+              cellWidth: 50,
+              fontSize: fontSizeHeader,
+              halign: 'center',
+              fontStyle:'bold'
+            },
+            5:{
+              cellWidth: 50,
+              fontSize: fontSizeHeader,
+              halign: 'center',
+              fontStyle:'bold'
+            },
+            6:{
+              cellWidth: 50,
+              fontSize: fontSizeHeader,
+              halign: 'center',
+              fontStyle:'bold'
+            },
+            7:{
+              cellWidth: 50,
+              fontSize: fontSizeHeader,
+              halign: 'center',
+              fontStyle:'bold'
+            },
+            8:{
+              cellWidth: 50,
+              fontSize: fontSizeHeader,
+              halign: 'center',
+              fontStyle:'bold'
+            },
+          }
+        });
+
+        doc.autoTable({
+          body:subArray,
+          startY:40,
+          theme:'grid',
+          columnStyles:{
+            0:{
+              cellWidth: 120,
+              fontSize: fontSizeBody,
+              halign: 'center',
+              valign: 'middle'
+            },
+            1:{
+              cellWidth: 90,
+              fontSize: fontSizeBody,
+              halign: 'center',
+              valign: 'middle'
+            },
+            2:{
+              cellWidth: 50,
+              fontSize: fontSizeBody,
+              halign: 'center',
+            },
+            3:{
+              cellWidth: 50,
+              fontSize: fontSizeBody,
+              halign: 'center',
+            },
+            4:{
+              cellWidth: 50,
+              fontSize: fontSizeBody,
+              halign: 'center',
+            },
+            5:{
+              cellWidth: 50,
+              fontSize: fontSizeBody,
+              halign: 'center',
+            },
+            6:{
+              cellWidth: 50,
+              fontSize: fontSizeBody,
+              halign: 'center',
+            },
+            7:{
+              cellWidth: 50,
+              fontSize: fontSizeBody,
+              halign: 'center',
+            },
+            8:{
+              cellWidth: 50,
+              fontSize: fontSizeBody,
+              halign: 'center',
+            },
+          }
+        });
+      }
+    }
+    doc.save(`RepMovAlmacen_${new Date().toISOString()}.pdf`);   
   }
 
   $scope.selTipoRepo = function(i){

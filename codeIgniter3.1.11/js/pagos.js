@@ -33,7 +33,8 @@ app.controller('myCtrlPagos', function($scope,$http,$routeParams)
         poliza:'',
         importebase:'',
         idempresa:'',
-        aniofiscal:''
+        aniofiscal:'',
+        idsucursal:''
     }
     $scope.lstCompras = [];
     $scope.lstPagos = [];
@@ -55,6 +56,7 @@ app.controller('myCtrlPagos', function($scope,$http,$routeParams)
             if(res.data.value=='OK'){
             $scope.pago.idempresa = res.data.idempresa;
             $scope.pago.aniofiscal = res.data.aniofiscal;
+            $scope.pago.idsucursal = res.data.idsucursal;
             $scope.idusuario = res.data.idusuario;
             $scope.getListaCompras();
             $scope.permisos();
@@ -65,7 +67,7 @@ app.controller('myCtrlPagos', function($scope,$http,$routeParams)
     };
 
     $scope.getListaCompras = () =>{
-        $http.get(pathCmpr + 'getcompras/'+$scope.pago.idempresa+'/'+$scope.pago.aniofiscal)
+        $http.get(pathCmpr + 'getcompras/'+$scope.pago.idempresa+'/'+$scope.pago.aniofiscal+'/'+$scope.pago.idsucursal)
         .then(res =>{
             if(res.data.length > 0){
               $scope.lstCompras = res.data;

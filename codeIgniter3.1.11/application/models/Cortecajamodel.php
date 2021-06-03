@@ -11,7 +11,7 @@ class Cortecajamodel extends CI_model
 		$this->conn = $this->postgresdb->getConn();
 	}
 
-  function reporte_by_month($idempresa,$aniofiscal,$fecini,$fecfin){
+  function reporte_by_month($idempresa,$aniofiscal,$fecini,$fecfin,$idscursal){
     $query = 'SELECT TO_CHAR(C."FECHA_CORTE",\'DD-mon-YYYY HH24:MI\') as "FECHA", 
       C."OPERACIONES", C."CANCELADAS" as "CANCELADOS", C."IMPORTE", C."ID_CORTE",
       F."DOCUMENTO",
@@ -23,9 +23,10 @@ class Cortecajamodel extends CI_model
       AND C."ANIO_FISCAL" = $2
       AND C."FECHA_CORTE" >= $3
       AND C."FECHA_CORTE"<= $4 
+      AND C."ID_SUCURSAL" = $5
       ORDER BY "FECHA"';
 		pg_prepare($this->conn, "sel_month", $query);
-		$result =  pg_fetch_all(pg_execute($this->conn, "sel_month", array($idempresa,$aniofiscal,$fecini,$fecfin)));
+		$result =  pg_fetch_all(pg_execute($this->conn, "sel_month", array($idempresa,$aniofiscal,$fecini,$fecfin,$idscursal)));
 		return json_encode($result,JSON_NUMERIC_CHECK);
   }
 
@@ -138,6 +139,20 @@ class Cortecajamodel extends CI_model
 		pg_prepare($this->conn,"qry1",$query);
 		$result = pg_fetch_all(pg_execute($this->conn,"qry1",$data));
     return json_encode($result);
+  }
+
+  function get_cortecaja_no_timbrada($arrayCCNT){
+    $query = 'SELECT * FROM "CORTE_CAJA" WHERE "ID_EMPRESA"=$1 AND "ID_SUCURSAL"=$2 AND "ANIO_FISCAL"=$3 AND "TIMBRADA"= \'f\' ORDER BY "FECHA_CORTE" DESC';
+    pg_prepare($this->conn,"qry1",$query);
+		$result = pg_fetch_all(pg_execute($this->conn,"qry1",$arrayCCNT));
+    return json_encode($result,JSON_NUMERIC_CHECK);
+  }
+
+  function updt_cortecaja_timbrada($idcorte){
+    $query = 'UPDATE "CORTE_CAJA" SET "TIMBRADA" = \'true\' WHERE "ID_CORTE" = $1';
+    pg_prepare($this->conn,"upatequery",$query);
+		$result = pg_execute($this->conn,"upatequery",array($idcorte));
+    return json_encode(array("msg"=>"ok"));
   }
 
 }

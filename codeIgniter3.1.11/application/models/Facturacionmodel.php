@@ -32,7 +32,7 @@ class Facturacionmodel extends CI_model
     CASE WHEN FC."RFC" IS NULL THEN false ELSE true END as "FACTURADO",
     FC."FOLIO",
     TRIM(C."EMAIL") as "EMAIL",
-    C."ID_CLIENTE",
+    CASE WHEN C."ID_CLIENTE" IS NULL THEN 0 ELSE C."ID_CLIENTE" END as "ID_CLIENTE",
     TRIM(F."ESTATUS") as "ESTATUS",
     TRIM(U."CLAVE_USR") as "CLAVE_USR"
 		FROM "FACTURA" as F
@@ -84,5 +84,14 @@ class Facturacionmodel extends CI_model
 		$result = pg_fetch_all(pg_execute($this->conn,"select_fact",array($idfactura)));
 		return json_encode($result[0]);
   }
+
+  function get_cortecaja_by_factura($facturas){
+    $query = 'SELECT SUM("IMPORTE") as "IMPORTE", SUM("IVA") as "IVA"
+    FROM "FACTURA_PRODUCTO"
+    WHERE "ID_FACTURA" IN ('.$facturas.')';
+		$result = pg_fetch_all(pg_query($this->conn,$query));
+		return json_encode($result[0],JSON_NUMERIC_CHECK);
+  }
+
 }
 ?>

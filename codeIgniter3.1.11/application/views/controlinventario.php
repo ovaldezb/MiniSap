@@ -75,6 +75,11 @@
       </div>
       <div class="level-right">
         <p class="level-item" ng-show="permisos.consulta">
+          <a ng-click="descargaPDF();"><span class="icon has-text-success">
+            <i class="fas fa-file-pdf" title="Descarga en PDF"></i></span>
+          </a>
+        </p>
+        <p class="level-item" ng-show="permisos.consulta">
           <a ng-click="descargaExcel();"><span class="icon has-text-success">
             <i class="fas fa-file-excel" title="Descarga en Excel"></i></span>
           </a>
@@ -97,7 +102,7 @@
       </div>
     </nav>
     <div id="exportable">
-      <table class="table is-bordered" style="width:100%;">
+      <table class="table is-bordered" style="width:100%;" id="ciheader">
         <colgroup>
           <col width='11%'/>
           <col width='11%'/>

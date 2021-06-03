@@ -403,6 +403,427 @@ app.controller("myCtrlControlinvent", function ($scope, $http,$routeParams) {
     saveAs(blob, "CtrlInventario_"+formatDateExcel(new Date())+".xls");
   }
 
+  $scope.descargaPDF = ()=>{
+    let fontSizeHeader = 9;
+    let fontSizeBody = 7;
+    let maxSize1Page = 33;
+    let offset = 34;
+    var doc = new jsPDF('p', 'pt', 'letter'); 
+    var y = 20;  
+    doc.setLineWidth(2);  
+    doc.text(200, y = y + 30, "CONTROL DE INVENTARIO");
+    doc.autoTable({
+      startY:70,
+      margin:{top:10},
+      fontStyle:'bold',
+      theme:'grid',
+      html:'#ciheader',
+      columnStyles:{
+        0:{
+          cellWidth: 90,
+          fontSize: fontSizeHeader,
+          halign: 'center',
+          fontStyle:'bold'
+        },
+        1:{
+          cellWidth: 50,
+          fontSize: fontSizeHeader,
+          halign: 'center',
+          fontStyle:'bold'
+        },
+        2:{
+          cellWidth: 90,
+          fontSize: fontSizeHeader,
+          halign: 'center',
+          fontStyle:'bold'
+        },
+        3:{
+          cellWidth: 50,
+          fontSize: fontSizeHeader,
+          halign: 'center',
+          fontStyle:'bold'
+        },
+        4:{
+          cellWidth: 50,
+          fontSize: fontSizeHeader,
+          halign: 'center',
+          fontStyle:'bold'
+        },
+        5:{
+          cellWidth: 50,
+          fontSize: fontSizeHeader,
+          halign: 'center',
+          fontStyle:'bold'
+        },
+        6:{
+          cellWidth: 50,
+          fontSize: fontSizeHeader,
+          halign: 'center',
+          fontStyle:'bold'
+        },
+        7:{
+          cellWidth: 50,
+          fontSize: fontSizeHeader,
+          halign: 'center',
+          fontStyle:'bold'
+        },
+        8:{
+          cellWidth: 50,
+          fontSize: fontSizeHeader,
+          halign: 'center',
+          fontStyle:'bold'
+        },
+      },
+      styles: {  
+        minCellHeight: 20 ,
+        halign: 'center'
+    }
+    });
+    let bodyCtrlInv = [];
+    let subArray = [];
+    $scope.lstInvent.forEach(elem =>{
+      let row = {
+        FECHA:elem.FECHA,
+        DOCUMENTO:elem.DOCUMENTO,
+        CODIGO:elem.CODIGO,
+        CAJA:elem.CAJA,
+        MOV:elem.MOV,
+        ENTRADA:elem.IN,
+        SALIDA:elem.OUT,
+        PRECIOUNIT:'$'+elem.PREC_UNIT,
+        IMPORTE:'$'+elem.IMPORTE
+      };
+      bodyCtrlInv.push(row);
+    });
+    
+    let ini = 0, fin=maxSize1Page;
+    if(bodyCtrlInv.length <= maxSize1Page){
+      subArray = bodyCtrlInv.slice(0,bodyCtrlInv.length);
+    }else{
+      subArray = bodyCtrlInv.slice(ini,fin);
+    }
+    doc.autoTable({
+      body:subArray,
+      startY:90,
+      theme:'grid',
+      columnStyles:{
+        0:{
+          cellWidth: 90,
+          fontSize: fontSizeBody,
+          halign: 'center',
+        },
+        1:{
+          cellWidth: 50,
+          fontSize: fontSizeBody,
+          halign: 'center',
+        },
+        2:{
+          cellWidth: 90,
+          fontSize: fontSizeBody,
+          halign: 'center',
+        },
+        3:{
+          cellWidth: 50,
+          fontSize: fontSizeBody,
+          halign: 'center',
+        },
+        4:{
+          cellWidth: 50,
+          fontSize: fontSizeBody,
+          halign: 'center',
+        },
+        5:{
+          cellWidth: 50,
+          fontSize: fontSizeBody,
+          halign: 'center',
+        },
+        6:{
+          cellWidth: 50,
+          fontSize: fontSizeBody,
+          halign: 'center',
+        },
+        7:{
+          cellWidth: 50,
+          fontSize: fontSizeBody,
+          halign: 'center',
+        },
+        8:{
+          cellWidth: 50,
+          fontSize: fontSizeBody,
+          halign: 'center',
+        },
+      },
+      styles: {  
+        minCellHeight: 20 ,
+        halign: 'center'
+      }
+    });
+    if(bodyCtrlInv.length > maxSize1Page){
+      ini = fin; 
+      fin = ini + offset;
+      while(fin<=bodyCtrlInv.length){
+        doc.addPage();
+        subArray = bodyCtrlInv.slice(ini,fin);
+        doc.autoTable({
+          startY:20,
+          margin:{top:10},
+          fontStyle:'bold',
+          theme:'grid',
+          html:'#ciheader',
+          columnStyles:{
+            0:{
+              cellWidth: 90,
+              fontSize: fontSizeHeader,
+              halign: 'center',
+              fontStyle:'bold'
+            },
+            1:{
+              cellWidth: 50,
+              fontSize: fontSizeHeader,
+              halign: 'center',
+              fontStyle:'bold'
+            },
+            2:{
+              cellWidth: 90,
+              fontSize: fontSizeHeader,
+              halign: 'center',
+              fontStyle:'bold'
+            },
+            3:{
+              cellWidth: 50,
+              fontSize: fontSizeHeader,
+              halign: 'center',
+              fontStyle:'bold'
+            },
+            4:{
+              cellWidth: 50,
+              fontSize: fontSizeHeader,
+              halign: 'center',
+              fontStyle:'bold'
+            },
+            5:{
+              cellWidth: 50,
+              fontSize: fontSizeHeader,
+              halign: 'center',
+              fontStyle:'bold'
+            },
+            6:{
+              cellWidth: 50,
+              fontSize: fontSizeHeader,
+              halign: 'center',
+              fontStyle:'bold'
+            },
+            7:{
+              cellWidth: 50,
+              fontSize: fontSizeHeader,
+              halign: 'center',
+              fontStyle:'bold'
+            },
+            8:{
+              cellWidth: 50,
+              fontSize: fontSizeHeader,
+              halign: 'center',
+              fontStyle:'bold'
+            },
+          },
+          styles: {  
+            minCellHeight: 20 ,
+            halign: 'center'
+        }
+        });
+        
+        doc.autoTable({
+          body:subArray,
+          startY:40,
+          theme:'grid',
+          columnStyles:{
+            0:{
+              cellWidth: 90,
+              fontSize: fontSizeBody,
+              halign: 'center',
+            },
+            1:{
+              cellWidth: 50,
+              fontSize: fontSizeBody,
+              halign: 'center',
+            },
+            2:{
+              cellWidth: 90,
+              fontSize: fontSizeBody,
+              halign: 'center',
+            },
+            3:{
+              cellWidth: 50,
+              fontSize: fontSizeBody,
+              halign: 'center',
+            },
+            4:{
+              cellWidth: 50,
+              fontSize: fontSizeBody,
+              halign: 'center',
+            },
+            5:{
+              cellWidth: 50,
+              fontSize: fontSizeBody,
+              halign: 'center',
+            },
+            6:{
+              cellWidth: 50,
+              fontSize: fontSizeBody,
+              halign: 'center',
+            },
+            7:{
+              cellWidth: 50,
+              fontSize: fontSizeBody,
+              halign: 'center',
+            },
+            8:{
+              cellWidth: 50,
+              fontSize: fontSizeBody,
+              halign: 'center',
+            },
+          },
+          styles: {  
+            minCellHeight: 20 ,
+            halign: 'center'
+          }
+        });
+        ini = fin; 
+        fin = ini + offset;
+      }
+    
+    if(fin > bodyCtrlInv.length){
+      doc.addPage();
+      subArray = bodyCtrlInv.slice(ini,bodyCtrlInv.length);
+        doc.autoTable({
+          startY:20,
+          margin:{top:10},
+          fontStyle:'bold',
+          theme:'grid',
+          html:'#ciheader',
+          columnStyles:{
+            0:{
+              cellWidth: 90,
+              fontSize: fontSizeHeader,
+              halign: 'center',
+              fontStyle:'bold'
+            },
+            1:{
+              cellWidth: 50,
+              fontSize: fontSizeHeader,
+              halign: 'center',
+              fontStyle:'bold'
+            },
+            2:{
+              cellWidth: 90,
+              fontSize: fontSizeHeader,
+              halign: 'center',
+              fontStyle:'bold'
+            },
+            3:{
+              cellWidth: 50,
+              fontSize: fontSizeHeader,
+              halign: 'center',
+              fontStyle:'bold'
+            },
+            4:{
+              cellWidth: 50,
+              fontSize: fontSizeHeader,
+              halign: 'center',
+              fontStyle:'bold'
+            },
+            5:{
+              cellWidth: 50,
+              fontSize: fontSizeHeader,
+              halign: 'center',
+              fontStyle:'bold'
+            },
+            6:{
+              cellWidth: 50,
+              fontSize: fontSizeHeader,
+              halign: 'center',
+              fontStyle:'bold'
+            },
+            7:{
+              cellWidth: 50,
+              fontSize: fontSizeHeader,
+              halign: 'center',
+              fontStyle:'bold'
+            },
+            8:{
+              cellWidth: 50,
+              fontSize: fontSizeHeader,
+              halign: 'center',
+              fontStyle:'bold'
+            },
+          },
+          styles: {  
+            minCellHeight: 20 ,
+            halign: 'center'
+        }
+        });
+        
+        doc.autoTable({
+          body:subArray,
+          startY:40,
+          theme:'grid',
+          columnStyles:{
+            0:{
+              cellWidth: 90,
+              fontSize: fontSizeBody,
+              halign: 'center',
+            },
+            1:{
+              cellWidth: 50,
+              fontSize: fontSizeBody,
+              halign: 'center',
+            },
+            2:{
+              cellWidth: 90,
+              fontSize: fontSizeBody,
+              halign: 'center',
+            },
+            3:{
+              cellWidth: 50,
+              fontSize: fontSizeBody,
+              halign: 'center',
+            },
+            4:{
+              cellWidth: 50,
+              fontSize: fontSizeBody,
+              halign: 'center',
+            },
+            5:{
+              cellWidth: 50,
+              fontSize: fontSizeBody,
+              halign: 'center',
+            },
+            6:{
+              cellWidth: 50,
+              fontSize: fontSizeBody,
+              halign: 'center',
+            },
+            7:{
+              cellWidth: 50,
+              fontSize: fontSizeBody,
+              halign: 'center',
+            },
+            8:{
+              cellWidth: 50,
+              fontSize: fontSizeBody,
+              halign: 'center',
+            },
+          },
+          styles: {  
+            minCellHeight: 20 ,
+            halign: 'center'
+          }
+        });
+    }
+  }
+    doc.save(`ControlInventario_${new Date().toISOString()}.pdf`);   
+  }
+
   $scope.selectRowPrd = (index, idproducto) =>{
     $scope.regmov.codigo = $scope.lstProducto[index].CODIGO;
     $scope.prddesc = $scope.lstProducto[index].DESCRIPCION;

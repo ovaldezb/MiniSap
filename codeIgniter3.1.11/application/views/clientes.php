@@ -289,7 +289,7 @@
               <td colspan="2" style="text-align:right">Total:</td>
               <td style="text-align:right">{{totalImporFact | currency}}</td>
               <td style="text-align:right">{{totalImporCobr | currency}}</td>
-              <td style="text-align:right">{{totalSaldoFact | currency}}</td>
+              <td style="text-align:right">{{totalSaldo | currency}}</td>
             </tr>
           </table>
         </div>

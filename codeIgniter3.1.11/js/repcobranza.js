@@ -141,11 +141,93 @@ app.controller('CtrlCobranza', ($scope,$http,$routeParams) =>
   }
 
   
-  $scope.exportAction = function (option) {
+  $scope.exportAction = () =>{
     var blob = new Blob([document.getElementById('exportable').innerHTML], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
     });
     saveAs(blob, "Cobranza_"+formatDateExcel(new Date())+".xls");
+  }
+
+  $scope.exportPDF = () =>{
+    var rowsDetail = $scope.lstRepCobr.length * 26;
+    var doc = new jsPDF('p', 'pt', 'letter'); 
+    var y = 20;  
+    doc.setLineWidth(2);  
+    doc.text(200, y = y + 30, "REPORTE DE COBRANZA");  
+    doc.autoTable({  
+        html: '#tblRepCobranza',  
+        startY: 70,  
+        theme: 'grid',  
+        columnStyles: {  
+            0: {  
+                cellWidth: 150,  
+            },  
+            1: {  
+                cellWidth: 100,  
+            },  
+            2: {  
+                cellWidth: 100,  
+            },  
+            3: {  
+                cellWidth: 100,  
+            },  
+            4: {  
+                cellWidth: 100,  
+            }  
+        },  
+        styles: {  
+            minCellHeight: 20  
+        }  
+    });
+    doc.autoTable({  
+      html: '#tblRepCobranzaDetail',  
+      startY: 90,  
+      theme: 'grid',  
+      columnStyles: {  
+          0: {  
+              cellWidth: 100,  
+          },  
+          1: {  
+              cellWidth: 150,  
+          },  
+          2: {  
+              cellWidth: 100,  
+          },  
+          3: {  
+              cellWidth: 100,  
+          },  
+          4: {  
+              cellWidth: 100,  
+          }  
+      },  
+      styles: {  
+          minCellHeight: 20  
+      }  
+    });
+    
+    doc.autoTable({  
+      html: '#tblCobranzaResumen',  
+      startY: rowsDetail,  
+      theme: 'grid',  
+      columnStyles: {  
+          0: {  
+              cellWidth: 150,  
+          },  
+          1: {  
+              cellWidth: 150,  
+          },  
+          2: {  
+              cellWidth: 150,  
+          },  
+          3: {  
+              cellWidth: 100,  
+          }  
+      },  
+      styles: {  
+          minCellHeight: 20  
+      }  
+    });  
+    doc.save(`${new Date().toISOString()}_cobranza.pdf`); 
   }
   
   $scope.cerrarReporte = () =>{
@@ -153,25 +235,4 @@ app.controller('CtrlCobranza', ($scope,$http,$routeParams) =>
     $scope.lstRepCobr = [];
     $scope.lstFormpago = [];
   }
-});
-
-app.directive('exportTable', function(){
-  var link = function ($scope, elm, attr) {
-    $scope.$on('export-pdf', function (e, d) {
-        elm.tableExport({ type: 'pdf', escape: false });
-    });
-    $scope.$on('export-excel', function (e, d) {
-        elm.tableExport({ type: 'excel', escape: false });
-    });
-    $scope.$on('export-doc', function (e, d) {
-        elm.tableExport({ type: 'doc', escape: false });
-    });
-    $scope.$on('export-csv', function (e, d) {
-        elm.tableExport({ type: 'csv', escape: false });
-    });
-}
-return {
-    restrict: 'C',
-    link: link
-}
 });

@@ -62,7 +62,7 @@ app.controller('myCtrlCortecaja',  function($scope, $http){
   }
 
   $scope.getreportebymes=(fechaini,fechafin)=>{
-    $http.get(pathCorte+'reportemes/'+$scope.idempresa+'/'+$scope.aniofiscal+'/'+fechaini+'/'+fechafin)
+    $http.get(pathCorte+'reportemes/'+$scope.idempresa+'/'+$scope.aniofiscal+'/'+fechaini+'/'+fechafin+'/'+$scope.idsucursal)
     .then(res=>{
       if(res.data){
         $scope.lstCortesCaja = res.data;
@@ -184,7 +184,3 @@ app.controller('myCtrlCortecaja',  function($scope, $http){
   }
 
 });
-
-var lastday = function(y,m){
-  return  new Date(y, m +1, 0);
-  }

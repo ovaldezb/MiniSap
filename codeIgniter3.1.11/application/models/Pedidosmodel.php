@@ -87,7 +87,7 @@ class Pedidosmodel extends CI_model
 			P."ID_TIPO_PAGO",
 			P."DIAS",
 			P."ID_FORMA_PAGO", 
-			P."DOMICILIO",
+			P."ID_DOMICILIO",
 			P."ID_CLIENTE",
       C."DOMICILIO" as "CLI_DOMICILIO",
       C."TELEFONO",
@@ -183,7 +183,7 @@ class Pedidosmodel extends CI_model
     "ID_FORMA_PAGO"=$6, 
     "ID_METODO_PAGO"=$7,
     "FECHA_ENTREGA" = $8,
-    "DOMICILIO" = $9,
+    "ID_DOMICILIO" = $9,
     "COMENTARIOS" = $10
     WHERE "ID_PEDIDO" = $11';
     pg_prepare($this->conn,"upd_ped",$query);

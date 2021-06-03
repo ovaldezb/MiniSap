@@ -86,6 +86,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
     fpago : 1,
     fechaentrega:'',
     domi:'',
+    domicilio:'',
     bruto:'',
     comentarios:'',
     subtotal:0,
@@ -97,7 +98,8 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
     colonia:'',
     cp:'',
     ciudad:'',
-    contacto:''
+    contacto:'',
+    lugar:''
   }
   $scope.producto = {
       codigo_prodto: '',
@@ -410,6 +412,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
     .then(res=>{
       if(res.data.length > 0){
       $scope.lstDomis = res.data;
+      $scope.domientrega.lugar =res.data[0].LUGAR;
       $scope.domientrega.calle =res.data[0].CALLE;
       $scope.domientrega.colonia =res.data[0].COLONIA;
       $scope.domientrega.cp =res.data[0].CP;
@@ -922,6 +925,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
         if(willAdd){
           $scope.showProgressBar = true;
           $scope.regpedido = true;
+          $scope.pedido.domi = $scope.pedido.domi == "" ? null : $scope.pedido.domi;
           $http.post(pathPedi+'registrapedido',$scope.pedido).
           then(function(res)
           {
@@ -930,7 +934,6 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
             swal('El pedido se registro exitosamente');
             $scope.isImprimir = true;
             $scope.isRegistra = false;
-            //$scope.limpiar();
             $scope.getpedidos();
             $scope.showProgressBar = false;
           }).
@@ -1062,13 +1065,13 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
               $scope.pedido.idmoneda = res.data[0].ID_MONEDA;
               $scope.pedido.tpago = res.data[0].ID_TIPO_PAGO;
               $scope.pedido.fpago = res.data[0].ID_FORMA_PAGO.toString();
+              $scope.pedido.mpago = res.data[0].ID_METODO_PAGO;
               $scope.fechaentrega = res.data[0].FECHA_ENTREGA;
               $("#fechaentrega").val(res.data[0].FECHA_ENTREGA);
               $scope.rfc_cliente = res.data[0].RFC;
-              $scope.pedido.mpago = res.data[0].ID_METODO_PAGO;
               $scope.cliente.domicilio = res.data[0].CLI_DOMICILIO;
               $scope.cliente.telefono = Number(res.data[0].TELEFONO);
-              $scope.pedido.domi = res.data[0].DOMICILIO;
+              $scope.pedido.domi = res.data[0].ID_DOMICILIO;
               $scope.isCapturaPedido = true;
               $scope.pedido.idcliente = res.data[0].ID_CLIENTE;
               $scope.usuario = $scope.lstPedidos[$scope.indexRowPedido].CLAVE_USR === null ? 'ND' : $scope.lstPedidos[$scope.indexRowPedido].CLAVE_USR;
@@ -1162,6 +1165,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
 
     $scope.cambiaDomicilio = () =>{
       let cmboIdx = $('#domicilios').prop('selectedIndex');
+      $scope.domientrega.lugar  = $scope.lstDomis[cmboIdx].LUGAR;
       $scope.domientrega.calle = $scope.lstDomis[cmboIdx].CALLE;
       $scope.domientrega.colonia = $scope.lstDomis[cmboIdx].COLONIA;
       $scope.domientrega.cp = $scope.lstDomis[cmboIdx].CP;

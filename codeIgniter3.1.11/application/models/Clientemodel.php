@@ -26,7 +26,8 @@ class Clientemodel extends CI_model
     INNER JOIN "FORMA_PAGO" as FP ON FP."ID_FORMA_PAGO" = C."ID_FORMA_PAGO"
     INNER JOIN "VENDEDOR" as V ON V."ID_VENDEDOR" = C."ID_VENDEDOR"
     WHERE C."ACTIVO" = true 
-    AND C."ID_EMPRESA" = $2';
+    AND C."ID_EMPRESA" = $2 
+    ORDER BY "ID_CLIENTE" DESC ';
 		pg_prepare($this->conn, "my_query", $query);
 		$result =  pg_fetch_all(pg_execute($this->conn, "my_query", array($anioFiscal,$idEmpresa)));
 		return json_encode($result);
@@ -108,7 +109,7 @@ class Clientemodel extends CI_model
 		$result = pg_execute($this->conn,"deletequery1",array($_idCliente));
     
     $query2 = 'DELETE FROM "DOMICILIOS" WHERE "ID_CLIENTE" = $1';
-		pg_prepare($this->conn,"deletequery2",$query);
+		pg_prepare($this->conn,"deletequery2",$query2);
 		$result2 = pg_execute($this->conn,"deletequery2",array($_idCliente));
 		return $result;
 	}
@@ -152,14 +153,14 @@ class Clientemodel extends CI_model
     FROM "FACTURA" as F
     WHERE F."ID_CLIENTE" = $1
     AND F."ANIO_FISCAL" = $2
-    AND C."ESTATUS" IS NULL 
+    AND F."ESTATUS" IS NULL 
     UNION
     SELECT \'B\' as "TIPO", TRIM(F."DOCUMENTO") as "DOCUMENTO",TO_CHAR("FECHA_COBRO",\'DD/Mon/YYYY\') as "FECHA_FACTURA",\'\' as "IMPORTE",TO_CHAR(C."IMPORTE_COBRO",\'999999999.99\') as "COBRO", \'\' as "SALDO"
     FROM "COBROS" as C
     INNER JOIN "FACTURA" as F ON F."ID_FACTURA" = C."ID_FACTURA"
     WHERE F."ID_CLIENTE" = $3
     AND C."ANIO_FISCAL" = $4
-    AND C."ESTATUS" IS NULL 
+    AND F."ESTATUS" IS NULL 
     ORDER BY "DOCUMENTO","TIPO", "FECHA_FACTURA" ';
 		pg_prepare($this->conn,"selqry",$query);
 		$result = pg_fetch_all(pg_execute($this->conn,"selqry",array($idcliente,$anioFiscal,$idcliente,$anioFiscal)));
@@ -175,21 +176,41 @@ class Clientemodel extends CI_model
   }
 
   function save_domicilio($data){
-    $query = 'INSERT INTO "DOMICILIOS" ("ID_CLIENTE","LUGAR","CALLE","COLONIA","CIUDAD","LATITUD","LONGITUD","CONTACTO","CP") VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9) ';
+    $query = 'INSERT INTO "DOMICILIOS" ("ID_CLIENTE","LUGAR","CALLE","COLONIA","CIUDAD","LATITUD","LONGITUD","CONTACTO","CP","ACTIVO") 
+    VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,true)';
 		pg_prepare($this->conn,"insert_query",$query);
 		$result = pg_execute($this->conn,"insert_query",$data);
 		return $result;
   }
 
-  function delete_domicilios($idcliente){
-    $query = 'DELETE FROM "DOMICILIOS" WHERE "ID_CLIENTE" = $1 ';
+  /*function delete_domicilios($iddomicilo){
+    $query = 'DELETE FROM "DOMICILIOS" WHERE "ID_DOMICILIO" = $1 ';
 		pg_prepare($this->conn,"insert_query",$query);
-		$result = pg_execute($this->conn,"insert_query",array($idcliente));
+		$result = pg_execute($this->conn,"insert_query",array($iddomicilo));
+		return json_encode($result,JSON_NUMERIC_CHECK);
+  }*/
+
+  function delete_domicilio($iddomicilo){
+    $query = 'UPDATE "DOMICILIOS" SET "ACTIVO" = false WHERE "ID_DOMICILIO" = $1 ';
+		pg_prepare($this->conn,"insert_query",$query);
+		$result = pg_execute($this->conn,"insert_query",array($iddomicilo));
+		return json_encode($result,JSON_NUMERIC_CHECK);
+  }
+
+  function update_domicilio($dataDomicilios){
+    $query = 'UPDATE "DOMICILIOS" SET "LUGAR" = $1 , "CALLE"=$2, "COLONIA"=$3, 
+    "CIUDAD"=$4, "LATITUD"=$5, "LONGITUD" =$6, "CONTACTO"=$7, "CP"=$8 
+    WHERE "ID_DOMICILIO"=$9';
+    pg_prepare($this->conn,"update_query",$query);
+		$result = pg_execute($this->conn,"update_query",$dataDomicilios);
 		return json_encode($result,JSON_NUMERIC_CHECK);
   }
 
   function get_domi_by_id($idcliente){
-    $query = 'SELECT "ID_CLIENTE",TRIM("LUGAR") as "LUGAR", "CALLE", TRIM("CIUDAD") as "CIUDAD", "COLONIA", "CONTACTO","LATITUD","LONGITUD","CP" FROM "DOMICILIOS" WHERE "ID_CLIENTE"=$1';
+    $query = 'SELECT "ID_DOMICILIO","ID_CLIENTE",TRIM("LUGAR") as "LUGAR", 
+    "CALLE", TRIM("CIUDAD") as "CIUDAD", "COLONIA", "CONTACTO", "LATITUD", "LONGITUD", "CP" 
+    FROM "DOMICILIOS" 
+    WHERE "ID_CLIENTE"=$1 AND "ACTIVO" = \'t\' ';
 		pg_prepare($this->conn,"selqry",$query);
 		$result = pg_fetch_all(pg_execute($this->conn,"selqry",array($idcliente)));
 		return json_encode($result,JSON_NUMERIC_CHECK);

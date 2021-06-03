@@ -2,7 +2,7 @@
   defined('FCPATH') OR exit('No direct script access allowed');    
 
   class Xml2pdf{    
-    function convierte($xml,$cadena_sat,$cliente,$empresa,$formapagoArray,$uso_cfdiArray,$qr){                
+    function convierte($xml,$cadena_sat,$domicilio,$empresa,$formapagoArray,$uso_cfdiArray,$qr){                
       $rows = 15;
       $xml_doc = new DOMDocument('1.0','utf-8');
       $xml_doc->loadXML($xml);
@@ -63,7 +63,7 @@
               <td class='t3c6'>$ {$concep->getAttribute('Importe')}</td>
           </tr>";
       }
-
+      $relleno = '';
       for($i=0;$i<($rows-sizeof($concepto));$i++){
         $relleno .=
         "
@@ -264,7 +264,7 @@
               </tr>
               <tr>
                   <td class='t2h1'>DIRECCION</td>
-                  <td class='t2h2'>{$cliente[0]->DOMICILIO}</td>
+                  <td class='t2h2'>{$domicilio}</td>
                   <td class='t2h1'></td>
                   <td class='t2h2'></td>
               </tr>

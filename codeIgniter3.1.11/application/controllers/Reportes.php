@@ -11,16 +11,7 @@ class Reportes extends CI_Controller {
 
   function rmovalmc()
   {
-    //$data['lineas'] = $this->catalogosmodel->get_linea_by_empresa(1);
-    $this->load->view('repmovalmacen');
-    /*if(isset($_SESSION['username']))
-    {
-      $data['lineas'] = $this->catalogosmodel->get_linea_by_empresa(1);
-      $this->load->view('repmovalmacen',$data);
-    }else {
-      $error['error'] = '';
-      $this->load->view('login',$error);
-    }*/
+    $this->load->view('repmovalmacen'); 
   }
 
   function rventas()
@@ -30,9 +21,18 @@ class Reportes extends CI_Controller {
 
   function movalmacen($idEmpresa,$fy,$fecIni,$fecFin,$linea)
   {
-    return $this->output
-            ->set_content_type('application/json')
-            ->set_output( $this->reportemodel->get_reporte_mov_almacen($idEmpresa,$fy,str_replace("%20"," ",$fecIni),str_replace("%20"," ",$fecFin),$linea));
+    if (isset($_SESSION['username'])) {
+      if($linea === 0){
+        return $this->output
+          ->set_content_type('application/json')
+          ->set_output( $this->reportemodel->get_reporte_mov_almacen_by_line($idEmpresa,$fy,str_replace("%20"," ",$fecIni),str_replace("%20"," ",$fecFin),$linea));
+      }else{
+        return $this->output
+          ->set_content_type('application/json')
+          ->set_output( $this->reportemodel->get_reporte_mov_almacen($idEmpresa,$fy,str_replace("%20"," ",$fecIni),str_replace("%20"," ",$fecFin)));
+      }
+    
+    }
   }
 
   function ventas($idEmpresa,$fy,$fecIni,$fecFin,$linea,$expresion,$tipo)

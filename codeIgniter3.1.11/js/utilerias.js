@@ -72,9 +72,9 @@ function formatDateInsert(hoy)
 	dia = hoy.getDate() <10 ? '0'+hoy.getDate() : hoy.getDate();
 	mes = hoy.getMonth() < 9 ? '0'+(hoy.getMonth()+1) : (hoy.getMonth()+1);
 	year = hoy.getFullYear();
-	hrs = hoy.getHours();
-	min = hoy.getMinutes();
-	seg = hoy.getSeconds();
+	hrs = hoy.getHours() <10 ? '0'+hoy.getHours() : hoy.getHours();;
+	min = hoy.getMinutes() <10 ? '0'+hoy.getMinutes() : hoy.getMinutes();;
+	seg = hoy.getSeconds() <10 ? '0'+hoy.getSeconds() : hoy.getSeconds();;
 	fecha = year+'-'+mes+'-'+dia+' '+hrs+':'+min+':'+seg ;
 	return fecha
 }
@@ -127,6 +127,10 @@ function formatFecQuery(fecha,tipo)
 	return mes+'-'+dia+'-'+year+' '+horas;
 }
 
+var lastday = function(y,m){
+  return  new Date(y, m +1, 0);
+  }
+
 function cambiotp()
 {
   if($('#tipopago').val() ==1)
@@ -140,6 +144,12 @@ function cambiotp()
   }
 }
 
+function s2ab(s) {
+  var buf = new ArrayBuffer(s.length);
+  var view = new Uint8Array(buf);
+  for (var i=0; i!=s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+  return buf;
+}
 
 function sumadias()
 {

@@ -19,8 +19,23 @@
 				</div>
 				<div class="level-right">
           <p class="level-item" ng-show="permisos.consulta">
+            <a ng-click="abreTimbraCC()">
+              <span class="icon has-text-success"><i class="fas fa-list-ol" title="Timbrar Cortes de Caja"></i></span>
+            </a>
+          </p>
+          <p class="level-item" ng-show="permisos.consulta && indexRowFactura == -1">
+            <a>
+              <span class="icon has-text-success"><i class="fas fa-print" style="color:grey" title="Imprime Factura"></i></span>
+            </a>
+          </p>
+          <p class="level-item" ng-show="permisos.consulta && indexRowFactura != -1">
+            <a ng-click="printPreFactura()">
+              <span class="icon has-text-success"><i class="fas fa-print" title="Imprime Factura"></i></span>
+            </a>
+          </p>
+          <p class="level-item" ng-show="permisos.consulta">
             <a ng-click="printFacturas()">
-              <span class="icon has-text-success"><i class="fas fa-print" title="Genera la lista de todas las Facturas en Excel"></i></span>
+              <span class="icon has-text-success"><i class="fas fa-file-excel" title="Genera la lista de todas las Facturas en Excel"></i></span>
             </a>
           </p>
           <p class="level-item" ng-show="!showEmail && indexRowFactura != -1">
@@ -52,7 +67,7 @@
                 <i class="far fa-trash-alt" title="Cancela Factura" style="color:grey"></i>
               </span>
             </a>
-            <a ng-click="preguntaElimnaFactura()" ng-show="indexRowFactura != -1">
+            <a ng-click="eliminarFactura()" ng-show="indexRowFactura != -1">
               <span class="icon has-text-danger">
                 <i class="far fa-trash-alt" title="Cancela Factura"></i>
               </span>
@@ -984,7 +999,7 @@
 	    </section>
 	    <footer class="modal-card-foot">
 	      <button class="button is-info" ng-click="enviaDatosCliente();">{{btnVerifClte}}</button>
-		  <button class="button is-error" ng-click="closeVerifClte()">Cerrar</button>
+		    <button class="button is-error" ng-click="closeVerifClte()">Cerrar</button>
 	    </footer>
 	  </div>
 	</div>
@@ -1027,19 +1042,36 @@
 		</div>
 	</div>
 
-	<div class="modal is-active" ng-show="showEliminaFactura">
+	<div class="modal is-active" ng-show="isTimbrarCC">
 		<div class="modal-background"></div>
 		<div class="modal-card">
 			<header class="modal-card-head">
-				<p class="modal-card-title">Cancelar Factura</p>
-				<button class="delete" aria-label="close" ng-click="closeEliminaFactura()"></button>
+				<p class="modal-card-title">Timbrar Cortes de Caja</p>
+				<button class="delete" aria-label="close" ng-click="closeTimbrarCC()"></button>
 			</header>
 			<section class="modal-card-body">
-				<p>Está seguro que desea cancelar la factura <strong>{{factura.docto}}</strong>?</p>
+				<table class="table" style="width:100%">
+          <tr class="tbl-header">
+            <td></td>
+            <td>Fecha</td>
+            <td>Cliente</td>
+            <td>Importe</td>
+          </tr>
+        </table>
+        <div style="height:250px;overflow:auto;margin-top:-25px">
+          <table class="table">
+            <tr ng-repeat="x in lstCortesCajaNT">
+              <td><input type="checkbox" name="cc{{$index}}" id="cc{{$index}}"></td>
+              <td>{{x.FECHA_CORTE}}</td>
+              <td>{{x.CLIENTE}}</td>
+              <td>{{x.IMPORTE | currency}}</td>
+            </tr>
+          </table>
+        </div>
 			</section>
 			<footer class="modal-card-foot">
-				<button class="button is-success" ng-click="eliminarFactura()">Si</button>
-				<button class="button" ng-click="closeEliminaFactura()">No</button>
+				<button class="button is-success" ng-click="timbraCC()">Timbrar</button>
+				<button class="button" ng-click="closeTimbrarCC()">No</button>
 			</footer>
 		</div>
 	</div>
@@ -1047,32 +1079,76 @@
 	<table style="width: 100%; display:none" id="factura">
 		<tbody>
 			<tr>
-			<td style="width: 107.067px">Logo</td>
-			<td style="width: 414.933px">Datos de la empresa</td>
+			  <td style="width: 30%">
+          <table style="border-collapse: collapse; width: 100%; height: 90px;" border="1">
+            <tbody>
+              <tr style="height: 18px;">
+                <td style="height: 54px; width: 33.3942%;" rowspan="5"><img src="../img/logo.jpg" width="150px"></td>
+                <td style="text-align: center; height: 18px; width: 33.2117%;" colspan="2"> <h1 class="title is-3 has-text-centered">{{Empresa.NOMBRE}}</h1></td>
+              </tr>
+              <tr style="height: 18px;">
+                <td style="width: 33.2117%; height: 18px;">{{Empresa.DOMICILIO}}</td>
+                <td style="width: 33.2117%; height: 18px; text-align: right;">Factura</td>
+              </tr>
+              <tr style="height: 18px;">
+                <td style="width: 33.2117%; height: 18px;">{{Empresa.RFC}}</td>
+                <td style="width: 33.2117%; height: 18px; text-align: right;">{{FacturaPrint.DOCUMENTO}}</td>
+              </tr>
+              <tr style="height: 18px;">
+                <td style="width: 33.2117%; height: 18px;">{{Empresa.CP}}</td>
+                <td style="width: 33.2117%; text-align: right; height: 18px;">Fecha</td>
+              </tr>
+              <tr style="height: 18px;">
+                <td style="width: 33.2117%; height: 18px;">3434355</td>
+                <td style="width: 33.2117%; text-align: right; height: 18px;">{{FacturaPrint.FECHA_FACTURA}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+		  </tr>
+      <tr>
+        <td>
+        <hr/>
+        </td>
+      </tr>
+		  <tr>
+			  <td style="width: 100%" >
+          <table>
+            <tr>
+              <td>Cliente:</td>
+              <td>{{Cliente.NOMBRE}}</td>
+            </tr>
+            <tr>
+              <td>Direccion</td>
+              <td>{{Cliente.DOMICILIO}}</td>
+            </tr>
+            <tr>
+              <td>Contacto</td>
+              <td>{{Cliente.CONTACTO}}</td>
+            </tr>
+          </table>
+        </td>
 			</tr>
 			<tr>
-			<td style="width: 100%" colspan="2">Datos del cliente</td>
+			  <td>&nbsp;</td>
 			</tr>
 			<tr>
-			<td style="width: 100%" colspan="2">&nbsp;</td>
-			</tr>
-			<tr>
-			<td style="width: 100%" colspan="2">
+			<td style="width: 100%">
 				<div style="border: 2px solid black; height: 400px; width: 100%;">
 				<table style="width: 100%" >
-					<tbody>
+					<thead>
 						<tr>
-							<td style="width: 200px; text-align: center">Descripcion</td>
-							<td style="width: 73.8px; text-align: center">Cantidad</td>
-							<td style="width: 81.2px; text-align: center">Unidad</td>
-							<td style="width: 128px; text-align: right">Costo Unitario</td>
-							<td style="width: 104px; text-align: right">Costo Total</td>
+							<th style="width: 200px; text-align: center;font-size:14px">Descripcion</th>
+							<th style="width: 73.8px; text-align: center;font-size:14px">Cantidad</th>
+							<th style="width: 81.2px; text-align: center;font-size:14px">Unidad</th>
+							<th style="width: 128px; text-align: right;font-size:14px">Costo Unitario</th>
 						</tr>
+          </thead>
+          <tbody>
 						<tr ng-repeat="p in lstProdCompra">
 							<td style="width: 200px; text-align: center">{{p.DESCRIPCION}}</td>
 							<td style="width: 73.8px; text-align: center">{{p.CANTIDAD}}</td>
 							<td style="width: 81.2px; text-align: center">{{p.UNIDAD_MEDIDA}}</td>
-							<td style="width: 128px; text-align: right">$ {{p.PRECIO | number:2}}</td>
 							<td style="width: 104px; text-align: right">$ {{p.IMPORTE | number:2}}</td>
 						</tr>
 					</tbody>
@@ -1081,12 +1157,16 @@
 			</td>
 			</tr>
 			<tr>
-				<td style="width:100%;" colspan="2">
+				<td style="width:100%; text-align:right">
 					<table style="width: 100%" >
 						<tbody>
 						<tr>
-							<td style="width: 83%; text-align: right">Subtotal</td>
-							<td style="width: 17%; text-align: right">{{factura.total | currency}}</td>
+							<td style="width: 83%; text-align: right">Sub Total</td>
+							<td style="width: 17%; text-align: right">{{factura.subtotal | currency}}</td>
+						</tr>
+            <tr>
+							<td style="width: 83%; text-align: right">Descuento</td>
+							<td style="width: 17%; text-align: right">{{dsctoValor | currency}}</td>
 						</tr>
 						<tr>
 							<td style="width: 83%; text-align: right">Impuestos</td>
@@ -1094,7 +1174,7 @@
 						</tr>
 						<tr>
 							<td style="width: 83%; text-align: right">Total</td>
-							<td style="width: 17%; text-align: right">{{importeNeto | currency}}</td>
+							<td style="width: 17%; text-align: right">{{factura.total | currency}}</td>
 						</tr>
 						</tbody>
 					</table>

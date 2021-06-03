@@ -1560,8 +1560,6 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
     $scope.idOpSel = idOperacion;
     $scope.idxOperacion = index;
     $scope.isCancel = $scope.lstVentas[index].CANCELADO === "f";
-    // No recuerdo para que se usa esto??
-    //creo que se debe mostrar la info de cada partida
     $scope.lstProdCompra = [];
     $http
       .get(pathTpv + "datoimprtkt/" + $scope.idOpSel)

@@ -21,7 +21,7 @@
 
 class Creacfdixml extends CI_Controller
 {
-    
+    protected $params;
     function __construct() {
         parent::__construct();				
         $this->ci =& get_instance();		
@@ -34,7 +34,17 @@ class Creacfdixml extends CI_Controller
         $this->load->model('tpvmodel');        
         $this->load->library('crearcfdi');
         $this->load->library('xml2pdf');    
-        $this->load->model('catalogosmodel');     
+        $this->load->model('catalogosmodel');   
+        $this->params = array(
+          "url"=>"http://services.test.sw.com.mx",
+          "user"=>"omar.valdez.becerril@gmail.com",
+          "password"=> "omar.sw"
+        );      
+        /*$this->params = array(
+          "url"=>"http://services.sw.com.mx",
+          "user"=>"omar.valdez.becerril@gmail.com",
+          "password"=> "Ov/d4*035"
+        );*/
     }
 
 
@@ -124,21 +134,10 @@ class Creacfdixml extends CI_Controller
               'TotalImpuestosTrasladados'=>round($impuestoAcomulado,2),
               'Traslados'=>array(array('Impuesto'=>"002", 'TipoFactor'=>"Tasa", 'TasaOCuota'=>number_format($iva,6), 'Importe'=>round($impuestoAcomulado,2)))
         );
-        $sellado = $this->crearcfdi->generaXML($baseArray,$conceptosArray,$archivoCerPem,$archivoKeyPem);   
-        //var_dump($sellado);
+        $sellado = $this->crearcfdi->generaXML($baseArray,$conceptosArray,$archivoCerPem,$archivoKeyPem);  
         try{
             header('Content-type: application/json');        
-            /*$params = array(
-                "url"=>"http://services.sw.com.mx",
-                "user"=>"omar.valdez.becerril@gmail.com",
-                "password"=> "Ov/d4*035"
-                );*/
-            $params = array(
-              "url"=>"http://services.test.sw.com.mx",
-              "user"=>"omar.valdez.becerril@gmail.com",
-              "password"=> "omar.sw"
-              );    
-            $stamp = StampService::Set($params);
+            $stamp = StampService::Set($this->params);
             $result = json_decode(json_encode($stamp::StampV4($sellado)),false);            
             if($result->status == "success"){
                 $dataSAT = array($nombre,$rfc,$result->data->fechaTimbrado,$result->data->qrCode,$result->data->cfdi,$folio,number_format($importe,3,'.',''),$result->data->cadenaOriginalSAT,$idCliente,$idEmpresa,$idfactura,$aniofiscal);
@@ -149,7 +148,7 @@ class Creacfdixml extends CI_Controller
             }else{
                 return $this->output
 		        ->set_content_type('application/json')
-                ->set_output(json_encode(array("status"=>"fail","error"=>$result->messageDetail,"xml"=>$sellado)));
+                ->set_output(json_encode(array("status"=>"fail","error"=>$result->message,"xml"=>$sellado)));
             }
         }
         catch(Exception $e){
@@ -157,6 +156,106 @@ class Creacfdixml extends CI_Controller
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }        
     }
+
+    function creacfdicc(){
+      $data = json_decode(file_get_contents("php://input"),true);
+      $idEmpresa = $data['idempresa'];
+      $idSucursal = $data['idsucursal'];
+      $nombre = $data['cliente'];
+      $rfc = $data['rfc'];
+      $iva = $data['iva'];
+      $usocfdi = $data['usocfdicodigo'];
+      $serie = $data['serie'];
+      $folio = trim($data['folio']);
+      $moneda = $data['moneda'];
+      $tipoCambio = $data['tipocambio'];
+      $metodopago =  $data['metodopago'];
+      $importeTotal = $data['importetotal'];
+      $impuestoAcomulado = $data['ivatotal'];
+      $formapago = $data['formapago'];
+      $aniofiscal = $data['aniofiscal'];
+      $ClaveProdServ = $data['claveprodserv'];
+      $NoIdentificacion = $data['noidentificacion'];
+      $ClaveUnidad = $data['claveunidad'];
+      $Unidad = $data["unidad"];
+      $Descripcion = $data["descripcion"];
+      $fechaVenta = $data["fechaventa"];
+      $idfactura = $data['idfactura'];
+      $cfdi = $this->facturamodel->getDataCFDI($idEmpresa,$idSucursal);         
+      $archivoCerPem = $cfdi[0]->RUTA_PEM;
+      $archivoKeyPem = $cfdi[0]->RUTA_KEY;
+      $empresa = json_decode($this->empresamodel->get_empresa_by_id($idEmpresa),false);
+      $descuentoTotal = 0;
+      $traslados = array();
+      $conceptosArray = array();
+      $subTotalAcc = 0;
+      
+      $valorUnitario = $importeTotal - $impuestoAcomulado;
+      $descuento = 0; 
+      
+      $importeIva = $impuestoAcomulado;
+      $item = array('ClaveProdServ'=>$ClaveProdServ, 
+                  'NoIdentificacion'=>$NoIdentificacion,
+                  'Cantidad'=>1,
+                  'ClaveUnidad'=>$ClaveUnidad,
+                  'Unidad'=>$Unidad,
+                  'Descripcion'=>$Descripcion,
+                  'ValorUnitario'=>number_format($valorUnitario,3,'.',''),
+                  'Descuento' =>Number_format($descuento,3,'.',''),
+                  'Importe'=>number_format($valorUnitario,3,'.','')
+              );
+
+      $traslado = array('Base'=>number_format($valorUnitario,3,'.',''),'Impuesto'=>'002','TipoFactor'=>'Tasa','TasaOCuota'=>number_format($iva,6),'Importe'=>number_format($impuestoAcomulado,2,'.','')); 
+      $item['Traslados'] = $traslado;
+      $conceptosArray[0] = $item;
+      
+      $baseArray = 
+        array(
+            'Serie'=>$serie,
+            'Folio'=>$folio,
+            'Fecha'=> str_replace(' ','T',$fechaVenta), 
+            'FormaPago'=>$formapago, 
+            'NoCertificado'=>$cfdi[0]->NOCERTIFICADO,
+            'Certificado'=>$cfdi[0]->CERTIFICADO,
+            'SubTotal'=>number_format($valorUnitario,2,'.',''),
+            'Descuento'=>number_format($descuentoTotal,2,'.',''),
+            'Moneda'=>$moneda,
+            'TipoCambio'=>$tipoCambio,
+            'Total'=>number_format($importeTotal,2,'.',''),
+            'TipoDeComprobante'=>'I',
+            'MetodoPago'=>$metodopago,
+            'LugarExpedicion'=>$empresa[0]->CP,
+            'RfcEmisor'=>$cfdi[0]->RFC,
+            'NombreEmisor'=>$cfdi[0]->NOMBRE,
+            'RegimenFiscal'=>$empresa[0]->REGIMEN,
+            'RfcReceptor'=>$rfc,
+            'NombreReceptor'=>$nombre,
+            'UsoCFDI'=>$usocfdi,
+            'TotalImpuestosTrasladados'=>round($impuestoAcomulado,2),
+            'Traslados'=>array(array('Impuesto'=>"002", 'TipoFactor'=>"Tasa", 'TasaOCuota'=>number_format($iva,6), 'Importe'=>round($impuestoAcomulado,2)))
+      );
+      $sellado = $this->crearcfdi->generaXML($baseArray,$conceptosArray,$archivoCerPem,$archivoKeyPem);  
+      try{
+          header('Content-type: application/json');        
+          $stamp = StampService::Set($this->params);
+          $result = json_decode(json_encode($stamp::StampV4($sellado)),false);            
+          if($result->status == "success"){
+              $dataSAT = array($nombre,$rfc,$result->data->fechaTimbrado,$result->data->qrCode,$result->data->cfdi,$folio,number_format($importeTotal,3,'.',''),$result->data->cadenaOriginalSAT,0,$idEmpresa,$idfactura,$aniofiscal);
+              $this->facturamodel->saveCFDISAT($dataSAT);
+              return $this->output
+          ->set_content_type('application/json')
+              ->set_output(json_encode(array("status"=>$result->status,"error"=>"0")));
+          }else{
+              return $this->output
+          ->set_content_type('application/json')
+              ->set_output(json_encode(array("status"=>"fail","error"=>$result->message,"xml"=>$sellado)));
+          }
+      }
+      catch(Exception $e){
+          header('Content-type: text/plain');
+          echo 'Caught exception: ',  $e->getMessage(), "\n";
+      }        
+  }
     
 
     function getdatacfdi($idEmpresa,$idSucursal){
@@ -180,7 +279,12 @@ class Creacfdixml extends CI_Controller
           $emails = substr($data['correos'], 0, -1);
         }
         $result = json_decode($this->facturamodel->get_factura_by_id($idfactura),false); 
-        $cliente = json_decode($this->clientemodel->get_cliente_by_id($idCliente),false);
+        if($idCliente===0){
+          $domicilio = 'Conocido';
+        }else{
+          $cliente = json_decode($this->clientemodel->get_cliente_by_id($idCliente),false);
+          $domicilio = $cliente[0]->DOMICILIO;
+        }
         $empresa = json_decode($this->empresamodel->get_empresa_by_id($idEmpresa),false);
         $formapago = json_decode($this->catalogosmodel->get_forma_pago_js(),false);
         $uso_cfdi = json_decode(json_encode($this->catalogosmodel->get_uso_cfdi()),false);

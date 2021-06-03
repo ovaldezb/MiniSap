@@ -22,6 +22,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
   $scope.lstPrdSucExis = [];
   $scope.lstCorreos = [];
   $scope.lstNoCodigoSAT = [];
+  $scope.lstCortesCajaNT = [];
   $scope.idDocumento = '';
   $scope.indexRowFactura = -1;
   $scope.indexRowPedido = -1;
@@ -63,6 +64,10 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
   $scope.cancelStyle = {background:'red'};
   $scope.usuario = '';
   $scope.idProceso = $routeParams.idproc;
+  $scope.Empresa = {};
+  $scope.FacturaPrint = {};
+  $scope.Cliente = {};
+  $scope.isTimbrarCC = false;
   $scope.proddscnt ={
     producto:undefined,
     precio:undefined,
@@ -255,6 +260,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
     then(res =>
   	{
       $scope.factura.regimenfiscal = res.data[0].REGIMEN;
+      $scope.Empresa = res.data[0];
     })
     .catch(err=>{
       console.log(err);
@@ -305,15 +311,25 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
   }
 
   $scope.eliminarFactura = function(){
-    $http.delete(pathFactura+'eliminafact/'+$scope.lstFacturas[$scope.indexRowFactura].ID_FACTURA+'/'+$scope.factura.idsucursal)
-    .then(res=>{
-      $scope.lstFacturas.splice($scope.indexRowFactura,1);
-      $scope.showEliminaFactura = false;
-      $scope.getfacturas();
-      swal('La factura se canceló!');
+    
+    swal({
+      title: "Se va a cancelar la factura "+ $scope.lstFacturas[$scope.indexRowFactura].DOCUMENTO ,
+      text: "Continuar?",
+      icon: "warning",
+      buttons: [true,true],
+      dangerMode: true,
     })
-    .catch(err =>{
-      console.log(err);
+    .then(yes=>{
+      if(yes){
+        $http.delete(pathFactura+'eliminafact/'+$scope.lstFacturas[$scope.indexRowFactura].ID_FACTURA+'/'+$scope.factura.idsucursal)
+        .then(res=>{
+          $scope.getfacturas();
+          swal('La factura se canceló!');
+        })
+        .catch(err =>{
+          console.log(err);
+        });
+      }
     });
   }
 
@@ -491,6 +507,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
           $scope.factura.contacto = res.data[0].CONTACTO;
           $scope.factura.tpago = res.data[0].ID_TIPO_PAGO;
           $scope.factura.fpago = res.data[0].ID_FORMA_PAGO < 10 ? '0'+res.data[0].ID_FORMA_PAGO : res.data[0].ID_FORMA_PAGO+'';
+          $scope.factura.mpago = res.data[0].ID_METODO_PAGO;
           $scope.factura.cuenta = res.data[0].CUENTA == null ? '' : res.data[0].CUENTA.trim();
           $scope.factura.idmoneda = res.data[0].ID_MONEDA;
           $scope.factura.dias = res.data[0].DIAS;
@@ -530,6 +547,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
     $scope.idDocumento = docuento;
     $scope.indexRowFactura = indexRowFactura;
     $scope.showEmail = $scope.lstFacturas[$scope.indexRowFactura].FACTURADO == 't';
+    $scope.FacturaPrint = $scope.lstFacturas[$scope.indexRowFactura];
   }
 
   $scope.selectRowPedido = function(docuento, indexRowPedido)
@@ -1204,13 +1222,113 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
     $scope.modalVerifProdSuc = false;
   }
 
-  $scope.preguntaElimnaFactura = function(){
-    $scope.factura.docto = $scope.lstFacturas[$scope.indexRowFactura].DOCUMENTO;
-    $scope.showEliminaFactura = true;
+  $scope.abreTimbraCC = () =>{
+    $scope.isTimbrarCC = true;
+        
+    $http.get(pathCorte+'getccnt/'+$scope.factura.idempresa+'/'+$scope.factura.idsucursal+'/'+$scope.factura.aniofiscal)
+    .then(res =>{
+      if(res.data){
+        $scope.lstCortesCajaNT = res.data;
+      }
+    }).catch();
   }
 
-  $scope.closeEliminaFactura = function(){
-    $scope.showEliminaFactura = false;
+   $scope.timbraCC = () =>{
+    var i = 0;
+    var lstCC = $scope.lstCortesCajaNT.filter(elem =>{
+      var id = "#cc"+i;
+      i++;
+      if($(id).prop('checked')){
+        return elem;
+      }
+    });
+    if(lstCC.length===0){
+      swal("Debe seleccionar al menos 1 Corte de Caja");
+      return;
+    }
+    var importe = 0;
+    var iva = 0;
+    var idsFacts = '';
+    lstCC.forEach(elem =>{
+      idsFacts += elem.ID_FACTURA +',';
+    });
+    var envIdFact = {facturas:idsFacts.substr(0,idsFacts.length-1)};
+    
+    $http.post(pathFactura+'getccfact',envIdFact)
+      .then(res =>{
+        importe = res.data.IMPORTE;
+        iva = res.data.IVA;
+        swal({
+          title: "Se va a timbrar la factura por "+importe ,
+          text: "Continuar?",
+          icon: "warning",
+          buttons: [true,true],
+          dangerMode: true,
+        })
+        .then(yes=>{
+          if(yes){
+            let meshoy = new Date();
+            //cmfd = new Date();
+            //cmfd.setMonth(meshoy.getMonth());
+            //cmfd.setDate(1);
+            let cmld = lastday(meshoy.getFullYear(), meshoy.getMonth());
+            var facturacc = {
+              idempresa:$scope.factura.idempresa,
+              idsucursal:$scope.factura.idsucursal,
+              cliente:'VENTAS MOSTRADOR',
+              rfc:'XAXX010101000',
+              iva:0.16,
+              usocfdicodigo:'G03',
+              serie:'VM',
+              folio:'1',
+              moneda:'MXN',
+              tipocambio:'1',
+              metodopago:'PUE',
+              importetotal:importe,
+              ivatotal:iva,
+              formapago:'01',
+              aniofiscal:$scope.factura.aniofiscal,
+              claveprodserv:'01010101',
+              noidentificacion:'CCMAYO',
+              claveunidad:'ACT',
+              unidad:'Actividad',
+              descripcion:'Ventas Mostrador del 01 al '+formatReporte(cmld),
+              fechaventa:formatDateInsert(new Date()),
+              idfactura:lstCC[0].ID_FACTURA
+            };
+            $http.post(pathCreacfdi+'creacfdicc',facturacc)
+            .then(res =>{
+              if(res.data.status === "success"){
+                swal('Se creo la factura de manera exitosa');
+                //update Cortes de Caja
+                lstCC.forEach(elem =>{
+                  $http.put(pathCorte+'updtccfact/'+elem.ID_CORTE)
+                  .then(res =>{
+                    //console.log(res.data);
+                  })
+                  .catch(err =>{
+                    console.log(err);
+                  });
+                });
+                $scope.isTimbrarCC = false;
+                $scope.getfacturas();
+              }
+            })
+            .catch(err=>{
+
+            });
+          }
+        });
+
+      })
+      .catch(err =>{
+        console.log(err);
+      });
+    
+  }
+
+  $scope.closeTimbrarCC = function(){
+    $scope.isTimbrarCC = false;
   }
 
   $scope.addDescuento = ()=>{
@@ -1338,6 +1456,50 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
     saveAs(blob, "ListaFacturas_"+formatDateExcel(new Date())+".xls");
   }
 
+  $scope.getCliente = function(idCliente)
+  {
+    $http.get(pathClte+'loadbyid/'+idCliente, {responseType: 'json'}).
+    then(function(res)
+    {
+      if(res.status == 200)
+      {
+        $scope.Cliente = res.data[0];
+      }
+    }).catch(err =>{console.log(err)});
+
+  }
+
+  $scope.printPreFactura = () =>{
+    if($scope.lstFacturas[$scope.indexRowFactura].ID_CLIENTE === null){
+      $scope.getFacturaProductoDetalleyId($scope.lstFacturas[$scope.indexRowFactura].ID_FACTURA);
+      $scope.Cliente = {
+        NOMBRE:$scope.lstFacturas[$scope.indexRowFactura].CLIENTE,
+        DOMICILIO:'***',
+        CONTACTO:'***'
+      };
+    }else{
+      $scope.getFacturaDetalleyId($scope.lstFacturas[$scope.indexRowFactura].ID_FACTURA);
+      $scope.getCliente($scope.lstFacturas[$scope.indexRowFactura].ID_CLIENTE);
+    }
+    swal({
+      title: "Se va a imprimir la PRE FACTURA "+$scope.lstFacturas[$scope.indexRowFactura].DOCUMENTO + '\nSi desea imprimir la factura timbrada, descarguela',
+      text: "Continuar?",
+      icon: "warning",
+      buttons: [true,true],
+      dangerMode: true,
+    })
+    .then(yes=>{
+      if(yes){
+        var resumem = document.getElementById("factura");
+        var ventimp = window.open(" ", "popimpr");
+        ventimp.document.write(resumem.innerHTML);
+        ventimp.document.close();
+        ventimp.print();
+        ventimp.close();
+      }
+    })
+    
+  }
 
   $scope.downloadcfdi = () =>{
     $http.post(pathCreacfdi+'sendfacturaby/1/'+$scope.lstFacturas[$scope.indexRowFactura].ID_FACTURA+'/'+$scope.lstFacturas[$scope.indexRowFactura].ID_CLIENTE+'/'+$scope.factura.idempresa,{'correos':''})

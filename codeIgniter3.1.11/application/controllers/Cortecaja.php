@@ -20,10 +20,10 @@ class Cortecaja extends CI_Controller
         }
     }
 
-    public function reportemes($idempresa, $aniofiscal, $fecIni, $fecFin)
+    public function reportemes($idempresa, $aniofiscal, $fecIni, $fecFin ,$idscursal)
     {
         if (isset($_SESSION['username'])) {
-            $result = $this->cortecajamodel->reporte_by_month($idempresa, $aniofiscal, str_replace("%20", " ", $fecIni), str_replace("%20", " ", $fecFin));
+            $result = $this->cortecajamodel->reporte_by_month($idempresa, $aniofiscal, str_replace("%20", " ", $fecIni), str_replace("%20", " ", $fecFin), $idscursal);
             return $this->output
                 ->set_content_type('application/json')
                 ->set_output($result);
@@ -53,12 +53,29 @@ class Cortecaja extends CI_Controller
     public function getdocinifin($idcortecaja)
     {
       if (isset($_SESSION['username'])) {
-        $result = $this->cortecajamodel->get_docto_ini_fin(array($idcortecaja,$idcortecaja));
-        
+        $result = $this->cortecajamodel->get_docto_ini_fin(array($idcortecaja,$idcortecaja));  
         return $this->output
             ->set_content_type('application/json')
             ->set_output($result);
-        
+      }
+    }
+
+    //Obtiene la lista de cortes de caja que no han sido timbrados
+    public function getccnt($idempresa,$idscursal,$aniofiscal){
+      if (isset($_SESSION['username'])) {
+        $result = $this->cortecajamodel->get_cortecaja_no_timbrada(array($idempresa,$idscursal,$aniofiscal));  
+        return $this->output
+            ->set_content_type('application/json')
+            ->set_output($result);
+      }
+    }
+
+    public function updtccfact($idcorte){
+      if (isset($_SESSION['username'])) {
+        $result = $this->cortecajamodel->updt_cortecaja_timbrada($idcorte);  
+        return $this->output
+            ->set_content_type('application/json')
+            ->set_output($result);
       }
     }
 

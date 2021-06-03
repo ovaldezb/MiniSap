@@ -41,7 +41,7 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
   $scope.id_forma_pago = '1';
   $scope.id_uso_cfdi = -1;
   $scope.isGuardado = false;
-  $scope.btnClose = 'Cancelar';
+  $scope.btnClose = 'Cerrar';
   $scope.cfdi_style = {background:'pink'};
   $scope.vendedor_style = {background:'pink'};
   let indexRow = -1;
@@ -266,47 +266,28 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
             ID_CLIENTE:res.data[0].crea_cliente,
             SALDO:0
           };
-          $scope.lstCliente.push(row);
-          $scope.cancelCliente();
-          $scope.getNextDocClte();
+          
           if($scope.lstDomicilios.length > 0){
             $scope.lstDomicilios.forEach(elem =>{
               elem.ID_CLIENTE = res.data[0].crea_cliente
               $http.post(pathClte+'savedomi',elem)
               .then(resp =>{
-                //console.log(resp);
+
               }).catch(err=>{
                 console.log(err);
               });
             });
-            $scope.lstDomicilios = [];
           }
           swal('El cliente se insertó correctamente');
+          $scope.getDataInit();
+          $scope.cancelCliente();
+          $scope.getNextDocClte();
         }
       }).catch(function(err) {
         console.log(err);
       });
 
     }else{
-      $http.delete(pathClte+'deletedomi/'+$scope.idCliente)
-      .then(res=>{
-        if($scope.lstDomicilios.length > 0){
-          $scope.lstDomicilios.forEach(elem =>{
-          elem.ID_CLIENTE = $scope.idCliente;
-          $http.post(pathClte+'savedomi',elem)
-          .then(resp =>{
-              
-          }).catch(err=>{
-            console.log(err);
-            });
-          });
-        }
-      $scope.lstDomicilios = [];
-      })
-      .catch(err=>{
-        console.log(err);
-      });
-      
       $http.put(pathClte+'updatecliente/'+$scope.idCliente, dataClte).
       then(function(res)
     	{
@@ -321,8 +302,9 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
           swal('Cliente actualizado correctamente');
           $scope.lstCliente[$scope.indexRowCliente] = row;
           $scope.msjBoton = 'Agregar';
-    			$scope.cancelCliente();
-          $scope.selectRowCliente($scope.lstCliente[$scope.indexRowCliente].CLAVE,$scope.indexRowCliente,$scope.lstCliente[$scope.indexRowCliente].ID_CLIENTE);
+    			$scope.getDataInit();
+          $scope.cancelCliente();
+          //$scope.selectRowCliente($scope.lstCliente[$scope.indexRowCliente].CLAVE,$scope.indexRowCliente,$scope.lstCliente[$scope.indexRowCliente].ID_CLIENTE);
     		}
     	}).catch(function(err)
     	{
@@ -408,8 +390,8 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
       res.data.forEach(elem =>{
         $scope.totalImporFact += Number(elem.IMPORTE);
         $scope.totalImporCobr += Number(elem.COBRO);
-        $scope.totalSaldoFact += Number(elem.SALDO);
       });
+      $scope.totalSaldo = $scope.totalImporFact - $scope.totalImporCobr;
     })
     .catch(err=>{
 
@@ -434,10 +416,27 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
   $scope.guardaDom =()=>{
     if($scope.btnName === 'Guardar'){
       $scope.lstDomicilios.push($scope.domicilios);
-      $scope.btnClose = 'Cerrar';
+      if($scope.msjBoton !== 'Agregar'){
+        $scope.domicilios.ID_CLIENTE = $scope.lstCliente[$scope.indexRowCliente].ID_CLIENTE;
+        $http.post(pathClte+'savedomi',$scope.domicilios)
+        .then(resp =>{
+          
+          })
+        .catch(err=>{
+          console.log(err);
+        });
+      }
+      swal('El Domicilio se guardó con éxito!');
+      //$scope.btnClose = 'Cerrar';
     }else{
-      var dom = $scope.domicilios;
-      $scope.lstDomicilios[$scope.idxRowDom] = dom;
+      $http.put(pathClte+'updatedomi/'+$scope.lstDomicilios[$scope.idxRowDom].ID_DOMICILIO,$scope.domicilios)
+      .then(resp =>{
+        swal('El Domicilio se actualizó con exito!');
+        })
+      .catch(err=>{
+        console.log(err);
+      });
+      $scope.lstDomicilios[$scope.idxRowDom] = $scope.domicilios;
       $scope.btnName = 'Guardar';
     }
     $scope.limpiaDom();
@@ -445,7 +444,7 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
 
   $scope.eliminaDom = ()=>{
     swal({
-      title: "Esta seguro que desea eliminar el Domiclio ",
+      title: "Esta seguro que desea eliminar el Domicilio ",
       text: "Una vez eliminado, no se podrá recuperar!",
       icon: "warning",
       buttons: [true,true],
@@ -453,10 +452,19 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
     })
     .then((willDelete) => {
       if(willDelete){
-        $scope.lstDomicilios.splice($scope.idxRowDom,1);
-        if($scope.lstDomicilios.length === 0){
-          $scope.btnClose = 'Cancelar';
+        if($scope.lstDomicilios[$scope.idxRowDom].ID_DOMICILIO !== undefined){
+          $http.delete(pathClte+'updatedomidel/'+$scope.lstDomicilios[$scope.idxRowDom].ID_DOMICILIO)
+          .then(res =>{
+
+          })
+          .catch(err =>{
+            console.log(err);
+          });
         }
+        $scope.lstDomicilios.splice($scope.idxRowDom,1);
+        /*if($scope.lstDomicilios.length === 0){
+          $scope.btnClose = 'Cancelar';
+        }*/
         $scope.limpiaDom();
       }
     });
@@ -479,13 +487,10 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
 
   $scope.agregaDomEntrega = () =>{
     $scope.addDomEntrega = true;
-    if($scope.lstDomicilios.length > 0){
-      $scope.btnClose = 'Cerrar';
-    }
   }
 
   $scope.clseDomEntrega = () =>{
-    if($scope.btnClose === 'Cancelar'){
+    /*if($scope.btnClose === 'Cancelar'){
       swal({
         title: "No ha almacenado ningún domicilio",
         text: "Desea salir?",
@@ -506,8 +511,8 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
       swal('Se van a guardar '+$scope.lstDomicilios.length+' Domicilios!');
       $scope.limpiaDom();
       $scope.addDomEntrega = false;
-    }
-    
+    }*/
+    $scope.addDomEntrega = false;
   }
 
   $scope.cerrarBorraCliente = function()
@@ -539,6 +544,7 @@ app.controller('myCtrlClientes', function($scope,$http,$routeParams)
     $scope.dcredito = 0;
     $scope.cfdi_style = {background:'pink'};
     $scope.vendedor_style = {background:'pink'};
+    $scope.lstDomicilios = [];
   }
 
 });
