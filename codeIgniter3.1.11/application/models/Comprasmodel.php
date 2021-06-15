@@ -91,7 +91,8 @@ class Comprasmodel extends CI_model
 							TRIM(C."UNIDAD") as "UNIDAD",
 							C."PRECIO_UNITARIO" as "PRECIO",							
 							C."IMPORTE_TOTAL" as "IMPORTE",
-							C."DSCTOPROD" as "DESCTO"
+							C."DSCTOPROD" as "DESCTO",
+              P."IVA"
 							FROM "COMPRA_PRODUCTO" as C INNER JOIN "PRODUCTO" as P
 							ON C."ID_PRODUCTO" = P."ID_PRODUCTO"
 							WHERE "ID_COMPRA" = $1

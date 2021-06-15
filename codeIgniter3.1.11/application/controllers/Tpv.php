@@ -93,7 +93,8 @@ class Tpv extends CI_Controller
 			$data['idproveedor'],
 			$data['idusuario'],
 			$data['idmoneda'],
-      $data['descuento']
+      $data['descuento'],
+      $data['idcalidad'],
 			)
 		);
 		return $this->output

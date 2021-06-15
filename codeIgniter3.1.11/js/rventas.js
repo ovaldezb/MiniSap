@@ -104,26 +104,30 @@ app.controller('repControlVentas',function($scope,$http)
         var bruta=0;
         var neta=0;
         var porcen=0;
+        var costo=0;
+        var utilidad = 0;
+        var margen = 0;
         $scope.lstRepmalmcn = res.data;
         $scope.lstRepmalmcn.forEach(row => {          
             bruta += row.BRUTA;
             neta += row.NETA;
             porcen += row.PORCENTAJE;
+            costo += row.COSTO;
+            utilidad += row.UTILIDAD;
         });
         var totalRowIns={
           BRUTA:  bruta,
           CANTIDAD:'',
           CODIGO: '',
-          COSTO: 0,
           DESCRIPCION: 'TOTAL',
           ID_PRODUCTO: '',
           NETA: neta,
           PORCENTAJE: porcen,
           PRECIO_PROM: 0,
-          UTILIDAD: 0
+          COSTO:costo,
+          UTILIDAD: utilidad,
+          MARGEN: (neta/costo)-1
         }
-
-        //$scope.lstRepmalmcn.push(totalRowIns);
         $scope.total = totalRowIns;
         $scope.isRepShow = true;
         $scope.fechaImpresion = formatHoraReporte(new Date());
@@ -193,11 +197,21 @@ app.controller('repControlVentas',function($scope,$http)
 
   $scope.exportExcel = function()
   {
-    var blob = new Blob([s2ab(document.getElementById('exportable').innerHTML)],
-    {
-      type:'application/vnd.ms-excel'
-      
-    });
+    var blob = null;
+    if($scope.lstlinea[$('select[name="linea"]')[0].selectedIndex].NOMBRE === "MADERA"){
+      blob = new Blob([s2ab(document.getElementById('madera').innerHTML)],
+      {
+        type:'application/vnd.ms-excel'
+        
+      });
+    }else{
+      blob = new Blob([s2ab(document.getElementById('exportable').innerHTML)],
+      {
+        type:'application/vnd.ms-excel'
+        
+      });
+    }
+    
     saveAs(blob, "Ventas_"+formatDateExcel(new Date())+".xls");
   }
 

@@ -62,7 +62,11 @@ class Empresamodel extends CI_model
 	function delete_empresa($_idempresa)
 	{
 		$query = 'UPDATE "EMPRESA" SET "ACTIVO"=false WHERE "ID_EMPRESA" = $1';
-		pg_prepare($this->conn,"deletequery",$query);
+		pg_prepare($this->conn,"updatequery",$query);
+		pg_execute($this->conn,"updatequery",array($_idempresa));
+
+    $query1 = 'DELETE FROM "INCREMENTOS" WHERE "ID_EMPRESA" = $1';
+		pg_prepare($this->conn,"deletequery",$query1);
 		$result = pg_execute($this->conn,"deletequery",array($_idempresa));
 		return $result;
 	}

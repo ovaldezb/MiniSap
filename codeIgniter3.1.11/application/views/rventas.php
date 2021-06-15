@@ -13,7 +13,7 @@
             </div>
             <div class="column">
               <div class="select is-small">
-                <select ng-model="linea" ng-options="x.ID_LINEA as x.NOMBRE for x in lstlinea"></select>
+                <select ng-model="linea" name="linea" ng-options="x.ID_LINEA as x.NOMBRE for x in lstlinea"></select>
               </div>
             </div>
           </div>
@@ -130,8 +130,8 @@
     <div style="height:500px;overflow:auto">
     <table class="table is-bordered is-hoverable"style="width:100%" id="rvbody">
       <colgroup>
-        <col width="22%">
-        <col width="10%">
+        <col width="21%">
+        <col width="12%">
         <col width="7%">
         <col width="9%">
         <col width="9%">
@@ -151,7 +151,7 @@
         <td class="font12" style="text-align:center">{{x.PORCENTAJE | number:2}}</td>
         <td class="font12" style="text-align:right">{{x.COSTO | currency}}</td>
         <td class="font12" style="text-align:right; color:{{x.UTILIDAD<0 ? 'red':'black'}}">{{x.UTILIDAD | currency}}</td>
-        <td class="font12" style="text-align:center">{{x.UTILIDAD / x.NETA * 100 | number:2}}</td>
+        <td class="font12" style="text-align:center">{{((x.NETA/x.COSTO)-1)*100 | number:2}}</td>
       </tr>
     </table>
     </div>
@@ -163,7 +163,7 @@
         <col width="9%">
         <col width="9%">
         <col width="9%">
-        <col width="8%">
+        <col width="9%">
         <col width="9%">
         <col width="8%">
         <col width="8%">
@@ -178,7 +178,76 @@
         <td class="font12" style="text-align:center">{{total.PORCENTAJE | number:2}}</td>
         <td class="font12" style="text-align:right">{{total.COSTO | currency}}</td>
         <td class="font12" style="text-align:right">{{total.UTILIDAD | currency}}</td>
+        <td class="font12" style="text-align:center">{{total.MARGEN | number:2}}</td>
+      </tr>
+    </table>
+  </div>
+  <div class="table-container" style="display:none;border:1px solid black;width:99%" id="madera">
+    <table style="width:100%" id="rvempresa">
+      <tr class="spaceUnder">
+        <td style="text-align:center"><label class="label">{{nombreEmpresa}}</label></td>
+      </tr>
+      <tr class="spaceUnder">
+        <td style="text-align:center"><label class="label">{{direccionEmpresa}}</label></td>
+      </tr>
+      <tr class="spaceUnder">
+        <td style="text-align:center"><label class="label">{{rfcEmpresa}}</label></td>
+      </tr>
+      <tr>
+        <td style="text-align:center"><label class="label">Análisis de Ventas del {{fecIniRep}} al {{FecFinRep}}</label></td>
+      </tr>
+      <tr>
+        <td style="text-align:right"><label>{{fechaImpresion}}</label></td>
+      </tr>
+    </table>
+    <table class="table is-bordered" style="width:100%;margin-top:5px;margin-bottom:0px">
+      <tr style="background-color:CornflowerBlue; color:Ivory;">
+        <td class="font12" rowspan="2" style="vertical-align:middle">Descripción</td>
+        <td class="font12" rowspan="2" style="text-align:center; vertical-align:middle">Código</td>
+        <td class="font12" rowspan="2" style="text-align:center; vertical-align:middle">Cantidad</td>
+        <td class="font12" rowspan="2" style="text-align:center; vertical-align:middle">Calidad</td>
+        <td class="font12" colspan="2" style="text-align:center;">Venta</td>
+        <td class="font12" rowspan="2" style="text-align:center;vertical-align:middle">Precio Promedio</td>
+        <td class="font12" rowspan="2" style="text-align:center;vertical-align:middle">Ventas (%)</td>
+        <td class="font12" rowspan="2" style="text-align:center;vertical-align:middle">Costo</td>
+        <td class="font12" rowspan="2" style="text-align:center;vertical-align:middle">Utilidad</td>
+        <td class="font12" rowspan="2" style="text-align:center;vertical-align:middle">Margen (%)</td>
+      </tr>
+      <tr style="background-color:CornflowerBlue; color:Ivory;">
+        <td class="font12" style="text-align:center">Bruta</td>
+        <td class="font12" style="text-align:center">Neta</td>
+      </tr>
+    </table>
+    <div style="height:500px;overflow:auto">
+    <table class="table is-bordered is-hoverable" style="width:100%">
+      <tr ng-repeat="x in lstRepmalmcn">
+        <td class="font12">{{x.DESCRIPCION}}</td>
+        <td class="font12" style="text-align:center">{{x.CODIGO}}</td>
+        <td class="font12" style="text-align:center">{{x.CANTIDAD}}</td>
+        <td class="font12" style="text-align:center">{{x.CALIDAD}}</td>
+        <td class="font12" style="text-align:right">{{x.BRUTA | currency}}</td>
+        <td class="font12" style="text-align:right">{{x.NETA | currency}}</td>
+        <td class="font12" style="text-align:right">{{x.PRECIO_PROM | currency}}</td>
+        <td class="font12" style="text-align:center">{{x.PORCENTAJE | number:2}}</td>
+        <td class="font12" style="text-align:right">{{x.COSTO | currency}}</td>
+        <td class="font12" style="text-align:right; color:{{x.UTILIDAD<0 ? 'red':'black'}}">{{x.UTILIDAD | currency}}</td>
+        <td class="font12" style="text-align:center">{{((x.NETA/x.COSTO)-1) *100 | number:2}}%</td>
+      </tr>
+    </table>
+    </div>
+    <table class="table is-bordered is-hoverable" style="width:100%">
+      <tr>
+        <td class="font12">{{total.DESCRIPCION}}</td>
         <td class="font12"></td>
+        <td class="font12"></td>
+        <td class="font12"></td>
+        <td class="font12" style="text-align:right">{{total.BRUTA | currency}}</td>
+        <td class="font12" style="text-align:right">{{total.NETA | currency}}</td>
+        <td class="font12" style="text-align:right" >{{total.PRECIO_PROM | currency}}</td>
+        <td class="font12" style="text-align:center">{{total.PORCENTAJE | number:2}}</td>
+        <td class="font12" style="text-align:right">{{total.COSTO | currency}}</td>
+        <td class="font12" style="text-align:right">{{total.UTILIDAD | currency}}</td>
+        <td class="font12" style="text-align:right">{{total.MARGEN | number:2}}</td>
       </tr>
     </table>
   </div>

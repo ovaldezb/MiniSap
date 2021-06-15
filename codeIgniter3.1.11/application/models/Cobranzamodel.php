@@ -27,6 +27,9 @@ class Cobranzamodel extends CI_model
 				INNER JOIN "TIPO_PAGO"as T ON F."ID_TIPO_PAGO" = T."ID_TIPO_PAGO"
 			AND F."ID_EMPRESA" = $1
 			AND F."ANIO_FISCAL" = $2
+      AND F."ID_SUCURSAL" = $3
+      AND F."SALDO" != 0
+      AND F."ESTATUS" IS NULL
 			ORDER BY F."ID_FACTURA" DESC';
 		pg_prepare($this->conn,"select_fact",$query);
 		$result = pg_fetch_all(pg_execute($this->conn,"select_fact",$arrayData));

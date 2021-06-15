@@ -31,14 +31,14 @@ class Productomodel extends CI_model
 	{
 		$query = 'SELECT P."ID_PRODUCTO", P."DESCRIPCION",
 				TRIM(P."CODIGO") AS "CODIGO",
-				P."PRECIO_LISTA", SUM(S."STOCK") as "STOCK"
+				P."PRECIO_LISTA", S."STOCK", L."NOMBRE" as "LINEA"
 				FROM "PRODUCTO" as P
-				INNER JOIN "PRODUCTO_SUCURSAL" as S
-				ON P."ID_PRODUCTO" = S."ID_PRODUCTO"
+				INNER JOIN "PRODUCTO_SUCURSAL" as S	ON P."ID_PRODUCTO" = S."ID_PRODUCTO"
+        INNER JOIN "LINEA" as L ON L."ID_LINEA" = P."ID_LINEA"
 				WHERE P."ID_EMPRESA" = $1 
         AND P."ACTIVO" = true
         AND S."ID_SUCURSAL" = $2
-				GROUP BY P."DESCRIPCION",P."ID_PRODUCTO", P."CODIGO",P."PRECIO_LISTA"
+        AND L."ID_EMPRESA" = P."ID_EMPRESA"
 				ORDER BY P."DESCRIPCION"';
 		pg_prepare($this->conn, "selproducto",$query);
 		$result = pg_fetch_all(pg_execute($this->conn, "selproducto",array($idempresa,$idsucursal)));
@@ -63,13 +63,15 @@ class Productomodel extends CI_model
 
 	function get_producto_by_codigo($codigo, $idempresa,$idsucursal)
 	{
-		$query = 'SELECT P."DESCRIPCION", P."PRECIO_LISTA",P."UNIDAD_MEDIDA","IMAGEN","IVA", PS."STOCK",
-    P."ID_PRODUCTO","CODIGO","ES_PROMO","ES_DESCUENTO","PRECIO_DESCUENTO","PRECIO_PROMO","TIPO_PS" 
+		$query = 'SELECT P."DESCRIPCION", P."PRECIO_LISTA",P."UNIDAD_MEDIDA","IMAGEN","IVA", PS."STOCK",P."PRECIO_COMPRA",
+    P."ID_PRODUCTO",TRIM("CODIGO") as "CODIGO","ES_PROMO","ES_DESCUENTO","PRECIO_DESCUENTO","PRECIO_PROMO","TIPO_PS", TRIM(L."NOMBRE") as "LINEA" 
     FROM "PRODUCTO" as P
+    INNER JOIN "LINEA" as L ON L."ID_LINEA" = P."ID_LINEA"
     LEFT OUTER JOIN "PRODUCTO_SUCURSAL" as PS ON PS."ID_PRODUCTO" = P."ID_PRODUCTO"
     WHERE "CODIGO" = $1
-    AND "ID_EMPRESA"=$2
-    AND PS."ID_SUCURSAL" = $3';
+    AND P."ID_EMPRESA"=$2
+    AND PS."ID_SUCURSAL" = $3
+    AND P."ID_EMPRESA" = L."ID_EMPRESA"';
 		$result = pg_prepare($this->conn, "selectquery", $query);
 		$result =  pg_fetch_all(pg_execute($this->conn, "selectquery", array($codigo, $idempresa, $idsucursal)));
 		return json_encode($result,JSON_NUMERIC_CHECK);
@@ -77,16 +79,6 @@ class Productomodel extends CI_model
 
   function get_producto_detalle_by_codigo($idproducto, $idsucursal){
     $query = 
-    /*'SELECT \'COM\' as "TIPO", C."DOCUMENTO", CP."CANTIDAD", CP."CANTIDAD" as "MOV", TO_CHAR("FECHA_COMPRA",\'DD/Mon/YYYY\') as "FECHA", "FECHA_COMPRA" as "FECHA1"
-    FROM "COMPRAS" as C
-    INNER JOIN "COMPRA_PRODUCTO" as CP ON CP."ID_COMPRA" = C."ID_COMPRA"
-    WHERE "ID_PRODUCTO" = $1
-    UNION
-    SELECT \'VENTA\' as "TIPO", V."DOCUMENTO",VP."CANTIDAD",VP."CANTIDAD" * -1 as "MOV", TO_CHAR(V."FECHA_VENTA",\'DD/Mon/YYYY\') as "FECHA", V."FECHA_VENTA" as "FECHA1"
-    FROM "VENTAS" as V
-    INNER JOIN "VENTAS_PRODUCTO" as VP ON VP."ID_VENTA" = V."ID_VENTA"
-    WHERE VP."ID_PRODUCTO" = $2 
-    UNION*/
     'SELECT "MOV" as "TIPO", I."DOCUMENTO", (I."IN" - I."OUT") as "CANTIDAD" ,(I."IN" - I."OUT") as "MOV", TO_CHAR(I."FECHA",\'DD/Mon/YYYY\') as "FECHA", I."FECHA" as "FECHA1"
     FROM "INVENTARIO" as I
     INNER JOIN "PRODUCTO" as P ON P."CODIGO" = I."CODIGO"

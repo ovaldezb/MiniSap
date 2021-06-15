@@ -21,10 +21,10 @@ class Cobranza extends CI_Controller
         }
     }
 
-    public function getfacturas($idempresa, $anioFiscal)
+    public function getcobranza($idempresa, $anioFiscal,$idsucursal)
     {
         if (isset($_SESSION['username'])) {
-            $result = $this->cobranzamodel->getListaFacturas(array($idempresa, $anioFiscal));
+            $result = $this->cobranzamodel->getListaFacturas(array($idempresa, $anioFiscal,$idsucursal));
             return $this->output
                 ->set_content_type('application/json')
                 ->set_output($result);

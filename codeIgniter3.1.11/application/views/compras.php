@@ -3,7 +3,7 @@
 	<div class="notification">
 		<h1 class="title is-4 has-text-centered">Compra de Productos</h1>
 	</div>
-	<div class="box" id="barranavegacion" ng-show="!isAgrgaCompra">
+	<div class="box" id="barranavegacion" ng-show="!isAgregaCompra">
 		<nav class="level">
 			<div class="level-left">
 				<div class="level-item">
@@ -21,12 +21,12 @@
 				<p class="level-item" ng-show="permisos.modificacion">
 					<a ng-click="despliegaCompra()"><span class="icon has-text-info"><i class="fas fa-folder-open" title="Visualiza Compra"></i></span></a></p>
 				<p class="level-item" ng-show="permisos.baja">
-					<a ng-click="preguntaelimcomp()"><span class="icon has-text-danger"><i class="far fa-trash-alt" title="Elimina Compra"></i></span></a></p>
+					<a ng-click="eliminacompra()"><span class="icon has-text-danger"><i class="far fa-trash-alt" title="Elimina Compra"></i></span></a></p>
 				<p class="level-item"><span class="icon has-text-info"><i class="fas fa-print" title="Imprime Compras"></i></span></p>
 			</div>
 		</nav>
 	</div>
-	<div class="box" ng-show="isAgrgaCompra">
+	<div ng-show="isAgregaCompra">
 	<form name="myForm">
 	<div class="columns">
 		<div class="column">
@@ -189,19 +189,19 @@
 				<col width="10%">
 				<col width="25%">
 				<col width="10%">
+				<col width="9%">
+				<col width="13%">
 				<col width="10%">
-				<col width="10%">
-				<col width="10%">
-				<col width="15%">
+				<col width="12%">
 				<col width="10%">
 				<tr>
-					<td align="center">Código</td>
-					<td>Descripción</td>
-					<td align="center">Cantidad</td>
-					<td align="center">U/Medida</td>
-					<td align="center">Precio Compra</td>
-					<td align="center">Descuento</td>
-					<td align="center" rowspan="2">
+					<td style="text-align:center">Código</td>
+					<td style="text-align:center">Descripción</td>
+					<td style="text-align:center">Cantidad</td>
+					<td style="text-align:center">U/Medida</td>
+					<td style="text-align:center">Precio Compra</td>
+					<td style="text-align:center">Descuento</td>
+					<td style="text-align:center" rowspan="2">
 						<figure class="media-left" style="display: none;" id="imgfig">
 						<p class="image is-64x64px">
 						<img ng-src="{{imagePath}}">
@@ -229,8 +229,8 @@
 							<div class="control">
 								<button class="button is-info is-small" ng-click="decrease()" id="mencant" disabled>-</button>
 							</div>
-							<div class="control" style="width:55px">
-								<input type="number" class="input is-small" ng-model="cantidad" id="cantidad" ng-keyup="manualenter()" disabled onfocus="this.select();" required style="text-align:center">
+							<div class="control" style="width:60px">
+								<input type="text" class="input is-small" ng-model="cantidad" id="cantidad" ng-keyup="manualenter()" disabled onfocus="this.select();" required style="text-align:center">
 							</div>
 							<div class="control">
 								<button class="button is-info is-small" ng-click="increase()" id="mascant" disabled>+</button>
@@ -284,7 +284,7 @@
 										<td>{{x.DESCRIPCION}}</td>
 										<td>{{x.CODIGO}}</td>
 										<td>{{x.UNIDAD_MEDIDA}}</td>
-										<td align="center">{{x.PRECIO_COMPRA_DISP}}</td>
+										<td align="center">{{x.PRECIO_COMPRA | currency}}</td>
 										<td align="center">{{x.STOCK}}</td>
 									</tr>
 								</table>
@@ -298,7 +298,7 @@
 				<table style="width:100%" border="1">
 					<tr>
 						<td>
-							<table class="table" style="width:100%" border="0">
+							<table class="table is-bordered" style="width:100%">
 								<col width="11%">
 								<col width="34%">
 								<col width="11%">
@@ -306,21 +306,21 @@
 								<col width="11%">
 								<col width="11%">
 								<col width="11%">
-								<tr>
-									<th align="left">Código</th>
-									<th align="center">Descripción</th>
-									<th align="center">Cantidad</th>
-									<th align="right">U/Medida</th>
-									<th align="right">$/Unitario</th>
-									<th align="right">Descuento</th>
-									<th align="right">Importe</th>
+								<tr class="tbl-header">
+									<td style="text-align:left">Código</td>
+									<td style="text-align:center">Descripción</td>
+									<td style="text-align:center">Cantidad</td>
+									<td style="text-align:right">U/Medida</td>
+									<td style="text-align:right">$/Unitario</td>
+									<td style="text-align:right">Descuento</td>
+									<td style="text-align:right">Importe</td>
 								</tr>
 							</table>
 						</td>
 					</tr>
 					<tr>
 						<td>
-							<div id="divtablecfdi" style="width:100%; height:180px; overflow:auto;">
+							<div id="divtablecfdi" style="width:100%; height:200px; overflow:auto;">
 								<table id="tblcomprod" class="table is-bordered is-hoverable is-fullwidth" style="width:100%;">
 									<col width="11%">
 									<col width="34%">
@@ -332,11 +332,11 @@
 									<tr ng-repeat="x in listaproductos" ng-click="setSelected($index,x.CODIGO)" ng-class="{selected: x.CODIGO === idSelected}">
 										<td>{{x.CODIGO}}</td>
 										<td>{{x.DESCRIPCION}}</td>
-										<td align="center">{{x.CANTIDAD}}</td>
-										<td align="center">{{x.UNIDAD}}</td>
-										<td align="center">$ {{x.PRECIO | number:2}}</td>
-										<td align="center">{{x.DESCTO}}%</td>
-										<td align="right">$ {{x.IMPORTE}}</td>
+										<td style="text-align:center">{{x.CANTIDAD}}</td>
+										<td style="text-align:center">{{x.UNIDAD}}</td>
+										<td style="text-align:center">{{x.PRECIO | currency}}</td>
+										<td style="text-align:center">{{x.DESCTO}}%</td>
+										<td style="text-align:right">{{x.IMPORTE | currency}}</td>
 									</tr>
 								</table>
 							</div>
@@ -352,40 +352,37 @@
 			<div class="column is-7">
 				<textarea class="textarea" ng-model="notas" placeholder="Observaciones"></textarea>
 			</div>
-			<div class="column is-2">
-			</div>
-			<div class="column is-2">
+			<div class="column">
 				<div class="columns">
 					<div class="column">
-						<label class="label">Suma(+)</label>
+						<label class="label">Sub Total:</label>
 					</div>
-					<div class="column has-text-right">
-						<label id="suma" class="label">{{suma | currency}}</label>
+					<div class="column" style="text-align:right">
+						<label id="suma" class="label">{{subtotal | currency}}</label>
 					</div>
 				</div>
         <div class="columns">
 					<div class="column">
-						<label class="label">Desc(-)</label>
+						<label class="label">Descuento(-):</label>
 					</div>
-					<div class="column has-text-right">
+					<div class="column" style="text-align:right">
 						<label class="label">{{descuento | currency}}</label>
 					</div>
 				</div>
 				<div class="columns">
 					<div class="column">
-						<label class="label">Iva(+)</label>
+						<label class="label">Iva(+):</label>
 					</div>
-					<div class="column has-text-right">
-						<label id="ivasuma" class="label">{{ivapaga | currency}}</label>
+					<div class="column" style="border-bottom:2px solid black; text-align:right">
+						<label class="label">{{ivapaga | currency}}</label>
 					</div>
 				</div>
 				<div class="columns">
 					<div class="column">
-						<label class="label">Total $</label>
+						<label class="label">Total:</label>
 					</div>
-					<div class="column has-text-right">
-						<label id="sumtot" class="label">{{total | currency}}</label>
-						<input type="hidden" id="importe" value="{{total}}">
+					<div class="column" style="text-align:right">
+						<label class="label">{{total | currency}}</label>
 					</div>
 				</div>
 			</div>
@@ -399,7 +396,7 @@
 		</div>
 	</form>
 	</div>
-	<div id="listacompras" class="container" ng-show="!isAgrgaCompra">
+	<div id="listacompras" class="container" ng-show="!isAgregaCompra">
 		<table style="width:100%"> 
 			<tr>
 				<td>
@@ -456,21 +453,5 @@
 				</td>
 			</tr>
 		</table>
-	</div>
-	<div class="{{modalActive ? 'modal is-active' : 'modal' }}" id="avisoborrar">
-		<div class="modal-background"></div>
-		<div class="modal-card">
-			<header class="modal-card-head">
-				<p class="modal-card-title">Advertencia</p>
-				<button class="delete" aria-label="close" ng-click="closeAvisoBorrar();"></button>
-			</header>
-			<section class="modal-card-body">
-				¿Está seguro que desea eliminar esta compra <b>{{codigocompra}}</b>?
-			</section>
-			<footer class="modal-card-foot">
-				<button class="button is-success" ng-click="eliminacompra()">Si</button>
-				<button class="button" ng-click="closeAvisoBorrar();">No</button>
-			</footer>
-		</div>
 	</div>
 </div>

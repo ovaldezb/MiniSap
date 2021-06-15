@@ -3,9 +3,9 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 	$scope.cantidad = 0;
 	$scope.iva = '';
 	$scope.descuento = 0;
-	$scope.suma = '';
+	$scope.subtotal = '';
 	$scope.ivapaga = '';
-	$scope.total = '';
+	$scope.total = 0;
 	$scope.precio = 0;
 	$scope.precio_vta = 0;
 	$scope.docprev = 'D';
@@ -35,10 +35,9 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 	$scope.idSelCompra = 0;
 	$scope.indexRowCompra = 0;
 	$scope.msgBton = 'Cancelar'
-	$scope.modalActive = false;
 	$scope.codigocompra = '';
 	$scope.idcompra = 0;
-	$scope.isAgrgaCompra = false;
+	$scope.isAgregaCompra = false;
 	$scope.idempresa = '';
 	$scope.idsucursal = '';
 	$scope.aniofiscal = '';
@@ -205,6 +204,7 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 						$scope.unidad = res.data[0].UNIDAD_MEDIDA;
 						$scope.imagePath = res.data[0].IMAGEN;
 						$scope.idProducto = res.data[0].ID_PRODUCTO;
+            $scope.iva = res.data[0].IVA;
 						$scope.counter = 1;
 						$scope.cantidad = $scope.counter;
 						if ($scope.imagePath != '') {
@@ -226,6 +226,7 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 		$scope.precio_vta = $scope.lstaprdctbusq[index].PRECIO_LISTA;
 		$scope.imagePath = $scope.lstaprdctbusq[index].IMAGEN != null ? $scope.lstaprdctbusq[index].IMAGEN : '';
 		$scope.idProducto = $scope.lstaprdctbusq[index].ID_PRODUCTO;
+    $scope.iva = $scope.lstaprdctbusq[index].IVA;
 		$scope.lstaprdctbusq = [];
 		$('#imgfig').show();
 		$('#dispsearch').hide();
@@ -240,7 +241,7 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 	}
 
 	$scope.agregar = function () {
-		$scope.suma = 0;
+		
 		if ($scope.iva < 0) {
 			swal('Debe ingresar el IVA mayor o igual a cero');
 			$('#iva').focus();
@@ -275,7 +276,8 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 			IMPORTE: Number((1 - $scope.desctoprod / 100) * $scope.cantidad * $scope.precio).toFixed(2),
 			IMG: $scope.imagePath,
 			IDPRODUCTO: $scope.idProducto,
-			DESCTO: $scope.desctoprod
+			DESCTO: $scope.desctoprod,
+      IVA:$scope.iva
 		};
 		if ($('#updtTable').val() == 'F') {
 			$scope.listaproductos.push(producto);
@@ -283,36 +285,44 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 			$scope.listaproductos[$scope.idxRowProd] = producto;
 			$('#updtTable').val('F')
 		}
-		var descProm = 0;
-		var suma = 0;
-		for (var i = 0; i < $scope.listaproductos.length; i++) {
-			$scope.suma += Number($scope.listaproductos[i].CANTIDAD) * Number($scope.listaproductos[i].PRECIO);
-			descProm += Number($scope.listaproductos[i].DESCTO) * Number($scope.listaproductos[i].CANTIDAD) * Number($scope.listaproductos[i].PRECIO) / 100;
-		}
+		
+		$scope.calculaValores();
+		
 		/*Hace el descuento*/
-		//$scope.suma = Number($scope.suma * Number(1 - $scope.descuento / 100)).toFixed(2);
-		$scope.suma = Number($scope.suma).toFixed(2);
-		$scope.ivapaga = Number(($scope.suma - descProm) * $scope.iva / 100).toFixed(2);
-		$scope.descuento = Number(descProm).toFixed(2);
-    $scope.total = Number(Number($scope.suma) + Number($scope.ivapaga)).toFixed(2) - descProm;
+		
+    
 		$scope.cantidad = 0;
 		$scope.counter = 0;
-		$scope.desctoprod = 0;		
+		//$scope.desctoprod = 0;		
 		$scope.idProducto = '';
 		$scope.limpiar();
 		habilitar(true, true);
 	}
 
+  $scope.calculaValores = () =>{
+    $scope.subtotal = 0;
+    $scope.descuento = 0;
+    $scope.ivapaga = 0;
+    $scope.total = 0;
+    for (var i = 0; i < $scope.listaproductos.length; i++) {
+			$scope.subtotal += Number($scope.listaproductos[i].CANTIDAD) * Number($scope.listaproductos[i].PRECIO);
+			$scope.descuento += Number($scope.listaproductos[i].DESCTO) * Number($scope.listaproductos[i].CANTIDAD) * Number($scope.listaproductos[i].PRECIO) / 100;
+      $scope.ivapaga += Number($scope.listaproductos[i].CANTIDAD) * Number($scope.listaproductos[i].PRECIO) * Number($scope.listaproductos[i].IVA/100);
+		}
+    $scope.total = $scope.subtotal - $scope.descuento + $scope.ivapaga ;
+  }
+
 	$scope.borraproducto = function () {
 		$scope.suma = 0;
 		$scope.listaproductos.splice($scope.idxRowProd, 1);
-		for (var i = 0; i < $scope.listaproductos.length; i++) {
+    $scope.calculaValores();
+		/*for (var i = 0; i < $scope.listaproductos.length; i++) {
 			$scope.suma = Number(Number($scope.suma) + Number($scope.listaproductos[i].IMPORTE)).toFixed(2);
 		}
 		/*Hace el descuento*/
-		$scope.suma = Number($scope.suma * Number(1 - $scope.descuento / 100)).toFixed(2);
+		/*$scope.suma = Number($scope.suma * Number(1 - $scope.descuento / 100)).toFixed(2);
 		$scope.ivapaga = Number($scope.suma * $scope.iva / 100).toFixed(2);
-		$scope.total = Number(Number($scope.suma) + Number($scope.ivapaga)).toFixed(2);
+		$scope.total = Number(Number($scope.suma) + Number($scope.ivapaga)).toFixed(2); */
 	}
 
 	$scope.validaIva = function () {
@@ -341,7 +351,7 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 			$scope.descuento = '';
 			$('#descuento').focus();
 		} else {
-			$scope.suma = 0;
+			/*$scope.suma = 0;
 			for (var i = 0; i < $scope.listaproductos.length; i++) {
 				$scope.suma += Number($scope.listaproductos[i].IMPORTE);
 			}
@@ -349,7 +359,7 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 				$scope.suma = Number($scope.suma * Number(1 - $scope.descuento / 100)).toFixed(2);
 				$scope.ivapaga = Number($scope.suma * $scope.iva / 100).toFixed(2);
 				$scope.total = Number(Number($scope.suma) + Number($scope.ivapaga)).toFixed(2);
-			}
+			}*/
 		}
 	}
 
@@ -384,14 +394,14 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 			idempresa: $scope.idempresa,
 			docprev: $scope.docprev,
 			diascred: $('#tipopago').val() == 1 ? 0: $scope.diascred,
-			importe: $('#importe').val(),
+			importe: $scope.total,
 			iva: $scope.iva,
 			aniofiscal: $scope.aniofiscal,
 			descuento: $scope.descuento,
 			idsucursal: $scope.idsucursal,
 			idproveedor: $scope.idproveedor,
 			notas: $scope.notas,
-      saldo:$('#tipopago').val() == 1 ? 0: $('#importe').val()
+      saldo:$scope.total
 		};
 
 		$http.put(pathCmpr + 'registracompra', data).
@@ -400,30 +410,7 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 					$scope.idcompra = res.data[0].inserta_compra;
 					$scope.regtracompraprod();
 					habilitar(true, true);					
-					dataCompra =
-					{
-						FECHA_COMPRA: formatDatePrint(hoy),
-						TIPO_ORDENCOMPRA: $scope.docprev,
-						DOCUMENTO: $scope.numdoc,
-						PROVEEDOR: $scope.proveedor,
-						CLAVE_PROVEEDOR: $scope.claveprov,
-						IMPORTE: $scope.total,
-						SALDO: $('#tipopago').val() == 1 ? '0.00' : $scope.total,
-						FECHA_REVISION: formatDatePrint(hoy),
-						FECHA_PAGO: $('#fechapago').val(),
-						FORMA_PAGO: $('#tipopago').val() == 1 ? 'Contado' : 'Crédito ' + $scope.diascred + ' días',
-						IVA: $scope.iva,
-						DIAS_PAGO: $scope.diascred,
-						DESCUENTO: $scope.descuento,
-						MONEDA: $('#moneda').val(),
-						CR: $scope.contrarecibo,
-						TIPO_CAMBIO: $scope.tipocambio,
-						ID_COMPRA: $scope.idcompra
-					};
-					
-					$scope.listaCompras.unshift(dataCompra);
-					$scope.selectRowCompra($scope.listaCompras[0].ID_COMPRA, 0);
-					
+          $scope.getDataInit();
 					$scope.cantidad = 0;
 					$scope.counter = 0;
 					$scope.suma = 0;
@@ -433,7 +420,7 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 					$scope.precio = 0;
 					$('#tipopago').val(1);
 					$('#moneda').val(1);
-					$scope.isAgrgaCompra = false;
+					$scope.isAgregaCompra = false;
 					$scope.limpiarBox1();
 					swal('Se registro la compra exitosamente','Felicidades!','success');
 				}
@@ -446,7 +433,6 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 	$scope.regtracompraprod = function () {
 		var i;
 		for (i = 0; i < $scope.listaproductos.length; i++) {
-			console.log($scope.listaproductos[i]);
 			$http.post(pathCmpr + 'regcompraprdcto/', {
 				idcompra: $scope.idcompra,
 				idproducto: $scope.listaproductos[i].IDPRODUCTO,
@@ -510,7 +496,7 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 	}
 
 	$scope.despliegaCompra = function () {
-		$scope.isAgrgaCompra = true;
+		$scope.isAgregaCompra = true;
 		$('#barranavegacion').hide();
 		$('#listacompras').hide();
 		$('#barraProducto').hide();
@@ -523,7 +509,7 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 		$scope.numdoc = $scope.listaCompras[$scope.indexRowCompra].DOCUMENTO;
 		$scope.claveprov = $scope.listaCompras[$scope.indexRowCompra].CLAVE_PROVEEDOR;
 		$scope.proveedor = $scope.listaCompras[$scope.indexRowCompra].PROVEEDOR;
-		$scope.descuento = $scope.listaCompras[$scope.indexRowCompra].DESCUENTO != null ? $scope.listaCompras[$scope.indexRowCompra].DESCUENTO : '';
+		$scope.descuento = $scope.listaCompras[$scope.indexRowCompra].DSCTOPROD != null ? $scope.listaCompras[$scope.indexRowCompra].DSCTOPROD : '';
 		$('#fechacompra').val($scope.listaCompras[$scope.indexRowCompra].FECHA_COMPRA);
 		$('#tipopago').val($scope.listaCompras[$scope.indexRowCompra].TIPO_PAGO);
 		$scope.diascred = $scope.listaCompras[$scope.indexRowCompra].DIAS_PAGO == 0 ? '' : $scope.listaCompras[$scope.indexRowCompra].DIAS_PAGO;
@@ -531,8 +517,6 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 		$('#fechapago').val($scope.listaCompras[$scope.indexRowCompra].FECHA_PAGO);
 		$('#moneda').val($scope.listaCompras[$scope.indexRowCompra].MONEDA);
 		$scope.tipocambio = $scope.listaCompras[$scope.indexRowCompra].TIPO_CAMBIO != null ? $scope.listaCompras[$scope.indexRowCompra].TIPO_CAMBIO : '';
-		$scope.descuento = $scope.listaCompras[$scope.indexRowCompra].DESCUENTO != null ? $scope.listaCompras[$scope.indexRowCompra].DESCUENTO : '';
-		$scope.iva = Number($scope.listaCompras[$scope.indexRowCompra].IVA);
 		$scope.buscacompraclave();
 	}
 
@@ -540,44 +524,36 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 		$http.get(pathCmpr + 'getcomprodbyid/' + $scope.idSelCompra, { responseType: 'json' }).
 			then(function (res) {
 				$scope.listaproductos = res.data;
-				$scope.suma = 0;
-				var descProm = 0;
-				for (var i = 0; i < $scope.listaproductos.length; i++) {
-					$scope.suma += Number($scope.listaproductos[i].IMPORTE);
-					descProm += Number($scope.listaproductos[i].DESCTO);
-				}
-				$scope.descuento = Number( descProm / $scope.listaproductos.length ).toFixed(2);
-				$scope.ivapaga = Number($scope.suma * $scope.iva / 100).toFixed(2);
-				$scope.total = Number(Number($scope.suma) + Number($scope.ivapaga)).toFixed(2);
+        $scope.calculaValores();
 			}).catch(function (err) {
 				console.log(err);
 			});
-	}
-
-	$scope.preguntaelimcomp = function () {
-		$scope.modalActive = true;
-		$scope.codigocompra = $scope.listaCompras[$scope.indexRowCompra].DOCUMENTO;
 	}
 
 	$scope.eliminacompra = function () {
-		$http.delete(pathCmpr + 'elimcompraprodid/' + $scope.listaCompras[$scope.indexRowCompra].ID_COMPRA + '/' + $scope.idsucursal).
-			then(function (res) {
-				if (res.status == "200") {
-					if (Number(res.data[0].borra_compra) >= 1) {
-						swal('Se ha eliminado la compra');
-						$scope.listaCompras.splice($scope.indexRowCompra, 1);
-						$scope.closeAvisoBorrar();
-					}
-				}
-			}).catch(function (err) {
-				console.log(err);
-			});
-
-	}
-
-	$scope.closeAvisoBorrar = function () {
-		$scope.codigocompra = '';
-		$scope.modalActive = false;
+    
+    swal({
+      title: "Está seguro que desea eliminar la  compra "+$scope.listaCompras[$scope.indexRowCompra].DOCUMENTO,
+      text: "Una vez eliminada, no se podrá recuperar",
+      icon: "warning",
+      buttons: [true,true],
+      dangerMode: true,
+    })
+    .then((willAdd) => {
+      if(willAdd){
+        $http.delete(pathCmpr + 'elimcompraprodid/' + $scope.listaCompras[$scope.indexRowCompra].ID_COMPRA + '/' + $scope.idsucursal).
+        then(function (res) {
+          if (res.status == "200") {
+            if (Number(res.data[0].borra_compra) >= 1) {
+              swal('Se ha eliminado la compra');
+              $scope.getDataInit();
+            }
+          }
+        }).catch(function (err) {
+          console.log(err);
+        });
+      }
+    });
 	}
 
 	$scope.limpiar = function () {
@@ -591,7 +567,7 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 	}
 
 	$scope.btnCancel = function () {
-		$scope.isAgrgaCompra = false;
+		$scope.isAgregaCompra = false;
 		$scope.limpiarBox1();
 		$scope.listaproductos = [];
 		if ($scope.msgBton == 'Cerrar') {
@@ -602,7 +578,7 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 			$scope.msgBton = 'Cancelar';
 			$scope.suma = '';
 			$scope.ivapaga = '';
-			$scope.total = '';
+			$scope.total = 0;
 			$scope.descuento = '';
 			habilitarBox1(false);
 		}
@@ -635,7 +611,7 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 	}
 
 	$scope.agregarcompra = function () {
-		$scope.isAgrgaCompra = true;
+		$scope.isAgregaCompra = true;
 	}
 
 });

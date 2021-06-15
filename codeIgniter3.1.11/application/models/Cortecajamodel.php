@@ -148,10 +148,14 @@ class Cortecajamodel extends CI_model
     return json_encode($result,JSON_NUMERIC_CHECK);
   }
 
-  function updt_cortecaja_timbrada($idcorte){
+  function updt_cortecaja_timbrada($idcorte,$idfactura,$idcfdi){
     $query = 'UPDATE "CORTE_CAJA" SET "TIMBRADA" = \'true\' WHERE "ID_CORTE" = $1';
     pg_prepare($this->conn,"upatequery",$query);
 		$result = pg_execute($this->conn,"upatequery",array($idcorte));
+    
+    $query1 = 'INSERT INTO "CFDI_FACTURAS" ("ID_CFDI","ID_FACTURA") VALUES($1,$2)';
+    pg_prepare($this->conn,"insertquery",$query1);
+		$result = pg_execute($this->conn,"insertquery",array($idcfdi,$idfactura));
     return json_encode(array("msg"=>"ok"));
   }
 

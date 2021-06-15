@@ -23,6 +23,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
   $scope.lstCorreos = [];
   $scope.lstNoCodigoSAT = [];
   $scope.lstCortesCajaNT = [];
+  $scope.lstCalidadMadera = [];
   $scope.idDocumento = '';
   $scope.indexRowFactura = -1;
   $scope.indexRowPedido = -1;
@@ -61,6 +62,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
   $scope.showInputData = false;
   $scope.showEmail = false;
   $scope.showUsuario = false;
+  $scope.isMadera = false;
   $scope.cancelStyle = {background:'red'};
   $scope.usuario = '';
   $scope.idProceso = $routeParams.idproc;
@@ -118,7 +120,8 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
       esDscto : false,
       descuento : 0,
       promocion : 0,
-      tipo_ps:''
+      tipo_ps:'',
+      idcalidad:null
   };
 
 
@@ -163,6 +166,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
         $scope.permisos();
         $scope.getEmpresa();
         $scope.getvendedores();
+        $scope.getCalidadMadera();
       }
     }).catch(function(err){
       console.log(err);
@@ -255,6 +259,18 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
 		});
   }
 
+  $scope.getCalidadMadera = ()=>{
+    $http.get(pathUtils+'calidadmadera')
+    .then(res =>{
+      if(res.data){
+        $scope.lstCalidadMadera = res.data;
+      }
+    })
+    .catch(err =>{
+      console.log(err);
+    });
+  }
+
   $scope.getEmpresa = () =>{
     $http.get(pathEmpr+'loadbyid/'+$scope.factura.idempresa, {responseType: 'json'}).
     then(res =>
@@ -271,8 +287,13 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
     $http.get(pathFactura+'getfacturas/'+$scope.factura.idempresa+'/'+$scope.factura.aniofiscal+'/'+$scope.factura.idsucursal,{responseType:'json'})
       .then(res => {
         if(res.data.length > 0){
-          $scope.lstFacturas = res.data.map(fact => {
-            fact.ID_EMPRESA = $scope.factura.idempresa;
+          $scope.lstFacturas = res.data.map(fact=>{
+            let shortname = fact.VENDEDOR.split(" ");
+            if(shortname[1] !== undefined){
+              fact.VENDEDOR = shortname[0] +' '+shortname[1];
+            }else{
+              fact.VENDEDOR = shortname[0];
+            }
             return fact;
           });
         }
@@ -506,7 +527,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
           $scope.nombre_vendedor = res.data[0].VENDEDOR;
           $scope.factura.contacto = res.data[0].CONTACTO;
           $scope.factura.tpago = res.data[0].ID_TIPO_PAGO;
-          $scope.factura.fpago = res.data[0].ID_FORMA_PAGO < 10 ? '0'+res.data[0].ID_FORMA_PAGO : res.data[0].ID_FORMA_PAGO+'';
+          $scope.factura.fpago = res.data[0].ID_FORMA_PAGO.toString(); // < 10 ? '0'+res.data[0].ID_FORMA_PAGO : res.data[0].ID_FORMA_PAGO+'';
           $scope.factura.mpago = res.data[0].ID_METODO_PAGO;
           $scope.factura.cuenta = res.data[0].CUENTA == null ? '' : res.data[0].CUENTA.trim();
           $scope.factura.idmoneda = res.data[0].ID_MONEDA;
@@ -598,13 +619,19 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
           $scope.producto.iva = res.data[0].IVA;
           $scope.producto.codigo_prodto = res.data[0].CODIGO;
           $scope.producto.id_producto = res.data[0].ID_PRODUCTO;
-      
           $scope.producto.cantProd = res.data[0].STOCK;
           $scope.producto.esPromo = res.data[0].ES_PROMO == 't' ? true:false;
           $scope.producto.esDscto = res.data[0].ES_DESCUENTO == 't' ? true:false;
           $scope.producto.descuento = res.data[0].PRECIO_DESCUENTO;
           $scope.producto.promocion = res.data[0].PRECIO_PROMO;
           $scope.producto.tipo_ps = res.data[0].TIPO_PS;
+          $scope.producto.linea = res.data[0].LINEA;
+          $scope.isMadera = res.data[0].LINEA === "MADERA";
+          if($scope.isMadera){
+            $scope.producto.idcalidad = $scope.lstCalidadMadera[0].ID_CALIDAD_MADERA;
+          }else{
+            $scope.producto.idcalidad = null;
+          }
           if($scope.producto.imagePath!='')
           {
             $('#imgfig').show();
@@ -659,6 +686,13 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
       $scope.producto.descuento = $scope.lstProdBusqueda[idxRowListaBusq].PRECIO_DESCUENTO;
       $scope.producto.promocion = $scope.lstProdBusqueda[idxRowListaBusq].PRECIO_PROMO;
       $scope.producto.tipo_ps = $scope.lstProdBusqueda[idxRowListaBusq].TIPO_PS;
+      $scope.producto.linea = $scope.lstProdBusqueda[idxRowListaBusq].LINEA;
+      $scope.isMadera = $scope.lstProdBusqueda[idxRowListaBusq].LINEA === "MADERA";
+      if($scope.isMadera){
+        $scope.producto.idcalidad = $scope.lstCalidadMadera[0].ID_CALIDAD_MADERA;
+      }else{
+        $scope.producto.idcalidad = null;
+      }
       if($scope.imagePath!='')
       {
         $('#imgfig').show();
@@ -704,7 +738,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
     $scope.agregaProducto = function()
     {
       var importe = 0.0;
-      var cantDscto = 0;
+      //var cantDscto = 0;
       if(Number($scope.cantidad) == 0)
       {
         swal('La cantidad debe ser mayor a 0');
@@ -739,15 +773,27 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
           ESDSCTO:$scope.producto.esDscto,
           PRECIO_PROMO:$scope.producto.promocion,
           DESCUENTO:$scope.producto.descuento,
-          TIPO_PS:$scope.producto.tipo_ps
+          TIPO_PS:$scope.producto.tipo_ps,
+          LINEA:$scope.producto.linea,
+          ID_CALIDAD_MADERA:null,
+          STOCk:$scope.producto.cantProd
       };
+
+      if($scope.producto.idcalidad !== null){
+        if(dataCompra.DESCRIPCION.indexOf('[') > 0){
+          dataCompra.DESCRIPCION = dataCompra.DESCRIPCION.substr(0,dataCompra.DESCRIPCION.indexOf('['));
+        }
+        dataCompra.DESCRIPCION += ' ['+$scope.lstCalidadMadera[$('select[name="calidad"]')[0].selectedIndex ].DESCRIPCION+']';
+        dataCompra.ID_CALIDAD_MADERA = $scope.producto.idcalidad;
+        $scope.isMadera = null;
+      }
 
       if($('#updtTblComp').val()=='T'){
         $scope.lstProdCompra[$scope.indexRowCompra] = dataCompra;
         $('#updtTblComp').val('F')
       }else
       {
-          $scope.lstProdCompra.push(dataCompra);
+        $scope.lstProdCompra.push(dataCompra);
       }
       $scope.calculaValoresMostrar();
       $scope.setSelected($scope.lstProdCompra[0].CODIGO,0);
@@ -771,6 +817,8 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
       $scope.producto.unidad = '';
       $scope.producto.precio = '';
       $scope.producto.imagePath = '';
+      $scope.producto.idcalidad = null;
+      $scope.isMadera = false;
       $scope.cantidad = 0;
       $scope.counter = 0;
       $scope.producto.id_producto = '';
@@ -788,9 +836,10 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
       $scope.producto.id_producto = $scope.lstProdCompra[$scope.indexRowCompra].ID_PRODUCTO;
       $scope.producto.codigo_prodto = $scope.lstProdCompra[$scope.indexRowCompra].CODIGO;
       $scope.producto.prod_desc = $scope.lstProdCompra[$scope.indexRowCompra].DESCRIPCION;
-      $scope.producto.unidad = $scope.lstProdCompra[$scope.indexRowCompra].UNIDAD;
+      $scope.producto.unidad = $scope.lstProdCompra[$scope.indexRowCompra].UNIDAD_MEDIDA;
       $scope.producto.precio = $scope.lstProdCompra[$scope.indexRowCompra].PRECIO_LISTA;
       $scope.cantidad = $scope.lstProdCompra[$scope.indexRowCompra].CANTIDAD;
+      $scope.producto.cantProd = $scope.lstProdCompra[$scope.indexRowCompra].STOCK;
       $scope.counter = $scope.cantidad;
       $scope.producto.imagePath = $scope.lstProdCompra[$scope.indexRowCompra].IMG;
       $scope.producto.esPromo = $scope.lstProdCompra[$scope.indexRowCompra].ESPROMO;
@@ -798,7 +847,9 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
       $scope.producto.promocion = $scope.lstProdCompra[$scope.indexRowCompra].PRECIO_PROMO;
       $scope.producto.descuento = $scope.lstProdCompra[$scope.indexRowCompra].DESCUENTO;
       $scope.producto.tipo_ps = $scope.lstProdCompra[$scope.indexRowCompra].TIPO_PS;
-     
+      $scope.isMadera = $scope.lstProdCompra[$scope.indexRowCompra].LINEA === "MADERA";
+      $scope.producto.idcalidad = $scope.lstProdCompra[$scope.indexRowCompra].ID_CALIDAD_MADERA;
+      
       if($scope.producto.tipo_ps == 'P')
       {
         $scope.isVerifExis = true;
@@ -1075,8 +1126,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
                 $scope.getfacturas();
                 if($scope.requiere_factura){
                   $http.get(pathFactura+'datoscfdi/'+dataVenta.idfactura)
-                  .then(res =>{
-                    //$scope.factura.idventa = res.data.ID_VENTA  
+                  .then(res =>{  
                     $scope.factura.cliente = res.data.CLIENTE;
                     $scope.factura.rfc = res.data.RFC;
                     $scope.factura.usocfdicodigo = res.data.USO_CFDI;
@@ -1158,7 +1208,8 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
           idproveedor:null,
           idusuario:$scope.idUsuario,
           idmoneda:1, //En la factura no se pide moneda, se pone por dafault peso,
-          descuento:$scope.lstProdCompra[i].DESCUENTO == null ? 0 : $scope.lstProdCompra[i].DESCUENTO
+          descuento:$scope.lstProdCompra[i].DESCUENTO == null ? 0 : $scope.lstProdCompra[i].DESCUENTO,
+          idcalidad:$scope.lstProdCompra[i].ID_CALIDAD_MADERA 
         }
         $http.post(pathTpv+'registraventaprod',ventaProd)
           .then(function(res){
@@ -1267,55 +1318,57 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
         })
         .then(yes=>{
           if(yes){
-            let meshoy = new Date();
-            //cmfd = new Date();
-            //cmfd.setMonth(meshoy.getMonth());
-            //cmfd.setDate(1);
-            let cmld = lastday(meshoy.getFullYear(), meshoy.getMonth());
-            var facturacc = {
-              idempresa:$scope.factura.idempresa,
-              idsucursal:$scope.factura.idsucursal,
-              cliente:'VENTAS MOSTRADOR',
-              rfc:'XAXX010101000',
-              iva:0.16,
-              usocfdicodigo:'G03',
-              serie:'VM',
-              folio:'1',
-              moneda:'MXN',
-              tipocambio:'1',
-              metodopago:'PUE',
-              importetotal:importe,
-              ivatotal:iva,
-              formapago:'01',
-              aniofiscal:$scope.factura.aniofiscal,
-              claveprodserv:'01010101',
-              noidentificacion:'CCMAYO',
-              claveunidad:'ACT',
-              unidad:'Actividad',
-              descripcion:'Ventas Mostrador del 01 al '+formatReporte(cmld),
-              fechaventa:formatDateInsert(new Date()),
-              idfactura:lstCC[0].ID_FACTURA
-            };
-            $http.post(pathCreacfdi+'creacfdicc',facturacc)
+            $http.get(pathUtils + "incremento/TIMB/" + $scope.factura.idempresa + "/0")
             .then(res =>{
-              if(res.data.status === "success"){
-                swal('Se creo la factura de manera exitosa');
-                //update Cortes de Caja
-                lstCC.forEach(elem =>{
-                  $http.put(pathCorte+'updtccfact/'+elem.ID_CORTE)
-                  .then(res =>{
-                    //console.log(res.data);
-                  })
-                  .catch(err =>{
-                    console.log(err);
+              //let meshoy = new Date();
+              //let cmld = lastday(meshoy.getFullYear(), meshoy.getMonth());
+              var facturacc = {
+                idempresa:$scope.factura.idempresa,
+                idsucursal:$scope.factura.idsucursal,
+                cliente:'VENTAS MOSTRADOR',
+                rfc:'XAXX010101000',
+                iva:0.16,
+                usocfdicodigo:'G03',
+                serie:'VM',
+                folio:res.data[0].VALOR,
+                moneda:'MXN',
+                tipocambio:'1',
+                metodopago:'PUE',
+                importetotal:importe,
+                ivatotal:iva,
+                formapago:'01',
+                aniofiscal:$scope.factura.aniofiscal,
+                claveprodserv:'01010101',
+                noidentificacion:'CorteCaja',
+                claveunidad:'ACT',
+                unidad:'Actividad',
+                descripcion:'Ventas Mostrador al'+formatFecCC(lstCC[0].FECHA_CORTE),
+                fechaventa:formatDateInsert(new Date()),
+                idfactura:-1 //lstCC[0].ID_FACTURA
+              };
+              $http.post(pathCreacfdi+'creacfdicc',facturacc)
+              .then(res =>{
+                if(res.data.status === "success"){
+                  swal('Se creo la factura de manera exitosa');
+                  //update Cortes de Caja
+                  lstCC.forEach(elem =>{
+                    $http.put(pathCorte+'updtccfact/'+elem.ID_CORTE+'/'+elem.ID_FACTURA+'/'+res.data.lastValue)
+                    .then(res =>{
+                      //console.log(res.data);
+                    })
+                    .catch(err =>{
+                      console.log(err);
+                    });
                   });
-                });
-                $scope.isTimbrarCC = false;
-                $scope.getfacturas();
-              }
-            })
-            .catch(err=>{
-
+                  $scope.isTimbrarCC = false;
+                  $scope.getfacturas();
+                }
+              })
+              .catch(err=>{
+  
+              });
+            }).catch(err =>{
+              console.log(err);
             });
           }
         });

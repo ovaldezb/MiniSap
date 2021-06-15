@@ -68,7 +68,7 @@
 									<td style="color:white; text-align:center;">FECHA PEDIDO</td>
 									<td style="color:white; text-align:center;">IMPORTE</td>
 									<td style="color:white; text-align:center;">VENDEDOR</td>
-									<td style="color:white; text-align:center;">VENDIDO</td>
+									<td style="color:white; text-align:center;">FACTURADO</td>
                   <td style="color:white; text-align:center;">ESTATUS</td>
 								</tr>
 							</thead>
@@ -348,6 +348,19 @@
 								</span>
 								</a>
 							</div>
+              <div class="level-item"></div>
+              <div class="level-item"></div>
+              <div class="level-item"></div>
+              <div class="level-item"></div>
+              <div class="level-item"></div>
+              <div class="level-item" ng-show="isMadera">
+                <label class="label">Calidad</label>
+              </div>
+              <div class="level-item" ng-show="isMadera">
+                <div class="select is-small">
+                  <select name="calidad" ng-model="producto.idcalidad" ng-options="x.ID_CALIDAD_MADERA as x.DESCRIPCION for x in lstCalidadMadera"></select>
+                </div>
+              </div>
 						</div>
 						<div class="level-right">
               <div class="level-item" ng-show="lstProdCompra.length > 0">

@@ -28,11 +28,13 @@ class Tpvmodel extends CI_model
 							to_char("PRECIO_COMPRA",\'L999,999,999.00\') AS "PRECIO_COMPRA_DISP",
 							"PRECIO_COMPRA",
 							"IVA",
+              TRIM(L."NOMBRE") as "LINEA",
 							TRIM("UNIDAD_MEDIDA") as "UNIDAD_MEDIDA",
 							SUM(S."STOCK") as "STOCK",
 							"IMAGEN","ES_PROMO","ES_DESCUENTO","PRECIO_PROMO","PRECIO_DESCUENTO","TIPO_PS"
-							FROM "PRODUCTO" as P INNER JOIN  "PRODUCTO_SUCURSAL" as S
-							ON P."ID_PRODUCTO" = S."ID_PRODUCTO"
+							FROM "PRODUCTO" as P 
+              INNER JOIN  "PRODUCTO_SUCURSAL" as S ON P."ID_PRODUCTO" = S."ID_PRODUCTO"
+              INNER JOIN "LINEA" as L ON L."ID_LINEA" = P."ID_LINEA"
 							WHERE UPPER("DESCRIPCION") LIKE  UPPER($1)'
 							. $condition .
 							'AND P."ACTIVO" = true
@@ -41,7 +43,8 @@ class Tpvmodel extends CI_model
 											"DESCRIPCION","CODIGO","PRECIO_LISTA",
 											"PRECIO_COMPRA", "IVA",
 											"UNIDAD_MEDIDA","IMAGEN",
-											"ES_PROMO","ES_DESCUENTO","PRECIO_PROMO","PRECIO_DESCUENTO","TIPO_PS"
+											"ES_PROMO","ES_DESCUENTO","PRECIO_PROMO","PRECIO_DESCUENTO","TIPO_PS",
+                      L."NOMBRE"
 							ORDER BY "DESCRIPCION"';
 		$result = pg_prepare($this->conn, "selectquery", $query);
 		$result =  pg_fetch_all(pg_execute($this->conn, "selectquery", array($desc,$idEmpresa)));
@@ -91,7 +94,7 @@ class Tpvmodel extends CI_model
 
 	function registra_venta_producto($data)
 	{
-		$pstmt = 'SELECT * FROM venta_producto($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16)';
+		$pstmt = 'SELECT * FROM venta_producto($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17)';
 		pg_prepare($this->conn,"prstmt",$pstmt);
 		$result = pg_fetch_all(pg_execute($this->conn, "prstmt", $data));
 		return json_encode($result);
@@ -148,7 +151,8 @@ class Tpvmodel extends CI_model
 	function getventadetallebyid($idFactura){
 		$query = 'SELECT VP."CANTIDAD",VP."PRECIO" as "PRECIO_LISTA",VP."IMPORTE", VP."DESCUENTO" as "DESCUENTO",
               CASE WHEN VP."DESCUENTO" > 0 THEN \'t\' ELSE \'f\' END as "ESDSCTO",
-              TRIM(P."DESCRIPCION") as "DESCRIPCION",TRIM(P."UNIDAD_MEDIDA") as "UNIDAD_MEDIDA", TRIM(P."COD_CFDI") as "COD_CFDI",
+              CASE WHEN M."DESCRIPCION" IS NULL THEN TRIM(P."DESCRIPCION") ELSE TRIM(P."DESCRIPCION")|| \' [\' || M."DESCRIPCION"||\']\' END as "DESCRIPCION",
+              TRIM(P."UNIDAD_MEDIDA") as "UNIDAD_MEDIDA", TRIM(P."COD_CFDI") as "COD_CFDI",
               P."IVA",TRIM(P."UNIDAD_SAT") as "UNIDAD_SAT",
               CASE WHEN P."IEPS" IS NULL THEN \'0\' ELSE P."IEPS" END as "IEPS",TRIM(I."NOMBRE") as "TIPOFACTOR",
               TRIM(P."CODIGO") as "CODIGO"
@@ -156,7 +160,10 @@ class Tpvmodel extends CI_model
               INNER JOIN "VENTAS" as V ON V."ID_VENTA" = VP."ID_VENTA"
               INNER JOIN "PRODUCTO" as P ON VP."ID_PRODUCTO" = P."ID_PRODUCTO"
               INNER JOIN "IEPS" as I on P."ID_IEPS" = I."ID_IEPS"
+              LEFT OUTER JOIN "CALIDAD_MADERA" as M ON M."ID_CALIDAD_MADERA" = VP."ID_CALIDAD_MADERA"          
               WHERE V."ID_FACTURA" = $1';				
+    
+    
 		pg_prepare($this->conn,"select_venta_prod",$query);
 		$result = pg_fetch_all(pg_execute($this->conn,"select_venta_prod",array($idFactura)));		
 		return json_decode(json_encode($result,JSON_NUMERIC_CHECK),false);

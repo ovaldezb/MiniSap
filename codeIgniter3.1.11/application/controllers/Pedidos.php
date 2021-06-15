@@ -73,6 +73,7 @@ class Pedidos extends CI_Controller
                 $data['precio'],
                 $data['importe'],
                 $data['descuento'],
+                $data['idcalidad'],
             ));
             return $this->output
                 ->set_content_type('application/json')

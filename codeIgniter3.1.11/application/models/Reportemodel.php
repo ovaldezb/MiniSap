@@ -90,6 +90,7 @@ class Reportemodel extends CI_model
 							AND V."ANIO_FISCAL" = $8
 							GROUP BY VP."ID_PRODUCTO") as VE
 					ON CO."ID_PRODUCTO" = VE."ID_PRODUCTO"';
+    
     pg_prepare($this->conn,"qry_mov_almac",$query);
     $result = pg_fetch_all(pg_execute($this->conn,"qry_mov_almac",array($idEmpresa,$fecIni,$fecFin,$anio_fiscal,$idEmpresa,$fecIni,$fecFin,$anio_fiscal)));
     return json_encode($result,JSON_NUMERIC_CHECK);
@@ -99,7 +100,9 @@ class Reportemodel extends CI_model
 	{
     $queryLinea1 = $linea == 0 ? ' 0 = $5 ) ' : ' P."ID_LINEA" = $5) ';
     $queryLinea2 = $linea == 0 ? ' 0 = $10' : ' P."ID_LINEA" = $10 ';
-		$query = 'SELECT P."DESCRIPCION",TRIM(P."CODIGO") as "CODIGO",
+		$query = 'SELECT CASE WHEN M."DESCRIPCION" IS NULL THEN TRIM(P."DESCRIPCION") ELSE TRIM(P."DESCRIPCION")|| \' [\' || M."DESCRIPCION"||\']\' END as "DESCRIPCION",
+              CASE WHEN M."DESCRIPCION" IS NULL THEN \'\' ELSE M."DESCRIPCION" END as "CALIDAD",
+              TRIM(P."CODIGO") as "CODIGO",
 							SUM(VP."CANTIDAD") as "CANTIDAD",
 							SUM(VP."IMPORTE") as "BRUTA",
 							SUM(VP."IMPORTE") / (1+(P."IVA")/100) as "NETA",
@@ -118,19 +121,19 @@ class Reportemodel extends CI_model
 							FROM "VENTAS_PRODUCTO" as VP
 							INNER JOIN "VENTAS" as V on V."ID_VENTA" = VP."ID_VENTA"
 							INNER JOIN "PRODUCTO" as P on P."ID_PRODUCTO" = VP."ID_PRODUCTO"
-							WHERE V."ID_EMPRESA" = $6
+							LEFT OUTER JOIN "CALIDAD_MADERA" as M ON M."ID_CALIDAD_MADERA" = VP."ID_CALIDAD_MADERA"
+              WHERE V."ID_EMPRESA" = $6
 							AND V."ANIO_FISCAL" = $7
 							AND V."FECHA_VENTA" >= $8
 							AND V."FECHA_VENTA" <= $9
 							AND '.$queryLinea2.'
-							GROUP BY VP."ID_PRODUCTO", P."DESCRIPCION", P."CODIGO", P."IVA",P."PRECIO_COMPRA" ';
+							GROUP BY M."DESCRIPCION",VP."ID_PRODUCTO", P."DESCRIPCION", P."CODIGO", P."IVA",P."PRECIO_COMPRA" ';
 			if($isTopTen){
-				$query = $query . 'ORDER BY "TOTAL" LIMIT 10';
+				$query = $query . 'ORDER BY "NETA" DESC LIMIT 10';
 			}else{
 				$query = $query . 'ORDER BY P."DESCRIPCION" ';
 			}
 			pg_prepare($this->conn,"qry_rep_ven",$query);
-      
 			$result = pg_fetch_all(pg_execute($this->conn,"qry_rep_ven",array($idEmpresa,$anio_fiscal,$fecIni,$fecFin,$linea,$idEmpresa,$anio_fiscal,$fecIni,$fecFin,$linea)));
 			return json_encode($result,JSON_NUMERIC_CHECK);
 	}

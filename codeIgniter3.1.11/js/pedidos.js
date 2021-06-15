@@ -21,6 +21,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
   $scope.lstPrdSucExis = [];
   $scope.lstDomis = [];
   $scope.lstComplemento = [];
+  $scope.lstCalidadMadera = [];
   $scope.idDocumento = '';
   $scope.indexRowPedido = -1;
   $scope.idPedido = 0;
@@ -60,6 +61,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
   $scope.showProgressBar = false;
   $scope.estatus = true;
   $scope.shoUsuario = false;
+  $scope.isMadera = false;
   $scope.usuario = '';
   $scope.mpago_style = {background:'pink'};
   $scope.idProceso = $routeParams.idproc;
@@ -113,7 +115,9 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
       esPromo : false,
       esDscto : false,
       descuento : 0,
-      promocion : 0
+      promocion : 0,
+      linea:'',
+      idcalidad:null
   };
 
   $scope.empresa ={
@@ -180,6 +184,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
       $scope.getMoneda();
       $scope.getFormPago();
       $scope.getTipoPago();
+      $scope.getCalidadMadera();
       $scope.lstComplemento = [];
       for(var i=0;i<(rowNumFill-$scope.lstProdCompra.length);i++){
         let p = {
@@ -297,6 +302,18 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
     }).catch(err =>	{
 			console.log(err);
 		});
+  }
+
+  $scope.getCalidadMadera = ()=>{
+    $http.get(pathUtils+'calidadmadera')
+    .then(res =>{
+      if(res.data){
+        $scope.lstCalidadMadera = res.data;
+      }
+    })
+    .catch(err =>{
+      console.log(err);
+    });
   }
 
   $scope.VerificarCliente = function()
@@ -491,7 +508,14 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
           $scope.producto.esDscto = res.data[0].ES_DESCUENTO == 't' ? true:false;
           $scope.producto.descuento = res.data[0].PRECIO_DESCUENTO;
           $scope.producto.promocion = res.data[0].PRECIO_PROMO;
+          $scope.producto.linea = res.data[0].LINEA;
           $scope.isVerifExis = true;
+          $scope.isMadera = res.data[0].LINEA === "MADERA";
+          if($scope.isMadera){
+            $scope.producto.idcalidad = res.data[0].ID_CALIDAD_MADERA;
+          }else{
+            $scope.producto.idcalidad = null;
+          }
           if($scope.producto.imagePath!='')
           {
             $('#imgfig').show();
@@ -540,6 +564,13 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
       $scope.producto.esDscto = $scope.lstProdBusqueda[idxRowListaBusq].ES_DESCUENTO == 't' ? true:false;
       $scope.producto.descuento = $scope.lstProdBusqueda[idxRowListaBusq].PRECIO_DESCUENTO;
       $scope.producto.promocion = $scope.lstProdBusqueda[idxRowListaBusq].PRECIO_PROMO;
+      $scope.producto.linea = $scope.lstProdBusqueda[idxRowListaBusq].LINEA;
+      $scope.isMadera = $scope.lstProdBusqueda[idxRowListaBusq].LINEA === "MADERA";
+      if($scope.isMadera){
+        $scope.producto.idcalidad = $scope.lstCalidadMadera[0].ID_CALIDAD_MADERA;
+      }else{
+        $scope.producto.idcalidad = null;
+      }
       
       if($scope.imagePath!='')
       {
@@ -580,7 +611,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
     $scope.agregaProducto = function()
     {
       var importe = 0.0;
-      var cantDscto = 0;
+      //var cantDscto = 0;
       if(Number($scope.cantidad) == 0)
       {
         swal('La cantidad debe ser mayor a 0');
@@ -610,8 +641,19 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
           ESPROMO:$scope.producto.esPromo,
           ESDSCTO:$scope.producto.esDscto,
           PRECIO_PROMO:$scope.producto.promocion,
-          DESCUENTO:$scope.producto.descuento
+          DESCUENTO:$scope.producto.descuento,
+          LINEA:$scope.producto.linea,
+          ID_CALIDAD_MADERA:null
       };
+
+      if($scope.producto.idcalidad !== null){
+        if(dataCompra.DESCRIPCION.indexOf('[') > 0){
+          dataCompra.DESCRIPCION = dataCompra.DESCRIPCION.substr(0,dataCompra.DESCRIPCION.indexOf('['));
+        }
+        dataCompra.DESCRIPCION += ' ['+$scope.lstCalidadMadera[$('select[name="calidad"]')[0].selectedIndex ].DESCRIPCION+']';
+        dataCompra.ID_CALIDAD_MADERA = $scope.producto.idcalidad;
+        $scope.isMadera = null;
+      }
 
       if($('#updtTblComp').val()=='T'){
         $scope.lstProdCompra[$scope.indexRowCompra] = dataCompra;
@@ -650,6 +692,8 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
       $scope.producto.unidad = '';
       $scope.producto.precio = '';
       $scope.producto.imagePath = '';
+      $scope.producto.idcalidad = null;
+      $scope.isMadera = false;
       $scope.cantidad = 0;
       $scope.counter = 0;
       $scope.producto.id_producto = '';
@@ -676,7 +720,8 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
       $scope.producto.esDscto = $scope.lstProdCompra[$scope.indexRowCompra].ESDSCTO;
       $scope.producto.promocion = $scope.lstProdCompra[$scope.indexRowCompra].PRECIO_PROMO;
       $scope.producto.descuento = $scope.lstProdCompra[$scope.indexRowCompra].DESCUENTO;
-      //$scope.tipo_ps = $scope.lstProdCompra[$scope.indexRowCompra].TIPO_PS;
+      $scope.isMadera = $scope.lstProdCompra[$scope.indexRowCompra].LINEA === "MADERA";
+      $scope.producto.idcalidad = $scope.lstProdCompra[$scope.indexRowCompra].ID_CALIDAD_MADERA;
 
       if($scope.producto.imagePath!='')
       {
@@ -780,7 +825,12 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
       $scope.pedido.idcliente = $scope.lstCliente[indxRowClte].ID_CLIENTE; 
       $scope.pedido.fpago = $scope.lstCliente[indxRowClte].ID_FORMA_PAGO;
       $scope.pedido.tpago = $scope.lstCliente[indxRowClte].DIAS_CREDITO > 0 ? 2 : 1;
-      $scope.pedido.mpago = $scope.lstCliente[indxRowClte].DIAS_CREDITO === 0 ? 1 : -1;
+      $scope.pedido.mpago = Number($scope.lstCliente[indxRowClte].DIAS_CREDITO) === 0 ? 1 : -1;
+      if(Number($scope.lstCliente[indxRowClte].DIAS_CREDITO) === 0){
+        $scope.selectMPago();
+      }else{
+        $scope.mpago_style = {background:'pink'};
+      }
       $scope.nombre_vendedor = $scope.lstCliente[indxRowClte].VENDEDOR;
       $scope.pedido.idvendedor = $scope.lstCliente[indxRowClte].ID_VENDEDOR;
       $scope.lstCliente = [];
@@ -802,7 +852,12 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
             $scope.pedido.idcliente = res.data[0].ID_CLIENTE;  
             $scope.pedido.fpago = res.data[0].ID_FORMA_PAGO.toString();
             $scope.pedido.tpago = res.data[0].DIAS_CREDITO > 0 ? 2 : 1;
-            $scope.pedido.mpago = res.data[0].DIAS_CREDITO === 0 ? 1 : -1;
+            $scope.pedido.mpago = Number(res.data[0].DIAS_CREDITO) === 0 ? 1 : -1;
+            if(Number(res.data[0].DIAS_CREDITO) === 0){
+              $scope.selectMPago();
+            }else{
+              $scope.mpago_style = {background:'pink'};
+            }
             if(res.data[0].ID_VENDEDOR){
               $http.get(pathVend+'findvendbyid/'+res.data[0].ID_VENDEDOR+'/'+$scope.pedido.idempresa)
               .then(resp =>{
@@ -907,6 +962,10 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
         swal('Seleccione una Fecha de Entrega');
         return;
       }
+      if($scope.pedido.mpago <= 0){
+        swal('Seleccione un Método de Pago');
+        return;
+      }
       $scope.pedido.fechapedido = formatDateInsert(new Date());
       $scope.pedido.dias = $scope.pedido.dias == '' ? null : $scope.pedido.dias;
       $scope.pedido.cuenta = $scope.pedido.cuenta == '' ? null : $scope.pedido.cuenta;
@@ -958,7 +1017,8 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
           cantidad:$scope.lstProdCompra[i].CANTIDAD,
           precio:$scope.lstProdCompra[i].PRECIO_LISTA,
           importe:$scope.lstProdCompra[i].IMPORTE,
-          descuento:$scope.lstProdCompra[i].DESCUENTO == null ? 0 : $scope.lstProdCompra[i].DESCUENTO
+          descuento:$scope.lstProdCompra[i].DESCUENTO == null ? 0 : $scope.lstProdCompra[i].DESCUENTO,
+          idcalidad:$scope.lstProdCompra[i].ID_CALIDAD_MADERA
         }
         $http.put(pathPedi+'registrapedidoprod',pediProd).
         then(function(res)
@@ -1206,6 +1266,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
         $scope.pedido.dias = '';
         $scope.pedido.cuenta = '';
         $scope.pedido.idmoneda = 1;
+        $scope.pedido.mpago = -1;
         $scope.pedido.total = '';
         $scope.showUsuario = false;
         $scope.mpago_style = {background:'pink'};

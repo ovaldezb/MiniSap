@@ -35,7 +35,8 @@ app.controller('myCtrlCobros', function($scope,$http,$routeParams)
         poliza:'',
         importebase:0,
         idempresa:'',
-        aniofiscal:''
+        aniofiscal:'',
+        idsucursal:''
     }
     var banco = {
       'ID_BANCO':-1,
@@ -61,6 +62,7 @@ app.controller('myCtrlCobros', function($scope,$http,$routeParams)
             if(res.data.value=='OK'){
             $scope.cobro.idempresa = res.data.idempresa;
             $scope.cobro.aniofiscal = res.data.aniofiscal;
+            $scope.cobro.idsucursal = res.data.idsucursal;
             $scope.idusuario = res.data.idusuario;
             $scope.getListaFacturas();
             $scope.permisos();
@@ -73,7 +75,7 @@ app.controller('myCtrlCobros', function($scope,$http,$routeParams)
     };
 
     $scope.getListaFacturas = () =>{
-        $http.get(pathCob+'getfacturas/'+$scope.cobro.idempresa+'/'+$scope.cobro.aniofiscal)
+        $http.get(pathCob+'getcobranza/'+$scope.cobro.idempresa+'/'+$scope.cobro.aniofiscal+'/'+$scope.cobro.idsucursal)
         .then(res =>{
             if(res.data.length > 0){
               $scope.lstFacturas = res.data;

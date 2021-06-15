@@ -76,23 +76,23 @@
 				</div>
 			</nav>
 		</div>
-		<div class="table-container is-centered" style="margin-top:-20px" ng-show="!isCapturaFactura">
-			<table style="width:99.5%">
+		<div style="border: 2px solid black;margin-top:-20px;width:99%" ng-show="!isCapturaFactura">
+			<table clas="table" style="width:100%">
 				<tr>
 					<td>
 						<table class="table is-bordered" style="width:99%">
 							<colgroup>						
+							<col width="8%">
 							<col width="9%">
-							<col width="9%">
-							<col width="14%">
+							<col width="19%">
 							<col width="8%">
 							<col width="8%">
-							<col width="10%">
-							<col width="10%">
-							<col width="10%">
+							<col width="9%">
+							<col width="9%">
+							<col width="9%">
 							<col width="5%">
               <col width="5%">  
-							<col width="12%">
+							<col width="11%">
 							</colgroup>
 							<tr class="tbl-header">
 								<td style="text-align:center;font-size:12px">DOCTO</td>									
@@ -101,10 +101,10 @@
 								<td style="text-align:center;font-size:12px">IMPORTE</td>
 								<td style="text-align:center;font-size:12px">SALDO</td>
 								<td style="text-align:center;font-size:12px">F/PAGO</td>
-								<td style="text-align:center;font-size:12px">REVISION</td>
 								<td style="text-align:center;font-size:12px">VENCE</td>
+                <td style="text-align:center;font-size:12px">PEDIDO</td>
 								<td style="text-align:center;font-size:12px">F</td>
-                <td style="text-align:center;font-size:12px">DESCGR</td>
+                <td style="text-align:center;font-size:12px">DESC</td>
 								<td style="text-align:center;font-size:12px">VENDEDOR</td>
 							</tr>							
 						</table>
@@ -112,19 +112,21 @@
 				</tr>
 				<tr>
 					<td>
-						<div style="width:100%; height:450px; overflow:auto;">
+						<div style="width:100%; height:500px; overflow:auto;">
 							<table class="table is-bordered is-hoverable" style="width:100%" id="tblClientes">
-								<col width="9%">
-								<col width="9%">
-								<col width="14%">
-								<col width="8%">
-								<col width="8%">
-								<col width="10%">
-								<col width="10%">
-								<col width="10%">
-								<col width="5%">
-                <col width="5%">
-								<col width="12%">
+                <colgroup>						
+                  <col width="8%">
+                  <col width="9%">
+                  <col width="19%">
+                  <col width="8%">
+                  <col width="8%">
+                  <col width="9%">
+                  <col width="9%">
+                  <col width="9%">
+                  <col width="5%">
+                  <col width="5%">  
+                  <col width="11%">
+                </colgroup>
 								<tr ng-repeat="x in lstFacturas" ng-click="selectRowFactura(x.DOCUMENTO,$index)" ng-class="{selected: x.DOCUMENTO === idDocumento}">
 									<td class="font12" ng-class="{canceled: x.ESTATUS === 'CANCELADA'}" style="text-align:center;">{{x.DOCUMENTO}}</td>									
 									<td class="font12" ng-class="{canceled: x.ESTATUS === 'CANCELADA'}" style="text-align:center;">{{x.FECHA_FACTURA}}</td>
@@ -133,7 +135,7 @@
 									<td class="font12" ng-class="{canceled: x.ESTATUS === 'CANCELADA'}" style="text-align:right;">{{x.SALDO | currency}}</td>
 									<td class="font12" ng-class="{canceled: x.ESTATUS === 'CANCELADA'}" style="text-align:center;">{{x.ID_TIPO_PAGO == 1 ? 'Contado':'Crédito'}}</td>
 									<td class="font12" ng-class="{canceled: x.ESTATUS === 'CANCELADA'}" style="text-align:center;">{{x.FECHA_REVISION}}</td>
-									<td class="font12" ng-class="{canceled: x.ESTATUS === 'CANCELADA'}" style="text-align:center;">{{x.FECHA_VENCIMIENTO}}</td>
+									<td class="font12" ng-class="{canceled: x.ESTATUS === 'CANCELADA'}" style="text-align:center;">{{x.PEDIDO}}</td>
 
 									<td class="font12" style="text-align:center;" ng-show="x.FACTURADO == 't'"><i ng-show="x.ESTATUS !== 'CANCELADA'" class="fas fa-check"></i> <i ng-show="x.ESTATUS === 'CANCELADA'" class="fas fa-ban"></i></td>
                   <td class="font12" ng-class="{canceled: x.ESTATUS === 'CANCELADA'}" style="text-align:center;" ng-show="x.FACTURADO == 'f'"><i ng-show="x.ESTATUS === 'CANCELADA'" class="fas fa-ban"></i></td>
@@ -428,6 +430,17 @@
 								</span>
 								</a>
 							</div>
+              <div class="level-item"></div>
+              <div class="level-item"></div>
+              <div class="level-item"></div>
+              <div class="level-item" ng-show="isMadera">
+                <label class="label">Calidad</label>
+              </div>
+              <div class="level-item" ng-show="isMadera">
+                <div class="select is-small">
+                  <select name="calidad" ng-model="producto.idcalidad" ng-options="x.ID_CALIDAD_MADERA as x.DESCRIPCION for x in lstCalidadMadera"></select>
+                </div>
+              </div>
 						</div>
 						<div class="level-right">
               <div class="level-item" ng-show="lstProdCompra.length > 0">

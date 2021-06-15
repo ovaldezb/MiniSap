@@ -234,5 +234,8 @@ app.controller('CtrlCobranza', ($scope,$http,$routeParams) =>
     $scope.isRepShow = false;
     $scope.lstRepCobr = [];
     $scope.lstFormpago = [];
+    listaFormaPago.forEach((elem) =>{
+      fpHash.set(elem.ID_FORMA_PAGO,0);
+    });
   }
 });

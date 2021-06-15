@@ -234,8 +234,12 @@ class Catalogosmodel extends CI_model
 		$result = pg_execute($this->conn,"insertqry",array($idempresa,$fiscalYear));
 		return json_encode($result);
 	}
-
-
+  
+  function calidad_madera(){
+		$query = 'SELECT * FROM "CALIDAD_MADERA"';
+		$result = pg_fetch_all(pg_query($this->conn, $query));
+		return json_encode($result, JSON_NUMERIC_CHECK);
+	}
 
 }
 ?>

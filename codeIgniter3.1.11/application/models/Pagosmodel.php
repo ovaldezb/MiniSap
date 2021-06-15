@@ -69,8 +69,6 @@ class Pagosmodel extends CI_model
 		return json_encode(array("msg"=>"ok"));
   }
 
-  
-
 	public function deletebyid($idpago,$idcompra,$importe){
 		$query = 'UPDATE "COMPRAS" SET "SALDO" = "SALDO" + $1 WHERE "ID_COMPRA"=$2';
 		pg_prepare($this->conn,"updt_fact",$query);

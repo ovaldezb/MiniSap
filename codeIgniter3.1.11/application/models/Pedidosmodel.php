@@ -23,8 +23,8 @@ class Pedidosmodel extends CI_model
 	function registra_pedido_producto($pedido_data)
 	{
 		$pstmt = 'INSERT INTO "PEDIDO_PRODUCTO" 
-    ("ID_PEDIDO","ID_PRODUCTO","CANTIDAD","PRECIO","IMPORTE","DESCUENTO") 
-    VALUES($1,$2,$3,$4,$5,$6)';
+    ("ID_PEDIDO","ID_PRODUCTO","CANTIDAD","PRECIO","IMPORTE","DESCUENTO","ID_CALIDAD_MADERA") 
+    VALUES($1,$2,$3,$4,$5,$6,$7)';
 		pg_prepare($this->conn,"prstmt",$pstmt);
 		$result = pg_fetch_all(pg_execute($this->conn, "prstmt", $pedido_data));
 		return json_encode($result);
@@ -45,7 +45,7 @@ class Pedidosmodel extends CI_model
 		AND P."ANIO_FISCAL" = $2
     AND P."ID_SUC_PIDIO" = $3
     AND P."VENDIDO" = false
-		ORDER BY P."DOCUMENTO"';
+		ORDER BY P."DOCUMENTO" DESC';
 		pg_prepare($this->conn,"select_venta",$query);
 		$result = pg_fetch_all(pg_execute($this->conn,"select_venta",array($idempresa,$aniofiscal,$idsucrsal)));
 		return json_encode($result,JSON_NUMERIC_CHECK);
@@ -94,6 +94,7 @@ class Pedidosmodel extends CI_model
       C."RFC",
       P."ID_METODO_PAGO",
       C."ID_USO_CFDI",
+      C."CONTACTO",
       TRIM(P."ESTATUS") as "ESTATUS"
 		FROM "PEDIDOS" AS P
 		INNER JOIN "CLIENTE" AS C ON C."ID_CLIENTE" = P."ID_CLIENTE"
@@ -109,18 +110,23 @@ class Pedidosmodel extends CI_model
 				VP."IMPORTE",
         VP."DESCUENTO",
         \'true\' as "ESDSCTO",
-				TRIM(P."DESCRIPCION") as "DESCRIPCION",
+				CASE WHEN M."DESCRIPCION" IS NULL THEN TRIM(P."DESCRIPCION") ELSE TRIM(P."DESCRIPCION")|| \' [\' || M."DESCRIPCION"||\']\' END as "DESCRIPCION",
 				TRIM(P."UNIDAD_MEDIDA") as "UNIDAD_MEDIDA", 
 				TRIM(P."COD_CFDI") as "COD_CFDI",
 				P."IVA",TRIM(P."UNIDAD_SAT") as "UNIDAD_SAT",
 				CASE WHEN P."IEPS" IS NULL THEN \'0\' ELSE P."IEPS" END as "IEPS",TRIM(I."NOMBRE") as "TIPOFACTOR",
 				TRIM(P."CODIGO") as "CODIGO",
 				VP."ID_PRODUCTO" as "ID_PRODUCTO",
-				P."TIPO_PS"
-				FROM "PEDIDO_PRODUCTO" as VP
-				INNER JOIN "PRODUCTO" as P ON VP."ID_PRODUCTO" = P."ID_PRODUCTO"
+				P."TIPO_PS",
+        TRIM(L."NOMBRE") as "LINEA",
+        VP."ID_CALIDAD_MADERA"
+				FROM "PRODUCTO" as P
+				INNER JOIN "PEDIDO_PRODUCTO" as VP ON VP."ID_PRODUCTO" = P."ID_PRODUCTO"
 				INNER JOIN "IEPS" as I on P."ID_IEPS" = I."ID_IEPS"
-				WHERE VP."ID_PEDIDO" = $1 ';				
+        INNER JOIN "LINEA" as L ON L."ID_LINEA" = P."ID_LINEA"
+        LEFT OUTER JOIN "CALIDAD_MADERA" as M ON M."ID_CALIDAD_MADERA" = VP."ID_CALIDAD_MADERA"
+				WHERE VP."ID_PEDIDO" = $1 
+        AND L."ID_EMPRESA" = P."ID_EMPRESA"';				
 		pg_prepare($this->conn,"select_venta_prod",$query);
 		$result = pg_fetch_all(pg_execute($this->conn,"select_venta_prod",array($idPedido)));		
 		return json_encode($result,JSON_NUMERIC_CHECK);
@@ -131,7 +137,7 @@ class Pedidosmodel extends CI_model
 				VP."IMPORTE",
         VP."DESCUENTO",
         \'true\' as "ESDSCTO",
-				TRIM(P."DESCRIPCION") as "DESCRIPCION",
+				CASE WHEN M."DESCRIPCION" IS NULL THEN TRIM(P."DESCRIPCION") ELSE TRIM(P."DESCRIPCION")||\' [\'||M."DESCRIPCION"||\']\' END as "DESCRIPCION",
 				TRIM(P."UNIDAD_MEDIDA") as "UNIDAD_MEDIDA", 
 				TRIM(P."COD_CFDI") as "COD_CFDI",
 				P."IVA",TRIM(P."UNIDAD_SAT") as "UNIDAD_SAT",
@@ -139,13 +145,18 @@ class Pedidosmodel extends CI_model
 				TRIM(P."CODIGO") as "CODIGO",
 				VP."ID_PRODUCTO" as "ID_PRODUCTO",
 				P."TIPO_PS",
-        PS."STOCK"
+        PS."STOCK",
+        TRIM(L."NOMBRE") as "LINEA",
+        VP."ID_CALIDAD_MADERA"
 				FROM "PEDIDO_PRODUCTO" as VP
 				INNER JOIN "PRODUCTO" as P ON VP."ID_PRODUCTO" = P."ID_PRODUCTO"
         INNER JOIN "PRODUCTO_SUCURSAL" as PS ON PS."ID_PRODUCTO" = VP."ID_PRODUCTO"
 				INNER JOIN "IEPS" as I on P."ID_IEPS" = I."ID_IEPS"
+        INNER JOIN "LINEA" as L ON L."ID_LINEA" = P."ID_LINEA"
+        LEFT OUTER JOIN "CALIDAD_MADERA" as M ON M."ID_CALIDAD_MADERA" = VP."ID_CALIDAD_MADERA"
 				WHERE VP."ID_PEDIDO" = $1 
-        AND PS."ID_SUCURSAL" = $2';				
+        AND PS."ID_SUCURSAL" = $2
+        AND L."ID_EMPRESA" = P."ID_EMPRESA" ';				
 		pg_prepare($this->conn,"select_venta_prod",$query);
 		$result = pg_fetch_all(pg_execute($this->conn,"select_venta_prod",array($idPedido,$idsucrsal)));		
 		return json_encode($result,JSON_NUMERIC_CHECK);

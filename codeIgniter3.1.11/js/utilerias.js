@@ -105,6 +105,14 @@ function formatFecPago(fecha)
 	return year+'-'+mes+'-'+dia;
 }
 
+function formatFecCC(fecha)
+{
+  var year = fecha.substr(0,4);
+	var mes = fecha.substr(5,2);
+	var dia = fecha.substr(8,2);
+	return dia+'-'+mes+'-'+year;
+}
+
 function formatFecPagodmy(fecha)
 {
 	var dia = fecha.substr(0,2);

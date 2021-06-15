@@ -88,7 +88,6 @@ app.controller('myCtrlProducto', function($scope,$http,$routeParams)
   		if(res.data.length > 0)
   		{
   			$scope.lstPrdcts = res.data;
-        //$scope.selectRowProducto($scope.lstPrdcts[0].CODIGO,0,$scope.lstPrdcts[0].ID_PRODUCTO);
   		}else
   		{
   			$scope.lstPrdcts = [];
@@ -228,57 +227,43 @@ app.controller('myCtrlProducto', function($scope,$http,$routeParams)
 
     if($scope.btnAccion == 'Agregar')
     {
-      var nvoProd ={};
       $http.post(pathProd+'save', dataProdUpdt).
-      then(function(res)
+      then(res =>
       {
-        console.log(res);
-        
         if(res.data.length > 0)
         {
-          nvoProd =
-          {
-            DESCRIPCION:$scope.nombre,
-            CODIGO:$scope.codigo,
-            PRECIO_LISTA:$scope.preciolista,
-            STOCK:'0',
-            ID_PRODUCTO:res.data[0].crea_producto
-          };
-          $scope.lstPrdcts.push(nvoProd);
-          swal('El producto se insertó correctamente '+res.data[0].crea_producto);
+          if($('input[name="tipo"]:checked').val()==='P'){
+            swal('El producto se insertó correctamente ');
+          }else{
+            swal('El servicio se insertó correctamente ');
+          }
+          $scope.getDataInit();
       		$scope.cancelar();
         }
       }).
-      catch(function(err)
+      catch(err =>
       {
         console.log(err);
       });
     }else {
-      var actProd ={};
+      
       $http.put(pathProd+'update/'+$scope.idProducto,dataProdUpdt).
-      then(function(res)
+      then(res =>
     	{
     		if(res.status==200 && res.data.value=='OK')
     		{
-          actProd =
-          {
-            DESCRIPCION:$scope.nombre,
-            CODIGO:$scope.codigo,
-            PRECIO_LISTA:$scope.preciolista,
-            STOCK:$scope.lstPrdcts[$scope.indexRowProd].STOCK,
-            ID_PRODUCTO:$scope.lstPrdcts[$scope.indexRowProd].ID_PRODUCTO
-          };
-          $scope.lstPrdcts[$scope.indexRowProd] = actProd;
+          //$scope.lstPrdcts[$scope.indexRowProd] = actProd;
     			swal('El producto se actualizó correctamente');
           $scope.btnAccion = 'Agregar';
-          $scope.selectRowProducto($scope.lstPrdcts[0].CODIGO,0,$scope.lstPrdcts[0].ID_PRODUCTO);
+          //$scope.selectRowProducto($scope.lstPrdcts[0].CODIGO,0,$scope.lstPrdcts[0].ID_PRODUCTO);
+          $scope.getDataInit();
       		$scope.cancelar();
     		}else
     		{
     			swal('Error,  no se puedo actualizar el producto');
     		}
     	}).
-      catch(function(err)
+      catch(err =>
     	{
     		console.log(err);
     	});

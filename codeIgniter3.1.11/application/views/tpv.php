@@ -166,6 +166,18 @@
 							</span>
 							</a>
 						</div>
+            <div class="level-item"></div>
+            <div class="level-item"></div>
+            <div class="level-item"></div>
+            <div class="level-item"></div>
+            <div class="level-item" ng-show="isMadera">
+              <label class="label">Calidad</label>
+            </div>
+            <div class="level-item" ng-show="isMadera">
+              <div class="select is-small">
+                <select name="calidad" ng-model="idcalidad" ng-options="x.ID_CALIDAD_MADERA as x.DESCRIPCION for x in lstCalidadMadera"></select>
+              </div>
+            </div>
 					</div>
 					<div class="level-right">
 						<div class="level-item" ng-show="lstProdCompra.length > 0">

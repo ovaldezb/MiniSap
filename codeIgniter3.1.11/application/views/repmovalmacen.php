@@ -35,7 +35,7 @@
             </div>
           </div>
         </div>
-        <div class="columns">
+        <div class="columns" style="display:none">
           <div class="column">
             <div class="columns">
               <div class="column">
@@ -135,28 +135,53 @@
     </table>
     <div style="width:100%;overflow:auto;height:400px">
       <table class="table is-bordered is-hoverable"style="width:100%">
-        <col width="25%">
-        <col width="11%">
-        <col width="8%">
-        <col width="10%">
-        <col width="8%">
-        <col width="10%">
-        <col width="8%">
-        <col width="10%">
-        <col width="10%">
+        <colgroup>
+          <col width="25%">
+          <col width="11%">
+          <col width="8%">
+          <col width="10%">
+          <col width="8%">
+          <col width="10%">
+          <col width="8%">
+          <col width="10%">
+          <col width="10%">
+        </colgroup>
         <tr ng-repeat="x in lstRepmalmcn | orderBy:myOrder:sortDir">
-          <td>{{x.DESCRIPCION}}</td>
-          <td>{{x.CODIGO}}</td>
-          <td style="text-align:center" style="background:GhostWhite">{{x.CANT_COMP}}</td>
-          <td style="text-align:right" style="background:GhostWhite">{{x.IMP_TOT_COMP | currency}}</td>
-          <td style="text-align:center">{{x.CANT_VENTA}}</td>
-          <td style="text-align:right">{{x.IMPO_TOT_VTA | currency}}</td>
-          <td style="text-align:center">{{x.CANT_EXIST}}</td>
-          <td style="text-align:right">{{x.PRECIO_LISTA | currency}}</td>
-          <td style="text-align:right;color:{{x.IMPO_EXIST>1000 ? 'red':'black'}}" >{{x.IMPO_EXIST | currency}}</td>
+          <td class="font12">{{x.DESCRIPCION}}</td>
+          <td class="font12">{{x.CODIGO}}</td>
+          <td class="font12" style="text-align:center">{{x.CANT_COMP}}</td>
+          <td class="font12" style="text-align:right" >{{x.IMP_TOT_COMP | currency}}</td>
+          <td class="font12" style="text-align:center">{{x.CANT_VENTA}}</td>
+          <td class="font12" style="text-align:right">{{x.IMPO_TOT_VTA | currency}}</td>
+          <td class="font12" style="text-align:center">{{x.CANT_EXIST}}</td>
+          <td class="font12" style="text-align:right">{{x.PRECIO_LISTA | currency}}</td>
+          <td class="font12" style="text-align:right;" >{{x.IMPO_EXIST | currency}}</td>
         </tr>
       </table>
     </div>
+    <table class="table is-bordered"style="width:100%" id="rmafooter">
+      <colgroup>
+          <col width="25%">
+          <col width="11%">
+          <col width="8%">
+          <col width="10%">
+          <col width="8%">
+          <col width="10%">
+          <col width="8%">
+          <col width="10%">
+          <col width="10%">
+        </colgroup>
+        <tr style="background-color:CornflowerBlue; color:Ivory;">
+          <td class="font12" colspan="2">Total</td>
+          <td class="font12" style="text-align:center">{{SumaTotales.CANT_COMP}}</td>
+          <td class="font12" style="text-align:right">{{SumaTotales.IMP_TOT_COMP | currency}}</td>
+          <td class="font12" style="text-align:center">{{SumaTotales.CANT_VENTA}}</td>
+          <td class="font12" style="text-align:right">{{SumaTotales.IMPO_TOT_VTA | currency}}</td>
+          <td class="font12" style="text-align:center">{{SumaTotales.CANT_EXIST}}</td>
+          <td class="font12" style="text-align:center">&nbsp;</td>
+          <td class="font12" style="text-align:right">{{SumaTotales.IMPO_EXIST | currency}}</td>
+        </tr>
+      </table>
   </div>
   
 </div>

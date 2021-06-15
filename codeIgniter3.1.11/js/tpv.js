@@ -16,6 +16,8 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
   $scope.cantProd = 0;
   $scope.iva = 0;
   $scope.prod_desc = "";
+  $scope.linea = null;
+  $scope.idcalidad = null;
   $scope.codigo_prodto = "";
   $scope.id_producto = "";
   $scope.qtyProdSuc = -1;
@@ -27,6 +29,8 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
   $scope.lstVendedorVerif = [];
   $scope.lstPrdSucExis = [];
   $scope.lstVentas = [];
+  $scope.lstCalidadMadera = [];
+  $scope.isMadera = false;
   $scope.idSelCompra = 0;
   $scope.idVenta = 0;
   $scope.indexRowCompra = -1;
@@ -182,6 +186,7 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
     $scope.gettarjetas();
     $scope.getvales();
     $scope.getFormPago();
+    $scope.getCalidadMadera();
   };
 
   $scope.getIdClienteVentasMostrador = () => {
@@ -391,6 +396,18 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
       });
   };
 
+  $scope.getCalidadMadera = ()=>{
+    $http.get(pathUtils+'calidadmadera')
+    .then(res =>{
+      if(res.data){
+        $scope.lstCalidadMadera = res.data;
+      }
+    })
+    .catch(err =>{
+      console.log(err);
+    });
+  }
+
   $scope.getEmpresa = function () {
     $http
       .get(pathEmpr + "loadbyid/" + $scope.idempresa, { responseType: "json" })
@@ -455,17 +472,7 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
 
   $scope.buscaprodbycodigo = function (event) {
     if (event.keyCode == 13) {
-      $http
-        .get(
-          pathProd +
-            "prodbycode/" +
-            $scope.codigo_prodto +
-            "/" +
-            $scope.idempresa +
-            "/" +
-            $scope.idsucursal,
-          { responseType: "json" }
-        )
+      $http.get(pathProd +"prodbycode/" +$scope.codigo_prodto +"/" + $scope.idempresa +"/" + $scope.idsucursal,{ responseType: "json" })
         .then(function (res) {
           if (res.data != false) {
             $scope.prod_desc = res.data[0].DESCRIPCION;
@@ -481,7 +488,13 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
             $scope.esDscto = res.data[0].ES_DESCUENTO == "t" ? true : false;
             $scope.descuento = res.data[0].PRECIO_DESCUENTO;
             $scope.promocion = res.data[0].PRECIO_PROMO;
-
+            $scope.linea = res.data[0].LINEA;
+            $scope.isMadera = res.data[0].LINEA === "MADERA";
+            if($scope.isMadera){
+              $scope.idcalidad = $scope.lstCalidadMadera[0].ID_CALIDAD_MADERA;
+            }else{
+              $scope.idcalidad = null;
+            }
             if ($scope.tipo_ps == "S") {
               $scope.isVerifExis = false;
             } else if ($scope.tipo_ps == "P") {
@@ -530,16 +543,20 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
     $scope.imagePath = $scope.lstProdBusqueda[idxRowListaBusq].IMAGEN;
     $scope.iva = $scope.lstProdBusqueda[idxRowListaBusq].IVA;
     $scope.cantProd = $scope.lstProdBusqueda[idxRowListaBusq].STOCK;
-    $scope.esPromo =
-      $scope.lstProdBusqueda[idxRowListaBusq].ES_PROMO == "t" ? true : false;
-    $scope.esDscto =
-      $scope.lstProdBusqueda[idxRowListaBusq].ES_DESCUENTO == "t"
+    $scope.esPromo = $scope.lstProdBusqueda[idxRowListaBusq].ES_PROMO == "t" ? true : false;
+    $scope.esDscto = $scope.lstProdBusqueda[idxRowListaBusq].ES_DESCUENTO == "t"
         ? true
         : false;
     $scope.descuento = $scope.lstProdBusqueda[idxRowListaBusq].PRECIO_DESCUENTO;
     $scope.promocion = $scope.lstProdBusqueda[idxRowListaBusq].PRECIO_PROMO;
     $scope.tipo_ps = $scope.lstProdBusqueda[idxRowListaBusq].TIPO_PS;
-
+    $scope.linea = $scope.lstProdBusqueda[idxRowListaBusq].LINEA;
+    $scope.isMadera = $scope.lstProdBusqueda[idxRowListaBusq].LINEA === "MADERA";
+    if($scope.isMadera){
+      $scope.idcalidad = $scope.lstCalidadMadera[0].ID_CALIDAD_MADERA;
+    }else{
+      $scope.idcalidad = null;
+    }
     if ($scope.imagePath != "") {
       $("#imgfig").show();
     }
@@ -549,17 +566,11 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
     $scope.closeDivSearch();
 
     $http
-      .get(
-        pathTpv +
-          "getitemsbyprodsuc/" +
-          $scope.id_producto +
-          "/" +
-          $scope.idsucursal
-      )
+      .get(pathTpv+"getitemsbyprodsuc/" +$scope.id_producto + "/" +
+          $scope.idsucursal )
       .then(function (res) {
         if (res.data.length > 0) {
           $scope.qtyProdSuc = res.data[0].STOCK;
-          //$scope.tipo_ps = res.data[0].TIPO_PS;
         } else {
           $scope.qtyProdSuc = 0;
         }
@@ -584,7 +595,7 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
 
   $scope.agregaProducto = function () {
     var importe = 0.0;
-    var cantDscto = 0;
+    //var cantDscto = 0;
     if (Number($scope.cantidad) == 0) {
       swal("La cantidad debe ser mayor a 0");
       $("#cantidad").focus();
@@ -624,7 +635,17 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
       PRECIO_PROMO: $scope.promocion,
       DESCUENTO: $scope.descuento,
       TIPO_PS: $scope.tipo_ps,
+      LINEA:$scope.linea,
+      ID_CALIDAD_MADERA:null,
     };
+    if($scope.idcalidad !== null){
+      if(dataCompra.DESCRIPCION.indexOf('[') > 0){
+        dataCompra.DESCRIPCION = dataCompra.DESCRIPCION.substr(0,dataCompra.DESCRIPCION.indexOf('['));
+      }
+      dataCompra.DESCRIPCION += ' ['+$scope.lstCalidadMadera[$('select[name="calidad"]')[0].selectedIndex ].DESCRIPCION+']';
+      dataCompra.ID_CALIDAD_MADERA = $scope.idcalidad;
+      $scope.isMadera = null;
+    }
 
     if ($("#updtTblComp").val() == "T") {
       $scope.lstProdCompra[$scope.indexRowCompra] = dataCompra;
@@ -666,7 +687,7 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
 
   $scope.editaProducto = function () {
     $scope.id_producto =
-      $scope.lstProdCompra[$scope.indexRowCompra].ID_PRODUCTO;
+    $scope.lstProdCompra[$scope.indexRowCompra].ID_PRODUCTO;
     $scope.codigo_prodto = $scope.lstProdCompra[$scope.indexRowCompra].CODIGO;
     $scope.prod_desc = $scope.lstProdCompra[$scope.indexRowCompra].DESCRIPCION;
     $scope.unidad = $scope.lstProdCompra[$scope.indexRowCompra].UNIDAD;
@@ -679,6 +700,8 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
     $scope.promocion = $scope.lstProdCompra[$scope.indexRowCompra].PRECIO_PROMO;
     $scope.descuento = $scope.lstProdCompra[$scope.indexRowCompra].DESCUENTO;
     $scope.tipo_ps = $scope.lstProdCompra[$scope.indexRowCompra].TIPO_PS;
+    $scope.isMadera = $scope.lstProdCompra[$scope.indexRowCompra].LINEA === "MADERA";
+    $scope.idcalidad = $scope.lstProdCompra[$scope.indexRowCompra].ID_CALIDAD_MADERA;
     if ($scope.tipo_ps == "P") {
       $scope.isVerifExis = true;
     } else {
@@ -916,10 +939,10 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
   $scope.registraCompra = function () {
     if (
       Number($scope.pago_efectivo) -
-        Number($scope.cambio) +
-        Number($scope.pago_tarjeta) +
-        Number($scope.pago_cheque) +
-        Number($scope.pago_vales) >
+      Number($scope.cambio) +
+      Number($scope.pago_tarjeta) +
+      Number($scope.pago_cheque) +
+      Number($scope.pago_vales) >
       Number($scope.total)
     ) {
       swal("La cantidad a cobrar es mayor que el Importe Total",
@@ -1104,7 +1127,7 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
         importe: $scope.lstProdCompra[i].IMPORTE,
         idsucursal: $scope.idsucursal,
         tipops: $scope.tipo_ps,
-        documento: $scope.fact.documento,
+        documento: $scope.docto, //aqui debe ir el documento 
         caja: 1,
         idempresa: $scope.idempresa,
         aniofiscal: $scope.aniofiscal,
@@ -1112,11 +1135,10 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
         idproveedor: null,
         idusuario: null,
         idmoneda: 1, //la venta siempre es en pesos
-        descuento:
-          $scope.lstProdCompra[i].DESCUENTO == null
-            ? 0
-            : $scope.lstProdCompra[i].DESCUENTO,
+        descuento: $scope.lstProdCompra[i].DESCUENTO == null ? 0 : $scope.lstProdCompra[i].DESCUENTO,
+        idcalidad:$scope.lstProdCompra[i].ID_CALIDAD_MADERA,
       };
+      /**Agregar el idcalidad */
       $http
         .post(pathTpv + "registraventaprod", vntaProd)
         .then(function (res) {

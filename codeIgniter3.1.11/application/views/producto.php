@@ -395,30 +395,34 @@
 			<tr>
 				<td>
 					<table class="table is-bordered" style="width:100%">
-						<col width='40%'>
-						<col width='20%'>
-						<col width='20%'>
-						<col width='20%'>
+						<col width='42%'>
+						<col width='18%'>
+            <col width='15%'>
+						<col width='15%'>
+						<col width='10%'>
 						<tr class="tbl-header">
 							<td ng-click="orderByMe('DESCRIPCION')">DESCRIPCIÓN</td>
 							<td ng-click="orderByMe('CODIGO')" style="text-align:center">CÓDIGO</td>
+              <td ng-click="orderByMe('LINEA')" style="text-align:center">LINEA</td>
 							<td ng-click="orderByMe('PRECIO_LISTA')" style="text-align:center">PRECIO LISTA</td>
-							<td ng-click="orderByMe('STOCK')" style="text-align:right">EXISTENCIA</td>
+							<td ng-click="orderByMe('STOCK')" style="text-align:center">EXISTENCIA</td>
 						</tr>
 					</table>
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<div style="width:100%; height:500px; overflow:auto;">
-						<table class="table" id="tablaproducto" style="width:100%">
-							<col width='40%'>
-							<col width='20%'>
-							<col width='20%'>
-							<col width='20%'>
+					<div style="width:100%; height:500px; overflow:auto;margin-top:-9px">
+						<table class="table is-bordered" id="tablaproducto" style="width:100%">
+							<col width='42%'>
+							<col width='18%'>
+              <col width='15%'>
+							<col width='15%'>
+							<col width='10%'>
 							<tr ng-repeat="x in lstPrdcts | orderBy:myOrderBy:sortDir" ng-click="selectRowProducto(x.CODIGO,$index,x.ID_PRODUCTO)" ng-class="{selected: x.ID_PRODUCTO === idProducto}" ng-dblclick="verdetalle()">
 								<td>{{x.DESCRIPCION}}</td>
-								<td style="text-align:right">{{x.CODIGO}}</td>
+								<td style="text-align:center">{{x.CODIGO}}</td>
+                <td style="text-align:center">{{x.LINEA}}</td>
 								<td style="text-align:right">${{x.PRECIO_LISTA | number:2}}</td>
 								<td style="text-align:right">{{x.STOCK}}</td>
 							</tr>

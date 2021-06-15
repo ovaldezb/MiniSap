@@ -4,6 +4,14 @@ app.controller('repControlMovAlm',function($scope,$http)
   $scope.idempresa = '';
   $scope.lstRepmalmcn = [];
   $scope.lstlinea = [];
+  $scope.SumaTotales = {
+    CANT_COMP:0,
+    IMP_TOT_COMP:0,
+    CANT_VENTA:0,
+    IMPO_TOT_VTA:0,
+    CANT_EXIST:0,
+    IMPO_EXIST:0
+  };
   $scope.nombreEmpresa = '';
   $scope.direccionEmpresa = '';
   $scope.rfcEmpresa = '';
@@ -89,6 +97,14 @@ app.controller('repControlMovAlm',function($scope,$http)
       if(res.data.length > 0)
       {
         $scope.lstRepmalmcn = res.data;
+        $scope.lstRepmalmcn.forEach(e=>{
+          $scope.SumaTotales.CANT_COMP += e.CANT_COMP;
+          $scope.SumaTotales.IMP_TOT_COMP += e.IMP_TOT_COMP;
+          $scope.SumaTotales.CANT_VENTA += e.CANT_VENTA;
+          $scope.SumaTotales.IMPO_TOT_VTA += e.IMPO_TOT_VTA;
+          $scope.SumaTotales.CANT_EXIST += e.CANT_EXIST;
+          $scope.SumaTotales.IMPO_EXIST =+ e.IMPO_EXIST;
+        });
         $scope.isRepShow = true;
         $scope.fechaImpresion = formatHoraReporte(new Date());
       }else{
@@ -146,9 +162,11 @@ app.controller('repControlMovAlm',function($scope,$http)
   $scope.exportPDF = function()
   {
     let fontSizeHeader = 9;
-    let fontSizeBody = 7;
-    let maxSize1Page = 30;
-    let offset = 20;
+    let fontSizeBody = 6;
+    let maxSize1Page = 28;
+    let fontSizeFooter = 7;
+    let offset = 35;
+    let finalOffset = 0;
     var doc = new jsPDF('p', 'pt', 'letter'); 
     var y = 20;  
     doc.setLineWidth(2);  
@@ -317,7 +335,7 @@ app.controller('repControlMovAlm',function($scope,$http)
         subArray = bodyRepMovAlm.slice(ini,fin);
         doc.autoTable({
           html:'#rmaheader',
-          startY:20, 
+          startY:30, 
           theme:'grid',
           columnStyles:{
             0:{
@@ -381,7 +399,7 @@ app.controller('repControlMovAlm',function($scope,$http)
 
         doc.autoTable({
           body:subArray,
-          startY:40,
+          startY:70,
           theme:'grid',
           columnStyles:{
             0:{
@@ -436,13 +454,13 @@ app.controller('repControlMovAlm',function($scope,$http)
         ini = fin; 
         fin = ini + offset;
       }
-      
-      if(fin > bodyRepMovAlm){
+
+      if(fin > bodyRepMovAlm.length){
         doc.addPage();
         subArray = bodyRepMovAlm.slice(ini,bodyRepMovAlm.length);
         doc.autoTable({
           html:'#rmaheader',
-          startY:20, 
+          startY:30, 
           theme:'grid',
           columnStyles:{
             0:{
@@ -506,7 +524,7 @@ app.controller('repControlMovAlm',function($scope,$http)
 
         doc.autoTable({
           body:subArray,
-          startY:40,
+          startY:70,
           theme:'grid',
           columnStyles:{
             0:{
@@ -559,7 +577,73 @@ app.controller('repControlMovAlm',function($scope,$http)
           }
         });
       }
+      finalOffset = 40 + (bodyRepMovAlm.length-ini) * 22.5;
+    }else{
+      finalOffset = 165 + (bodyRepMovAlm.length) * 22.5;
     }
+    doc.autoTable({
+      html:'#rmafooter',
+      startY:finalOffset, 
+      theme:'grid',
+      columnStyles:{
+        0:{
+          cellWidth: 120,
+          fontSize: fontSizeFooter,
+          halign: 'center',
+          valign: 'middle',
+          fontStyle:'bold'
+        },
+        1:{
+          cellWidth: 90,
+          fontSize: fontSizeFooter,
+          halign: 'center',
+          valign: 'middle',
+          fontStyle:'bold'
+        },
+        2:{
+          cellWidth: 50,
+          fontSize: fontSizeFooter,
+          halign: 'center',
+          fontStyle:'bold'
+        },
+        3:{
+          cellWidth: 50,
+          fontSize: fontSizeFooter,
+          halign: 'center',
+          fontStyle:'bold'
+        },
+        4:{
+          cellWidth: 50,
+          fontSize: fontSizeFooter,
+          halign: 'center',
+          fontStyle:'bold'
+        },
+        5:{
+          cellWidth: 50,
+          fontSize: fontSizeFooter,
+          halign: 'center',
+          fontStyle:'bold'
+        },
+        6:{
+          cellWidth: 50,
+          fontSize: fontSizeFooter,
+          halign: 'center',
+          fontStyle:'bold'
+        },
+        7:{
+          cellWidth: 50,
+          fontSize: fontSizeFooter,
+          halign: 'center',
+          fontStyle:'bold'
+        },
+        8:{
+          cellWidth: 50,
+          fontSize: fontSizeFooter,
+          halign: 'center',
+          fontStyle:'bold'
+        },
+      }
+    });
     doc.save(`RepMovAlmacen_${new Date().toISOString()}.pdf`);   
   }
 

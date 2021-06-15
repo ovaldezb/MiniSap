@@ -39,7 +39,7 @@ class Creacfdixml extends CI_Controller
           "url"=>"http://services.test.sw.com.mx",
           "user"=>"omar.valdez.becerril@gmail.com",
           "password"=> "omar.sw"
-        );      
+        );   
         /*$this->params = array(
           "url"=>"http://services.sw.com.mx",
           "user"=>"omar.valdez.becerril@gmail.com",
@@ -241,10 +241,10 @@ class Creacfdixml extends CI_Controller
           $result = json_decode(json_encode($stamp::StampV4($sellado)),false);            
           if($result->status == "success"){
               $dataSAT = array($nombre,$rfc,$result->data->fechaTimbrado,$result->data->qrCode,$result->data->cfdi,$folio,number_format($importeTotal,3,'.',''),$result->data->cadenaOriginalSAT,0,$idEmpresa,$idfactura,$aniofiscal);
-              $this->facturamodel->saveCFDISAT($dataSAT);
+              $res = $this->facturamodel->saveCFDISATCC($dataSAT);
               return $this->output
-          ->set_content_type('application/json')
-              ->set_output(json_encode(array("status"=>$result->status,"error"=>"0")));
+              ->set_content_type('application/json')
+              ->set_output(json_encode(array("status"=>$result->status,"error"=>"0","lastValue"=>$res[0]->guarda_cfdicc)));
           }else{
               return $this->output
           ->set_content_type('application/json')
@@ -290,7 +290,7 @@ class Creacfdixml extends CI_Controller
         $uso_cfdi = json_decode(json_encode($this->catalogosmodel->get_uso_cfdi()),false);
         file_put_contents(FCPATH.'img/'.$result[0]->FOLIO.'.png',base64_decode($result[0]->QR_CODE));
         $qr = FCPATH.'img/'.$result[0]->FOLIO.'.png';      
-        $res = $this->xml2pdf->convierte($result[0]->CFDI,$result[0]->CADENA_SAT,$cliente,$empresa,$formapago,$uso_cfdi,$qr);        
+        $res = $this->xml2pdf->convierte($result[0]->CFDI,$result[0]->CADENA_SAT,$domicilio,$empresa,$formapago,$uso_cfdi,$qr);        
         $dompdf = new DOMPDF();
         $dompdf->loadHtml($res);
         $dompdf->setPaper('A4', "portrait");
@@ -326,9 +326,14 @@ class Creacfdixml extends CI_Controller
                 unlink($filenamepdf);
                 unlink($filenamexml);        
                 unlink($filenamezip);
+            }finally{
+              unlink($filenamepdf);
+              unlink($filenamexml);        
+              unlink($filenamezip); 
+              unlink($qr);
             }            
         }else{
-            try{
+            try{    
                 $email = new PHPMailer(true);
                 $email->CharSet = 'UTF-8';
                 $email->SetFrom('no-reply@rts-soft.net', 'RTS'); //Name is optional

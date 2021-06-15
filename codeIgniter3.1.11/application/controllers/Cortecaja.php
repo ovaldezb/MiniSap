@@ -70,9 +70,9 @@ class Cortecaja extends CI_Controller
       }
     }
 
-    public function updtccfact($idcorte){
+    public function updtccfact($idcorte,$idfactura,$idcfdi){
       if (isset($_SESSION['username'])) {
-        $result = $this->cortecajamodel->updt_cortecaja_timbrada($idcorte);  
+        $result = $this->cortecajamodel->updt_cortecaja_timbrada($idcorte,$idfactura,$idcfdi);  
         return $this->output
             ->set_content_type('application/json')
             ->set_output($result);

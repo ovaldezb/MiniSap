@@ -22,14 +22,15 @@ class Reportes extends CI_Controller {
   function movalmacen($idEmpresa,$fy,$fecIni,$fecFin,$linea)
   {
     if (isset($_SESSION['username'])) {
-      if($linea === 0){
-        return $this->output
-          ->set_content_type('application/json')
-          ->set_output( $this->reportemodel->get_reporte_mov_almacen_by_line($idEmpresa,$fy,str_replace("%20"," ",$fecIni),str_replace("%20"," ",$fecFin),$linea));
-      }else{
+      if($linea === "0"){
         return $this->output
           ->set_content_type('application/json')
           ->set_output( $this->reportemodel->get_reporte_mov_almacen($idEmpresa,$fy,str_replace("%20"," ",$fecIni),str_replace("%20"," ",$fecFin)));
+      }else{
+        return $this->output
+          ->set_content_type('application/json')
+          ->set_output( $this->reportemodel->get_reporte_mov_almacen_by_line($idEmpresa,$fy,str_replace("%20"," ",$fecIni),str_replace("%20"," ",$fecFin),$linea));
+        
       }
     
     }
