@@ -309,6 +309,7 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
     .then(res =>{
       if(res.data){
         $scope.lstCalidadMadera = res.data;
+        $scope.producto.idcalidad = $scope.lstCalidadMadera[0].ID_CALIDAD_MADERA;
       }
     })
     .catch(err =>{

@@ -115,6 +115,7 @@ class Reportemodel extends CI_model
 							  AND V."ANIO_FISCAL" = $2
 							  AND V."FECHA_VENTA" >= $3
 							  AND V."FECHA_VENTA" <= $4 
+                AND V."CANCELADO" = \'f\'
                 AND '.$queryLinea1. 'as "PORCENTAJE",
 							P."PRECIO_COMPRA" * SUM(VP."CANTIDAD") as "COSTO",
 							SUM(VP."IMPORTE") / (1+(P."IVA")/100) - (P."PRECIO_COMPRA" * SUM(VP."CANTIDAD")) as  "UTILIDAD"
@@ -126,6 +127,7 @@ class Reportemodel extends CI_model
 							AND V."ANIO_FISCAL" = $7
 							AND V."FECHA_VENTA" >= $8
 							AND V."FECHA_VENTA" <= $9
+              AND V."CANCELADO" = \'f\'
 							AND '.$queryLinea2.'
 							GROUP BY M."DESCRIPCION",VP."ID_PRODUCTO", P."DESCRIPCION", P."CODIGO", P."IVA",P."PRECIO_COMPRA" ';
 			if($isTopTen){

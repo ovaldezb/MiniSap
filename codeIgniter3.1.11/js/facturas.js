@@ -375,6 +375,10 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
     $scope.nombre_vendedor = $scope.lstFacturas[$scope.indexRowFactura].VENDEDOR;
     $scope.claveclte = $scope.lstFacturas[$scope.indexRowFactura].CLAVE;
     $scope.usuario = $scope.lstFacturas[$scope.indexRowFactura].CLAVE_USR === null ? 'ND' : $scope.lstFacturas[$scope.indexRowFactura].CLAVE_USR;
+    $scope.factura.cfdi = $scope.lstFacturas[$scope.indexRowFactura].ID_USO_CFDI;
+    $scope.factura.fpago = $scope.lstFacturas[$scope.indexRowFactura].ID_FORMA_PAGO.toString();
+    $scope.factura.mpago = $scope.lstFacturas[$scope.indexRowFactura].ID_METODO_PAGO;
+    $scope.factura.tpago = $scope.lstFacturas[$scope.indexRowFactura].ID_TIPO_PAGO;
     $scope.showUsuario = true;
     //aqui depende de si la fact es de un CC o no, va ir a buscar de una forma u otra
     if($scope.lstFacturas[$scope.indexRowFactura].ID_CLIENTE === null){
