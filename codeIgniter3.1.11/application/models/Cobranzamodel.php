@@ -11,7 +11,7 @@ class Cobranzamodel extends CI_model
 		$this->conn = $this->postgresdb->getConn();
     }
 
-	public function getListaFacturas($arrayData){
+	public function getListaFacturas($arrayData,$isHistorico){
 		$query = 'SELECT "ID_FACTURA",TRIM("DOCUMENTO") as "DOCUMENTO",
 				CASE WHEN M."MET_PAGO" IS NULL THEN \'\' ELSE M."MET_PAGO" END as "METODO_PAGO",
 				TO_CHAR("FECHA_FACTURA",\'dd-MM-YYYY\') as "FECHA_FACTURA",
@@ -27,9 +27,7 @@ class Cobranzamodel extends CI_model
 				INNER JOIN "TIPO_PAGO"as T ON F."ID_TIPO_PAGO" = T."ID_TIPO_PAGO"
 			AND F."ID_EMPRESA" = $1
 			AND F."ANIO_FISCAL" = $2
-      AND F."ID_SUCURSAL" = $3
-      AND F."SALDO" != 0
-      AND F."ESTATUS" IS NULL
+      AND F."ID_SUCURSAL" = $3 '. ($isHistorico === 'false' ? ' AND F."SALDO" != 0 ': ' ').' AND F."ESTATUS" IS NULL
 			ORDER BY F."ID_FACTURA" DESC';
 		pg_prepare($this->conn,"select_fact",$query);
 		$result = pg_fetch_all(pg_execute($this->conn,"select_fact",$arrayData));

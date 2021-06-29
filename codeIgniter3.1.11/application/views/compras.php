@@ -61,7 +61,7 @@
 							<td>
 								<a aria-label="like">
 									<span class="icon has-text-danger">
-										<i onclick="closeDivSearchProv()" class="fas fa-times-circle"></i>
+										<i ng-click="closeDivSearchProv()" class="fas fa-times-circle"></i>
 									</span>
 								</a>
 							</td>
@@ -142,13 +142,7 @@
 					<div class="column is-narrow">
 						<label class="label">$</label>
 					</div>
-					<div class="column is-narrow">
-						<label class="label">Desc %</label>
-					</div>
-					<div class="column is-narrow" style="width:100px">
-						<input type="number" class="input is-small" value="" ng-model="descuento" id="descuento" ng-keyup="validaDescto()" style="text-align:center;">
-					</div>
-					<div class="column is-narrow" style="width:65px">
+					<div class="column is-narrow" style="width:70px">
 						<label class="label">Iva %</label>
 					</div>
 					<div class="column is-narrow" style="width:80px">

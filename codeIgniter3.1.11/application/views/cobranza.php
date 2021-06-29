@@ -9,20 +9,23 @@
       <div class="box" id="barranavegacion" ng-show="!isCapturaCobro">
         <nav class="level">
           <div class="level-left">
-          <div class="level-item">
-            Filtro:
-          </div>
+            <div class="level-item">
+              Filtro:
+            </div>
             <div class="level-item">
               <input name="filtrocliente" class="input is-small" type="input" onKeyUp="doFilter(this.value,'tblClientes');" title="Ingrese cualquier dato que desee encontrar, Ej. nombre, código, precio ">
             </div>
+            <div class="level-item" ng-show="permisos.modificacion">
+              Historico: <input type="checkbox" ng-click="getHistorico($event)" id="historico">
+            </div>
           </div>
           <div class="level-right">
-            <p class="level-item" ng-show="permisos.alta">
-              <a ng-click="agregaCobranza();"><span class="icon has-text-success"><i class="fas fa-file" title="Aplicar Cobro"></i></span></a>
-            </p>
-            <p class="level-item" ng-show="permisos.baja">
-              <a ng-click="preguntaElimnaFactura()"><span class="icon has-text-danger"><i class="far fa-trash-alt" title="Elimina Factura"></i></span></a>
-            </p>
+              <p class="level-item" ng-show="permisos.alta">
+                <a ng-click="agregaCobranza();"><span class="icon has-text-success"><i class="fas fa-file" title="Aplicar Cobro"></i></span></a>
+              </p>
+              <p class="level-item" ng-show="permisos.baja">
+                <a ng-click="preguntaElimnaFactura()"><span class="icon has-text-danger"><i class="far fa-trash-alt" title="Elimina Factura"></i></span></a>
+              </p>
           </div>
         </nav>
       </div>

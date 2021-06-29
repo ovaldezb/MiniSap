@@ -64,7 +64,7 @@ app.controller('myCtrlCobros', function($scope,$http,$routeParams)
             $scope.cobro.aniofiscal = res.data.aniofiscal;
             $scope.cobro.idsucursal = res.data.idsucursal;
             $scope.idusuario = res.data.idusuario;
-            $scope.getListaFacturas();
+            $scope.getListaFacturas(false);
             $scope.permisos();
             }
         }).catch(function(err){
@@ -74,8 +74,8 @@ app.controller('myCtrlCobros', function($scope,$http,$routeParams)
       $scope.getBancos();
     };
 
-    $scope.getListaFacturas = () =>{
-        $http.get(pathCob+'getcobranza/'+$scope.cobro.idempresa+'/'+$scope.cobro.aniofiscal+'/'+$scope.cobro.idsucursal)
+    $scope.getListaFacturas = (isHistoric) =>{
+        $http.get(pathCob+'getcobranza/'+$scope.cobro.idempresa+'/'+$scope.cobro.aniofiscal+'/'+$scope.cobro.idsucursal+'/'+isHistoric)
         .then(res =>{
             if(res.data.length > 0){
               $scope.lstFacturas = res.data;
@@ -171,7 +171,7 @@ app.controller('myCtrlCobros', function($scope,$http,$routeParams)
               $scope.closeMovimiento();
               $scope.cleanPago();
               $scope.getcobros();
-              $scope.getListaFacturas();
+              $scope.getListaFacturas(false);
           }
       })
       .catch(err=>{
@@ -185,7 +185,7 @@ app.controller('myCtrlCobros', function($scope,$http,$routeParams)
               swal('Se actualizó el cobro con éxito');
               $scope.closeMovimiento();
               $scope.getcobros();
-              $scope.getListaFacturas();
+              $scope.getListaFacturas(false);
           }
       })
       .catch(err=>{
@@ -193,6 +193,10 @@ app.controller('myCtrlCobros', function($scope,$http,$routeParams)
       });
     }
     
+  }
+
+  $scope.getHistorico = (event)=>{
+    $scope.getListaFacturas($("#historico").prop('checked'));
   }
 
   $scope.editaCobro=()=>{
@@ -224,7 +228,7 @@ app.controller('myCtrlCobros', function($scope,$http,$routeParams)
                         $scope.getcobros();
                         swal('El cobro ha sido eliminado');
                         $scope.idCobro = -1;
-                        $scope.getListaFacturas();
+                        $scope.getListaFacturas(false);
                     }
                 })
                 .catch(err=>{

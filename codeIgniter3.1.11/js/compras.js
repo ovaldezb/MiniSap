@@ -176,6 +176,10 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 		$scope.buscaprov = false;
 	}
 
+	$scope.closeDivSearchProv = () =>{
+		$scope.buscaprov = false;
+	}
+
 	$scope.lanzaBusquedaProducto = function (event) {
 		var precio;
 		var tabla, row, searchword, cell;
@@ -307,7 +311,7 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
     for (var i = 0; i < $scope.listaproductos.length; i++) {
 			$scope.subtotal += Number($scope.listaproductos[i].CANTIDAD) * Number($scope.listaproductos[i].PRECIO);
 			$scope.descuento += Number($scope.listaproductos[i].DESCTO) * Number($scope.listaproductos[i].CANTIDAD) * Number($scope.listaproductos[i].PRECIO) / 100;
-      $scope.ivapaga += Number($scope.listaproductos[i].CANTIDAD) * Number($scope.listaproductos[i].PRECIO) * Number($scope.listaproductos[i].IVA/100);
+      $scope.ivapaga += (Number($scope.listaproductos[i].CANTIDAD) * Number($scope.listaproductos[i].PRECIO) - (($scope.listaproductos[i].DESCTO===undefined ? 0 : Number($scope.listaproductos[i].DESCTO)) * Number($scope.listaproductos[i].CANTIDAD) * Number($scope.listaproductos[i].PRECIO) / 100)) * Number($scope.listaproductos[i].IVA/100);
 		}
     $scope.total = $scope.subtotal - $scope.descuento + $scope.ivapaga ;
   }
@@ -433,7 +437,7 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 	$scope.regtracompraprod = function () {
 		var i;
 		for (i = 0; i < $scope.listaproductos.length; i++) {
-			$http.post(pathCmpr + 'regcompraprdcto/', {
+			var dataInsProd = {
 				idcompra: $scope.idcompra,
 				idproducto: $scope.listaproductos[i].IDPRODUCTO,
 				cantidad: $scope.listaproductos[i].CANTIDAD,
@@ -446,20 +450,21 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 				caja:1,
 				idempresa:$scope.idempresa,
 				aniofiscal:$scope.aniofiscal,
-				idcliente:null,
+				idcliente:0,
 				idproveedor:$scope.idproveedor,
-				idusuario:null,
+				idusuario:$scope.idUsuario,
 				idmoneda:$('#moneda').val()
-			}).then(function (res) {					
+			};
+			$http.post(pathCmpr + 'regcompraprdcto/', dataInsProd)
+			.then((res) => {					
 					if (res.status == 200 && res.data.value == 'OK') {
 
 					}
-				}).
-				catch(function (err) {
-					console.log(err);
-				});
+			})
+			.catch((err) => {
+				console.log(err);
+			});
 		}		
-		$scope.listaproductos = [];		
 	}
 
 
@@ -472,6 +477,7 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 		$scope.desctoprod = $scope.listaproductos[$scope.idxRowProd].DESCTO;
 		$scope.precio = $scope.listaproductos[$scope.idxRowProd].PRECIO;
 		$scope.imagePath = $scope.listaproductos[$scope.idxRowProd].IMG;
+		$scope.idProducto = $scope.listaproductos[$scope.idxRowProd].IDPRODUCTO;
 		$('#imgfig').show();
 		$('#updtTable').val('T');
 		$scope.counter = $scope.cantidad;
@@ -496,6 +502,7 @@ app.controller('myCtrlCompras', function ($scope, $http,$routeParams) {
 	}
 
 	$scope.despliegaCompra = function () {
+		$scope.listaproductos = [];		
 		$scope.isAgregaCompra = true;
 		$('#barranavegacion').hide();
 		$('#listacompras').hide();
