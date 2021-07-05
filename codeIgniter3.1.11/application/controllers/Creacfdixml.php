@@ -35,16 +35,7 @@ class Creacfdixml extends CI_Controller
         $this->load->library('crearcfdi');
         $this->load->library('xml2pdf');    
         $this->load->model('catalogosmodel');   
-        $this->params = array(
-          "url"=>"http://services.test.sw.com.mx",
-          "user"=>"omar.valdez.becerril@gmail.com",
-          "password"=> "omar.sw"
-        );   
-        /*$this->params = array(
-          "url"=>"http://services.sw.com.mx",
-          "user"=>"omar.valdez.becerril@gmail.com",
-          "password"=> "Ov/d4*035"
-        );*/
+        
     }
 
 
@@ -336,7 +327,7 @@ class Creacfdixml extends CI_Controller
             try{    
                 $email = new PHPMailer(true);
                 $email->CharSet = 'UTF-8';
-                $email->SetFrom('no-reply@rts-soft.net', 'RTS'); //Name is optional
+                $email->SetFrom('no-reply@ready2solve.club', 'RTS'); //Name is optional
                 $email->Subject   = 'Factura: '.$result[0]->FOLIO;
                 $email->Body      = '<p>Adjunto se encuentra su factura en formato PDF y XML</p>';
                 $lstemails = explode('|',$emails);
