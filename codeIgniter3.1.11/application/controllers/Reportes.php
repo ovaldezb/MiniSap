@@ -68,22 +68,22 @@ class Reportes extends CI_Controller {
             ->set_output(json_encode($this->reportemodel->get_valor_inventario($idEmpresa,$idscursal)));
   }
 
-  function ventasfy($idEmpresa, $anioFiscal){
+  function ventasfy($idEmpresa, $anioFiscal,$idscursal){
     return $this->output
             ->set_content_type('application/json')
-            ->set_output(json_encode($this->reportemodel->get_ventas_aniofiscal($idEmpresa,$anioFiscal)));
+            ->set_output(json_encode($this->reportemodel->get_ventas_aniofiscal($idEmpresa,$anioFiscal,$idscursal)));
   }
 
-  function ctsxcob($idEmpresa,$anioFiscal){
+  function ctsxcob($idEmpresa,$anioFiscal,$idscursal){
     return $this->output
     ->set_content_type('application/json')
-    ->set_output($this->reportemodel->get_cuentas_x_cobrar($idEmpresa,$anioFiscal));
+    ->set_output($this->reportemodel->get_cuentas_x_cobrar($idEmpresa,$anioFiscal,$idscursal));
   }
 
-  function ctsxpag($idEmpresa,$anioFiscal){
+  function ctsxpag($idEmpresa,$anioFiscal,$idscursal){
     return $this->output
     ->set_content_type('application/json')
-    ->set_output($this->reportemodel->get_cuentas_x_pagar($idEmpresa,$anioFiscal));
+    ->set_output($this->reportemodel->get_cuentas_x_pagar($idEmpresa,$anioFiscal,$idscursal));
   }
 
 }

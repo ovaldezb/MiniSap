@@ -350,6 +350,13 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
         .catch(err =>{
           console.log(err);
         });
+        $http.get(pathCreacfdi+'cancelafactura/'+$scope.lstFacturas[$scope.indexRowFactura].ID_FACTURA+'/'+$scope.factura.idempresa+'/'+$scope.factura.idsucursal)
+        .then(res =>{
+          console.log(res.data);
+        })
+        .catch(err =>{
+          console.log(err);          
+        });
       }
     });
   }

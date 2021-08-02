@@ -4,6 +4,7 @@
   class Xml2pdf{    
     function convierte($xml,$cadena_sat,$domicilio,$empresa,$formapagoArray,$uso_cfdiArray,$qr){                
       $rows = 15;
+      $rows1 = 8;
       $xml_doc = new DOMDocument('1.0','utf-8');
       $xml_doc->loadXML($xml);
       $complemento = $xml_doc->getElementsByTagNameNS('http://www.sat.gob.mx/TimbreFiscalDigital', 'TimbreFiscalDigital')->item(0);
@@ -51,6 +52,7 @@
       }
 
       $arrayConcept = '';
+      $arrayConcept2 = '';
       foreach($concepto as $concep){
           $arrayConcept .= 
           "
@@ -58,24 +60,47 @@
               <td class='t3c1' style='border-right:2px solid black'>{$concep->getAttribute('Cantidad')}</td>
               <td class='t3c2' style='border-right:2px solid black'>{$concep->getAttribute('Unidad')}</td>
               <td class='t3c3' style='border-right:2px solid black'>{$concep->getAttribute('Descripcion')}</td>
-              <td class='t3c4' style='border-right:2px solid black'>$ {$concep->getAttribute('ValorUnitario')}</td>
-              <td class='t3c5' style='border-right:2px solid black'>$ {$concep->getAttribute('Descuento')}</td>
-              <td class='t3c6'>$ {$concep->getAttribute('Importe')}</td>
+              <td class='t3c4' style='border-right:2px solid black'>${$concep->getAttribute('ValorUnitario')}</td>
+              <td class='t3c5' style='border-right:2px solid black'>${$concep->getAttribute('Descuento')}</td>
+              <td class='t3c6'>${$concep->getAttribute('Importe')}</td>
           </tr>";
+          $arrayConcept2 .="
+          <tr class='item'>
+            <td style='text-align:center'>{$concep->getAttribute('Cantidad')}</td>
+            <td style='text-align:center'>{$concep->getAttribute('ClaveProdServ')}</td>
+            <td style='text-align:center'>{$concep->getAttribute('Unidad')}</td>
+            <td style='text-align:center'>{$concep->getAttribute('Descripcion')}</td>
+            <td style='text-align:right'>$ {$concep->getAttribute('ValorUnitario')}</td>
+            <td style='text-align:right'>$ {$concep->getAttribute('Descuento')}</td>
+            <td style='text-align:right'>$ {$concep->getAttribute('Importe')}</td>
+				  </tr>
+          ";
       }
       $relleno = '';
+      $relleno1 = '';
       for($i=0;$i<($rows-sizeof($concepto));$i++){
         $relleno .=
-        "
-        <tr> 
+        "<tr> 
           <td style='border-right:2px solid black'>&nbsp;</td>
           <td style='border-right:2px solid black'>&nbsp;</td>
           <td style='border-right:2px solid black'>&nbsp;</td>
           <td style='border-right:2px solid black'>&nbsp;</td>
           <td style='border-right:2px solid black'>&nbsp;</td>
           <td >&nbsp;</td>
-        </tr>
-        ";
+        </tr>";
+      }
+
+      for($i=0;$i<($rows1-sizeof($concepto));$i++){
+        $relleno1 .=
+        "<tr class='item'> 
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>";
       }
 
       $html1 = "
@@ -192,7 +217,11 @@
                 </td>
                 <td>
                   <table style='width:100%'>
-                    <tbody>                    
+                    <tbody>
+                      <tr>
+                        <td>Código de Identificación Forestal:</td>
+                        <td class='thEmp'>R-29-010-FOS-001/11</td>
+                      </tr>                  
                       <tr>
                         <td>RFC:</td>
                         <td class='thEmp'>{$rfc}</td>
@@ -254,7 +283,6 @@
                   <td class='t2h2'>{$nombre_receptor}</td>
                   <td class='t2h1'>METODO PAGO</td>
                   <td class='t2h2'>{$metodoPago}</td>
-                  
               </tr>
               <tr>
                   <td class='t2h1'>RFC CLIENTE:</td>
@@ -346,8 +374,264 @@
       </footer>         
     </BODY>        
     </HEAD>";            
-    return $html1;
+    $html2="
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+			body {
+				font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+				text-align: center;
+				color: #777;
+				
+			}
+
+			body h1 {
+				font-weight: 300;
+				margin-bottom: 0px;
+				padding-bottom: 0px;
+				color: #000;
+			}
+
+			body h3 {
+				font-weight: 300;
+				margin-top: 10px;
+				margin-bottom: 20px;
+				font-style: italic;
+				color: #555;
+			}
+
+			body a {
+				color: #06f;
+			}
+
+			.invoice-box {
+				max-width: 900px;
+				margin: auto;
+				padding: 0.1px;
+				border: .7px solid #eee;
+				
+				font-size: 12px;
+				line-height: 20px;
+				font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+				color: #555;
+			}
+
+			.invoice-box table {
+				width: 100%;
+				line-height: inherit;
+				text-align: left;
+				border-collapse: collapse;
+			}
+
+			.invoice-box table td {
+				padding: 5px;
+				vertical-align: top;
+			}
+
+			.invoice-box table tr td:nth-child(7) {
+				text-align: right;
+			}
+
+			.invoice-box table tr.top table td {
+				padding-bottom: 5px;
+			}
+
+			.invoice-box table tr.top table td.title {
+				font-size: 45px;
+				line-height: 27px;
+				color: #333;
+			}
+
+			.invoice-box table tr.information table td {
+				padding-bottom: 7px;
+			}
+
+			.invoice-box table tr.heading td {
+				background: #eee;
+				border-bottom: 1px solid #ddd;
+				font-weight: bold;
+        font-size:10px;
+			}
+
+			.invoice-box table tr.details td {
+				padding-bottom: 3px;
+			}
+
+			.invoice-box table tr.item td {
+				border-bottom: 2px solid #eee;
+        font-size:10px;
+			}
+
+			.invoice-box table tr.item.last td {
+				border-bottom: 2px solid #eee;
+			}
+
+			.invoice-box table tr.total td:nth-child(8) {
+				border-top: 1px solid #eee;
+				font-weight: bold;
+				text-align: right;
+        padding: 0px;
+			}
+
+			#memo .company-name {
+			background: #8BA09E url('./img/left-arrows.png') 77px left no-repeat;
+			background-size: 100px auto;
+			padding: 5px 10px;
+			position: relative;
+			margin-bottom: 7px;
+			font-weight: bold;
+			font-size: 27px;
+			color: white;
+			}
+			
+			.footer {
+			position: fixed;
+			left: 0px !important;
+			bottom: 0px !important;
+      margin: 0 auto !important;
+			width: 100%;
+			background-color: gray;
+			color: white;
+			text-align: left;
+			font-size: 10px;
+			}
+			
+		</style>
+	</head>
+
+	<body>
+		<div class='invoice-box'>
+		<section id='memo'>
+        <div class='company-name'>
+          <span>{$nombre}</span>
+          <div class='right-arrow'></div>
+        </div>
+		</section>
+      <table styele='width:100%'>
+          <colgroup>
+            <col width='20%'>
+            <col width='40%'>
+            <col width='40%'>
+          </colgroup>
+          <tr>
+            <td class='title'>
+              <img src='./img/logo.jpg' alt='Company logo' style='width: 200px;' />
+            </td>
+            <td align='center'>{$rfc}<br/>
+            {$empresa[0]->DOMICILIO}<br/>
+              CP: {$empresa[0]->CP}<br/>
+              Código de Identificación Forestal:<br/>
+              <strong>R-29-010-FOS-001/11</strong>
+            </td>
+            <td>
+              Folio Interno: <strong>{$folio}</strong><br />
+              Fecha: <strong>{$fecha}</strong> <br />
+              Folio Fiscal:<br/> <strong>{$UUID}</strong><br/>
+              No. de serie del certificado SAT: <strong>{$certificado}</strong><br/>
+          </tr>
+        </table>
+        <table>
+          <colgroup>
+            <col width='30%'/>
+            <col width='25%'/>
+            <col width='25%'/>
+            <col width='20%'/>
+          </colgroup>
+          <tr>
+            <td>
+              <strong>Cliente</strong> 
+            </td>
+            <td>{$nombre_receptor}</td>
+            <td><strong>RFC</strong></td>
+            <td>{$rfc_receptor}</td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Domicilio Fiscal</strong>
+            </td>
+            <td colspan='3'>{$domicilio}</td>
+          </tr>
+        </table>
+			  <table>
+				  <tr class='heading'>
+            <td style='height:10px;width:auto;text-align:center;'>CANT</td>
+            <td style='height:10px;width:auto;text-align:center;'>CLAVE</td>
+            <td style='height:10px;width:auto;text-align:center;'>UNIDAD</td>
+            <td style='height:10px;width:auto;text-align:center;'>DESCRIPCION</td>
+            <td style='height:10px;width:auto;text-align:right;'>P. UNITARIO</td>
+            <td style='height:10px;width:auto;text-align:right;'>DESC</td>
+            <td style='height:10px;width:auto;text-align:right;'>IMPORTE</td>
+				  </tr>
+				  {$arrayConcept2}
+          {$relleno1}
+          </table>
+          <table>
+				    <tr>
+              <td style='width:150px'>
+                <table>
+                  <tr>
+                    <td style='width:150px'>
+                      <img src='{$qr}' width='130px' style='padding: 0%;' alt=''>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+              <td style='width:400px'>
+                <table style='border-collapse: separate;border-spacing: 0 0px;'>
+                  <tr class='total'>
+                    <td><strong>Metodo de Pago :</strong> {$metodoPago}</td>
+                    <td style='text-align: right;'><strong>SubTotal:</strong></td>
+                    <td style='text-align: right;'>$ {$subtotal}</td>
+                  </tr>
+                  <tr class='total'>
+                    <td><strong>Tipo de Cambio :</strong>1</td>
+                    <td style='text-align: right;'><strong>Descuento:</strong></td>	
+                    <td style='text-align: right;'>$ {$descuento}</td>
+                  </tr>
+                  <tr class='total'>
+                    <td><strong>Forma de Pago:</strong>{$formaPagoDesc}</td>
+                    <td style='text-align: right;'><strong>IVA:</strong></td>	
+                    <td style='text-align: right;'>$ {$imptrans}</td>
+                  </tr>
+                  <tr class='total'>
+                    <td><strong>Uso del CFDI:</strong>{$uso_cfdi_desc}</td>
+                    <td style='text-align: right;'><strong>Total:</strong></td>
+                    <td style='text-align: right;'>$ {$total}</td>
+                  </tr>
+                </table>
+              </td>
+            </tr>			 
+			    </table>
+			    <div class='footer' style='width: auto;'>
+            <div>
+              <strong>Sello digital del CFDI:</strong></br>
+            </div>
+			    <p style='word-wrap: break-word;line:spacing 0px; margin-top:-10px; font-size:8px;'>
+            {$selloCFD} 
+			    </p>
+          <div style='margin-top:-10px'>
+          <strong>Sello digital del SAT:</strong>	
+          </div>
+          <p style='word-wrap: break-word;line:spacing 0px; margin-top:-10px; font-size:8px;'>
+          {$selloSAT}
+			    </p>
+          <div style='margin-top:-10px'>
+          <strong>Cadena Original del complemento de certificación digital del SAT:</strong>
+          </div>
+          <p style='word-wrap: break-word;line:spacing 0px; margin-top:-10px; font-size:8px;'>
+          {$cadena_sat}<br>
+          Fecha y hora de certificación:<strong>{$fecha}</strong>
+          </p>
+			  </div>
+		  </div>
+	  </body>
+  </html>
+    ";
+    return $html2;
     }
   }
+
+
 
 ?>

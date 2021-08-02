@@ -22,6 +22,7 @@ class Clientemodel extends CI_model
     LEFT JOIN (SELECT F."ID_CLIENTE", SUM(F."SALDO") as "SALDO"  
               FROM "FACTURA" as F 
               WHERE F."ANIO_FISCAL" = $1 
+							AND F."ESTATUS" IS NULL
               GROUP BY F."ID_CLIENTE") as F ON F."ID_CLIENTE" = C."ID_CLIENTE"
     INNER JOIN "FORMA_PAGO" as FP ON FP."ID_FORMA_PAGO" = C."ID_FORMA_PAGO"
     INNER JOIN "VENDEDOR" as V ON V."ID_VENDEDOR" = C."ID_VENDEDOR"

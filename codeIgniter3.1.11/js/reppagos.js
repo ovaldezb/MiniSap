@@ -1,4 +1,4 @@
-app.controller('CtrlCobranza', ($scope,$http,$routeParams) =>
+app.controller('CtrlPagos', ($scope,$http,$routeParams) =>
 {
   $scope.lstRepCobr = [];
   $scope.lstRepCobrIni = []; 
@@ -102,7 +102,7 @@ app.controller('CtrlCobranza', ($scope,$http,$routeParams) =>
     let sigmaTotal = 0;
     let counter = 0;
     let counterTotal = 0;
-    $http.get(pathRepcobr+'repcobranza/'+$scope.fiscalYear+'/'+$scope.idempresa+'/'+$scope.fechaInicio+'/'+$scope.fechaFin)
+    $http.get(pathReppagos+'reppagos/'+$scope.fiscalYear+'/'+$scope.idempresa+'/'+$scope.fechaInicio+'/'+$scope.fechaFin)
     .then(res =>{
       $scope.isRepShow = true;
       lstRepCobrIni = res.data;
@@ -120,7 +120,7 @@ app.controller('CtrlCobranza', ($scope,$http,$routeParams) =>
           let tmpRow = JSON.parse(JSON.stringify(lstRepCobrIni[i]));
           tmpRow.TITLE = 1;
           lstRepCobrIni[i].TITLE = 0;
-          lstRepCobrIni[i].NOMBRE = 'Movimiento del '+lstRepCobrIni[i].FECHA_COBRO;
+          lstRepCobrIni[i].NOMBRE = 'Movimiento del '+lstRepCobrIni[i].FECHA_PAGO;
           $scope.lstRepCobr.push(lstRepCobrIni[i]);
           $scope.lstRepCobr.push(tmpRow);
           lastRow = true;
@@ -130,7 +130,7 @@ app.controller('CtrlCobranza', ($scope,$http,$routeParams) =>
         }
         sigma += Number(lstRepCobrIni[i].ABONO);
         sigmaTotal += Number(lstRepCobrIni[i].ABONO);
-        currentDate = lstRepCobrIni[i].FECHA_COBRO;
+        currentDate = lstRepCobrIni[i].FECHA_PAGO;
         counter++;
         counterTotal++;
         fpHash.set(lstRepCobrIni[i].ID_FP,fpHash.get(lstRepCobrIni[i].ID_FP)+Number(lstRepCobrIni[i].ABONO));
@@ -163,7 +163,7 @@ app.controller('CtrlCobranza', ($scope,$http,$routeParams) =>
     var blob = new Blob([document.getElementById('exportable').innerHTML], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
     });
-    saveAs(blob, "Cobranza_"+formatDateExcel(new Date())+".xls");
+    saveAs(blob, "Pago_"+formatDateExcel(new Date())+".xls");
   }
 
   $scope.exportPDF = () =>{
@@ -171,9 +171,9 @@ app.controller('CtrlCobranza', ($scope,$http,$routeParams) =>
     var doc = new jsPDF('p', 'pt', 'letter'); 
     var y = 20;  
     doc.setLineWidth(2);  
-    doc.text(200, y = y + 30, "REPORTE DE COBRANZA");  
+    doc.text(200, y = y + 30, "REPORTE DE PAGOS");  
     doc.autoTable({  
-        html: '#tblRepCobranza',  
+        html: '#tblRepPagos',  
         startY: 70,  
         theme: 'grid',  
         columnStyles: {  
@@ -245,7 +245,7 @@ app.controller('CtrlCobranza', ($scope,$http,$routeParams) =>
           minCellHeight: 20  
       }  
     });  
-    doc.save(`${new Date().toISOString()}_cobranza.pdf`); 
+    doc.save(`${new Date().toISOString()}_pagos.pdf`); 
   }
   
   $scope.cerrarReporte = () =>{

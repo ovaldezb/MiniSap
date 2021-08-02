@@ -32,7 +32,20 @@ class Transferenciamodel extends CI_model
     ORDER BY T."FECHA_TRANSPASO" DESC';
     pg_prepare($this->conn,"select_transfer",$query);
 		$result = pg_fetch_all(pg_execute($this->conn,"select_transfer",array($idempresa, $fiscalyear, $idsucursal)));
-		return json_encode($result,JSON_NUMERIC_CHECK);
+
+    $query1 = 'SELECT S."ALIAS" as "ORIGEN",S1."ALIAS" as "DESTINO", P."DESCRIPCION",U."CLAVE_USR",T."CANTIDAD",T."FECHA_TRANSPASO"
+    FROM "TRANSPASO" AS T
+    INNER JOIN "SUCURSALES" AS S ON S."ID_SUCURSAL" = T."ID_SUCURSAL_ORIGEN" 
+    INNER JOIN "SUCURSALES" AS S1 ON S1."ID_SUCURSAL" = T."ID_SUCURSAL_DESTINO" 
+    INNER JOIN "PRODUCTO" AS P ON P."ID_PRODUCTO" = T."ID_PRODUCTO"
+    INNER JOIN "USUARIO" AS U ON U."ID_USUARIO" = T."ID_USUARIO"
+    WHERE T."ID_EMPRESA" = $1
+    AND T."ANIO_FISCAL" = $2 
+    AND T."ID_SUCURSAL_DESTINO" = $3
+    ORDER BY T."FECHA_TRANSPASO" DESC';
+    pg_prepare($this->conn,"select_recep",$query1);
+		$result1 = pg_fetch_all(pg_execute($this->conn,"select_recep",array($idempresa, $fiscalyear, $idsucursal)));
+		return json_encode(array("tx"=>$result,"rx"=>$result1),JSON_NUMERIC_CHECK);
   }
 
 }

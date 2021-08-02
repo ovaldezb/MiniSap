@@ -27,7 +27,7 @@
   <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <a class="navbar-item" href="./login#!/">
-        <img src="../img/logo.png" alt="Sistema de Gesti&oacute;n Empresarial" width="40" height="28">
+        <img src="../img/logo.jpg" alt="Sistema de Gesti&oacute;n Empresarial" width="40" height="28">
       </a>
     </div>
     <div class="navbar-end">
@@ -200,9 +200,10 @@
 <script src="../js/pagos.js"></script>
 <script src="../js/inicio.js"></script>
 <script src="../js/cortecaja.js"></script>
-<script src="../js/reportecxc.js"></script>
-<script src="../js/reportecxp.js"></script>
+<!--script src="../js/reportecxc.js"></script-->
+<!--script src="../js/reportecxp.js"></script-->
 <script src="../js/repcobranza.js"></script>
+<script src="../js/reppagos.js"></script>
 <script src="../js/transferencia.js"></script>
 <script>
   $(document).ready(function(){

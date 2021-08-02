@@ -233,7 +233,7 @@
                   <div class="column">Banco</div>
                   <div class="column">
                     <div class="select is-small">
-                    <select ng-model="cobro.banco" ng-options="x.ID_BANCO as x.DESCRIPCION for x in lstBancos"></select>
+                      <select ng-model="cobro.banco" ng-options="x.ID_BANCO as x.DESCRIPCION for x in lstBancos"></select>
                     </div>
                   </div>
                 </div>

@@ -47,7 +47,6 @@ class Cargamasiva extends CI_Controller
             $result = $this->csvreader->parse_file($inFile);
             $count = 0;
             foreach ($result as $item) {
-              var_dump($item);
                 $this->productomodel->inserta_proveedor(array(trim($item['CLAVE']),
                     utf8_encode(trim($item['NOMBRE'])),
                     $item['DOMICILIO']!=NULL ? trim($item['DOMICILIO']): NULL,

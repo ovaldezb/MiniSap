@@ -871,14 +871,17 @@
               <col width="65%"/>
             </colgroup>
 						<tr>
-              <td rowspan="4">
-                <img src="../img/logo.jpg" style="width:110px;height:100px">
+              <td rowspan="5">
+                <img src="../img/logo.jpg" style="width:110px;height:100px;">
               </td>
 							<td colspan="2" style="text-align:center">EMPRESA</td>
 						</tr>
 						<tr>
 							<td>Nombre:</td>
 							<td>{{empresa.nombre}}</td>
+						</tr>
+						<tr>
+							<td style="font: size 12px;" colspan="2">Código de Indetificación Forestal: <strong>R-29-010-FOS-001/11</strong></td>
 						</tr>
 						<tr>
 							<td>Domicilio:</td>

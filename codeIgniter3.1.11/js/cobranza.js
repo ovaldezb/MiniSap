@@ -163,6 +163,10 @@ app.controller('myCtrlCobros', function($scope,$http,$routeParams)
 
 
   $scope.guardaCobro = () =>{
+    if(($scope.cobro.movimiento=== "4" || $scope.cobro.movimiento=== "8") && $scope.cobro.banco === -1){
+      swal("Debe seleccionar un Banco!");
+      return;
+    }
     if($scope.btnName === 'Guardar'){
       $http.post(pathCob+'guardacobro',$scope.cobro)
       .then(res=>{

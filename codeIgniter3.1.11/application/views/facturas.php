@@ -1096,8 +1096,12 @@
           <table style="border-collapse: collapse; width: 100%; height: 90px;" border="1">
             <tbody>
               <tr style="height: 18px;">
-                <td style="height: 54px; width: 33.3942%;" rowspan="5"><img src="../img/logo.jpg" width="150px"></td>
+                <td style="height: 54px; width: 33.3942%;" rowspan="6"><img src="../img/logo.jpg" width="150px"></td>
                 <td style="text-align: center; height: 18px; width: 33.2117%;" colspan="2"> <h1 class="title is-3 has-text-centered">{{Empresa.NOMBRE}}</h1></td>
+              </tr>
+							<tr style="height: 18px;">
+                <td style="width: 33.2117%; height: 18px;">Código de Indetificación Forestal</td>
+                <td style="width: 33.2117%; height: 18px; text-align: right;">R-29-010-FOS-001/11</td>
               </tr>
               <tr style="height: 18px;">
                 <td style="width: 33.2117%; height: 18px;">{{Empresa.DOMICILIO}}</td>
@@ -1112,7 +1116,7 @@
                 <td style="width: 33.2117%; text-align: right; height: 18px;">Fecha</td>
               </tr>
               <tr style="height: 18px;">
-                <td style="width: 33.2117%; height: 18px;">3434355</td>
+                <td style="width: 33.2117%; height: 18px;"></td>
                 <td style="width: 33.2117%; text-align: right; height: 18px;">{{FacturaPrint.FECHA_FACTURA}}</td>
               </tr>
             </tbody>

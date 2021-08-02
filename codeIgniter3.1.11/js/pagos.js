@@ -10,6 +10,8 @@ app.controller('myCtrlPagos', function($scope,$http,$routeParams)
     $scope.importepago = 0;
     $scope.isModalActive = false;
     $scope.fechapago = '';
+    $scope.lstFormaPago = [];
+    $scope.lstBancos = [];
     $scope.hoy = '';
     $scope.idPago = -1;
     $scope.importeInicial = 0;
@@ -25,9 +27,9 @@ app.controller('myCtrlPagos', function($scope,$http,$routeParams)
         saldopendiente:0,
         fechapago:'',
         importepago:0,
+        movimiento:"1",
+        banco:-1,
         pagado:0,
-        movimiento:0,
-        banco:0,
         cheque:'',
         depositoen:0,
         poliza:'',
@@ -36,6 +38,12 @@ app.controller('myCtrlPagos', function($scope,$http,$routeParams)
         aniofiscal:'',
         idsucursal:''
     }
+    var banco = {
+      'ID_BANCO':-1,
+      'CLAVE':'',
+      'DESCRIPCION':'Seleccione un Banco',
+      'SAT':''
+    };
     $scope.lstCompras = [];
     $scope.lstPagos = [];
     $scope.permisos = {
@@ -64,6 +72,8 @@ app.controller('myCtrlPagos', function($scope,$http,$routeParams)
     }).catch(function(err){
         console.log(err);
     });
+    $scope.getFormaPago();
+    $scope.getBancos();
     };
 
     $scope.getListaCompras = () =>{
@@ -113,6 +123,29 @@ app.controller('myCtrlPagos', function($scope,$http,$routeParams)
           console.log(err);
         });
      
+    }
+
+
+  $scope.getFormaPago = function(){
+    $http.get(pathUtils+'getformpag',{responseType:'json'}).
+    then(res => {
+      if(res.data.length > 0){
+        $scope.lstFormaPago = res.data;
+      }
+    }).catch(err =>	{
+      console.log(err);
+    });
+  }
+  
+    $scope.getBancos = () =>{
+      $http.get(pathUtils+'getbancos')
+      .then(res =>{
+        $scope.lstBancos = res.data;
+        $scope.lstBancos.unshift(banco);
+      })
+      .catch(err=>{
+        console.log(err);
+      });
     }
 
   $scope.aplicaPago = () =>{

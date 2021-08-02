@@ -1,6 +1,6 @@
 app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
 {
-  const rowNumFill = 14;
+  const rowNumFill = 13;
   var idsucursal = 0;
   $scope.fecha = formatDatePrint(new Date());
   $scope.fechaPantalla = formatDatePantalla(new Date());

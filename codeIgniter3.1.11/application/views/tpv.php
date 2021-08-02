@@ -1,3 +1,59 @@
+<style type="text/css">
+#register {
+  width: 20em;
+  margin: auto;
+}
+#ticket2 {
+	font-family: sans-serif;
+  font-size: 20px;
+  background: white;
+  margin: 0 1em;
+  padding: 1em;
+  box-shadow: 0 0 5px rgba(0,0,0,.25);
+}
+#ticket2 h1 {
+  text-align: center;
+}
+#ticket2 table {
+  font-family: monospace;
+  width: 100%;
+  border-collapse: collapse;
+}
+#ticket2 td, #ticket2 th {
+  padding: 5px;
+}
+#ticket2 th {
+  text-align: left;
+}
+#ticket2 td, #ticket2 #total {
+  text-align: right;
+}
+#ticket2 tfoot th {
+  border-top: 1px solid black;
+}
+
+#entry {
+  background: lightgray;
+  padding: 1px;
+  border-radius: 10px;
+
+}
+#entry td {
+  width: 80%;
+  padding: 7px;
+  box-sizing: border-box;
+  border: 1px solid black;
+  text-align: right;
+  font-family: sans-serif;
+  font-size: 13px;
+
+  
+}
+#entry th:focus {
+  outline: none;
+  border-color: rgba(255,255,255,.75);
+}
+    </style>
 <input type="hidden" id="updtTblComp" value="F">
 <div class="container">
   <div class="notification" align="center">
@@ -949,6 +1005,12 @@
 					<td colspan="2" style="text-align:center">{{empresa.NOMBRE}}</td>
 				</tr>
 				<tr>
+					<td colspan="2" style="text-align:center">Código de Identificación Forestal</td>
+				</tr>
+				<tr>
+					<td colspan="2" style="text-align:center">R-29-010-FOS-001/11</td>
+				</tr>
+				<tr>
 					<td colspan="2" style="text-align:center">{{empresa.DOMICILIO}}</td>
 				</tr>
 				<tr>
@@ -1029,6 +1091,79 @@
 				</tr>
 			</table>
 		</div>
+	</div>
+	<div id="ticket2" style="display:none">
+	<center><img src="../img/logo.jpg" alt="Pinabete" style="width:197px;height:111px;"></center>
+    <center><h3>{{empresa.NOMBRE}}</h3></center>
+    <center><h6>Registro Forestal: <strong>R-29-010-FOS-001/11</strong></h6></center>
+    <center><h6>{{empresa.DOMICILIO}}</h6></center>
+		<center><h6>{{empresa.RFC}}</h6></center>
+    <hr>
+    <table style="text-align:right">
+    <tr>
+      <td>No Ticket:</td>
+      <td style="text-align:right"><strong>{{docto}}</strong></td>
+    </tr>
+		<tr>
+      <td>Cliente:</td>
+      <td style="text-align:right"><strong>{{nombre_cliente}}</strong></td>
+    </tr>
+    <tr>
+      <td>Forma de pago:</td>
+      <td style="text-align:right"><strong>{{formaPago}}</strong></td>
+    </tr>
+    <tr>
+      <td>Fecha:</td>
+      <td style="text-align:right" id="fechaTicket2"></td>
+    </tr>
+    </table>
+    <hr>
+    <table border="0">
+      <tr>
+        <th style="text-align: left;"><strong>Cant</strong></th>
+        <th style="text-align: center;"><strong>Descripción</strong></th>
+        <th style="text-align: right;"><strong>Precio</strong></th>
+      </tr>
+      <tbody id="entries">
+        <tr ng-repeat="x in lstProdCompra">
+          <td style="text-align: center;">{{x.CANTIDAD}}</td>
+          <th>{{x.DESCRIPCION}}</th>
+          <td id="total" style="text-align: right;">{{x.IMPORTE | currency}}<td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <th colspan="2" style="text-align: right;border-top: 1px solid black;border-collapse: collapse;">SubTotal</th>
+          <td id="total" style="text-align: right;border-top: 1px solid black;border-collapse: collapse;">{{subtotal | currency}}</td>
+        </tr>
+        <tr>
+          <th colspan="2" style="text-align: right;border-top: 1px solid black;border-collapse: collapse;">Descuento</th>
+          <td id="total"  style="text-align: right;border-top: 1px solid black;border-collapse: collapse;">{{dsctoValor | currency}}</td>
+        </tr>
+        <tr>
+          <th colspan="2" style="text-align: right;border-top: 1px solid black;border-collapse: collapse;">Iva</th>
+          <td id="total" style="text-align: right;border-top: 1px solid black;border-collapse: collapse;">{{impuestos | currency}}</td>
+        </tr>
+        <tr>
+          <th colspan="2" style="text-align: right;border-top: 1px solid black;border-collapse: collapse;">Total</th>
+          <td style="text-align: right;border-top: 1px solid black;border-collapse: collapse;">{{total | currency}}</td>
+        </tr>
+      </tfoot>
+    <br>
+		<table style="padding: 0em; margin: 0em;">
+      <tr>
+        <th>Visitanos en Facebook </th>
+      </tr>
+      <tr>
+        <th>@madederiaelpinabete</th>
+      </tr>
+      <tr>
+        <th>Tel: 2464582374</th>
+      </tr>
+      <tr>
+        <th>madederiaelpinabete@hotmail.com</th>
+      </tr>
+    </table>
 	</div>
 </div>
 

@@ -64,7 +64,7 @@ app.controller('myInicio', function($scope,$http,$interval){
     $scope.data = [[0,0,0,0,0,0,0,0,0,0,0,0]];
     $scope.labels = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul','Ago','Sep','Oct','Nov','Dic'];
     $scope.series = [$scope.aniofiscal];
-    $http.get(pathRepo+'ventasfy/'+$scope.idempresa+'/'+$scope.aniofiscal)
+    $http.get(pathRepo+'ventasfy/'+$scope.idempresa+'/'+$scope.aniofiscal+'/'+$scope.idsucursal)
     .then(res =>{
       if(res.data){
         for(var i=0;i<res.data.length;i++){
@@ -78,7 +78,7 @@ app.controller('myInicio', function($scope,$http,$interval){
   }
 
   $scope.getCuentasXCobrar = () =>{
-    $http.get(pathRepo+'ctsxcob/'+$scope.idempresa+'/'+$scope.aniofiscal)
+    $http.get(pathRepo+'ctsxcob/'+$scope.idempresa+'/'+$scope.aniofiscal+'/'+$scope.idsucursal)
     .then(res =>{
       if(res.data.length > 0){
         res.data.forEach(element => {
@@ -91,7 +91,7 @@ app.controller('myInicio', function($scope,$http,$interval){
   }
 
   $scope.getCuentasXPagar = () =>{
-    $http.get(pathRepo+'ctsxpag/'+$scope.idempresa+'/'+$scope.aniofiscal)
+    $http.get(pathRepo+'ctsxpag/'+$scope.idempresa+'/'+$scope.aniofiscal+'/'+$scope.idsucursal)
     .then(res =>{
       if(res.data.length > 0){
         res.data.forEach(element => {

@@ -35,7 +35,16 @@ class Creacfdixml extends CI_Controller
         $this->load->library('crearcfdi');
         $this->load->library('xml2pdf');    
         $this->load->model('catalogosmodel');   
-        
+        $this->params = array(
+          "url"=>"http://services.test.sw.com.mx",
+          "user"=>"omar.valdez.becerril@gmail.com",
+          "password"=> "omar.sw"
+        );   
+        /*$this->params = array(
+            "url"=>"http://services.sw.com.mx",
+            "user"=>"omar.valdez.becerril@gmail.com",
+            "password"=> "Ov/d4*035"
+          );*/
     }
 
 
@@ -246,8 +255,47 @@ class Creacfdixml extends CI_Controller
           header('Content-type: text/plain');
           echo 'Caught exception: ',  $e->getMessage(), "\n";
       }        
-  }
+    }
     
+    function cancelafactura($idFactura,$idEmpresa,$idSucursal){
+        try{
+            $factura = json_decode($this->facturamodel->get_factura_by_id($idFactura));
+            if($factura){
+                $uuid = explode($factura[0]->CADENA_SAT,'|')[2];
+                $cfdi = $this->facturamodel->getDataCFDI($idEmpresa,$idSucursal);         
+                $archivoCerPem = $cfdi[0]->RUTA_PEM;
+                $archivoKeyPem = $cfdi[0]->RUTA_KEY;
+                $paramsCancel = array(
+                    "url"=>"http://services.test.sw.com.mx",
+                    "user"=>"omar.valdez.becerril@gmail.com",
+                    "password"=> "omar.sw",
+                    "uuid"=> $uuid,
+                    "rfc"=> $cfdi[0]->RFC,
+                    "b64Cer"=> file_get_contents($archivoCerPem),
+                    "b64Key"=> file_get_contents($archivoKeyPem)
+                );
+                var_dump($paramsCancel);
+                header("Content-type: application/json");
+
+                $cancelationService = CancelationService::Set($paramsCancel); //asignamos los valores al servicio
+                $result = $cancelationService::CancelationByCSD();//usamos el servicio de cancelación
+                
+                //$result->messageDetail;
+                return $this->output
+                ->set_content_type('application/json')
+                    ->set_output(json_encode(array("status"=>"fail","message"=>$result->message)));
+            }else{
+                return $this->output
+                ->set_content_type('application/json')
+                    ->set_output(json_encode(array("status"=>"fail","message"=>"La factura no ha sido timbrada")));
+            }
+        }
+        catch(Exception $e){
+            return $this->output
+            ->set_content_type('application/json')
+                ->set_output(json_encode(array("status"=>"fail","message"=>$e->message)));
+        }
+    }
 
     function getdatacfdi($idEmpresa,$idSucursal){
         $result = $this->facturamodel->getDataCFDI($idEmpresa,$idSucursal); 

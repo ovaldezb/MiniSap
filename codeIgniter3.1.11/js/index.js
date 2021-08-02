@@ -1,4 +1,4 @@
-var pathCliente = '/core/';
+var pathCliente = '/pinabete/';
 var pathPrve = pathCliente+'proveedor/';
 var pathClte = pathCliente+'cliente/';
 var pathUtils = pathCliente+'utils/';
@@ -26,6 +26,7 @@ var pathCreacfdi = pathCliente+'creacfdixml/';
 var pathRepcxc = pathCliente+'reportecxc/';
 var pathRepcxp = pathCliente+'reportecxp/';
 var pathRepcobr = pathCliente+'repcobranza/';
+var pathReppagos = pathCliente+'reppagos/';
 var pathTransfer = pathCliente+'transferencia/';
 var app = angular.module("myApp", ["ngRoute","chart.js"]);
 app.config(function($routeProvider) {
@@ -104,6 +105,9 @@ app.config(function($routeProvider) {
     })
     .when("/rpcb/:idproc",{
       templateUrl : pathRepcobr
+    })
+    .when("/rpag/:idproc",{
+      templateUrl : pathReppagos
     })
     .when("/trsc/:idproc",{
       templateUrl : pathTransfer

@@ -1310,9 +1310,9 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
 
   $scope.imprimeCompra = () => {
     var h = new Date();
-    var ft = document.getElementById("fechaTicket");
-    ft.innerHTML = formatDateInsert(h);
-    var ficha = document.getElementById("ticket");
+    var ft = document.getElementById("fechaTicket2");
+    ft.innerHTML = '<strong>'+formatDateInsert(h)+'</strong>';
+    var ficha = document.getElementById("ticket2");
     var ventimp = window.open(" ", "popimpr");
     ventimp.document.write(ficha.innerHTML);
     ventimp.document.close();

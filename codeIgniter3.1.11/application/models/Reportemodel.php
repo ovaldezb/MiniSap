@@ -232,19 +232,20 @@ class Reportemodel extends CI_model
     return $result;
   }
 
-  function get_ventas_aniofiscal($idEmpresa,$anioFiscal){
+  function get_ventas_aniofiscal($idEmpresa,$anioFiscal,$idsucursal){
     $query = 'SELECT CAST(to_char(V."FECHA_VENTA",\'MM\') as integer)-1 as "MES", SUM(V."IMPORTE") as "IMPORTE"
               FROM "VENTAS" as V
               WHERE V."ID_EMPRESA" = $1
               AND V."ANIO_FISCAL"  = $2
+              AND V."ID_SUC_VENDIO" = $3
               GROUP BY to_char(V."FECHA_VENTA",\'MM\')
               ORDER BY to_char(V."FECHA_VENTA",\'MM\')';
     pg_prepare($this->conn,"ventas_aniofiscal",$query);
-    $result = pg_fetch_all(pg_execute($this->conn,"ventas_aniofiscal",array($idEmpresa,$anioFiscal)));
+    $result = pg_fetch_all(pg_execute($this->conn,"ventas_aniofiscal",array($idEmpresa,$anioFiscal,$idsucursal)));
     return $result;
   }
 
-  function get_cuentas_x_cobrar($idEmpresa,$anioFiscal){
+  function get_cuentas_x_cobrar($idEmpresa,$anioFiscal,$idscursal){
     $query = 
     'SELECT X."SALDO" as "SALDO",\'$\'||TRIM(TO_CHAR(X."SALDO",\'999,999,999.99\')) as "SALDOCURR", X."NOMBRE" as "CLIENTE", X."SALDO"/Z."TOTAL" * 100 as "PORCENTAJE"
     FROM 
@@ -253,17 +254,20 @@ class Reportemodel extends CI_model
      INNER JOIN "CLIENTE" as C ON C."ID_CLIENTE"  = F."ID_CLIENTE" 
      WHERE F."ID_EMPRESA" = $1
      AND F."ANIO_FISCAL" = $2
+     AND F."ID_SUCURSAL" = $3
      AND "SALDO" <> 0
      GROUP BY C."NOMBRE" ) as X,
     (SELECT SUM(Y."SALDO") as "TOTAL" 
-     FROM "FACTURA" as Y WHERE Y."ID_EMPRESA" = $3 
-     AND Y."ANIO_FISCAL" = $4 ) as Z';
+     FROM "FACTURA" as Y 
+     WHERE Y."ID_EMPRESA" = $4 
+     AND Y."ANIO_FISCAL" = $5
+     AND Y."ID_SUCURSAL" = $6 ) as Z';
     pg_prepare($this->conn,"cuentasxcobrar",$query);
-    $result = pg_fetch_all(pg_execute($this->conn,"cuentasxcobrar",array($idEmpresa,$anioFiscal,$idEmpresa,$anioFiscal)));
+    $result = pg_fetch_all(pg_execute($this->conn,"cuentasxcobrar",array($idEmpresa,$anioFiscal,$idscursal,$idEmpresa,$anioFiscal,$idscursal)));
     return json_encode($result, JSON_NUMERIC_CHECK);
   }
 
-  function get_cuentas_x_pagar($idEmpresa,$anioFiscal){
+  function get_cuentas_x_pagar($idEmpresa,$anioFiscal,$idscursal){
     $query = 
     'SELECT X."SALDO", \'$\'||TRIM(TO_CHAR(X."SALDO",\'999,999,999.99\')) as "SALDOCURR",X."SALDO" / Y."TOTAL" as "PORCENTAJE", X."NOMBRE"
     FROM
@@ -272,12 +276,14 @@ class Reportemodel extends CI_model
     INNER JOIN "PROVEEDORES" as P ON P."ID_PROVEEDOR" = C."ID_PROVEEDOR"
     WHERE C."ID_EMPRESA" = $1
     AND C."ANIO_FISCAL" = $2
+    AND C."ID_SUC_COMPRO" = $3
     GROUP BY "NOMBRE") as X,
     (SELECT SUM("SALDO") as "TOTAL" FROM "COMPRAS"
-    WHERE "ID_EMPRESA" = $3
-    AND "ANIO_FISCAL" = $4 ) as Y';
+    WHERE "ID_EMPRESA" = $4
+    AND "ANIO_FISCAL" = $5
+    AND "ID_SUC_COMPRO" = $6 ) as Y';
     pg_prepare($this->conn,"cuentasxcobrar",$query);
-    $result = pg_fetch_all(pg_execute($this->conn,"cuentasxcobrar",array($idEmpresa,$anioFiscal,$idEmpresa,$anioFiscal)));
+    $result = pg_fetch_all(pg_execute($this->conn,"cuentasxcobrar",array($idEmpresa,$anioFiscal,$idscursal,$idEmpresa,$anioFiscal,$idscursal)));
     return json_encode($result, JSON_NUMERIC_CHECK);
   }
 
@@ -317,6 +323,23 @@ class Reportemodel extends CI_model
     ORDER BY "FECHA_COBRO"';
     pg_prepare($this->conn,"cobranzaa",$query);
     $result = pg_fetch_all(pg_execute($this->conn,"cobranzaa",array($anioFiscal,$idEmpresa,$fecIni,$fecFin)));
+    return json_encode($result);
+  }
+
+  function get_reporte_pagos($anioFiscal,$idEmpresa, $fecIni,$fecFin){
+    $query = 'SELECT F."DOCUMENTO" as "DOCTO", TO_CHAR(CO."FECHA_PAGO",\'DD-MM-YYYY\') as "FECHA_PAGO","IMPORTE_PAGO" as "ABONO",PR."NOMBRE",
+    TRIM(FP."CLAVE") as "FP", \'TBD\' as "MP", CO."ID_MOVIMIENTO" as "ID_FP"
+    FROM "PAGOS" as CO
+    INNER JOIN "FORMA_PAGO" as FP ON FP."ID_FORMA_PAGO" = CO."ID_MOVIMIENTO"
+    INNER JOIN "COMPRAS" as F ON F."ID_COMPRA" = CO."ID_COMPRA"
+    INNER JOIN "PROVEEDORES" as PR ON PR."ID_PROVEEDOR" = F."ID_PROVEEDOR"
+    AND CO."ANIO_FISCAL" = $1
+    AND CO."ID_EMPRESA" = $2
+    AND CO."FECHA_PAGO" >= $3
+    AND CO."FECHA_PAGO" <= $4
+    ORDER BY CO."FECHA_PAGO"';
+    pg_prepare($this->conn,"pagos",$query);
+    $result = pg_fetch_all(pg_execute($this->conn,"pagos",array($anioFiscal,$idEmpresa,$fecIni,$fecFin)));
     return json_encode($result);
   }
 

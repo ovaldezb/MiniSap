@@ -35,6 +35,9 @@
       </colgroup>
       <tbody>
         <tr style="background-color:CornflowerBlue; color:Ivory;">
+          <td colspan="6" style="text-align:center">ENVIO</td>
+        </tr>
+        <tr style="background-color:CornflowerBlue; color:Ivory;">
           <td class="font12" style="text-align:center">Origen</td>
           <td class="font12" style="text-align:center">Destino</td>
           <td class="font12" style="text-align:center">Producto</td>
@@ -44,7 +47,7 @@
         </tr>
       </tbody>
     </table>
-    <div style="width:100%;height:500px;margin-top:-25px">
+    <div style="width:100%;height:200px;overflow:auto;margin-top:-25px">
       <table class="table is-bordered is-hoverable" style="width:100%" id="tablatransfer">
         <colgroup>
           <col width="15%"/>
@@ -56,6 +59,52 @@
         </colgroup>
         <tbody>
           <tr ng-repeat="x in lstTransfer">
+            <td class="font12" style="text-align:center">{{x.ORIGEN}}</td>
+            <td class="font12" style="text-align:center">{{x.DESTINO}}</td>
+            <td class="font12">{{x.DESCRIPCION}}</td>
+            <td class="font12" style="text-align:center">{{x.CANTIDAD}}</td>
+            <td class="font12" style="text-align:center">{{x.FECHA_TRANSPASO}}</td>
+            <td class="font12" style="text-align:center">{{x.CLAVE_USR}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <br>
+    <table class="table is-bordered" style="width:100%">
+      <colgroup>
+        <col width="15%"/>
+        <col width="15%"/>
+        <col width="30%"/>
+        <col width="10%"/>
+        <col width="20%"/>
+        <col width="10%"/>
+      </colgroup>
+      <tbody>
+        <tr style="background-color:CornflowerBlue; color:Ivory;">
+          <td colspan="6" style="text-align:center">RECEPCION</td>
+        </tr>
+        <tr style="background-color:CornflowerBlue; color:Ivory;">
+          <td class="font12" style="text-align:center">Origen</td>
+          <td class="font12" style="text-align:center">Destino</td>
+          <td class="font12" style="text-align:center">Producto</td>
+          <td class="font12" style="text-align:center">Cant</td>
+          <td class="font12" style="text-align:center">Fecha</td>
+          <td class="font12" style="text-align:center">Usuario</td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="width:100%;height:200px;overflow:auto;margin-top:-25px">
+      <table class="table is-bordered is-hoverable" style="width:100%" id="tablatransfer">
+        <colgroup>
+          <col width="15%"/>
+          <col width="15%"/>
+          <col width="30%"/>
+          <col width="10%"/>
+          <col width="20%"/>
+          <col width="10%"/>
+        </colgroup>
+        <tbody>
+          <tr ng-repeat="x in lstRecepcion">
             <td class="font12" style="text-align:center">{{x.ORIGEN}}</td>
             <td class="font12" style="text-align:center">{{x.DESTINO}}</td>
             <td class="font12">{{x.DESCRIPCION}}</td>

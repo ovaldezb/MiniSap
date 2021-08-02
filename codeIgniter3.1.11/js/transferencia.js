@@ -7,6 +7,7 @@ app.controller("CtrlTransfer", function ($scope, $http,$routeParams) {
   $scope.lstSucursal = [];
   $scope.lstProdBusqueda = [];
   $scope.lstTransfer = [];
+  $scope.lstRecepcion = [];
   $scope.permisos = {
     alta: false,
     baja: false,
@@ -50,7 +51,8 @@ app.controller("CtrlTransfer", function ($scope, $http,$routeParams) {
     $http.get(pathTransfer+'gettransfer/'+idempresa+'/'+anioFiscal+'/'+idsucursal)
     .then(res =>{
       if(res.data){
-        $scope.lstTransfer = res.data;
+        $scope.lstTransfer = res.data.tx;
+        $scope.lstRecepcion = res.data.rx;
       }
     })
     .catch(err =>{

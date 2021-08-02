@@ -216,21 +216,17 @@
                 <div class="columns">
                   <div class="column">Movimiento</div>
                   <div class="column">
-                    <select name="" id="">
-                      <option value="">Cheque</option>
-                      <option value="">Efectivo</option>
-                      <option value="">Transferencia</option>
-                    </select>
+                    <div class="select is-small">
+                    <select ng-model="pago.movimiento" ng-options="x.ID_FORMA_PAGO as x.CLAVE+' '+x.DESCRIPCION for x in lstFormaPago"></select>
+                    </div>
                   </div>
                 </div>
                 <div class="columns">
                   <div class="column">Banco</div>
                   <div class="column">
-                    <select name="" id="">
-                      <option value="">BBVA</option>
-                      <option value="">Santander</option>
-                      <option value="">Banamex</option>
-                    </select>
+                    <div class="select is-small">
+                      <select ng-model="pago.banco" ng-options="x.ID_BANCO as x.DESCRIPCION for x in lstBancos"></select>
+                    </div>
                   </div>
                 </div>
                 <div class="columns">
