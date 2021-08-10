@@ -129,15 +129,15 @@ class Tpvmodel extends CI_model
 	}
 
   function get_data_impr_ticket($idVenta){
-    $query1 = 'SELECT "DOCUMENTO","PAG_EFECTIVO","PAG_TARJETA","PAG_CHEQUE","PAG_VALES",C."NOMBRE","ID_TIPO_PAGO" 
+    $query1 = 'SELECT "DOCUMENTO","PAG_EFECTIVO","PAG_TARJETA","PAG_CHEQUE","PAG_VALES",C."NOMBRE","ID_TIPO_PAGO","FECHA_VENTA" 
     FROM "VENTAS" as V
     INNER JOIN "CLIENTE" as C ON V."CODIGO_CLIENTE" = C."ID_CLIENTE"
     WHERE "ID_VENTA" = $1';
     pg_prepare($this->conn,"select_venta",$query1);
 		$result1 = pg_fetch_all(pg_execute($this->conn,"select_venta",array($idVenta)));
 
-    $query2 = 'SELECT "CANTIDAD",P."DESCRIPCION","IMPORTE",P."PRECIO_LISTA",P."ES_DESCUENTO" as "ESDSCTO", 
-    P."PRECIO_DESCUENTO" as "DESCUENTO", P."IVA"
+    $query2 = 'SELECT "CANTIDAD",P."DESCRIPCION","IMPORTE",V."PRECIO" as "PRECIO_LISTA",CASE WHEN V."DESCUENTO" = 0 THEN \'f\' ELSE \'t\' END as "ESDSCTO",
+    V."DESCUENTO", P."IVA"
     FROM "VENTAS_PRODUCTO" as V
     INNER JOIN "PRODUCTO" as P ON P."ID_PRODUCTO" = V."ID_PRODUCTO"
     WHERE "ID_VENTA" = $1';

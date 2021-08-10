@@ -4,7 +4,7 @@
   class Xml2pdf{    
     function convierte($xml,$cadena_sat,$domicilio,$empresa,$formapagoArray,$uso_cfdiArray,$qr){                
       $rows = 15;
-      $rows1 = 8;
+      $rows1 = 9;
       $xml_doc = new DOMDocument('1.0','utf-8');
       $xml_doc->loadXML($xml);
       $complemento = $xml_doc->getElementsByTagNameNS('http://www.sat.gob.mx/TimbreFiscalDigital', 'TimbreFiscalDigital')->item(0);
@@ -60,9 +60,9 @@
               <td class='t3c1' style='border-right:2px solid black'>{$concep->getAttribute('Cantidad')}</td>
               <td class='t3c2' style='border-right:2px solid black'>{$concep->getAttribute('Unidad')}</td>
               <td class='t3c3' style='border-right:2px solid black'>{$concep->getAttribute('Descripcion')}</td>
-              <td class='t3c4' style='border-right:2px solid black'>${$concep->getAttribute('ValorUnitario')}</td>
-              <td class='t3c5' style='border-right:2px solid black'>${$concep->getAttribute('Descuento')}</td>
-              <td class='t3c6'>${$concep->getAttribute('Importe')}</td>
+              <td class='t3c4' style='border-right:2px solid black'>$ {$concep->getAttribute('ValorUnitario')}</td>
+              <td class='t3c5' style='border-right:2px solid black'>$ {$concep->getAttribute('Descuento')}</td>
+              <td class='t3c6'>$ {$concep->getAttribute('Importe')}</td>
           </tr>";
           $arrayConcept2 .="
           <tr class='item'>
@@ -486,7 +486,7 @@
 			}
 			
 			.footer {
-			position: fixed;
+			position: inherit;
 			left: 0px !important;
 			bottom: 0px !important;
       margin: 0 auto !important;
@@ -603,7 +603,7 @@
               </td>
             </tr>			 
 			    </table>
-			    <div class='footer' style='width: auto;'>
+			    <div class='footer'>
             <div>
               <strong>Sello digital del CFDI:</strong></br>
             </div>

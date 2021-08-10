@@ -13,6 +13,9 @@
     use PHPMailer\PHPMailer\Exception;
 
     use SWServices\Stamp\StampService as StampService;
+    use SWServices\Cancelation\CancelationService as CancelationService;
+    use SWServices\Authentication\AuthenticationService as AuthenticationService;
+    use SWServices\Cancelation\CancelationRequest as cancelationRequest;
     use Dompdf\Dompdf;
 
     error_reporting(E_STRICT | E_ALL);
@@ -261,21 +264,26 @@ class Creacfdixml extends CI_Controller
         try{
             $factura = json_decode($this->facturamodel->get_factura_by_id($idFactura));
             if($factura){
-                $uuid = explode($factura[0]->CADENA_SAT,'|')[2];
+                //$auth = AuthenticationService::auth($this->params);
+	            $token = "
+                pojeopopkadokasdñklasdlñasdlñksadñldsañladasdasdpojeopopkadokasdñklasdlñasdlñksadñldsañladasdasdpojeopopkadokasdñklasdlñasdlñksadñldsañladasdasdpojeopopkadokasdñklasdlñasdlñksadñldsañladasdasdpojeopopkadokasdñklasdlñasdlñksadñldsañladasdasdpojeopopkadokasdñklasdlñasdlñksadñldsañladasdasdpojeopopkadokasdñklasdlñasdlñksadñldsañladasdasdpojeopopkadokasdñklasdlñasdlñksadñldsañladasdasdpojeopopkadokasdñklasdlñasdlñksadñldsañladasdasdpojeopopkadokasdñklasdlñasdlñksadñldsañladasdasd
+                ";//$auth::Token();
+                $uuid = explode('|',$factura[0]->CADENA_SAT)[3];
                 $cfdi = $this->facturamodel->getDataCFDI($idEmpresa,$idSucursal);         
                 $archivoCerPem = $cfdi[0]->RUTA_PEM;
                 $archivoKeyPem = $cfdi[0]->RUTA_KEY;
                 $paramsCancel = array(
                     "url"=>"http://services.test.sw.com.mx",
-                    "user"=>"omar.valdez.becerril@gmail.com",
+                    //"user"=>"omar.valdez.becerril@gmail.com",
                     "password"=> "omar.sw",
+                    "token" => $token,
                     "uuid"=> $uuid,
                     "rfc"=> $cfdi[0]->RFC,
                     "b64Cer"=> file_get_contents($archivoCerPem),
                     "b64Key"=> file_get_contents($archivoKeyPem)
                 );
-                var_dump($paramsCancel);
-                header("Content-type: application/json");
+                //var_dump($paramsCancel);
+                //header("Content-type: application/json");
 
                 $cancelationService = CancelationService::Set($paramsCancel); //asignamos los valores al servicio
                 $result = $cancelationService::CancelationByCSD();//usamos el servicio de cancelación
@@ -283,7 +291,7 @@ class Creacfdixml extends CI_Controller
                 //$result->messageDetail;
                 return $this->output
                 ->set_content_type('application/json')
-                    ->set_output(json_encode(array("status"=>"fail","message"=>$result->message)));
+                    ->set_output(json_encode(array("status"=>"success","message"=>$result->messageDetail)));
             }else{
                 return $this->output
                 ->set_content_type('application/json')

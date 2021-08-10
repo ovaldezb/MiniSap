@@ -1229,6 +1229,14 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
           .catch(function(err){
           console.log(err);
         });
+        $http
+        .post("https://ready2solve.club:5009/api/ventas", ventaProd)
+        .then(function (res) {
+          console.log(res);
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
       }
     }
 

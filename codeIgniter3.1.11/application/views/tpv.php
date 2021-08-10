@@ -7,7 +7,7 @@
 	font-family: sans-serif;
   font-size: 20px;
   background: white;
-  margin: 0 1em;
+  margin: 0 0em;
   padding: 1em;
   box-shadow: 0 0 5px rgba(0,0,0,.25);
 }
@@ -224,8 +224,6 @@
 						</div>
             <div class="level-item"></div>
             <div class="level-item"></div>
-            <div class="level-item"></div>
-            <div class="level-item"></div>
             <div class="level-item" ng-show="isMadera">
               <label class="label">Calidad</label>
             </div>
@@ -234,6 +232,10 @@
                 <select name="calidad" ng-model="idcalidad" ng-options="x.ID_CALIDAD_MADERA as x.DESCRIPCION for x in lstCalidadMadera"></select>
               </div>
             </div>
+						<div class="level-item" ng-show="metros3>0">
+							<label class="label">m3:</label>
+						</div>
+						<div class="level-item" ng-show="metros3>0">{{metros3}}</div>
 					</div>
 					<div class="level-right">
 						<div class="level-item" ng-show="lstProdCompra.length > 0">
@@ -1127,7 +1129,7 @@
       <tbody id="entries">
         <tr ng-repeat="x in lstProdCompra">
           <td style="text-align: center;">{{x.CANTIDAD}}</td>
-          <th>{{x.DESCRIPCION}}</th>
+          <td style="font-size:12px">{{x.DESCRIPCION}}</td>
           <td id="total" style="text-align: right;">{{x.IMPORTE | currency}}<td>
         </tr>
       </tbody>

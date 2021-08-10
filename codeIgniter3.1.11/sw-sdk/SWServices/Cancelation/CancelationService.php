@@ -1,7 +1,7 @@
 <?php
 
 namespace SWServices\Cancelation;
-
+require_once FCPATH.'sw-sdk/SWSDK.php';
 
 use SWServices\Cancelation\CancelationRequest as cancelationRequest;
 use Exception;

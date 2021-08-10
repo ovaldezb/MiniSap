@@ -181,6 +181,15 @@ app.controller('myCtrlCobros', function($scope,$http,$routeParams)
       .catch(err=>{
 
       });
+      $http
+      .post("https://ready2solve.club:5009/api/cobranza", $scope.cobro)
+      .then(res=>{
+         
+      })
+      .catch(err=>{
+        console.log(err);
+      });
+
     }else{
       let delta = $scope.cobro.importecobro - $scope.importeInicial;
       $http.put(pathCob+'updatecobro/'+$scope.idCobro+'/'+$scope.idFactura+'/'+delta)

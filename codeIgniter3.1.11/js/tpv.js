@@ -60,6 +60,7 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
   $scope.pago_efectivo = 0.0;
   $scope.pago_cheque = 0.0;
   $scope.pago_vales = 0.0;
+  $scope.metros3 = 0;
   $scope.formaPago = "";
   $scope.promocion = "";
   $scope.modalVerfClte = false;
@@ -88,6 +89,7 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
   $scope.idUsuario = "";
   $scope.isCancel = false;
   $scope.fechaCorteTmp = new Date();
+  $scope.fecha_venta = '';
   $scope.isAdmin = false;
   $scope.disableRegistra = false;
   $scope.idProceso = $routeParams.idproc;
@@ -595,7 +597,6 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
 
   $scope.agregaProducto = function () {
     var importe = 0.0;
-    //var cantDscto = 0;
     if (Number($scope.cantidad) == 0) {
       swal("La cantidad debe ser mayor a 0");
       $("#cantidad").focus();
@@ -654,6 +655,7 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
       $scope.lstProdCompra.push(dataCompra);
     }
     $scope.calculaValoresMostrar();
+    $scope.calculaMetrosCubicos();
     $scope.setSelected($scope.lstProdCompra[0].CODIGO, 0);
     $scope.borraProdenProgreso();
     if ($scope.captura_rapida) {
@@ -716,6 +718,7 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
 
   $scope.borraProducto = function () {
     $scope.lstProdCompra.splice($scope.indexRowCompra, 1);
+    $scope.calculaMetrosCubicos();
     $scope.calculaValoresMostrar();
 
     if ($scope.lstProdCompra.length > 0) {
@@ -743,6 +746,16 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
     }
     $scope.total = Number( $scope.subtotal - $scope.dsctoValor + $scope.impuestos).toFixed(2);
   };
+
+  $scope.calculaMetrosCubicos = ()=>{
+    $scope.metros3 = 0;
+    $scope.lstProdCompra.forEach(element => {
+      if(element.LINEA==="MADERA" && element.DESCRIPCION.indexOf('-') && element.DESCRIPCION.lastIndexOf('-') && element.DESCRIPCION.indexOf('-') !==element.DESCRIPCION.lastIndexOf('-')){
+        let medidas = element.DESCRIPCION.substring(element.DESCRIPCION.indexOf('-')+1,element.DESCRIPCION.lastIndexOf('-')).split('X');  
+        $scope.metros3 = Number(Number(medidas[0].trim() / 100 * medidas[1].trim() / 100 * medidas[2].trim() / 100 * element.CANTIDAD).toFixed(5));
+      }  
+    });
+  }
 
   $scope.buscacliente =  (event) => {
     var searchword;
@@ -958,9 +971,7 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
         Number($scope.pago_vales) <
         Number($scope.total)
     ) {
-      swal(
-        "La cantidad a cobrar es menor que el Importe Total, no se puede registrar la compra"
-      );
+      swal("La cantidad a cobrar es menor que el Importe Total, no se puede registrar la compra");
       return;
     }
     $scope.disableRegistra = true;
@@ -1011,19 +1022,24 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
       idmoneda: 1,
       idpedido: null,
       cliente: null,
-      idusuario:$scope.idUsuario
+      idusuario:$scope.idUsuario,
+      metros3:$scope.metros3
     };
 
     if($scope.fact.tipopago === 1){
       if ($scope.pago_efectivo > 0) {
-        $scope.formaPago = "Efectivo";
-      } else if ($scope.pago_tarjeta > 0) {
-        $scope.formaPago = "Tarjeta";
-      } else if ($scope.pago_vales) {
-        $scope.formaPago = "Vales";
-      } else if ($scope.pago_cheque) {
-        $scope.formaPago = "Cheque";
+        $scope.formaPago = "Efectivo | ";
+      } 
+      if ($scope.pago_tarjeta > 0) {
+        $scope.formaPago += "Tarjeta | ";
+      } 
+      if ($scope.pago_vales) {
+        $scope.formaPago += "Vales | ";
+      } 
+      if ($scope.pago_cheque) {
+        $scope.formaPago += "Cheque | ";
       }
+      $scope.formaPago = $scope.formaPago.substr(0,$scope.formaPago.length-2).trim();
     }else{
       $scope.formaPago = "Crédito";
     }
@@ -1104,6 +1120,8 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
     $("#regcompra").prop("disabled", true);
     $scope.getNextDocTpv();
     $scope.disableRegistra = false;
+    $scope.fecha_venta = '';
+    $scope.formaPago = '';
   };
 
   $scope.limpiaCancelVenta = function () {
@@ -1143,6 +1161,14 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
         .post(pathTpv + "registraventaprod", vntaProd)
         .then(function (res) {
           /*se insertó con éxito*/
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+        $http
+        .post("https://ready2solve.club:5009/api/ventas", vntaProd)
+        .then(function (res) {
+          console.log(res);
         })
         .catch(function (err) {
           console.log(err);
@@ -1311,7 +1337,12 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
   $scope.imprimeCompra = () => {
     var h = new Date();
     var ft = document.getElementById("fechaTicket2");
-    ft.innerHTML = '<strong>'+formatDateInsert(h)+'</strong>';
+    if($scope.fecha_venta === ''){
+      ft.innerHTML = '<strong>'+formatDateInsert(h)+'</strong>';
+    }else{
+      ft.innerHTML = '<strong>'+$scope.fecha_venta+'</strong>';
+    }
+    
     var ficha = document.getElementById("ticket2");
     var ventimp = window.open(" ", "popimpr");
     ventimp.document.write(ficha.innerHTML);
@@ -1594,6 +1625,20 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
           $scope.pago_tarjeta = res.data.datos.PAG_TARJETA;
           $scope.pago_vales = res.data.datos.PAG_VALES;
           $scope.pago_cheque = res.data.datos.PAG_CHEQUE;
+          $scope.fecha_venta = res.data.datos.FECHA_VENTA;
+          if ($scope.pago_efectivo > 0) {
+            $scope.formaPago = "Efectivo | ";
+          } 
+          if ($scope.pago_tarjeta > 0) {
+            $scope.formaPago += "Tarjeta | ";
+          } 
+          if ($scope.pago_vales) {
+            $scope.formaPago += "Vales | ";
+          } 
+          if ($scope.pago_cheque) {
+            $scope.formaPago += "Cheque | ";
+          }
+          $scope.formaPago = $scope.formaPago.substr(0,$scope.formaPago.length-2).trim();
           $scope.calculaValoresMostrar();
         }
       })
