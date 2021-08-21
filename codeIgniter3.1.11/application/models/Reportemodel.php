@@ -233,7 +233,7 @@ class Reportemodel extends CI_model
   }
 
   function get_ventas_aniofiscal($idEmpresa,$anioFiscal,$idsucursal){
-    $query = 'SELECT CAST(to_char(V."FECHA_VENTA",\'MM\') as integer)-1 as "MES", SUM(V."IMPORTE") as "IMPORTE"
+    $query = 'SELECT CAST(to_char(V."FECHA_VENTA",\'MM\') as integer)-1 as "MES", \'$\'||TRIM(TO_CHAR(SUM(V."IMPORTE"),\'999,999,999.99\')) as "IMPORTE"
               FROM "VENTAS" as V
               WHERE V."ID_EMPRESA" = $1
               AND V."ANIO_FISCAL"  = $2

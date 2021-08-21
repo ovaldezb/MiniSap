@@ -79,6 +79,7 @@ app.controller('myCtrlCobros', function($scope,$http,$routeParams)
         .then(res =>{
             if(res.data.length > 0){
               $scope.lstFacturas = res.data;
+              $scope.idFactura = -1;
             }
         })
         .catch(err =>{
@@ -179,7 +180,19 @@ app.controller('myCtrlCobros', function($scope,$http,$routeParams)
           }
       })
       .catch(err=>{
-
+        var log = {
+          "codigo":"cobranza-183",
+          "detalle":"error al guardar el cobro "+err,
+          "fecha":new Date().toDateString()
+        };
+        $http
+        .post("https://ready2solve.club:5009/api/lognet", log)
+        .then(res=>{
+           
+        })
+        .catch(err=>{
+          console.log(err);
+        });
       });
       $http
       .post("https://ready2solve.club:5009/api/cobranza", $scope.cobro)
@@ -200,6 +213,19 @@ app.controller('myCtrlCobros', function($scope,$http,$routeParams)
               $scope.getcobros();
               $scope.getListaFacturas(false);
           }
+          var log = {
+            "codigo":"cobranza-216",
+            "detalle":"se actualizo "+$scope.idCobro+'/'+$scope.idFactura+'/'+delta,
+            "fecha":new Date().toDateString()
+          };
+          $http
+          .post("https://ready2solve.club:5009/api/lognet", log)
+          .then(res=>{
+             
+          })
+          .catch(err=>{
+            console.log(err);
+          }); 
       })
       .catch(err=>{
 

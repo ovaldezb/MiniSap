@@ -1057,9 +1057,6 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
             .then(function (res) {
               $scope.idVenta = res.data[0].registra_venta;
               $scope.registraVentaProd();
-              /*if($scope.fact.req_factura){
-                    $scope.registraFactura(); 
-                  }*/
               $scope.imprimeCompra();
               $scope.limpiaCompra();
               swal(
@@ -1069,7 +1066,19 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
               );
             })
             .catch(function (err) {
-              console.log(err);
+              var log = {
+                "codigo":"tpv-1070",
+                "detalle":"error al registrar venta"+err,
+                "fecha":new Date().toDateString()
+              };
+              $http
+              .post("https://ready2solve.club:5009/api/lognet", log)
+              .then(res=>{
+                 
+              })
+              .catch(err=>{
+                console.log(err);
+              });
             });
         })
         .catch((err) => {
@@ -1080,16 +1089,25 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
         .post(pathTpv + "registraventa", dataVenta)
         .then(function (res) {
           $scope.idVenta = res.data[0].registra_venta;
-          /*if($scope.fact.req_factura){
-            $scope.registraFactura(); 
-          }*/
-          swal("La venta se registro exitosamente", "Felicidades!", "success");
           $scope.registraVentaProd();
           $scope.imprimeCompra();
           $scope.limpiaCompra();
+          swal("La venta se registro exitosamente", "Felicidades!", "success");
         })
         .catch(function (err) {
-          console.log(err);
+          var log = {
+            "codigo":"tpv-1099",
+            "detalle":"error al registrar venta"+err,
+            "fecha":new Date().toDateString()
+          };
+          $http
+          .post("https://ready2solve.club:5009/api/lognet", log)
+          .then(res=>{
+             
+          })
+          .catch(err=>{
+            console.log(err);
+          });
         });
     }
   };
@@ -1163,7 +1181,19 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
           /*se insertó con éxito*/
         })
         .catch(function (err) {
-          console.log(err);
+          var log = {
+            "codigo":"tpv-1185",
+            "detalle":"error al insertar venta prod "+err,
+            "fecha":new Date().toDateString()
+          };
+          $http
+          .post("https://ready2solve.club:5009/api/lognet", log)
+          .then(res=>{
+             
+          })
+          .catch(err=>{
+            console.log(err);
+          });
         });
         $http
         .post("https://ready2solve.club:5009/api/ventas", vntaProd)
