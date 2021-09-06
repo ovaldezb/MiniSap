@@ -9,9 +9,9 @@
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
   <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-  <script src="../core/js/utilerias.js"></script>
-  <link rel="stylesheet" href="../core/css/utils.css">
-  <link rel="stylesheet" href="../core/css/foopicker.css">
+  <script src="../js/utilerias.js"></script>
+  <link rel="stylesheet" href="../css/utils.css">
+  <link rel="stylesheet" href="../css/foopicker.css">
   <title>RTS</title>
 
 </head>

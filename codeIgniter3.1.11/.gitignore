@@ -8,3 +8,10 @@
 /mpdf
 /phpqrcode
 /sw-sdk
+/vendor
+/phpqrcode
+/uploads
+*.csv
+*.cer
+*.pem
+*.key

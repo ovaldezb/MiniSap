@@ -426,16 +426,17 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
   }
 
   $scope.getDomicilios = () =>{
+    $scope.lstDomis = [];
     $http.get(pathClte+'getdomis/'+$scope.pedido.idcliente)
     .then(res=>{
       if(res.data.length > 0){
       $scope.lstDomis = res.data;
-      $scope.domientrega.lugar =res.data[0].LUGAR;
+      /*$scope.domientrega.lugar =res.data[0].LUGAR;
       $scope.domientrega.calle =res.data[0].CALLE;
       $scope.domientrega.colonia =res.data[0].COLONIA;
       $scope.domientrega.cp =res.data[0].CP;
       $scope.domientrega.ciudad =res.data[0].CIUDAD;
-      $scope.domientrega.contacto =res.data[0].CONTACTO;
+      $scope.domientrega.contacto =res.data[0].CONTACTO;*/
       }
     })
   }
@@ -991,11 +992,17 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
           {
             $scope.idPedido = res.data[0].registra_pedido;
             $scope.registraPedidoProd();
-            swal('El pedido se registro exitosamente');
             $scope.isImprimir = true;
             $scope.isRegistra = false;
             $scope.getpedidos();
             $scope.showProgressBar = false;
+            swal('El pedido se registro exitosamente');
+            $scope.domientrega.calle='';
+            $scope.domientrega.colonia='';
+            $scope.domientrega.cp='';
+            $scope.domientrega.ciudad='';
+            $scope.domientrega.contacto='';
+            $scope.domientrega.lugar='';
           }).
           catch(function(err)
           {
@@ -1061,6 +1068,12 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
               $scope.isImprimir = true;
               $scope.isActualiza = false;
               swal('Se actualizó el pedido');
+              $scope.domientrega.calle='';
+              $scope.domientrega.colonia='';
+              $scope.domientrega.cp='';
+              $scope.domientrega.ciudad='';
+              $scope.domientrega.contacto='';
+              $scope.domientrega.lugar='';
             })
             .catch(err=>{
               console.log(err);
@@ -1271,6 +1284,12 @@ app.controller('myCtrlPedi', function($scope,$http,$interval,$routeParams)
         $scope.pedido.total = '';
         $scope.showUsuario = false;
         $scope.mpago_style = {background:'pink'};
+        $scope.domientrega.calle='';
+        $scope.domientrega.colonia='';
+        $scope.domientrega.cp='';
+        $scope.domientrega.ciudad='';
+        $scope.domientrega.contacto='';
+        $scope.domientrega.lugar='';
     }
 
 });

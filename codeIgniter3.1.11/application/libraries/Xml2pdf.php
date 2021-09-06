@@ -2,7 +2,7 @@
   defined('FCPATH') OR exit('No direct script access allowed');    
 
   class Xml2pdf{    
-    function convierte($xml,$cadena_sat,$domicilio,$empresa,$formapagoArray,$uso_cfdiArray,$qr){                
+    function convierte($xml,$cadena_sat,$domicilio,$empresa,$formapagoArray,$uso_cfdiArray,$qr,$idempresa,$CP){                
       $rows = 15;
       $rows1 = 9;
       $xml_doc = new DOMDocument('1.0','utf-8');
@@ -213,7 +213,7 @@
               </tr>
               <tr>
                 <td style='text-align:center'>
-                  <img src='./img/logo.jpg' alt='' width='123' height='123' />
+                  <img src='../img/{$idempresa}.jpg' alt='' width='123' height='123' />
                 </td>
                 <td>
                   <table style='width:100%'>
@@ -516,7 +516,7 @@
           </colgroup>
           <tr>
             <td class='title'>
-              <img src='./img/logo.jpg' alt='Company logo' style='width: 200px;' />
+              <img src='./img/{$idempresa}.jpg' alt='Company logo' style='width: 200px;' />
             </td>
             <td align='center'>{$rfc}<br/>
             {$empresa[0]->DOMICILIO}<br/>
@@ -543,8 +543,8 @@
               <strong>Cliente</strong> 
             </td>
             <td>{$nombre_receptor}</td>
-            <td><strong>RFC</strong></td>
-            <td>{$rfc_receptor}</td>
+            <td><strong>RFC</strong> {$rfc_receptor}</td>
+            <td><strong>CP</strong> {$CP}</td>
           </tr>
           <tr>
             <td>

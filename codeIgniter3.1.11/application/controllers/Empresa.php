@@ -46,7 +46,11 @@ class Empresa extends CI_Controller
                 $data['regimen'],
                 $data['digxcta'],
                 $data['cuenta_resultado'],
-                $data['resultado_anterior']);
+                $data['resultado_anterior'],
+                $data['telefono'],
+                $data['email'],
+                $data['redessociales'],
+                $data['mensaje']);
 
             if ($result) {
                 return $this->output
@@ -82,7 +86,12 @@ class Empresa extends CI_Controller
                 $data['regimen'],
                 $data['digxcta'],
                 $data['cuenta_resultado'],
-                $data['resultado_anterior']);
+                $data['resultado_anterior'],
+                $data['telefono'],
+                $data['email'],
+                $data['redessociales'],
+                $data['mensaje']
+            );
             if ($result) {
                 return $this->output
                     ->set_content_type('application/json')

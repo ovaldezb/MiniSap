@@ -193,7 +193,7 @@ app.controller('myCtrlIndex', function($scope,$http,$location,$window)
       $scope.nombreEmpresa = $scope.lstEmprPerm[$scope.indxdSelEmp].NOMBRE;
       $scope.anioFiscal = $scope.lstFYEmpr[$scope.indxdFyEmp].EJER_FISC;
       $scope.indx = $location.absUrl().indexOf('#');
-      $scope.myUrl = $location.absUrl().substring(0, $scope.indx+3);
+      $scope.myUrl = $location.absUrl().substring(0, $scope.indx+2);
       $window.location.href = $scope.myUrl;
       $scope.sucursalEmpresa = res.data[0].ID_SUCURSAL;
       $scope.getLstSucursales();

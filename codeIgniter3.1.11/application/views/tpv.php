@@ -997,7 +997,7 @@
 			<table>
 				<tr>
 					<td colspan="2" style="text-align:center">
-						<img src="https://ready2solve.club/pinabete/img/logo.jpg" alt="" style="width:40">
+						<img src="../img/{{idempresa}}.jpg" alt="" style="width:40">
 					</td>
 				</tr>
 				<tr>
@@ -1095,9 +1095,9 @@
 		</div>
 	</div>
 	<div id="ticket2" style="display:none">
-	<center><img src="../img/logo.jpg" alt="Pinabete" style="width:197px;height:111px;"></center>
+	<center><img src="../img/{{idempresa}}.jpg" alt="Pinabete" style="width:197px;height:111px;"></center>
     <center><h3>{{empresa.NOMBRE}}</h3></center>
-    <center><h6>Registro Forestal: <strong>R-29-010-FOS-001/11</strong></h6></center>
+    <center ng-show="idempresa === 28 || idempresa === 1"><h6>Registro Forestal: <strong>R-29-010-FOS-001/11</strong></h6></center>
     <center><h6>{{empresa.DOMICILIO}}</h6></center>
 		<center><h6>{{empresa.RFC}}</h6></center>
     <hr>
@@ -1154,16 +1154,16 @@
     <br>
 		<table style="padding: 0em; margin: 0em;">
       <tr>
-        <th>Visitanos en Facebook </th>
+        <th>{{empresa.MENSAJE}}</th>
       </tr>
       <tr>
-        <th>@madederiaelpinabete</th>
+        <th>{{empresa.RRSS}}</th>
       </tr>
       <tr>
-        <th>Tel: 2464582374</th>
+        <th>Tel: {{empresa.TELEFONO}}</th>
       </tr>
       <tr>
-        <th>madederiaelpinabete@hotmail.com</th>
+        <th>{{empresa.EMAIL}}</th>
       </tr>
     </table>
 	</div>

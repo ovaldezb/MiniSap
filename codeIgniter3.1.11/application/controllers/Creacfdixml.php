@@ -328,16 +328,18 @@ class Creacfdixml extends CI_Controller
         $result = json_decode($this->facturamodel->get_factura_by_id($idfactura),false); 
         if($idCliente===0){
           $domicilio = 'Conocido';
+          $CP = '';
         }else{
           $cliente = json_decode($this->clientemodel->get_cliente_by_id($idCliente),false);
           $domicilio = $cliente[0]->DOMICILIO;
+          $CP = $cliente[0]->CP;
         }
         $empresa = json_decode($this->empresamodel->get_empresa_by_id($idEmpresa),false);
         $formapago = json_decode($this->catalogosmodel->get_forma_pago_js(),false);
         $uso_cfdi = json_decode(json_encode($this->catalogosmodel->get_uso_cfdi()),false);
         file_put_contents(FCPATH.'img/'.$result[0]->FOLIO.'.png',base64_decode($result[0]->QR_CODE));
         $qr = FCPATH.'img/'.$result[0]->FOLIO.'.png';      
-        $res = $this->xml2pdf->convierte($result[0]->CFDI,$result[0]->CADENA_SAT,$domicilio,$empresa,$formapago,$uso_cfdi,$qr);        
+        $res = $this->xml2pdf->convierte($result[0]->CFDI,$result[0]->CADENA_SAT,$domicilio,$empresa,$formapago,$uso_cfdi,$qr,$idEmpresa,$CP);        
         $dompdf = new DOMPDF();
         $dompdf->loadHtml($res);
         $dompdf->setPaper('A4', "portrait");

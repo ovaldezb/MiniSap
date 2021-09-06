@@ -342,21 +342,32 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
     })
     .then(yes=>{
       if(yes){
-        $http.delete(pathFactura+'eliminafact/'+$scope.lstFacturas[$scope.indexRowFactura].ID_FACTURA+'/'+$scope.factura.idsucursal)
-        .then(res=>{
-          $scope.getfacturas();
-          swal('La factura se canceló!');
+        $http.get(pathCob+'getcobrofac/'+$scope.lstFacturas[$scope.indexRowFactura].ID_FACTURA)
+        .then(fact => {
+          if(fact.data.length === 0){
+            $http.delete(pathFactura+'eliminafact/'+$scope.lstFacturas[$scope.indexRowFactura].ID_FACTURA+'/'+$scope.factura.idsucursal)
+            .then(res=>{
+              $scope.getfacturas();
+              swal('La factura se canceló!');
+            })
+            .catch(err =>{
+              console.log(err);
+            });
+            $http.get(pathCreacfdi+'cancelafactura/'+$scope.lstFacturas[$scope.indexRowFactura].ID_FACTURA+'/'+$scope.factura.idempresa+'/'+$scope.factura.idsucursal)
+            .then(res =>{
+              console.log(res.data);
+            })
+            .catch(err =>{
+              console.log(err);          
+            });
+          }else{
+            swal("La factura tiene "+fact.data.length+" pago(s) pendiente(s)","No es posible cancelarla, pida a un supervisor que primero cancele el/los pago(s)",'error');
+          }
         })
         .catch(err =>{
           console.log(err);
         });
-        $http.get(pathCreacfdi+'cancelafactura/'+$scope.lstFacturas[$scope.indexRowFactura].ID_FACTURA+'/'+$scope.factura.idempresa+'/'+$scope.factura.idsucursal)
-        .then(res =>{
-          console.log(res.data);
-        })
-        .catch(err =>{
-          console.log(err);          
-        });
+        
       }
     });
   }

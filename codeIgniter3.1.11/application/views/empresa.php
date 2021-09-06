@@ -76,7 +76,7 @@
 				</div>
 				<div class="column is-2">
 					<div class="control has-icons-left">
-						<input ng-model="emp.rfc" class="input is-small" type="input" placeholder="RFC" maxlength="20" required>
+						<input ng-model="emp.rfc" class="input is-small" type="input" placeholder="RFC" maxlength="20">
 						<span class="icon is-small is-left">
 						  <i class="fas fa-id-card-alt"></i>
 						</span>
@@ -114,50 +114,80 @@
 			</div>
 		</div>							
 		<div class="box">
-			<h4 class="title is-5 has-text-centered">Registro Contable</h4>
-			<div class="columns ">
-				<div class="column is-narrow">
-					<label class="label">Dígitos por Cuenta</label>
-				</div>
-				<div class="column is-narrow" style="width: <?php echo $size1 ?>px;">
-					<input id="dig1" ng-model="emp.dig1" class="input is-small" type="input" maxlength="1">
-				</div>
-				<div class="column is-narrow" style="width: <?php echo $size1 ?>px;">
-					<input id="dig2" ng-model="emp.dig2" class="input is-small" type="input" maxlength="1">
-				</div>
-				<div class="column is-narrow" style="width: <?php echo $size1 ?>px;">
-					<input id="dig3" ng-model="emp.dig3" class="input is-small" type="input" maxlength="1">
-				</div>
-				<div class="column is-narrow" style="width: <?php echo $size1 ?>px;">
-					<input id="dig4" ng-model="emp.dig4" class="input is-small" type="input" maxlength="1">
-				</div>
-			</div>
 			<div class="columns">
-				<div class="column is-narrow">
-					<label class="label">Cuenta para resultado del Ejercicio</label>
+				<div class="column">
+					<h4 class="title is-5 has-text-centered">Registro Contable</h4>
+						<div class="columns ">
+							<div class="column is-narrow">
+								<label class="label">Dígitos por Cuenta</label>
+							</div>
+							<div class="column is-narrow" style="width: <?php echo $size1 ?>px;">
+								<input id="dig1" ng-model="emp.dig1" class="input is-small" type="input" maxlength="1">
+							</div>
+							<div class="column is-narrow" style="width: <?php echo $size1 ?>px;">
+								<input id="dig2" ng-model="emp.dig2" class="input is-small" type="input" maxlength="1">
+							</div>
+							<div class="column is-narrow" style="width: <?php echo $size1 ?>px;">
+								<input id="dig3" ng-model="emp.dig3" class="input is-small" type="input" maxlength="1">
+							</div>
+							<div class="column is-narrow" style="width: <?php echo $size1 ?>px;">
+								<input id="dig4" ng-model="emp.dig4" class="input is-small" type="input" maxlength="1">
+							</div>
+						</div>
+						<div class="columns">
+							<div class="column is-narrow">
+								<label class="label">Cuenta para resultado del Ejercicio</label>
+							</div>
+							<div class="column is-2">
+								<input id="cuenta_resultado" ng-model="emp.cuenta_resultado" ng-keyup="validaCR()" class="input is-small" type="input" maxlength="4">
+							</div>
+						</div>
+						<div class="columns">
+							<div class="column is-narrow">
+								<label class="label">Resultado de Ejercicios Anteriores</label>
+							</div>
+							<div class="column is-2">
+								<input id="resultado_anterior" ng-model="emp.resultado_anterior" ng-keyup="validaRA()" class="input is-small" type="input" maxlength="4">
+							</div>
+						</div>
+					</div>
+					<div class="column">
+						<h4 class="title is-5 has-text-centered">Datos de Contacto</h4>
+						<div class="columns">
+							<div class="column is-narrow" style="width:170px"><label class="label">Teléfono</label></div>
+							<div class="column is-3">
+								<input type="text" ng-model="emp.telefono" class="input is-small" maxlength="10">
+							</div>
+						</div>
+						<div class="columns">
+							<div class="column is-narrow" style="width:170px"><label class="label">Correo Electrónico</label></div>
+							<div class="column is-5">
+								<input type="text" ng-model="emp.email" class="input is-small" >
+							</div>
+						</div>
+						<div class="columns">
+							<div class="column  is-narrow" style="width:170px"><label class="label">Redes Sociales</label></div>
+							<div class="column is-5">
+								<input type="text" ng-model="emp.redessociales" class="input is-small">
+							</div>
+						</div>
+						<div class="columns">
+							<div class="column  is-narrow" style="width:170px"><label class="label">Mensaje</label></div>
+							<div class="column is-3">
+								<textarea name="" ng-model="emp.mensaje" cols="17" rows="3"></textarea>
+							</div>
+						</div>
+					</div>
 				</div>
-				<div class="column is-1">
-					<input id="cuenta_resultado" ng-model="emp.cuenta_resultado" ng-keyup="validaCR()" class="input is-small" type="input" maxlength="4">
+				<div class="field is-grouped">
+					<div class="control">
+						<button id="add" class="button is-link" ng-click="submitForm();" ng-disabled="myForm.$invalid">{{actnBton}}</button>
+					</div>
+					<div class="control">
+						<button  class="button is-ligth" ng-click="cancelar();">Cancelar</button>
+					</div>
 				</div>
 			</div>
-			<div class="columns">
-				<div class="column is-narrow">
-					<label class="label">Resultado de Ejercicios Anteriores</label>
-				</div>
-				<div class="column is-1">
-					<input id="resultado_anterior" ng-model="emp.resultado_anterior" ng-keyup="validaRA()" class="input is-small" type="input" maxlength="4">
-				</div>
-			</div>
-
-			<div class="field is-grouped">
-				<div class="control">
-					<button id="add" class="button is-link" ng-click="submitForm();" ng-disabled="myForm.$invalid">{{actnBton}}</button>
-				</div>
-				<div class="control">
-					<button  class="button is-ligth" ng-click="cancelar();">Cancelar</button>
-				</div>
-			</div>
-		</div>
 		</form>
 	</div>
 	<div class="container" style="border: 2px solid black; width:80%" ng-show="!isDivEmpActivo">

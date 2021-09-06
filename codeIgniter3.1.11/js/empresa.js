@@ -31,7 +31,11 @@ app.controller('myCtrlEmpresa', function($scope,$http,$routeParams)
     cuenta_resultado:'',
     resultado_anterior:'',
     regimen:'',
-    idEmpresa:''
+    idEmpresa:'',
+    telefono:'',
+    email:'',
+    redessociales:'',
+    mensaje:''
   }
 
   $scope.init = function()
@@ -152,6 +156,10 @@ app.controller('myCtrlEmpresa', function($scope,$http,$routeParams)
   			$scope.emp.dig2 = digxcta[1];
   			$scope.emp.dig3 = digxcta[2];
   			$scope.emp.dig4 = digxcta[3];
+        $scope.emp.telefono = res.data[0].TELEFONO;
+        $scope.emp.email = res.data[0].EMAIL;
+        $scope.emp.redessociales = res.data[0].RRSS;
+        $scope.emp.mensaje = res.data[0].MENSAJE;
         $scope.isDivEmpActivo = true;
         $scope.actnBton = 'Actualizar';
   		}
@@ -163,18 +171,6 @@ app.controller('myCtrlEmpresa', function($scope,$http,$routeParams)
 
   $scope.submitForm = function()
   {
-    /*var dataEmpresa =
-    {
-      nombre:$scope.nombre,
-      domicilio:$scope.domicilio,
-      rfc:$scope.rfc,
-      ejercicio_fiscal:$scope.ejercicio_fiscal,
-      regimen:$('#regimen').val(),
-      digxcta:$scope.dig1+$scope.dig2+$scope.dig3+$scope.dig4,
-      cuenta_resultado:$scope.cuenta_resultado,
-      resultado_anterior:$scope.resultado_anterior,
-      idempresa:$scope.idEmpresa
-    };*/
     $scope.emp.idEmpresa = $scope.idEmpresa;
     $scope.emp.digxcta = $scope.emp.dig1+$scope.emp.dig2+$scope.emp.dig3+$scope.emp.dig4;
     $scope.emp.regimen = $('#regimen').val();
@@ -201,18 +197,11 @@ app.controller('myCtrlEmpresa', function($scope,$http,$routeParams)
     	});
     }else {
       $http.put(pathEmpr+'update/'+$scope.idEmpresa,$scope.emp).
-      then(function(res)
+      then(res =>
     	{
     		if(res.status== 200 && res.data.value == 'OK')
     		{
-          var dataUpdate =
-          {
-            NOMBRE:$scope.emp.nombre,
-            RFC:$scope.emp.rfc,
-            CP:$scope.emp.cp,
-            ID_EMPRESA:$scope.emp.idEmpresa
-          };
-          $scope.lstEmpresas[$scope.indexRowEmp] = dataUpdate;
+          $scope.getEmpresas();
           $scope.selectRowEmpresa($scope.lstEmpresas[0].RFC,0,$scope.lstEmpresas[0].ID_EMPRESA);
     			swal('La empresa se actualizó correctamente');
     			$scope.cancelar();
@@ -264,6 +253,10 @@ app.controller('myCtrlEmpresa', function($scope,$http,$routeParams)
     $scope.emp.dig4 = '';
     $scope.emp.cuenta_resultado = '';
     $scope.emp.resultado_anterior = '';
+    $scope.emp.telefono = '';
+    $scope.emp.email = '';
+    $scope.emp.redessociales = '';
+    $scope.emp.mensaje = '';
   }
 
 });

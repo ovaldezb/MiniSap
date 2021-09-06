@@ -18,11 +18,11 @@ class Empresamodel extends CI_model
 		return json_encode($result);
 	}
 
-	function create_empresa($nombre, $domicilio, $rfc, $cp,$ejercicio_fiscal, $id_regimen, $digxcuenta, $cta_res, $res_ant)
+	function create_empresa($nombre, $domicilio, $rfc, $cp,$ejercicio_fiscal, $id_regimen, $digxcuenta, $cta_res,$res_ant,$telefono,$email,$rrss,$mensaje)
 	{
-		$query = 'SELECT * FROM crea_empresa($1, $2, $3, $4, $5, $6, $7,$8,$9)';
+		$query = 'SELECT * FROM crea_empresa($1, $2, $3, $4, $5, $6, $7,$8,$9,$10,$11,$12)';
 		pg_prepare($this->conn, "creaempresa", $query);
-		$result =  pg_fetch_all(pg_execute($this->conn, "creaempresa", array($nombre,$domicilio,$rfc,$cp,$ejercicio_fiscal,$id_regimen,$digxcuenta,$cta_res,$res_ant)));
+		$result =  pg_fetch_all(pg_execute($this->conn, "creaempresa", array($nombre,$domicilio,$rfc,$cp,$ejercicio_fiscal,$id_regimen,$digxcuenta,$cta_res,$res_ant,$res_ant,$telefono,$email,$rrss,$mensaje)));
 		return json_encode($result);
 	}
 
@@ -30,7 +30,7 @@ class Empresamodel extends CI_model
 	{
 		$query = 'SELECT TRIM(A."NOMBRE") as "NOMBRE", A."DOMICILIO", TRIM(A."RFC") as "RFC", A."CP",
 				A."ID_REGIMEN", A."DIGITO_X_CUENTA", A."CUENTA_RESULTADO", A."RESULTADO_ANTERIOR", B."EJER_FISC",
-        TRIM(R."CLAVE") as "REGIMEN"
+        TRIM(R."CLAVE") as "REGIMEN",TRIM("TELEFONO") as "TELEFONO","EMAIL","RRSS","MENSAJE"
 				FROM "EMPRESA" A
         INNER JOIN "EMP_EJER_FISC" as B ON A."ID_EMPRESA" = B."ID_EMPRESA"
         INNER JOIN "REGIMEN" as R ON R."ID_REGIMEN" = A."ID_REGIMEN"
@@ -40,7 +40,7 @@ class Empresamodel extends CI_model
 		return json_encode($result,JSON_NUMERIC_CHECK);
 	}
 
-	function update_empresa($id_empresa,$nombre, $domicilio, $rfc,$cp, $ejercicio_fiscal, $id_regimen, $digxcuenta, $cta_res, $res_ant)
+	function update_empresa($id_empresa,$nombre, $domicilio, $rfc,$cp, $ejercicio_fiscal, $id_regimen, $digxcuenta, $cta_res, $res_ant, $telefono, $email, $rrss, $mensaje)
 	{
 		$result = pg_prepare($this->conn,"updatequery",'UPDATE "EMPRESA" SET
 				"NOMBRE" = $1,
@@ -50,12 +50,14 @@ class Empresamodel extends CI_model
 				"ID_REGIMEN" = $5,
 				"DIGITO_X_CUENTA" = $6,
 				"CUENTA_RESULTADO" = $7,
-				"RESULTADO_ANTERIOR" = $8
-				WHERE "ID_EMPRESA" = $9');
+				"RESULTADO_ANTERIOR" = $8,
+				"TELEFONO" = $9,
+				"EMAIL" = $10,
+				"RRSS" = $11,
+				"MENSAJE" = $12
+				WHERE "ID_EMPRESA" = $13');
 
-		$result = pg_execute($this->conn,"updatequery",array($nombre, $domicilio,$rfc,$cp,$id_regimen, $digxcuenta, $cta_res, $res_ant,$id_empresa));
-		//pg_prepare($this->conn,"updateempejerfis",'UPDATE "EMP_EJER_FISC" SET "EJER_FISC" = $1 WHERE "ID_EMPRESA" = $2');
-		//$result = pg_execute($this->conn,"updateempejerfis",array($ejercicio_fiscal,$id_empresa));
+		$result = pg_execute($this->conn,"updatequery",array($nombre, $domicilio,$rfc,$cp,$id_regimen, $digxcuenta, $cta_res, $res_ant,$telefono, $email, $rrss, $mensaje,$id_empresa));
 		return $result;
 	}
 

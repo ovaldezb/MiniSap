@@ -109,6 +109,10 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
     NOMBRE: "",
     DOMICILIO: "",
     RFC: "",
+    TELEFONO:"",
+    EMAIL:'',
+    RRSS:'',
+    MENSAJE:''
   };
   $scope.fact = {
     idfactura: "",
@@ -418,6 +422,10 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
           $scope.empresa.NOMBRE = res.data[0].NOMBRE;
           $scope.empresa.DOMICILIO = res.data[0].DOMICILIO;
           $scope.empresa.RFC = res.data[0].RFC;
+          $scope.empresa.TELEFONO = res.data[0].TELEFONO;
+          $scope.empresa.RRSS = res.data[0].RRSS;
+          $scope.empresa.EMAIL = res.data[0].EMAIL;
+          $scope.empresa.MENSAJE = res.data[0].MENSAJE;
           $scope.fact.regimenfiscal = res.data[0].REGIMEN;
         }
       })
