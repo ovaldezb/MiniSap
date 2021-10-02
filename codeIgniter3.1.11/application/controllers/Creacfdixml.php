@@ -38,16 +38,16 @@ class Creacfdixml extends CI_Controller
         $this->load->library('crearcfdi');
         $this->load->library('xml2pdf');    
         $this->load->model('catalogosmodel');   
-        $this->params = array(
+        /*$this->params = array(
           "url"=>"http://services.test.sw.com.mx",
           "user"=>"omar.valdez.becerril@gmail.com",
           "password"=> "omar.sw"
-        );   
-        /*$this->params = array(
+        ); */
+        $this->params = array(
             "url"=>"http://services.sw.com.mx",
             "user"=>"omar.valdez.becerril@gmail.com",
-            "password"=> "Ov/d4*035"
-          );*/
+            "password"=> "Jafra2018!@"
+          );
     }
 
 
@@ -282,8 +282,7 @@ class Creacfdixml extends CI_Controller
                     "b64Cer"=> file_get_contents($archivoCerPem),
                     "b64Key"=> file_get_contents($archivoKeyPem)
                 );
-                //var_dump($paramsCancel);
-                //header("Content-type: application/json");
+                
 
                 $cancelationService = CancelationService::Set($paramsCancel); //asignamos los valores al servicio
                 $result = $cancelationService::CancelationByCSD();//usamos el servicio de cancelación
@@ -332,7 +331,7 @@ class Creacfdixml extends CI_Controller
         }else{
           $cliente = json_decode($this->clientemodel->get_cliente_by_id($idCliente),false);
           $domicilio = $cliente[0]->DOMICILIO;
-          $CP = $cliente[0]->CP;
+          $CP = '00000';//$cliente[0]->CP;
         }
         $empresa = json_decode($this->empresamodel->get_empresa_by_id($idEmpresa),false);
         $formapago = json_decode($this->catalogosmodel->get_forma_pago_js(),false);

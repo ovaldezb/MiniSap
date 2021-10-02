@@ -344,7 +344,7 @@ app.controller('myCtrlFacturacion', function($scope,$http,$interval,$routeParams
       if(yes){
         $http.get(pathCob+'getcobrofac/'+$scope.lstFacturas[$scope.indexRowFactura].ID_FACTURA)
         .then(fact => {
-          if(fact.data.length === 0){
+          if(!fact.data){
             $http.delete(pathFactura+'eliminafact/'+$scope.lstFacturas[$scope.indexRowFactura].ID_FACTURA+'/'+$scope.factura.idsucursal)
             .then(res=>{
               $scope.getfacturas();

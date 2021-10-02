@@ -1164,23 +1164,23 @@ app.controller("myCtrlTpv", function ($scope, $http, $interval, $routeParams) {
     var vntaProd = {};
     for (var i = 0; i < $scope.lstProdCompra.length; i++) {
       vntaProd = {
-        idventa: $scope.idVenta,
-        idProducto: $scope.lstProdCompra[i].ID_PRODUCTO,
-        cantidad: $scope.lstProdCompra[i].CANTIDAD,
+        idventa: $scope.idVenta, //Int
+        idProducto: $scope.lstProdCompra[i].ID_PRODUCTO, //Int
+        cantidad: $scope.lstProdCompra[i].CANTIDAD,//Int
         precio: $scope.lstProdCompra[i].PRECIO_LISTA,
         importe: $scope.lstProdCompra[i].IMPORTE,
-        idsucursal: $scope.idsucursal,
+        idsucursal: $scope.idsucursal,//Int
         tipops: $scope.tipo_ps,
         documento: $scope.docto, //aqui debe ir el documento 
-        caja: 1,
-        idempresa: $scope.idempresa,
-        aniofiscal: $scope.aniofiscal,
-        idcliente: $scope.idcliente,
-        idproveedor: null,
-        idusuario: null,
-        idmoneda: 1, //la venta siempre es en pesos
+        caja: 1,//Int
+        idempresa: $scope.idempresa,//Int
+        aniofiscal: $scope.aniofiscal,//Int
+        idcliente: $scope.idcliente,//Int
+        idproveedor: null,//Int
+        idusuario: null,//Int
+        idmoneda: 1, //la venta siempre es en pesos//Int
         descuento: $scope.lstProdCompra[i].DESCUENTO == null ? 0 : $scope.lstProdCompra[i].DESCUENTO,
-        idcalidad:$scope.lstProdCompra[i].ID_CALIDAD_MADERA,
+        idcalidad:$scope.lstProdCompra[i].ID_CALIDAD_MADERA, //Int
       };
       /**Agregar el idcalidad */
       $http
